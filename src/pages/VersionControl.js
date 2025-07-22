@@ -172,58 +172,59 @@ const BreakingChange = styled.div`
 const VersionControl = () => {
   const versions = [
     {
-      version: '1.0.0',
-      date: '2024-01-15',
+      version: '4.0.1',
+      date: '2024-03-15',
       type: 'latest',
       isLatest: true,
       isMajor: true,
-      description: 'Initial release of the design system',
+      description: 'Major update with enhanced components and accessibility improvements',
       changes: [
-        { type: 'added', text: 'Button component with 5 variants and 3 sizes' },
-        { type: 'added', text: 'Card component with header, body, and footer sections' },
-        { type: 'added', text: 'Input component with validation states' },
-        { type: 'added', text: 'Modal component with backdrop and keyboard navigation' },
-        { type: 'added', text: 'Responsive navigation with mobile support' },
-        { type: 'added', text: 'Interactive documentation site with live examples' }
+        { type: 'added', text: 'Enhanced component library with improved accessibility' },
+        { type: 'added', text: 'New color system with better contrast ratios' },
+        { type: 'added', text: 'Improved documentation and examples' },
+        { type: 'added', text: 'Advanced form components and validation' },
+        { type: 'added', text: 'Dark mode support across all components' },
+        { type: 'added', text: 'Performance optimizations and bug fixes' }
       ]
     },
     {
-      version: '0.9.0',
-      date: '2024-01-10',
+      version: '3.0.0',
+      date: '2024-02-15',
       type: 'major',
       isMajor: true,
-      description: 'Beta release with core components',
+      description: 'Complete design system overhaul',
       changes: [
-        { type: 'added', text: 'Basic Button component implementation' },
-        { type: 'added', text: 'Card component with basic styling' },
-        { type: 'added', text: 'Input component with basic states' },
-        { type: 'changed', text: 'Updated color palette for better accessibility' },
-        { type: 'changed', text: 'Improved typography scale' }
+        { type: 'added', text: 'Redesigned component architecture' },
+        { type: 'added', text: 'New theming system' },
+        { type: 'added', text: 'Improved responsive design' },
+        { type: 'changed', text: 'Updated color palette and typography' },
+        { type: 'changed', text: 'Enhanced component APIs' }
       ]
     },
     {
-      version: '0.8.0',
-      date: '2024-01-05',
-      type: 'minor',
-      isMinor: true,
-      description: 'Foundation and design tokens',
+      version: '2.0.0',
+      date: '2024-01-15',
+      type: 'major',
+      isMajor: true,
+      description: 'Major feature update',
       changes: [
-        { type: 'added', text: 'Design tokens for colors, spacing, and typography' },
-        { type: 'added', text: 'Base component architecture' },
-        { type: 'added', text: 'Styling system with styled-components' },
-        { type: 'added', text: 'Basic documentation structure' }
+        { type: 'added', text: 'Advanced component library' },
+        { type: 'added', text: 'Interactive documentation' },
+        { type: 'added', text: 'New design tokens system' },
+        { type: 'changed', text: 'Improved accessibility standards' }
       ]
     },
     {
-      version: '0.7.0',
+      version: '1.0.0',
       date: '2024-01-01',
-      type: 'patch',
-      description: 'Project setup and initial structure',
+      type: 'major',
+      isMajor: true,
+      description: 'Initial stable release',
       changes: [
-        { type: 'added', text: 'React project setup with Create React App' },
-        { type: 'added', text: 'Routing with React Router' },
-        { type: 'added', text: 'Styled-components for styling' },
-        { type: 'added', text: 'Basic project structure and configuration' }
+        { type: 'added', text: 'Core component library' },
+        { type: 'added', text: 'Basic documentation' },
+        { type: 'added', text: 'Design tokens' },
+        { type: 'added', text: 'Basic theming support' }
       ]
     }
   ];
@@ -250,18 +251,18 @@ const VersionControl = () => {
       <Section>
         <SectionTitle>Current Version</SectionTitle>
         <SectionDescription>
-          We're currently on version 1.0.0, which represents the first stable release of our design system.
+          We're currently on version 4.0.1, which represents our latest major release with significant improvements in accessibility and component functionality.
         </SectionDescription>
 
         <Card elevated>
           <Card.Header>
-            <Card.Title>Version 1.0.0 - Initial Release</Card.Title>
-            <Card.Subtitle>Released on January 15, 2024</Card.Subtitle>
+            <Card.Title>Version 4.0.1 - Latest Release</Card.Title>
+            <Card.Subtitle>Released on March 15, 2024</Card.Subtitle>
           </Card.Header>
           <Card.Body>
             <p style={{ margin: '0 0 16px 0', color: '#6b7280', lineHeight: '1.6' }}>
-              This is the first stable release of our design system. It includes all core components 
-              with comprehensive documentation and interactive examples.
+              This release brings major improvements to our component library with enhanced accessibility,
+              dark mode support, and performance optimizations.
             </p>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <span style={{
@@ -272,7 +273,7 @@ const VersionControl = () => {
                 fontSize: '12px',
                 fontWeight: '500'
               }}>
-                Stable Release
+                Latest Release
               </span>
               <span style={{
                 background: '#f0fdf4',

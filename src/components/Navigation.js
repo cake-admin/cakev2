@@ -24,7 +24,7 @@ const NavContainer = styled.nav`
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   transition: all 0.5s ease;
-  z-index: 1000;
+  z-index: 1001;
   overflow-y: auto;
   overflow-x: hidden;
   box-sizing: border-box;
@@ -32,7 +32,7 @@ const NavContainer = styled.nav`
   @media (max-width: 768px) {
     position: fixed;
     left: ${props => props.isOpen ? '0' : '-250px'};
-    z-index: 1000;
+    z-index: 1001;
     transition: left 0.3s ease;
     box-shadow: ${props => props.isOpen ? '2px 0 8px rgba(0,0,0,0.1)' : 'none'};
   }
@@ -273,9 +273,10 @@ const Overlay = styled.div`
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState({
-    aboutCake: false,
+    getStarted: false,
     foundations: false,
-    components: false
+    components: false,
+    subsystems: false
   });
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -332,18 +333,29 @@ const Navigation = () => {
             </NavItem>
             
             <NavItem>
-              <SubmenuToggle onClick={() => toggleMenu('aboutCake')}>
-                ABOUT CAKE
-                <Chevron expanded={expandedMenus.aboutCake}>
+              <NavLinkStyled to="/whats-new" onClick={closeNav}>
+                What's New
+              </NavLinkStyled>
+            </NavItem>
+            
+            <NavItem>
+              <SubmenuToggle onClick={() => toggleMenu('getStarted')}>
+                GET STARTED
+                <Chevron expanded={expandedMenus.getStarted}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
                   </svg>
                 </Chevron>
               </SubmenuToggle>
-              <Submenu expanded={expandedMenus.aboutCake}>
+              <Submenu expanded={expandedMenus.getStarted}>
                 <SubmenuItem>
-                  <SubmenuLink to="/about/whats-new" onClick={closeNav}>
-                    What's New
+                  <SubmenuLink to="/get-started/about" onClick={closeNav}>
+                    About Cake
+                  </SubmenuLink>
+                </SubmenuItem>
+                <SubmenuItem>
+                  <SubmenuLink to="/get-started/figma-libraries" onClick={closeNav}>
+                    Figma Libraries
                   </SubmenuLink>
                 </SubmenuItem>
               </Submenu>
@@ -420,6 +432,44 @@ const Navigation = () => {
                 <SubmenuItem>
                   <SubmenuLink to="/components/checkbox" onClick={closeNav}>
                     Checkbox
+                  </SubmenuLink>
+                </SubmenuItem>
+              </Submenu>
+            </NavItem>
+
+            <NavItem>
+              <SubmenuToggle onClick={() => toggleMenu('subsystems')}>
+                SUB SYSTEMS
+                <Chevron expanded={expandedMenus.subsystems}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
+                  </svg>
+                </Chevron>
+              </SubmenuToggle>
+              <Submenu expanded={expandedMenus.subsystems}>
+                <SubmenuItem>
+                  <SubmenuLink to="/subsystems/about" onClick={closeNav}>
+                    About Sub Systems
+                  </SubmenuLink>
+                </SubmenuItem>
+                <SubmenuItem>
+                  <SubmenuLink to="/subsystems/cake-for-ai" onClick={closeNav}>
+                    Cake for AI
+                  </SubmenuLink>
+                </SubmenuItem>
+                <SubmenuItem>
+                  <SubmenuLink to="/subsystems/cake-for-pc-software" onClick={closeNav}>
+                    Cake for PC Software
+                  </SubmenuLink>
+                </SubmenuItem>
+                <SubmenuItem>
+                  <SubmenuLink to="/subsystems/cake-for-enterprise" onClick={closeNav}>
+                    Cake for Enterprise
+                  </SubmenuLink>
+                </SubmenuItem>
+                <SubmenuItem>
+                  <SubmenuLink to="/subsystems/red-velvet" onClick={closeNav}>
+                    Red Velvet
                   </SubmenuLink>
                 </SubmenuItem>
               </Submenu>
