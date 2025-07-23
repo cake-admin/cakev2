@@ -2,6 +2,25 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import winDeskBg from '../assets/canvas/win_desk.png';
 
+// Icon components
+const MinimizeIcon = () => (
+  <svg width="10" height="1" viewBox="0 0 10 1">
+    <rect width="10" height="1" fill="currentColor" />
+  </svg>
+);
+
+const MaximizeIcon = () => (
+  <svg width="10" height="10" viewBox="0 0 10 10">
+    <rect width="10" height="10" fill="none" stroke="currentColor" />
+  </svg>
+);
+
+const CloseIcon = () => (
+  <svg width="10" height="10" viewBox="0 0 10 10">
+    <path d="M1,1 L9,9 M9,1 L1,9" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+);
+
 const PageContainer = styled.div`
   padding: 2rem;
 `;
@@ -35,7 +54,6 @@ const DemoContainer = styled.div`
   background-position: center;
   border-radius: 8px;
   overflow: hidden;
-  background-color: #000; // Adding this to ensure the background is visible
 `;
 
 const TitleBar = styled.div`
@@ -122,24 +140,6 @@ const WindowContent = styled.div`
 const WindowIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
     <rect x="2" y="2" width="12" height="12" rx="2" fill="#1a1a1a"/>
-  </svg>
-);
-
-const MinimizeIcon = () => (
-  <svg width="10" height="1" viewBox="0 0 10 1">
-    <rect width="10" height="1" fill="currentColor" rx="0.5"/>
-  </svg>
-);
-
-const MaximizeIcon = () => (
-  <svg width="10" height="10" viewBox="0 0 10 10">
-    <rect width="9" height="9" x="0.5" y="0.5" fill="none" stroke="currentColor" rx="1"/>
-  </svg>
-);
-
-const CloseIcon = () => (
-  <svg width="10" height="10" viewBox="0 0 10 10">
-    <path d="M1.5,1.5 L8.5,8.5 M8.5,1.5 L1.5,8.5" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round"/>
   </svg>
 );
 

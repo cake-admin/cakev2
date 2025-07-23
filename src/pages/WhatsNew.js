@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Card from '../components/design-system/Card';
 import colorData from '../data/colors.json';
+import { Check as CheckIcon } from '@mui/icons-material';
 
 const PageContainer = styled.div`
   padding: 32px;
@@ -30,71 +31,67 @@ const Description = styled.p`
   max-width: 800px;
 `;
 
-const HighlightBox = styled.div`
-  background-color: #F8FAFC;
-  border: 1px solid #E2E8F0;
-  border-radius: 8px;
-  padding: 24px;
-  margin-bottom: 32px;
-  max-width: 800px;
-
-  h2 {
-    margin: 0 0 16px 0;
-    font-size: 20px;
-    font-weight: 600;
-    color: ${colorData.slate[900]};
-  }
-
-  p {
-    margin: 0;
-    color: ${colorData.slate[700]};
-    font-size: 14px;
-    line-height: 1.6;
-  }
-
-  strong {
-    color: #1D4ED8;
-  }
+const ChangelogGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
 `;
 
-const ChangelogGrid = styled.div`
+const CurrentVersionWrapper = styled.div`
+  width: 100%;
+`;
+
+const OlderVersionsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
   width: 100%;
 `;
 
-const ChangelogCard = styled(Card)`
-  padding: 24px;
+const StyledUpdateDate = styled.div`
+  font-size: 14px;
+  color: ${colorData.slate[600]};
+  margin-bottom: 12px;
 `;
 
-const UpdateDate = styled.div`
-  font-size: 12px;
-  color: ${colorData.slate[700]};
-  margin-bottom: 8px;
+const BadgeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 20px;
 `;
 
-const UpdateTitle = styled.h2`
-  font-size: 18px;
-  font-weight: 600;
-  color: ${colorData.slate[900]};
-  margin: 0 0 16px 0;
+const CurrentBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  background-color: #ECFDF5;
+  color: #047857;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  gap: 6px;
+
+  .MuiSvgIcon-root {
+    font-size: 16px;
+  }
 `;
 
 const UpdateType = styled.span`
   display: inline-block;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 13px;
   font-weight: 500;
-  margin-bottom: 16px;
   
   ${props => {
     switch (props.type) {
       case 'Major':
-        return 'background-color: #E8F5E9; color: #2E7D32;';
+        return 'background-color: #EEF3FF; color: #1E293B;';
       case 'Minor':
-        return 'background-color: #E3F2FD; color: #1565C0;';
+        return 'background-color: #F1F5F9; color: #1E293B;';
       case 'Patch':
         return 'background-color: #FFF3E0; color: #E65100;';
       default:
@@ -105,13 +102,14 @@ const UpdateType = styled.span`
 
 const UpdateList = styled.ul`
   margin: 0;
-  padding-left: 20px;
+  padding-left: 24px;
   
   li {
     font-size: 14px;
-    color: #666;
+    color: ${colorData.slate[700]};
     line-height: 1.6;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    padding-left: 4px;
     
     &:last-child {
       margin-bottom: 0;
@@ -119,52 +117,75 @@ const UpdateList = styled.ul`
   }
 `;
 
+const StyledCardTitle = styled(Card.Title)`
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  color: ${colorData.slate[900]} !important;
+  margin: 0 !important;
+`;
+
 const WhatsNew = () => {
   const updates = [
     {
-      version: 'v4.0.1',
-      date: 'March 15, 2024',
+      version: 'v1.4.0',
+      date: 'May 1, 2025',
       type: 'Major',
+      current: true,
       changes: [
-        'Enhanced component library with improved accessibility',
-        'New color system with better contrast ratios',
-        'Dark mode support across all components',
-        'Advanced form components and validation',
-        'Performance optimizations and bug fixes'
+        'Updated core components and focus state to meet WCAG 2.2 guidelines',
+        'Improved interaction consistency across all core components',
+        'Color contrast improvements for better readability and accessibility'
       ]
     },
     {
-      version: 'v3.0.0',
-      date: 'February 15, 2024',
-      type: 'Major',
+      version: 'v1.3.0',
+      date: 'July 17, 2024',
+      type: 'Minor',
+      current: false,
       changes: [
-        'Complete design system overhaul',
-        'Redesigned component architecture',
-        'New theming system',
-        'Improved responsive design',
-        'Enhanced component APIs'
+        'Improved core component consistency and usability',
+        'Refined Figma layout for easier navigation',
+        'Added sections for raw components, themes, and usage guidelines'
       ]
     },
     {
-      version: 'v2.0.0',
-      date: 'January 15, 2024',
-      type: 'Major',
+      version: 'v1.2.8',
+      date: 'May 16, 2024',
+      type: 'Minor',
+      current: false,
       changes: [
-        'Advanced component library',
-        'Interactive documentation',
-        'New design tokens system',
-        'Improved accessibility standards'
+        'Added Date Picker component',
+        'Updated asterisk required to error color token and SegoeUI font 14 style'
       ]
     },
     {
-      version: 'v1.0.0',
-      date: 'January 1, 2024',
-      type: 'Major',
+      version: 'v1.2.7',
+      date: 'May 8, 2024',
+      type: 'Minor',
+      current: false,
       changes: [
-        'Initial stable release',
-        'Core component library',
-        'Basic documentation',
-        'Design tokens and theming support'
+        'Added Alerts component',
+        'Added "inline-alert" color token'
+      ]
+    },
+    {
+      version: 'v1.2.3',
+      date: 'April 19, 2024',
+      type: 'Minor',
+      current: false,
+      changes: [
+        'Added Horizontal Tabs component',
+        'S & XS breakpoint behaviors'
+      ]
+    },
+    {
+      version: 'v1.2.0',
+      date: 'March 7, 2024',
+      type: 'Minor',
+      current: false,
+      changes: [
+        'Enhancements to Alert components',
+        'Additional color tokens'
       ]
     }
   ];
@@ -173,16 +194,6 @@ const WhatsNew = () => {
     <PageContainer>
       <Title>What's New</Title>
       
-      <HighlightBox>
-        <h2>Coming Soon</h2>
-        <p>
-          Stay tuned for the upcoming release of Lenovo's <strong>Cake for AI</strong> design sub-system 
-          built to support smarter, more intuitive interfaces across company wide applications. 
-          Cake for AI will include best practices, reusable components, and design patterns 
-          for creating thoughtful AI-driven user experiences.
-        </p>
-      </HighlightBox>
-
       <Description>
         Track the latest updates, improvements, and fixes to the Cake Design System. 
         Each release represents significant changes and additions to help you stay informed 
@@ -190,18 +201,56 @@ const WhatsNew = () => {
       </Description>
 
       <ChangelogGrid>
-        {updates.map((update, index) => (
-          <ChangelogCard key={index}>
-            <UpdateDate>{update.date}</UpdateDate>
-            <UpdateTitle>{update.version}</UpdateTitle>
-            <UpdateType type={update.type}>{update.type} Release</UpdateType>
-            <UpdateList>
-              {update.changes.map((change, changeIndex) => (
-                <li key={changeIndex}>{change}</li>
-              ))}
-            </UpdateList>
-          </ChangelogCard>
-        ))}
+        {(() => {
+          const sortedUpdates = updates.sort((a, b) => new Date(b.date) - new Date(a.date));
+          const currentVersion = sortedUpdates.find(update => update.current);
+          const olderVersions = sortedUpdates.filter(update => !update.current);
+          
+          return (
+            <>
+              {currentVersion && (
+                <CurrentVersionWrapper>
+                  <Card hoverable elevated>
+                    <Card.Body>
+                      <StyledUpdateDate>{currentVersion.date}</StyledUpdateDate>
+                      <StyledCardTitle>{currentVersion.version}</StyledCardTitle>
+                      <BadgeContainer>
+                        <CurrentBadge>
+                          <CheckIcon />
+                          Current
+                        </CurrentBadge>
+                        <UpdateType type={currentVersion.type}>{currentVersion.type} release</UpdateType>
+                      </BadgeContainer>
+                      <UpdateList>
+                        {currentVersion.changes.map((change, changeIndex) => (
+                          <li key={changeIndex}>{change}</li>
+                        ))}
+                      </UpdateList>
+                    </Card.Body>
+                  </Card>
+                </CurrentVersionWrapper>
+              )}
+              <OlderVersionsGrid>
+                {olderVersions.map((update, index) => (
+                  <Card key={index} hoverable elevated>
+                    <Card.Body>
+                      <StyledUpdateDate>{update.date}</StyledUpdateDate>
+                      <StyledCardTitle>{update.version}</StyledCardTitle>
+                      <BadgeContainer>
+                        <UpdateType type={update.type}>{update.type} release</UpdateType>
+                      </BadgeContainer>
+                      <UpdateList>
+                        {update.changes.map((change, changeIndex) => (
+                          <li key={changeIndex}>{change}</li>
+                        ))}
+                      </UpdateList>
+                    </Card.Body>
+                  </Card>
+                ))}
+              </OlderVersionsGrid>
+            </>
+          );
+        })()}
       </ChangelogGrid>
     </PageContainer>
   );
