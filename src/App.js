@@ -51,8 +51,11 @@ const Footer = styled.footer`
 `;
 
 function App() {
+  // Get the base URL from the homepage field in package.json
+  const baseUrl = process.env.PUBLIC_URL || '';
+
   return (
-    <Router>
+    <Router basename={baseUrl}>
       <GlobalStyles />
       <Navigation />
       <Wrapper>
