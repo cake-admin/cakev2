@@ -50,7 +50,7 @@ function App() {
         <Navigation />
         <PageContentWrapper>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home />} index />
             <Route path="/whats-new" element={<WhatsNew />} />
             <Route path="/get-started/figma-libraries" element={<FigmaLibraries />} />
             <Route path="/get-started/about" element={<AboutCake />} />

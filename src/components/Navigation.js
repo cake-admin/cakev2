@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useMatch } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import cakeLogo from '../assets/cake.svg';
 import SearchBar from './design-system/SearchBar';
@@ -272,6 +272,7 @@ const Overlay = styled.div`
 
 const Navigation = () => {
   const location = useLocation();
+  const isHome = useMatch('/');
   const [isOpen, setIsOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState({
     getStarted: location.pathname.startsWith('/get-started'),
@@ -328,7 +329,12 @@ const Navigation = () => {
         <SidebarNav>
           <NavList>
             <NavItem>
-              <NavLinkStyled to="/" end onClick={closeNav} className={location.pathname === '/' ? 'active' : ''}>
+              <NavLinkStyled 
+                to="/" 
+                end 
+                onClick={closeNav}
+                className={isHome ? 'active' : ''}
+              >
                 Home
               </NavLinkStyled>
             </NavItem>
