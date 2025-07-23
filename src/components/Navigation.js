@@ -5,6 +5,7 @@ import cakeLogo from '../assets/cake.svg';
 import SearchBar from './design-system/SearchBar';
 import { fontStack } from '../styles/globalStyles';
 import colorData from '../data/colors.json';
+import { routes } from '../data/routes';
 
 // Updated to fix home page selection and content display
 const GlobalStyle = createGlobalStyle`
@@ -280,10 +281,8 @@ const Navigation = () => {
   const [expandedMenus, setExpandedMenus] = useState({
     getStarted: location.pathname.startsWith('/get-started'),
     foundations: location.pathname.startsWith('/foundations'),
-    components: location.pathname.startsWith('/components'),
-    subsystems: location.pathname.startsWith('/subsystems')
+    components: location.pathname.startsWith('/components')
   });
-  const [searchQuery, setSearchQuery] = useState('');
 
   const toggleNav = () => {
     setIsOpen(!isOpen);
@@ -300,10 +299,14 @@ const Navigation = () => {
     }));
   };
 
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-    // TODO: Implement search functionality
-  };
+  // Group routes by category
+  const routesByCategory = routes.reduce((acc, route) => {
+    if (!acc[route.category]) {
+      acc[route.category] = [];
+    }
+    acc[route.category].push(route);
+    return acc;
+  }, {});
 
   return (
     <>
@@ -327,7 +330,7 @@ const Navigation = () => {
           </HeaderLink>
         </SidebarHeader>
         
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar />
         
         <SidebarNav>
           <NavList>
@@ -348,6 +351,7 @@ const Navigation = () => {
               </NavLinkStyled>
             </NavItem>
             
+            {/* Get Started Section */}
             <NavItem>
               <SubmenuToggle onClick={() => toggleMenu('getStarted')}>
                 GET STARTED
@@ -358,19 +362,17 @@ const Navigation = () => {
                 </Chevron>
               </SubmenuToggle>
               <Submenu expanded={expandedMenus.getStarted}>
-                <SubmenuItem>
-                  <SubmenuLink to="/get-started/about" onClick={closeNav}>
-                    About Cake
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/get-started/figma-libraries" onClick={closeNav}>
-                    Figma Libraries
-                  </SubmenuLink>
-                </SubmenuItem>
+                {routesByCategory.guides?.filter(route => route.path.startsWith('/get-started')).map(route => (
+                  <SubmenuItem key={route.path}>
+                    <SubmenuLink to={route.path} onClick={closeNav}>
+                      {route.title}
+                    </SubmenuLink>
+                  </SubmenuItem>
+                ))}
               </Submenu>
             </NavItem>
             
+            {/* Foundations Section */}
             <NavItem>
               <SubmenuToggle onClick={() => toggleMenu('foundations')}>
                 FOUNDATIONS
@@ -381,24 +383,17 @@ const Navigation = () => {
                 </Chevron>
               </SubmenuToggle>
               <Submenu expanded={expandedMenus.foundations}>
-                <SubmenuItem>
-                  <SubmenuLink to="/foundations/colors" onClick={closeNav}>
-                    Color
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/foundations/iconography" onClick={closeNav}>
-                    Iconography
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/foundations/typography" onClick={closeNav}>
-                    Typography
-                  </SubmenuLink>
-                </SubmenuItem>
+                {routesByCategory.foundations?.map(route => (
+                  <SubmenuItem key={route.path}>
+                    <SubmenuLink to={route.path} onClick={closeNav}>
+                      {route.title}
+                    </SubmenuLink>
+                  </SubmenuItem>
+                ))}
               </Submenu>
             </NavItem>
             
+            {/* Components Section */}
             <NavItem>
               <SubmenuToggle onClick={() => toggleMenu('components')}>
                 COMPONENTS
@@ -409,79 +404,13 @@ const Navigation = () => {
                 </Chevron>
               </SubmenuToggle>
               <Submenu expanded={expandedMenus.components}>
-                <SubmenuItem>
-                  <SubmenuLink to="/components/accordion" onClick={closeNav}>
-                    Accordion
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/components/alert" onClick={closeNav}>
-                    Alert
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/components/avatar" onClick={closeNav}>
-                    Avatar
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/components/badge" onClick={closeNav}>
-                    Badge
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/components/breadcrumb" onClick={closeNav}>
-                    Breadcrumb
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/components/button" onClick={closeNav}>
-                    Button
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/components/checkbox" onClick={closeNav}>
-                    Checkbox
-                  </SubmenuLink>
-                </SubmenuItem>
-              </Submenu>
-            </NavItem>
-
-            <NavItem>
-              <SubmenuToggle onClick={() => toggleMenu('subsystems')}>
-                SUB SYSTEMS
-                <Chevron expanded={expandedMenus.subsystems}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
-                  </svg>
-                </Chevron>
-              </SubmenuToggle>
-              <Submenu expanded={expandedMenus.subsystems}>
-                <SubmenuItem>
-                  <SubmenuLink to="/subsystems/about" onClick={closeNav}>
-                    About Sub Systems
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/subsystems/cake-for-ai" onClick={closeNav}>
-                    Cake for AI
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/subsystems/cake-for-pc-software" onClick={closeNav}>
-                    Cake for PC Software
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/subsystems/cake-for-enterprise" onClick={closeNav}>
-                    Cake for Enterprise
-                  </SubmenuLink>
-                </SubmenuItem>
-                <SubmenuItem>
-                  <SubmenuLink to="/subsystems/red-velvet" onClick={closeNav}>
-                    Red Velvet
-                  </SubmenuLink>
-                </SubmenuItem>
+                {routesByCategory.components?.map(route => (
+                  <SubmenuItem key={route.path}>
+                    <SubmenuLink to={route.path} onClick={closeNav}>
+                      {route.title}
+                    </SubmenuLink>
+                  </SubmenuItem>
+                ))}
               </Submenu>
             </NavItem>
           </NavList>
