@@ -3,6 +3,8 @@ import { NavLink, useLocation, useMatch } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import cakeLogo from '../assets/cake.svg';
 import SearchBar from './design-system/SearchBar';
+import { fontStack } from '../styles/globalStyles';
+import colorData from '../data/colors.json';
 
 // Updated to fix home page selection and content display
 const GlobalStyle = createGlobalStyle`
@@ -20,7 +22,7 @@ const NavContainer = styled.nav`
   background: #ffffff;
   border-right: 1px solid #E2E8F0;
   font-size: 14px;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  font-family: ${fontStack};
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -111,7 +113,7 @@ const NavLinkStyled = styled(NavLink)`
   padding: 0 24px;
   height: 40px;
   text-decoration: none;
-  color: #171717;
+  color: ${colorData.slate[900]};
   position: relative;
   font-weight: 400;
   font-size: 0.9rem;
@@ -125,7 +127,7 @@ const NavLinkStyled = styled(NavLink)`
   cursor: pointer;
   
   &:hover:not(.active) {
-    color: #171717;
+    color: ${colorData.slate[900]};
     background-color: #F1F5F9;
   }
   
@@ -155,7 +157,7 @@ const SubmenuToggle = styled.button`
   padding: 0 24px;
   height: 40px;
   text-decoration: none;
-  color: #171717;
+  color: ${colorData.slate[900]};
   position: relative;
   font-weight: 600;
   font-size: 0.75rem;
@@ -171,7 +173,7 @@ const SubmenuToggle = styled.button`
   text-transform: uppercase;
   
   &:hover {
-    color: #171717;
+    color: ${colorData.slate[900]};
     background: none;
   }
 `;
@@ -179,7 +181,7 @@ const SubmenuToggle = styled.button`
 const Chevron = styled.span`
   transition: transform 0.3s ease;
   margin-right: 0;
-  color: #171717;
+  color: ${colorData.slate[900]};
   transform-origin: center;
   transform: rotate(0deg);
   

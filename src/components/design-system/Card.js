@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import colorData from '../../data/colors.json';
 
 const StyledCard = styled.div`
   background: #ffffff;
@@ -53,7 +54,7 @@ const CardTitle = styled.h3`
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #111827;
+  color: ${colorData.slate[900]};
   
   ${props => props.compact && `
     font-size: 16px;
@@ -63,7 +64,7 @@ const CardTitle = styled.h3`
 const CardSubtitle = styled.p`
   margin: 4px 0 0 0;
   font-size: 14px;
-  color: #6b7280;
+  color: ${colorData.slate[700]};
   
   ${props => props.compact && `
     font-size: 13px;

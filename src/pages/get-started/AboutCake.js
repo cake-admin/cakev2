@@ -1,28 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { fontStack } from '../../styles/globalStyles';
+import colorData from '../../data/colors.json';
 
 const PageContainer = styled.div`
   padding: 32px;
   width: 100%;
   box-sizing: border-box;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: ${fontStack};
 `;
 
 const Title = styled.h1`
   margin: 0 0 24px 0;
   font-size: 32px;
   font-weight: 600;
-  color: #333;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: ${colorData.slate[900]};
+  font-family: ${fontStack};
 `;
 
 const Description = styled.p`
   margin: 0 0 32px 0;
-  color: #666;
+  color: ${colorData.slate[700]};
   font-size: 14px;
   line-height: 1.6;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: ${fontStack};
   max-width: 800px;
 `;
 
@@ -53,12 +55,12 @@ const CardTitle = styled.h3`
   font-weight: 600;
   color: #1D4ED8;
   margin: 0 0 12px 0;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: ${fontStack};
 `;
 
 const CardDescription = styled.p`
   margin: 0;
-  color: #666;
+  color: ${colorData.slate[700]};
   font-size: 14px;
   line-height: 1.6;
 `;
@@ -74,15 +76,15 @@ const Section = styled.div`
 const SectionTitle = styled.h2`
   font-size: 24px;
   font-weight: 600;
-  color: #333;
+  color: ${colorData.slate[900]};
   margin: 0 0 16px 0;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: ${fontStack};
 `;
 
 const List = styled.ul`
   margin: 0 0 24px 0;
   padding-left: 20px;
-  color: #666;
+  color: ${colorData.slate[700]};
   font-size: 14px;
   line-height: 1.6;
   
@@ -95,7 +97,7 @@ const List = styled.ul`
   }
 
   strong {
-    color: #333;
+    color: ${colorData.slate[900]};
   }
 `;
 

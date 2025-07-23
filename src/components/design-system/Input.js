@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
+import { fontStack } from '../../styles/globalStyles';
+import colorData from '../../data/colors.json';
 
 const InputWrapper = styled.div`
   position: relative;
@@ -12,15 +14,15 @@ const StyledInput = styled.input`
   padding: 12px 16px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  font-family: 'Inter', sans-serif;
+  font-family: ${fontStack};
   font-size: 14px;
   line-height: 1.5;
-  color: #111827;
+  color: ${colorData.slate[900]};
   background-color: #ffffff;
   transition: all 0.2s ease;
   
   &::placeholder {
-    color: #9ca3af;
+    color: ${colorData.slate[700]};
   }
   
   &:focus {
@@ -31,7 +33,7 @@ const StyledInput = styled.input`
   
   &:disabled {
     background-color: #f9fafb;
-    color: #6b7280;
+    color: ${colorData.slate[700]};
     cursor: not-allowed;
   }
   
@@ -83,8 +85,9 @@ const Label = styled.label`
   display: block;
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: ${colorData.slate[900]};
   margin-bottom: 6px;
+  font-family: ${fontStack};
   
   ${props => props.required && `
     &::after {
@@ -97,7 +100,8 @@ const Label = styled.label`
 const HelperText = styled.p`
   margin: 4px 0 0 0;
   font-size: 12px;
-  color: #6b7280;
+  color: ${colorData.slate[700]};
+  font-family: ${fontStack};
   
   ${props => props.error && `
     color: #dc2626;

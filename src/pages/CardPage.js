@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Card from '../components/design-system/Card';
 import Button from '../components/design-system/Button';
+import colorData from '../data/colors.json';
 
 const PageContainer = styled.div`
   padding: 40px;
@@ -16,13 +17,13 @@ const PageHeader = styled.div`
 const PageTitle = styled.h1`
   font-size: 36px;
   font-weight: 700;
-  color: #111827;
+  color: ${colorData.slate[900]};
   margin: 0 0 8px 0;
 `;
 
 const PageSubtitle = styled.p`
   font-size: 18px;
-  color: #6b7280;
+  color: ${colorData.slate[700]};
   margin: 0;
   line-height: 1.5;
 `;
@@ -34,13 +35,13 @@ const Section = styled.section`
 const SectionTitle = styled.h2`
   font-size: 24px;
   font-weight: 600;
-  color: #111827;
+  color: ${colorData.slate[900]};
   margin: 0 0 16px 0;
 `;
 
 const SectionDescription = styled.p`
   font-size: 16px;
-  color: #6b7280;
+  color: ${colorData.slate[700]};
   margin: 0 0 32px 0;
   line-height: 1.6;
 `;
@@ -77,7 +78,7 @@ const ControlGroup = styled.div`
 const ControlLabel = styled.label`
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: ${colorData.slate[700]};
 `;
 
 const ControlSelect = styled.select`
@@ -102,7 +103,7 @@ const CheckboxLabel = styled.label`
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: #374151;
+  color: ${colorData.slate[700]};
   cursor: pointer;
 `;
 

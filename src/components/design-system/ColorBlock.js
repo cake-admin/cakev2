@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import colorData from '../../data/colors.json';
 
 const ColorBlockContainer = styled.div`
   display: flex;
@@ -34,14 +35,14 @@ const ColorInfo = styled.div`
 
 const ColorName = styled.div`
   font-weight: 400;
-  color: #333;
+  color: ${colorData.slate[900]};
   margin-bottom: 2px;
   font-size: 16px;
 `;
 
 const HexValue = styled.div`
   font-family: monospace;
-  color: #666;
+  color: ${colorData.slate[700]};
   font-size: 11px;
 `;
 

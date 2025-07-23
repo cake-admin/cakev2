@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchModal from './SearchModal';
+import { fontStack } from '../../styles/globalStyles';
 
 const SearchContainer = styled.div`
   position: relative;
   width: 100%;
   padding: 0 24px 24px 24px;
   box-sizing: border-box;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  font-family: ${fontStack};
 `;
 
 const SearchWrapper = styled.div`

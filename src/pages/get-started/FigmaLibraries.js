@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { fontStack } from '../../styles/globalStyles';
 
 const PageContainer = styled.div`
   padding: 32px;
   width: 100%;
   box-sizing: border-box;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: ${fontStack};
 `;
 
 const Title = styled.h1`
@@ -13,7 +14,7 @@ const Title = styled.h1`
   font-size: 32px;
   font-weight: 600;
   color: #333;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: ${fontStack};
 `;
 
 const Description = styled.p`
@@ -21,7 +22,7 @@ const Description = styled.p`
   color: #666;
   font-size: 14px;
   line-height: 1.6;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: ${fontStack};
   max-width: 800px;
 `;
 

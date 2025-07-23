@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Card from '../components/design-system/Card';
+import colorData from '../data/colors.json';
 
 const PageContainer = styled.div`
   padding: 32px;
@@ -13,7 +14,7 @@ const Title = styled.h1`
   margin: 0 0 24px 0;
   font-size: 32px;
   font-weight: 600;
-  color: #333;
+  color: ${colorData.slate[900]};
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
   display: flex;
   align-items: center;
@@ -22,7 +23,7 @@ const Title = styled.h1`
 
 const Description = styled.p`
   margin: 0 0 32px 0;
-  color: #666;
+  color: ${colorData.slate[700]};
   font-size: 14px;
   line-height: 1.6;
   font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -41,12 +42,12 @@ const HighlightBox = styled.div`
     margin: 0 0 16px 0;
     font-size: 20px;
     font-weight: 600;
-    color: #333;
+    color: ${colorData.slate[900]};
   }
 
   p {
     margin: 0;
-    color: #666;
+    color: ${colorData.slate[700]};
     font-size: 14px;
     line-height: 1.6;
   }
@@ -69,14 +70,14 @@ const ChangelogCard = styled(Card)`
 
 const UpdateDate = styled.div`
   font-size: 12px;
-  color: #666;
+  color: ${colorData.slate[700]};
   margin-bottom: 8px;
 `;
 
 const UpdateTitle = styled.h2`
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: ${colorData.slate[900]};
   margin: 0 0 16px 0;
 `;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { fontStack } from '../../styles/globalStyles';
 
 const StyledButton = styled.button`
   display: inline-flex;
@@ -8,7 +9,7 @@ const StyledButton = styled.button`
   gap: 8px;
   border: none;
   border-radius: 8px;
-  font-family: 'Inter', sans-serif;
+  font-family: ${fontStack};
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;

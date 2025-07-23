@@ -4,6 +4,8 @@ import Card from '../components/design-system/Card';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import ExtensionIcon from '@mui/icons-material/Extension';
+import { fontStack } from '../styles/globalStyles';
+import colorData from '../data/colors.json';
 
 const PageContainer = styled.div`
   max-width: 680px;
@@ -16,8 +18,8 @@ const PageHeader = styled.div`
 `;
 
 const PageTitle = styled.h1`
-  color: #171717;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  color: ${colorData.slate[900]};
+  font-family: ${fontStack};
   font-weight: 600;
   font-size: 24px;
   line-height: 28px;
@@ -26,8 +28,8 @@ const PageTitle = styled.h1`
 `;
 
 const PageDescription = styled.p`
-  color: #334155;
-  font-family: "Segoe UI", Helvetica, sans-serif;
+  color: ${colorData.slate[700]};
+  font-family: ${fontStack};
   font-size: 14px;
   line-height: 24px;
   margin: 0 0 24px 0;
@@ -38,16 +40,16 @@ const Section = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  color: #334155;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  color: ${colorData.slate[700]};
+  font-family: ${fontStack};
   font-weight: 600;
   font-size: 18px;
   margin: 0 0 16px 0;
 `;
 
 const SectionDescription = styled.p`
-  color: #334155;
-  font-family: "Segoe UI", Helvetica, sans-serif;
+  color: ${colorData.slate[700]};
+  font-family: ${fontStack};
   font-size: 14px;
   line-height: 24px;
   margin: 0 0 32px 0;
@@ -65,7 +67,7 @@ const IconWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
   margin-bottom: 16px;
-  color: #171717;
+  color: ${colorData.slate[900]};
   
   & > svg {
     width: 32px;

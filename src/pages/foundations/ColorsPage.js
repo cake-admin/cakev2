@@ -2,20 +2,23 @@ import React from 'react';
 import styled from 'styled-components';
 import ColorBlock from '../../components/design-system/ColorBlock';
 import colorData from '../../data/colors.json';
+import { fontStack } from '../../styles/globalStyles';
 
 const PageContainer = styled.div`
   padding: 32px;
   width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: ${fontStack};
+  overflow-x: hidden;
 `;
 
 const Title = styled.h1`
   margin: 0 0 24px 0;
   font-size: 32px;
   font-weight: 600;
-  color: #333;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: ${colorData.slate[900]};
+  font-family: ${fontStack};
 `;
 
 const ColorSection = styled.div`
@@ -32,9 +35,9 @@ const ColorSection = styled.div`
 const SectionTitle = styled.h2`
   font-size: 16px;
   font-weight: 400;
-  color: #666;
+  color: ${colorData.slate[700]};
   text-transform: none;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: ${fontStack};
   width: 120px;
   min-width: 120px;
   margin: 0;
@@ -53,18 +56,20 @@ const ColorGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
   gap: 4px;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   
   @media (min-width: 1200px) {
-    grid-template-columns: repeat(12, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   }
 `;
 
 const Description = styled.p`
   margin: 0 0 32px 0;
-  color: #666;
+  color: ${colorData.slate[700]};
   font-size: 14px;
   line-height: 1.6;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: ${fontStack};
   max-width: 800px;
 `;
 

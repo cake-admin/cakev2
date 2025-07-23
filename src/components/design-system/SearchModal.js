@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
+import { fontStack } from '../../styles/globalStyles';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -25,7 +26,7 @@ const ModalContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  font-family: ${fontStack};
 `;
 
 const SearchHeader = styled.div`

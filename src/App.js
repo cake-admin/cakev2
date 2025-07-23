@@ -12,9 +12,14 @@ import ColorsPage from './pages/foundations/ColorsPage';
 import WhatsNew from './pages/WhatsNew';
 import FigmaLibraries from './pages/get-started/FigmaLibraries';
 import AboutCake from './pages/get-started/AboutCake';
+import GlobalStyles from './styles/globalStyles';
 
 const Wrapper = styled.div`
   padding-left: 250px;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -27,8 +32,11 @@ const Wrapper = styled.div`
 
 const PageContentWrapper = styled.div`
   width: 100%;
+  max-width: 100%;
   position: relative;
   padding: 15px;
+  box-sizing: border-box;
+  overflow-x: hidden;
   
   @media (min-width: 768px) {
     padding: 20px;
@@ -40,31 +48,28 @@ const Footer = styled.footer`
   font-size: 10px;
   color: #999;
   padding: 40px 0px;
-  font-family: 'Segoe UI', system-ui, sans-serif;
 `;
 
 function App() {
   return (
     <Router>
+      <GlobalStyles />
+      <Navigation />
       <Wrapper>
-        <Navigation />
         <PageContentWrapper>
           <Routes>
-            <Route path="/" element={<Home />} index />
-            <Route path="/whats-new" element={<WhatsNew />} />
-            <Route path="/get-started/figma-libraries" element={<FigmaLibraries />} />
-            <Route path="/get-started/about" element={<AboutCake />} />
+            <Route path="/" element={<Home />} />
             <Route path="/components/button" element={<ButtonPage />} />
             <Route path="/components/card" element={<CardPage />} />
             <Route path="/components/input" element={<InputPage />} />
             <Route path="/components/modal" element={<ModalPage />} />
             <Route path="/version-control" element={<VersionControl />} />
             <Route path="/foundations/colors" element={<ColorsPage />} />
+            <Route path="/whats-new" element={<WhatsNew />} />
+            <Route path="/get-started/figma-libraries" element={<FigmaLibraries />} />
+            <Route path="/get-started/about-cake" element={<AboutCake />} />
           </Routes>
-          
-          <Footer>
-            One Lenovo "Cake" Design System <NavLink to="/whats-new">v4.0.1</NavLink>
-          </Footer>
+          <Footer>© 2024 Cake Design System. All rights reserved.</Footer>
         </PageContentWrapper>
       </Wrapper>
     </Router>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../components/design-system/Button';
 import Card from '../components/design-system/Card';
+import colorData from '../data/colors.json';
 
 const PageContainer = styled.div`
   max-width: 680px;
@@ -14,7 +15,7 @@ const PageHeader = styled.div`
 `;
 
 const PageTitle = styled.h1`
-  color: #171717;
+  color: ${colorData.slate[900]};
   font-family: "Segoe UI", system-ui, sans-serif;
   font-weight: 600;
   font-size: 24px;
@@ -24,7 +25,7 @@ const PageTitle = styled.h1`
 `;
 
 const PageDescription = styled.p`
-  color: #334155;
+  color: ${colorData.slate[700]};
   font-family: "Segoe UI", Helvetica, sans-serif;
   font-size: 14px;
   line-height: 24px;
@@ -32,7 +33,7 @@ const PageDescription = styled.p`
 `;
 
 const DeveloperNote = styled.p`
-  color: #334155;
+  color: ${colorData.slate[700]};
   font-family: "Segoe UI", Helvetica, sans-serif;
   font-size: 14px;
   line-height: 24px;
@@ -57,7 +58,7 @@ const Section = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  color: #334155;
+  color: ${colorData.slate[700]};
   font-family: "Segoe UI", system-ui, sans-serif;
   font-weight: 600;
   font-size: 18px;
@@ -65,7 +66,7 @@ const SectionTitle = styled.h2`
 `;
 
 const SectionDescription = styled.p`
-  color: #334155;
+  color: ${colorData.slate[700]};
   font-family: "Segoe UI", Helvetica, sans-serif;
   font-size: 14px;
   line-height: 24px;
@@ -104,7 +105,7 @@ const ControlGroup = styled.div`
 const ControlLabel = styled.label`
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: ${colorData.slate[700]};
   font-family: "Segoe UI", system-ui, sans-serif;
 `;
 
@@ -131,7 +132,7 @@ const CheckboxLabel = styled.label`
   display: flex;
   align-items: center;
   font-size: 14px;
-  color: #374151;
+  color: ${colorData.slate[700]};
   cursor: pointer;
   font-family: "Segoe UI", system-ui, sans-serif;
 `;
@@ -161,7 +162,7 @@ const VariantExample = styled.div`
 
 const VariantLabel = styled.div`
   font-size: 12px;
-  color: #6b7280;
+  color: ${colorData.slate[700]};
   margin-bottom: 8px;
   text-transform: uppercase;
   font-weight: 500;
@@ -184,7 +185,7 @@ const SizeExample = styled.div`
 
 const SizeLabel = styled.div`
   font-size: 14px;
-  color: #6b7280;
+  color: ${colorData.slate[700]};
   min-width: 80px;
   font-family: "Segoe UI", system-ui, sans-serif;
 `;
