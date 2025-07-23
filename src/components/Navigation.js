@@ -4,6 +4,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import cakeLogo from '../assets/cake.svg';
 import SearchBar from './design-system/SearchBar';
 
+// Updated to fix home page selection and content display
 const GlobalStyle = createGlobalStyle`
   .iQvbDV {
     padding-right: 24px !important;
