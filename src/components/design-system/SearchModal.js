@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
 import { fontStack } from '../../styles/globalStyles';
+import { getSearchResults } from '../../data/routes';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -151,30 +152,7 @@ const SearchModal = ({ isOpen, onClose, initialQuery = '' }) => {
   }, [isOpen, onClose]);
 
   useEffect(() => {
-    if (!query.trim()) {
-      setResults({
-        components: [],
-        foundations: [],
-        guides: []
-      });
-      return;
-    }
-
-    // Mock search results - replace with actual search logic
-    const searchResults = {
-      components: [
-        { title: 'Button', path: '/components/button', description: 'Interactive button component' },
-        { title: 'Input', path: '/components/input', description: 'Form input component' }
-      ],
-      foundations: [
-        { title: 'Colors', path: '/foundations/colors', description: 'Color system and tokens' }
-      ],
-      guides: [
-        { title: 'Getting Started', path: '/guides/getting-started', description: 'Quick start guide' }
-      ]
-    };
-
-    setResults(searchResults);
+    setResults(getSearchResults(query));
   }, [query]);
 
   const handleResultClick = (path) => {
@@ -212,7 +190,7 @@ const SearchModal = ({ isOpen, onClose, initialQuery = '' }) => {
                       onClick={() => handleResultClick(item.path)}
                     >
                       <ResultTitle>{item.title}</ResultTitle>
-                      <ResultPath>{item.path}</ResultPath>
+                      <ResultPath>{item.description}</ResultPath>
                     </ResultItem>
                   ))}
                 </ResultSection>
