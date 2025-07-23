@@ -271,12 +271,13 @@ const Overlay = styled.div`
 `;
 
 const Navigation = () => {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [expandedMenus, setExpandedMenus] = useState({
-    getStarted: false,
-    foundations: false,
-    components: false,
-    subsystems: false
+    getStarted: location.pathname.startsWith('/get-started'),
+    foundations: location.pathname.startsWith('/foundations'),
+    components: location.pathname.startsWith('/components'),
+    subsystems: location.pathname.startsWith('/subsystems')
   });
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -327,7 +328,7 @@ const Navigation = () => {
         <SidebarNav>
           <NavList>
             <NavItem>
-              <NavLinkStyled to="/" onClick={closeNav}>
+              <NavLinkStyled to="/" end onClick={closeNav} className={location.pathname === '/' ? 'active' : ''}>
                 Home
               </NavLinkStyled>
             </NavItem>
