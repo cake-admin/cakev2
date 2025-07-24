@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
@@ -133,6 +133,20 @@ const SearchModal = ({ isOpen, onClose, initialQuery = '' }) => {
   });
   const navigate = useNavigate();
 
+  // Debounced search function
+  const debouncedSearch = useCallback((searchQuery) => {
+    const timeoutId = setTimeout(() => {
+      setResults(getSearchResults(searchQuery));
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  useEffect(() => {
+    const cleanup = debouncedSearch(query);
+    return () => cleanup();
+  }, [query, debouncedSearch]);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -151,10 +165,6 @@ const SearchModal = ({ isOpen, onClose, initialQuery = '' }) => {
     };
   }, [isOpen, onClose]);
 
-  useEffect(() => {
-    setResults(getSearchResults(query));
-  }, [query]);
-
   const handleResultClick = (path) => {
     navigate(path);
     onClose();
@@ -163,22 +173,31 @@ const SearchModal = ({ isOpen, onClose, initialQuery = '' }) => {
   if (!isOpen) return null;
 
   return (
-    <ModalOverlay onClick={onClose}>
+    <ModalOverlay 
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="search-modal-title">
       <ModalContainer onClick={e => e.stopPropagation()}>
         <SearchHeader>
-          <SearchIcon style={{ color: '#64748B' }} />
+          <SearchIcon style={{ color: '#64748B' }} aria-hidden="true" />
           <SearchInput
+            id="search-input"
+            role="searchbox"
+            aria-label="Search design system"
             autoFocus
             placeholder="Search..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <CloseButton onClick={onClose}>
-            <CloseIcon />
+          <CloseButton 
+            onClick={onClose}
+            aria-label="Close search">
+            <CloseIcon aria-hidden="true" />
           </CloseButton>
         </SearchHeader>
 
-        <SearchResults>
+        <SearchResults role="region" aria-label="Search results">
           {query.trim() ? (
             Object.entries(results).map(([section, items]) => (
               items.length > 0 && (
@@ -188,6 +207,8 @@ const SearchModal = ({ isOpen, onClose, initialQuery = '' }) => {
                     <ResultItem
                       key={index}
                       onClick={() => handleResultClick(item.path)}
+                      role="button"
+                      aria-label={`Go to ${item.title}`}
                     >
                       <ResultTitle>{item.title}</ResultTitle>
                       <ResultPath>{item.description}</ResultPath>

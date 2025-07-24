@@ -1,7 +1,3 @@
-import ButtonPage from '../pages/ButtonPage';
-import CardPage from '../pages/CardPage';
-import InputPage from '../pages/InputPage';
-import ModalPage from '../pages/ModalPage';
 import CanvasPage from '../pages/CanvasPage';
 import VersionControl from '../pages/VersionControl';
 import ColorsPage from '../pages/foundations/ColorsPage';
@@ -9,6 +5,7 @@ import WhatsNew from '../pages/WhatsNew';
 import FigmaLibraries from '../pages/get-started/FigmaLibraries';
 import AboutCake from '../pages/get-started/AboutCake';
 import Home from '../pages/Home';
+import ChipPage from '../pages/ChipPage';
 
 export const routes = [
   {
@@ -19,38 +16,17 @@ export const routes = [
     category: 'guides'
   },
   {
-    path: '/components/button',
-    component: ButtonPage,
-    title: 'Button',
-    description: 'Interactive button component with various styles and states',
-    category: 'components'
-  },
-  {
-    path: '/components/card',
-    component: CardPage,
-    title: 'Card',
-    description: 'Container component for organizing content',
-    category: 'components'
-  },
-  {
-    path: '/components/input',
-    component: InputPage,
-    title: 'Input',
-    description: 'Form input components and text fields',
-    category: 'components'
-  },
-  {
-    path: '/components/modal',
-    component: ModalPage,
-    title: 'Modal',
-    description: 'Dialog and overlay component',
-    category: 'components'
-  },
-  {
     path: '/components/canvas',
     component: CanvasPage,
     title: 'Canvas',
     description: 'Drawing and illustration component',
+    category: 'components'
+  },
+  {
+    path: '/components/chip',
+    component: ChipPage,
+    title: 'Chip',
+    description: 'Compact and versatile UI element for displaying discrete information',
     category: 'components'
   },
   {
