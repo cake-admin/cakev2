@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.js": "/cakev2/static/js/main.9144a3f4.js",
+    "static/media/hero-banner.png": "/cakev2/static/media/hero-banner.737c3f7a38fc18fd33a0.png",
+    "static/media/win_desk.png": "/cakev2/static/media/win_desk.57f582e536e7ad45a69c.png",
+    "index.html": "/cakev2/index.html",
+    "static/media/cake.svg": "/cakev2/static/media/cake.2dc83bec29f46a24a4fb0d4de2525a9d.svg",
+    "main.9144a3f4.js.map": "/cakev2/static/js/main.9144a3f4.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.9144a3f4.js"
+  ]
+}
