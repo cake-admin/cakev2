@@ -59,16 +59,27 @@ const Label = styled.label`
 `;
 
 const Select = styled.select`
-  padding: 8px;
+  padding: 8px 32px 8px 12px;
   border: 1px solid #E2E8F0;
   border-radius: 4px;
   font-size: 14px;
   background-color: #FFFFFF;
   color: #0F172A;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  cursor: pointer;
   
   &:focus {
     outline: none;
     border-color: #3B82F6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  }
+
+  &:hover {
+    border-color: #CBD5E1;
   }
 `;
 
@@ -130,10 +141,10 @@ const getIconByType = (type, isDarkMode) => {
 };
 
 const ChipPage = () => {
-  const [size, setSize] = useState(CHIP_SIZES.SMALL);
+  const [size, setSize] = useState(CHIP_SIZES.LARGE);
   const [chipStyle, setChipStyle] = useState(CHIP_STYLES.PILL);
-  const [showLeftIcon, setShowLeftIcon] = useState(true);
-  const [showRightIcon, setShowRightIcon] = useState(false);
+  const [showLeftIcon, setShowLeftIcon] = useState(false);
+  const [showRightIcon, setShowRightIcon] = useState(true);
   const [isIconOnly, setIsIconOnly] = useState(false);
   const [theme, setTheme] = useState(THEMES.LIGHT_A);
 

@@ -79,13 +79,13 @@ const ChipContainer = styled.div`
   }};
   height: ${props => {
     if (props.isIconOnly) {
-      return props.size === 'small' ? '32px' : '40px';
+      return props.size === 'small' ? '24px' : '32px';
     }
     return props.size === 'small' ? '24px' : '32px';
   }};
   width: ${props => {
     if (props.isIconOnly) {
-      return props.size === 'small' ? '32px' : '40px';
+      return props.size === 'small' ? '24px' : '32px';
     }
     return 'auto';
   }};
