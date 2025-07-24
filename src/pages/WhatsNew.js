@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import Card from '../components/design-system/Card';
+import Chip, { CHIP_TYPES, CHIP_SIZES, CHIP_STYLES } from '../components/design-system/Chip';
 import colorData from '../data/colors.json';
-import { Check as CheckIcon } from '@mui/icons-material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import InfoIcon from '@mui/icons-material/Info';
 
 const PageContainer = styled.div`
   padding: 32px;
@@ -63,41 +65,12 @@ const BadgeContainer = styled.div`
   margin: 12px 0 20px;
 `;
 
-const CurrentBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  background-color: #ECFDF5;
-  color: #047857;
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 13px;
-  font-weight: 500;
-  gap: 6px;
-
-  .MuiSvgIcon-root {
-    font-size: 16px;
-  }
+const StyledSuccessIcon = styled(CheckCircleIcon)`
+  color: ${props => props.isDarkMode ? '#18181B' : '#047857'};
 `;
 
-const UpdateType = styled.span`
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 13px;
-  font-weight: 500;
-  
-  ${props => {
-    switch (props.type) {
-      case 'Major':
-        return 'background-color: #EEF3FF; color: #1E293B;';
-      case 'Minor':
-        return 'background-color: #F1F5F9; color: #1E293B;';
-      case 'Patch':
-        return 'background-color: #FFF3E0; color: #E65100;';
-      default:
-        return 'background-color: #F5F5F5; color: #616161;';
-    }
-  }}
+const StyledInfoIcon = styled(InfoIcon)`
+  color: ${props => props.isDarkMode ? '#18181B' : '#1D4ED8'};
 `;
 
 const UpdateList = styled.ul`
@@ -125,6 +98,8 @@ const StyledCardTitle = styled(Card.Title)`
 `;
 
 const WhatsNew = () => {
+  const isDarkMode = false; // Using light theme
+
   const updates = [
     {
       version: 'v1.4.0',
@@ -215,11 +190,21 @@ const WhatsNew = () => {
                       <StyledUpdateDate>{currentVersion.date}</StyledUpdateDate>
                       <StyledCardTitle>{currentVersion.version}</StyledCardTitle>
                       <BadgeContainer>
-                        <CurrentBadge>
-                          <CheckIcon />
-                          Current
-                        </CurrentBadge>
-                        <UpdateType type={currentVersion.type}>{currentVersion.type} release</UpdateType>
+                        <Chip
+                          type={CHIP_TYPES.SUCCESS}
+                          size={CHIP_SIZES.SMALL}
+                          chipStyle={CHIP_STYLES.PILL}
+                          label="Current"
+                          rightIcon={<StyledSuccessIcon isDarkMode={isDarkMode} />}
+                          isDarkMode={isDarkMode}
+                        />
+                        <Chip
+                          type={CHIP_TYPES.INFO}
+                          size={CHIP_SIZES.SMALL}
+                          chipStyle={CHIP_STYLES.PILL}
+                          label={`${currentVersion.type} release`}
+                          isDarkMode={isDarkMode}
+                        />
                       </BadgeContainer>
                       <UpdateList>
                         {currentVersion.changes.map((change, changeIndex) => (
@@ -237,7 +222,13 @@ const WhatsNew = () => {
                       <StyledUpdateDate>{update.date}</StyledUpdateDate>
                       <StyledCardTitle>{update.version}</StyledCardTitle>
                       <BadgeContainer>
-                        <UpdateType type={update.type}>{update.type} release</UpdateType>
+                        <Chip
+                          type={CHIP_TYPES.INFO}
+                          size={CHIP_SIZES.SMALL}
+                          chipStyle={CHIP_STYLES.PILL}
+                          label={`${update.type} release`}
+                          isDarkMode={isDarkMode}
+                        />
                       </BadgeContainer>
                       <UpdateList>
                         {update.changes.map((change, changeIndex) => (

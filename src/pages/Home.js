@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import Card from '../components/design-system/Card';
+import Chip, { CHIP_TYPES, CHIP_SIZES, CHIP_STYLES } from '../components/design-system/Chip';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import ExtensionIcon from '@mui/icons-material/Extension';
-import { Check as CheckIcon } from '@mui/icons-material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import InfoIcon from '@mui/icons-material/Info';
 import { fontStack } from '../styles/globalStyles';
 import colorData from '../data/colors.json';
 import heroBanner from '../assets/hero/hero-banner.png';
@@ -154,34 +156,22 @@ const BadgeContainer = styled.div`
   margin: 8px 0 16px;
 `;
 
-const CurrentBadge = styled.span`
-  display: inline-flex;
-  align-items: center;
-  background-color: #ECFDF5;
-  color: #047857;
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 13px;
-  font-weight: 500;
-  gap: 6px;
-
-  .MuiSvgIcon-root {
-    font-size: 16px;
-  }
+const StyledSuccessIcon = styled(CheckCircleIcon)`
+  color: ${props => props.isDarkMode ? '#18181B' : '#047857'};
 `;
 
-const UpdateType = styled.span`
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-size: 13px;
-  font-weight: 500;
-  background-color: #EEF3FF;
-  color: #1E293B;
+const StyledInfoIcon = styled(InfoIcon)`
+  color: ${props => props.isDarkMode ? '#18181B' : '#1D4ED8'};
 `;
+
+const THEMES = {
+  LIGHT_A: 'light.a',
+  DARK_A: 'dark.a'
+};
 
 const Home = () => {
   const navigate = useNavigate();
+  const isDarkMode = false; // We're using light theme for the homepage
 
   const handleWhatsNewClick = () => {
     navigate('/whats-new');
@@ -210,11 +200,21 @@ const Home = () => {
             <CardSubheader>Latest Updates</CardSubheader>
             <CardTitle>v1.4.0</CardTitle>
             <BadgeContainer>
-              <CurrentBadge>
-                <CheckIcon />
-                Current
-              </CurrentBadge>
-              <UpdateType>Major release</UpdateType>
+              <Chip
+                type={CHIP_TYPES.SUCCESS}
+                size={CHIP_SIZES.SMALL}
+                chipStyle={CHIP_STYLES.PILL}
+                label="Current"
+                rightIcon={<StyledSuccessIcon isDarkMode={isDarkMode} />}
+                isDarkMode={isDarkMode}
+              />
+              <Chip
+                type={CHIP_TYPES.INFO}
+                size={CHIP_SIZES.SMALL}
+                chipStyle={CHIP_STYLES.PILL}
+                label="Major release"
+                isDarkMode={isDarkMode}
+              />
             </BadgeContainer>
             <CardText>
               Our latest major release brings significant improvements to accessibility and user experience. Updated core components now meet WCAG 2.2 guidelines with enhanced interaction consistency and improved color contrast.
