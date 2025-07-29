@@ -172,9 +172,25 @@ const StyledButton = styled.button`
   }};
   height: ${props => props.size === BUTTON_SIZES.LARGE ? '40px' : '32px'};
   max-width: 264px;
+  width: fit-content;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  
+  /* Style for the label text to enable middle truncation */
+  span.button-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    max-width: 100%;
+    min-height: 100%;
+    font-size: ${props => props.size === BUTTON_SIZES.LARGE ? '16px' : '14px'};
+    transform: translateY(0.5px);
+  }
+  
   background-color: ${props => {
     if (props.$disabled || props.$loading) {
       return props.isDarkMode ? '#1F2937' : '#E5E7EB';
@@ -285,7 +301,7 @@ const Button = ({
       {...props}
     >
       {!loading && iconPosition === ICON_POSITIONS.LEFT && <span className="icon">{icon}</span>}
-      {getButtonLabel()}
+      <span className="button-text">{label}</span>
       {!loading && iconPosition === ICON_POSITIONS.RIGHT && <span className="icon">{icon}</span>}
       {loading && <LoadingSpinner isDarkMode={isDarkMode} />}
     </StyledButton>
