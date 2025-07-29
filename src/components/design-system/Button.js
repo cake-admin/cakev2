@@ -171,6 +171,10 @@ const StyledButton = styled.button`
     return `${verticalPadding} ${horizontalPadding}`;
   }};
   height: ${props => props.size === BUTTON_SIZES.LARGE ? '40px' : '32px'};
+  max-width: 264px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   background-color: ${props => {
     if (props.$disabled || props.$loading) {
       return props.isDarkMode ? '#1F2937' : '#E5E7EB';

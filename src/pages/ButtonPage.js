@@ -193,6 +193,32 @@ const ButtonPage = () => {
           ))}
         </PreviewSection>
       </Section>
+
+      <Section>
+        <SectionTitle>Maximum Width and Truncation</SectionTitle>
+        <Description>
+          Buttons should have a maximum width of 264px. If the text on the button exceeds this width,
+          it should be truncated in the middle with an ellipsis (...). A tooltip will appear on hover,
+          revealing the full text string of the button.
+        </Description>
+        
+        <PreviewSection isDarkMode={isDarkMode}>
+          <Button
+            variant={BUTTON_VARIANTS.PRIMARY}
+            size={BUTTON_SIZES.MEDIUM}
+            label="Button with really really really long text"
+            title="Button with really really really long text"
+            isDarkMode={isDarkMode}
+          />
+          <Button
+            variant={BUTTON_VARIANTS.SECONDARY}
+            size={BUTTON_SIZES.MEDIUM}
+            label="Button with really... long text"
+            title="Button with really really really long text that should be truncated"
+            isDarkMode={isDarkMode}
+          />
+        </PreviewSection>
+      </Section>
     </PageContainer>
   );
 };
