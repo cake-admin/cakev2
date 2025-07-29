@@ -118,10 +118,10 @@ const HorizontalCard = styled(Card)`
 `;
 
 const CardImageWrapper = styled.div`
-  flex: 0 0 280px;
+  flex: 0 0 220px;
   
   @media (max-width: 600px) {
-    flex: 0 0 200px;
+    flex: 0 0 160px;
   }
   
   img {
@@ -133,7 +133,7 @@ const CardImageWrapper = styled.div`
 
 const CardContentWrapper = styled.div`
   flex: 1;
-  padding: 32px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -144,7 +144,7 @@ const CardSubheader = styled.h4`
   font-family: ${fontStack};
   font-size: 14px;
   font-weight: 600;
-  margin: 0 0 8px 0;
+  margin: 0 0 4px 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 `;
@@ -153,7 +153,7 @@ const BadgeContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 8px 0 16px;
+  margin: 4px 0 12px;
 `;
 
 const StyledSuccessIcon = styled(CheckCircleIcon)`

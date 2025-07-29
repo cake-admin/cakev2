@@ -6,6 +6,7 @@ import FigmaLibraries from '../pages/get-started/FigmaLibraries';
 import AboutCake from '../pages/get-started/AboutCake';
 import Home from '../pages/Home';
 import ChipPage from '../pages/ChipPage';
+import ButtonPage from '../pages/ButtonPage';
 
 export const routes = [
   {
@@ -14,6 +15,13 @@ export const routes = [
     title: 'Home',
     description: 'Welcome to Cake Design System',
     category: 'guides'
+  },
+  {
+    path: '/components/button',
+    component: ButtonPage,
+    title: 'Button',
+    description: 'Interactive button component with various styles and states',
+    category: 'components'
   },
   {
     path: '/components/canvas',
