@@ -9,7 +9,13 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 const BUTTON_VARIANTS = {
   PRIMARY: 'primary',
   SECONDARY: 'secondary',
-  DANGER: 'danger'
+  DANGER: 'danger',
+  TEXT: 'text'
+};
+
+const TEXT_VARIANTS = {
+  PRIMARY: 'primary',
+  SECONDARY: 'secondary'
 };
 
 /**
@@ -38,6 +44,10 @@ const BUTTON_STYLES = {
 };
 
 const getBackgroundColor = (variant, isDarkMode) => {
+  if (variant === BUTTON_VARIANTS.TEXT) {
+    return 'transparent'; // Default state: no background for text buttons
+  }
+
   if (isDarkMode) {
     switch (variant) {
       case BUTTON_VARIANTS.PRIMARY:
@@ -63,7 +73,20 @@ const getBackgroundColor = (variant, isDarkMode) => {
   }
 };
 
-const getHoverBackgroundColor = (variant, isDarkMode) => {
+const getHoverBackgroundColor = (variant, isDarkMode, textVariant) => {
+  if (variant === BUTTON_VARIANTS.TEXT) {
+    if (isDarkMode) {
+      if (variant === BUTTON_VARIANTS.TEXT && textVariant === TEXT_VARIANTS.PRIMARY) {
+        return 'rgba(59, 130, 246, 0.45)'; // Primary text button dark mode hover: #3B82F6 45% opacity
+      }
+      return 'rgba(100, 116, 139, 0.25)'; // Secondary text button dark mode hover: #64748B with 25% opacity
+    }
+    if (variant === BUTTON_VARIANTS.TEXT && textVariant === TEXT_VARIANTS.PRIMARY) {
+      return '#DBEAFE'; // Primary text button light mode hover: Light blue
+    }
+    return '#E2E8F0'; // Secondary text button light mode hover: Slate 200
+  }
+
   if (isDarkMode) {
     switch (variant) {
       case BUTTON_VARIANTS.PRIMARY:
@@ -89,7 +112,20 @@ const getHoverBackgroundColor = (variant, isDarkMode) => {
   }
 };
 
-const getPressedBackgroundColor = (variant, isDarkMode) => {
+const getPressedBackgroundColor = (variant, isDarkMode, textVariant) => {
+  if (variant === BUTTON_VARIANTS.TEXT) {
+    if (isDarkMode) {
+      if (variant === BUTTON_VARIANTS.TEXT && textVariant === TEXT_VARIANTS.PRIMARY) {
+        return 'rgba(59, 130, 246, 0.35)'; // Primary text button dark mode pressed: #3B82F6 35% opacity
+      }
+      return 'rgba(100, 116, 139, 0.35)'; // Secondary text button dark mode pressed: #64748B with 35% opacity
+    }
+    if (variant === BUTTON_VARIANTS.TEXT && textVariant === TEXT_VARIANTS.PRIMARY) {
+      return '#BFDBFE'; // Primary text button light mode pressed: Slightly darker blue
+    }
+    return '#CBD5E1'; // Secondary text button light mode pressed: Slate 300
+  }
+
   if (isDarkMode) {
     switch (variant) {
       case BUTTON_VARIANTS.PRIMARY:
@@ -115,7 +151,15 @@ const getPressedBackgroundColor = (variant, isDarkMode) => {
   }
 };
 
-const getTextColor = (variant, isDarkMode) => {
+const getTextColor = (variant, isDarkMode, textVariant) => {
+  if (variant === BUTTON_VARIANTS.TEXT) {
+    if (textVariant === TEXT_VARIANTS.PRIMARY) {
+      return isDarkMode ? '#93C5FD' : '#1D4ED8'; // Primary text button color
+    } else {
+      return isDarkMode ? '#E2E8F0' : '#334155'; // Secondary text: Slate 200 in dark mode, Slate 700 in light mode
+    }
+  }
+
   if (isDarkMode) {
     switch (variant) {
       case BUTTON_VARIANTS.PRIMARY:
@@ -165,6 +209,38 @@ const StyledButton = styled.button`
   align-items: center;
   justify-content: center;
   position: relative;
+  
+  /* Track hover state for text color changes */
+  &:hover {
+    color: ${props => {
+      if (props.$disabled || props.$loading) {
+        return props.isDarkMode ? '#9CA3AF' : '#475569';
+      }
+      if (props.variant === BUTTON_VARIANTS.TEXT) {
+        if (props.textVariant === TEXT_VARIANTS.PRIMARY && !props.$disabled && !props.$loading) {
+          return props.isDarkMode ? '#93C5FD' : '#1E3A8A';
+        }
+        return props.isDarkMode ? '#E2E8F0' : '#1E293B'; // Secondary text hover color
+      }
+      return props.color;
+    }};
+  }
+  
+  /* Track pressed state for text color changes */
+  &:active {
+    color: ${props => {
+      if (props.$disabled || props.$loading) {
+        return props.isDarkMode ? '#9CA3AF' : '#475569';
+      }
+      if (props.variant === BUTTON_VARIANTS.TEXT) {
+        if (props.textVariant === TEXT_VARIANTS.PRIMARY && !props.$disabled && !props.$loading) {
+          return props.isDarkMode ? '#93C5FD' : '#1E3A8A';
+        }
+        return props.isDarkMode ? '#E2E8F0' : '#0F172A'; // Secondary text pressed color
+      }
+      return props.color;
+    }};
+  }
   padding: ${props => {
     const verticalPadding = props.size === BUTTON_SIZES.LARGE ? '12px' : '8px';
     const horizontalPadding = props.size === BUTTON_SIZES.LARGE ? '24px' : '20px';
@@ -193,7 +269,7 @@ const StyledButton = styled.button`
   
   background-color: ${props => {
     if (props.$disabled || props.$loading) {
-      return props.isDarkMode ? '#1F2937' : '#E5E7EB';
+      return props.variant === BUTTON_VARIANTS.TEXT ? 'transparent' : (props.isDarkMode ? '#1F2937' : '#E5E7EB');
     }
     return getBackgroundColor(props.variant, props.isDarkMode);
   }};
@@ -201,7 +277,7 @@ const StyledButton = styled.button`
     if (props.$disabled || props.$loading) {
       return props.isDarkMode ? '#9CA3AF' : '#475569';
     }
-    return getTextColor(props.variant, props.isDarkMode);
+    return getTextColor(props.variant, props.isDarkMode, props.textVariant);
   }};
   border: none;
   border-radius: ${props => props.buttonStyle === BUTTON_STYLES.PILL ? '100px' : '4px'};
@@ -217,18 +293,18 @@ const StyledButton = styled.button`
   &:hover {
     background-color: ${props => {
       if (props.$disabled || props.$loading) {
-        return props.isDarkMode ? '#1F2937' : '#E5E7EB';
+        return props.variant === BUTTON_VARIANTS.TEXT ? 'transparent' : (props.isDarkMode ? '#1F2937' : '#E5E7EB');
       }
-      return getHoverBackgroundColor(props.variant, props.isDarkMode);
+      return getHoverBackgroundColor(props.variant, props.isDarkMode, props.textVariant);
     }};
   }
 
   &:active {
     background-color: ${props => {
       if (props.$disabled || props.$loading) {
-        return props.isDarkMode ? '#1F2937' : '#E5E7EB';
+        return props.variant === BUTTON_VARIANTS.TEXT ? 'transparent' : (props.isDarkMode ? '#1F2937' : '#E5E7EB');
       }
-      return getPressedBackgroundColor(props.variant, props.isDarkMode);
+      return getPressedBackgroundColor(props.variant, props.isDarkMode, props.textVariant);
     }};
   }
 
@@ -263,6 +339,7 @@ const StyledButton = styled.button`
 
 const Button = ({
   variant = BUTTON_VARIANTS.PRIMARY,
+  textVariant = TEXT_VARIANTS.PRIMARY,
   size = BUTTON_SIZES.MEDIUM,
   iconPosition = ICON_POSITIONS.NONE,
   buttonStyle = BUTTON_STYLES.PILL,
@@ -290,6 +367,7 @@ const Button = ({
   return (
     <StyledButton
       variant={variant}
+      textVariant={textVariant}
       size={size}
       buttonStyle={buttonStyle}
       $disabled={disabled}
@@ -311,6 +389,8 @@ const Button = ({
 Button.propTypes = {
   /** The variant that determines button's purpose and styling */
   variant: PropTypes.oneOf(Object.values(BUTTON_VARIANTS)),
+  /** The variant for text buttons (primary or secondary) */
+  textVariant: PropTypes.oneOf(Object.values(TEXT_VARIANTS)),
   /** The size variant of the button */
   size: PropTypes.oneOf(Object.values(BUTTON_SIZES)),
   /** Position of the icon relative to text */
@@ -333,5 +413,5 @@ Button.propTypes = {
   focused: PropTypes.bool,
 };
 
-export { BUTTON_VARIANTS, BUTTON_SIZES, ICON_POSITIONS, BUTTON_STYLES };
+export { BUTTON_VARIANTS, BUTTON_SIZES, ICON_POSITIONS, BUTTON_STYLES, TEXT_VARIANTS };
 export default Button; 

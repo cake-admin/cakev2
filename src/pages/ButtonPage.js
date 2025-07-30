@@ -24,6 +24,23 @@ const Description = styled.p`
   line-height: 1.5;
   color: #475569;
   max-width: 800px;
+
+  &[data-has-bullets='true'] {
+    padding-left: 24px;
+    
+    li {
+      position: relative;
+      list-style-type: none;
+      margin-bottom: 8px;
+      
+      &:before {
+        content: "•";
+        position: absolute;
+        left: -24px;
+        color: #475569;
+      }
+    }
+  }
 `;
 
 const Section = styled.section`
@@ -100,23 +117,33 @@ const STATES = {
 };
 
 const ButtonPage = () => {
-  const [size, setSize] = useState(BUTTON_SIZES.MEDIUM);
-  const [iconPosition, setIconPosition] = useState(ICON_POSITIONS.NONE);
-  const [state, setState] = useState('');
-  const [theme, setTheme] = useState(THEMES.LIGHT_A);
-  const [buttonStyle, setButtonStyle] = useState(BUTTON_STYLES.PILL);
+  // Basic button section state
+  const [basicSize, setBasicSize] = useState(BUTTON_SIZES.MEDIUM);
+  const [basicIconPosition, setBasicIconPosition] = useState(ICON_POSITIONS.NONE);
+  const [basicState, setBasicState] = useState('');
+  const [basicTheme, setBasicTheme] = useState(THEMES.LIGHT_A);
+  const [basicButtonStyle, setBasicButtonStyle] = useState(BUTTON_STYLES.PILL);
+  const isBasicDarkMode = basicTheme === THEMES.DARK_A;
 
-  const isDarkMode = theme === THEMES.DARK_A;
+  // Text button section state
+  const [textSize, setTextSize] = useState(BUTTON_SIZES.MEDIUM);
+  const [textIconPosition, setTextIconPosition] = useState(ICON_POSITIONS.NONE);
+  const [textState, setTextState] = useState('');
+  const [textTheme, setTextTheme] = useState(THEMES.LIGHT_A);
+  const [textButtonStyle, setTextButtonStyle] = useState(BUTTON_STYLES.PILL);
+  const isTextDarkMode = textTheme === THEMES.DARK_A;
 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   };
 
-  const getButtonLabel = () => {
-    return (variant) => {
-      const variantName = variant.charAt(0).toUpperCase() + variant.slice(1).toLowerCase();
-      return iconPosition !== ICON_POSITIONS.NONE ? `${variantName} with icon` : variantName;
-    };
+  const getBasicButtonLabel = (variant) => {
+    const variantName = variant.charAt(0).toUpperCase() + variant.slice(1).toLowerCase();
+    return basicIconPosition !== ICON_POSITIONS.NONE ? `${variantName} with icon` : variantName;
+  };
+
+  const getTextButtonLabel = (variant) => {
+    return textIconPosition !== ICON_POSITIONS.NONE ? `${variant} with icon` : variant;
   };
 
   return (
@@ -131,11 +158,11 @@ const ButtonPage = () => {
       </Header>
 
       <Section>
-        <SectionTitle>Basic Button</SectionTitle>
+        <SectionTitle>Basic button</SectionTitle>
         <ControlsGrid>
           <Control>
             <Label>Size</Label>
-            <Select value={size} onChange={(e) => setSize(e.target.value)}>
+            <Select value={basicSize} onChange={(e) => setBasicSize(e.target.value)}>
               {Object.values(BUTTON_SIZES).map((size) => (
                 <option key={size} value={size}>{capitalizeFirstLetter(size)}</option>
               ))}
@@ -143,17 +170,17 @@ const ButtonPage = () => {
           </Control>
 
           <Control>
-            <Label>Icon Position</Label>
-            <Select value={iconPosition} onChange={(e) => setIconPosition(e.target.value)}>
-              <option value={ICON_POSITIONS.NONE}>No Icon</option>
-              <option value={ICON_POSITIONS.LEFT}>Left Icon</option>
-              <option value={ICON_POSITIONS.RIGHT}>Right Icon</option>
+            <Label>Icon position</Label>
+            <Select value={basicIconPosition} onChange={(e) => setBasicIconPosition(e.target.value)}>
+              <option value={ICON_POSITIONS.NONE}>No icon</option>
+              <option value={ICON_POSITIONS.LEFT}>Left icon</option>
+              <option value={ICON_POSITIONS.RIGHT}>Right icon</option>
             </Select>
           </Control>
 
           <Control>
             <Label>Style</Label>
-            <Select value={buttonStyle} onChange={(e) => setButtonStyle(e.target.value)}>
+            <Select value={basicButtonStyle} onChange={(e) => setBasicButtonStyle(e.target.value)}>
               <option value={BUTTON_STYLES.PILL}>Pill</option>
               <option value={BUTTON_STYLES.SQUARE}>Square</option>
             </Select>
@@ -161,7 +188,7 @@ const ButtonPage = () => {
 
           <Control>
             <Label>State</Label>
-            <Select value={state} onChange={(e) => setState(e.target.value)}>
+            <Select value={basicState} onChange={(e) => setBasicState(e.target.value)}>
               <option value="">None</option>
               <option value={STATES.DISABLED}>Disabled</option>
               <option value={STATES.LOADING}>Loading</option>
@@ -170,52 +197,119 @@ const ButtonPage = () => {
 
           <Control>
             <Label>Theme</Label>
-            <Select value={theme} onChange={(e) => setTheme(e.target.value)}>
+            <Select value={basicTheme} onChange={(e) => setBasicTheme(e.target.value)}>
               <option value={THEMES.LIGHT_A}>Light.a</option>
               <option value={THEMES.DARK_A}>Dark.a</option>
             </Select>
           </Control>
         </ControlsGrid>
 
-        <PreviewSection isDarkMode={isDarkMode}>
-          {Object.values(BUTTON_VARIANTS).map((variant) => (
-            <Button
-              key={variant}
-              variant={variant}
-              size={size}
-              iconPosition={iconPosition}
-              buttonStyle={buttonStyle}
-              label={getButtonLabel()(variant)}
-              disabled={state === STATES.DISABLED}
-              loading={state === STATES.LOADING}
-              isDarkMode={isDarkMode}
-            />
-          ))}
+        <PreviewSection isDarkMode={isBasicDarkMode}>
+          {Object.values(BUTTON_VARIANTS)
+            .filter(variant => variant !== BUTTON_VARIANTS.TEXT)
+            .map((variant) => (
+              <Button
+                key={variant}
+                variant={variant}
+                size={basicSize}
+                iconPosition={basicIconPosition}
+                buttonStyle={basicButtonStyle}
+                label={getBasicButtonLabel(variant)}
+                disabled={basicState === STATES.DISABLED}
+                loading={basicState === STATES.LOADING}
+                isDarkMode={isBasicDarkMode}
+              />
+            ))}
         </PreviewSection>
       </Section>
 
       <Section>
-        <SectionTitle>Maximum Width and Truncation</SectionTitle>
-        <Description>
-          Buttons should have a maximum width of 264px. If the text on the button exceeds this width,
-          it should be truncated in the middle with an ellipsis (...). A tooltip will appear on hover,
-          revealing the full text string of the button.
-        </Description>
-        
-        <PreviewSection isDarkMode={isDarkMode}>
+        <SectionTitle>Maximum width and truncation</SectionTitle>
+        <PreviewSection>
           <Button
             variant={BUTTON_VARIANTS.PRIMARY}
             size={BUTTON_SIZES.MEDIUM}
-            label="Button with really really really long text"
-            title="Button with really really really long text"
-            isDarkMode={isDarkMode}
+            label="Button with really... long text"
+          />
+        </PreviewSection>
+        <Description style={{ marginTop: '24px' }} data-has-bullets="true">
+          <ul>
+            <li>Buttons should have a maximum width of 264px.</li>
+            <li>If the text on the button exceeds this width, it should be truncated in the middle.</li>
+            <li>A tooltip will appear on hover, revealing the full text string of the button.</li>
+          </ul>
+        </Description>
+      </Section>
+
+      <Section>
+        <SectionTitle>Text button</SectionTitle>
+        <ControlsGrid>
+          <Control>
+            <Label>Size</Label>
+            <Select value={textSize} onChange={(e) => setTextSize(e.target.value)}>
+              {Object.values(BUTTON_SIZES).map((size) => (
+                <option key={size} value={size}>{capitalizeFirstLetter(size)}</option>
+              ))}
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Icon position</Label>
+            <Select value={textIconPosition} onChange={(e) => setTextIconPosition(e.target.value)}>
+              <option value={ICON_POSITIONS.NONE}>No icon</option>
+              <option value={ICON_POSITIONS.LEFT}>Left icon</option>
+              <option value={ICON_POSITIONS.RIGHT}>Right icon</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Style</Label>
+            <Select value={textButtonStyle} onChange={(e) => setTextButtonStyle(e.target.value)}>
+              <option value={BUTTON_STYLES.PILL}>Pill</option>
+              <option value={BUTTON_STYLES.SQUARE}>Square</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>State</Label>
+            <Select value={textState} onChange={(e) => setTextState(e.target.value)}>
+              <option value="">None</option>
+              <option value={STATES.DISABLED}>Disabled</option>
+              <option value={STATES.LOADING}>Loading</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Theme</Label>
+            <Select value={textTheme} onChange={(e) => setTextTheme(e.target.value)}>
+              <option value={THEMES.LIGHT_A}>Light.a</option>
+              <option value={THEMES.DARK_A}>Dark.a</option>
+            </Select>
+          </Control>
+        </ControlsGrid>
+
+        <PreviewSection isDarkMode={isTextDarkMode}>
+          <Button
+            variant={BUTTON_VARIANTS.TEXT}
+            textVariant="primary"
+            size={textSize}
+            iconPosition={textIconPosition}
+            buttonStyle={textButtonStyle}
+            label={getTextButtonLabel("Primary")}
+            disabled={textState === STATES.DISABLED}
+            loading={textState === STATES.LOADING}
+            isDarkMode={isTextDarkMode}
           />
           <Button
-            variant={BUTTON_VARIANTS.SECONDARY}
-            size={BUTTON_SIZES.MEDIUM}
-            label="Button with really... long text"
-            title="Button with really really really long text that should be truncated"
-            isDarkMode={isDarkMode}
+            variant={BUTTON_VARIANTS.TEXT}
+            textVariant="secondary"
+            size={textSize}
+            iconPosition={textIconPosition}
+            buttonStyle={textButtonStyle}
+            label={getTextButtonLabel("Secondary")}
+            disabled={textState === STATES.DISABLED}
+            loading={textState === STATES.LOADING}
+            isDarkMode={isTextDarkMode}
           />
         </PreviewSection>
       </Section>

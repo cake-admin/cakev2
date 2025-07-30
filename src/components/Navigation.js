@@ -171,7 +171,7 @@ const SubmenuToggle = styled.button`
   border: none;
   cursor: pointer;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: none;
   
   &:hover {
     color: ${colorData.slate[900]};
@@ -354,7 +354,7 @@ const Navigation = () => {
             {/* Get Started Section */}
             <NavItem>
               <SubmenuToggle onClick={() => toggleMenu('getStarted')}>
-                GET STARTED
+                Get started
                 <Chevron expanded={expandedMenus.getStarted}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
@@ -375,7 +375,7 @@ const Navigation = () => {
             {/* Foundations Section */}
             <NavItem>
               <SubmenuToggle onClick={() => toggleMenu('foundations')}>
-                FOUNDATIONS
+                Foundations
                 <Chevron expanded={expandedMenus.foundations}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
@@ -396,7 +396,7 @@ const Navigation = () => {
             {/* Components Section */}
             <NavItem>
               <SubmenuToggle onClick={() => toggleMenu('components')}>
-                COMPONENTS
+                Components
                 <Chevron expanded={expandedMenus.components}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
