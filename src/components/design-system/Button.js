@@ -209,6 +209,7 @@ const StyledButton = styled.button`
   align-items: center;
   justify-content: center;
   position: relative;
+  box-sizing: border-box;
   
   /* Track hover state for text color changes */
   &:hover {
@@ -256,15 +257,19 @@ const StyledButton = styled.button`
   
   /* Style for the label text to enable middle truncation */
   span.button-text {
-    overflow: hidden;
-    text-overflow: ellipsis;
     display: inline-flex;
     align-items: center;
-    position: relative;
     max-width: 100%;
-    min-height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: ${props => props.size === BUTTON_SIZES.LARGE ? '16px' : '14px'};
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     transform: translateY(0.5px);
+    min-height: 100%;
+    line-height: 1;
   }
   
   background-color: ${props => {
