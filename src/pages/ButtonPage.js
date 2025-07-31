@@ -239,23 +239,6 @@ const ButtonPage = () => {
         </PreviewSection>
       </Section>
 
-      <Section>
-        <SectionTitle>Maximum width and truncation</SectionTitle>
-        <PreviewSection>
-          <Button
-            variant={BUTTON_VARIANTS.PRIMARY}
-            size={BUTTON_SIZES.MEDIUM}
-            label="Button with really... long text"
-          />
-        </PreviewSection>
-        <Description style={{ marginTop: '24px' }} data-has-bullets="true">
-          <ul>
-            <li>Buttons should have a maximum width of 264px.</li>
-            <li>If the text on the button exceeds this width, it should be truncated in the middle.</li>
-            <li>A tooltip will appear on hover, revealing the full text string of the button.</li>
-          </ul>
-        </Description>
-      </Section>
 
       <Section>
         <SectionTitle>Text button</SectionTitle>
