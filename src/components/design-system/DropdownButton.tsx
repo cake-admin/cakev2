@@ -140,10 +140,52 @@ const StyledDropdownButton = styled.button<{
 
 `;
 
-const DropdownMenu = styled.div<{ position: string; isDarkMode: boolean }>`
+interface DropdownPosition {
+  direction: 'up' | 'down';
+  alignment: 'left' | 'right';
+}
+
+const calculateDropdownPosition = (
+  triggerElement: HTMLElement,
+  dropdownElement: HTMLElement,
+  preferredPosition: string
+): DropdownPosition => {
+  const BUFFER = 20; // Safety margin in pixels
+  const triggerRect = triggerElement.getBoundingClientRect();
+  const dropdownHeight = dropdownElement.offsetHeight;
+  const viewportHeight = window.innerHeight;
+
+  const spaceBelow = viewportHeight - triggerRect.bottom;
+  const spaceAbove = triggerRect.top;
+
+  // Determine vertical position (up/down)
+  let direction: 'up' | 'down';
+  if (preferredPosition.startsWith('bottom') && spaceBelow >= dropdownHeight + BUFFER) {
+    direction = 'down';
+  } else if (preferredPosition.startsWith('top') && spaceAbove >= dropdownHeight + BUFFER) {
+    direction = 'up';
+  } else {
+    // Auto-determine based on available space
+    direction = spaceBelow >= spaceAbove ? 'down' : 'up';
+  }
+
+  // Determine horizontal alignment (left/right)
+  const alignment = preferredPosition.endsWith('right') ? 'right' : 'left';
+
+  return { direction, alignment };
+};
+
+const DropdownMenu = styled.div<{ 
+  position: string; 
+  isDarkMode: boolean;
+  $calculatedPosition: DropdownPosition;
+}>`
   position: absolute;
-  ${props => props.position.startsWith('bottom') ? 'top: calc(100% + 8px)' : 'bottom: calc(100% + 8px)'};
-  ${props => props.position.endsWith('right') ? 'right: 0' : 'left: 0'};
+  ${props => props.$calculatedPosition.direction === 'down' 
+    ? 'top: calc(100% + 8px);' 
+    : 'bottom: calc(100% + 8px);'
+  }
+  ${props => props.$calculatedPosition.alignment === 'right' ? 'right: 0;' : 'left: 0;'}
   min-width: 100%;
   background: ${props => props.isDarkMode ? '#18181B' : '#FFFFFF'};
   border-radius: 8px;
@@ -153,11 +195,20 @@ const DropdownMenu = styled.div<{ position: string; isDarkMode: boolean }>`
   overflow: hidden;
   padding: 4px 0;
   animation: ${slideDown} 0.2s ease-out;
+  
+  &.dropdown-up {
+    transform-origin: bottom;
+  }
+  
+  &.dropdown-down {
+    transform-origin: top;
+  }
 `;
 
 const MenuItem = styled.button<{ selected: boolean; isDarkMode: boolean }>`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 40px;
   padding: 8px 16px;
@@ -167,10 +218,21 @@ const MenuItem = styled.button<{ selected: boolean; isDarkMode: boolean }>`
   font-size: 14px;
   color: ${props => props.isDarkMode ? '#D4D4D8' : '#374151'}; // text-gray-700 in light mode
   cursor: pointer;
-  transition: background-color 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
+
+  .menu-item-content {
+    flex: 1;
+  }
+
+
 
   &:hover {
-    background-color: ${props => props.isDarkMode ? '#27272A' : '#F8FAFC'}; // bg-gray-50 in light mode
+    background-color: ${props => props.isDarkMode ? '#27272A' : '#F3F4F6'};
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px ${props => props.isDarkMode ? '#60A5FA' : '#3B82F6'};
   }
 `;
 
@@ -189,8 +251,33 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [calculatedPosition, setCalculatedPosition] = useState<DropdownPosition>({
+    direction: position.startsWith('bottom') ? 'down' : 'up',
+    alignment: position.endsWith('right') ? 'right' : 'left'
+  });
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  // Update position when dropdown opens or window resizes
+  useEffect(() => {
+    if (isOpen && buttonRef.current && menuRef.current) {
+      const updatePosition = () => {
+        const newPosition = calculateDropdownPosition(
+          buttonRef.current!,
+          menuRef.current!,
+          position
+        );
+        setCalculatedPosition(newPosition);
+      };
+
+      // Initial position calculation
+      updatePosition();
+
+      // Update position on resize
+      window.addEventListener('resize', updatePosition);
+      return () => window.removeEventListener('resize', updatePosition);
+    }
+  }, [isOpen, position]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -226,7 +313,13 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({
   };
 
   const handleItemClick = (item: string) => {
-    setSelectedItem(item);
+    // Toggle selection if clicking the same item, otherwise select the new item
+    setSelectedItem(prevItem => {
+      const newSelection = prevItem === item ? null : item;
+      console.log('Previous selection:', prevItem);
+      console.log('New selection:', newSelection);
+      return newSelection;
+    });
     setIsOpen(false);
     onSelect?.(item);
   };
@@ -245,7 +338,11 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({
           event.preventDefault();
           const currentIndex = selectedItem ? items.indexOf(selectedItem) : -1;
           const nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
-          setSelectedItem(items[nextIndex]);
+          // Just highlight the item, don't select it yet
+          const menuItems = document.querySelectorAll('[role="menuitem"]');
+          if (menuItems[nextIndex]) {
+            (menuItems[nextIndex] as HTMLElement).focus();
+          }
         }
         break;
       case 'ArrowUp':
@@ -253,7 +350,21 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({
           event.preventDefault();
           const currentIndex = selectedItem ? items.indexOf(selectedItem) : 0;
           const prevIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
-          setSelectedItem(items[prevIndex]);
+          // Just highlight the item, don't select it yet
+          const menuItems = document.querySelectorAll('[role="menuitem"]');
+          if (menuItems[prevIndex]) {
+            (menuItems[prevIndex] as HTMLElement).focus();
+          }
+        }
+        break;
+      case 'Enter':
+      case ' ':
+        if (isOpen && document.activeElement?.getAttribute('role') === 'menuitem') {
+          event.preventDefault();
+          const item = items[Array.from(document.querySelectorAll('[role="menuitem"]')).indexOf(document.activeElement)];
+          if (item) {
+            handleItemClick(item);
+          }
         }
         break;
     }
@@ -282,7 +393,14 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({
         </span>
       </StyledDropdownButton>
       {isOpen && (
-        <DropdownMenu ref={menuRef} position={position} isDarkMode={isDarkMode} role="menu">
+        <DropdownMenu 
+          ref={menuRef} 
+          position={position} 
+          isDarkMode={isDarkMode} 
+          role="menu"
+          $calculatedPosition={calculatedPosition}
+          className={`dropdown-${calculatedPosition.direction}`}
+        >
           {items.map((item, index) => (
             <MenuItem
               key={index}
@@ -291,6 +409,7 @@ export const DropdownButton: React.FC<DropdownButtonProps> = ({
               isDarkMode={isDarkMode}
               role="menuitem"
               tabIndex={-1}
+              aria-selected={selectedItem === item}
             >
               {renderItem ? renderItem(item, selectedItem === item) : item}
             </MenuItem>
