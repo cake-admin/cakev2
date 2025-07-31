@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button, { BUTTON_VARIANTS, BUTTON_SIZES, ICON_POSITIONS, BUTTON_STYLES, ICON_VARIANTS } from '../components/design-system/Button';
+import DropdownButton from '../components/design-system/DropdownButton.tsx';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -140,6 +141,13 @@ const ButtonPage = () => {
   const [iconButtonStyle, setIconButtonStyle] = useState(BUTTON_STYLES.PILL);
   const isIconDarkMode = iconTheme === THEMES.DARK_A;
 
+  // Dropdown button section state
+  const [dropdownSize, setDropdownSize] = useState(BUTTON_SIZES.MEDIUM);
+  const [dropdownState, setDropdownState] = useState('');
+  const [dropdownTheme, setDropdownTheme] = useState(THEMES.LIGHT_A);
+  const [dropdownButtonStyle, setDropdownButtonStyle] = useState(BUTTON_STYLES.PILL);
+  const isDropdownDarkMode = dropdownTheme === THEMES.DARK_A;
+
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   };
@@ -170,7 +178,7 @@ const ButtonPage = () => {
             <Label>Size</Label>
             <Select value={basicSize} onChange={(e) => setBasicSize(e.target.value)}>
               {Object.values(BUTTON_SIZES)
-                .filter(size => size !== BUTTON_SIZES.SMALL)
+                .filter(size => size !== BUTTON_SIZES.SMALL && size !== BUTTON_SIZES.XLARGE)
                 .map((size) => (
                   <option key={size} value={size}>{capitalizeFirstLetter(size)}</option>
                 ))}
@@ -256,7 +264,7 @@ const ButtonPage = () => {
             <Label>Size</Label>
             <Select value={textSize} onChange={(e) => setTextSize(e.target.value)}>
               {Object.values(BUTTON_SIZES)
-                .filter(size => size !== BUTTON_SIZES.SMALL)
+                .filter(size => size !== BUTTON_SIZES.SMALL && size !== BUTTON_SIZES.XLARGE)
                 .map((size) => (
                   <option key={size} value={size}>{capitalizeFirstLetter(size)}</option>
                 ))}
@@ -385,6 +393,66 @@ const ButtonPage = () => {
             disabled={iconState === STATES.DISABLED}
             loading={iconState === STATES.LOADING}
             isDarkMode={isIconDarkMode}
+          />
+        </PreviewSection>
+      </Section>
+
+      <Section>
+        <SectionTitle>Dropdown button</SectionTitle>
+        <ControlsGrid>
+          <Control>
+            <Label>Size</Label>
+            <Select value={dropdownSize} onChange={(e) => setDropdownSize(e.target.value)}>
+              {Object.values(BUTTON_SIZES)
+                .filter(size => size !== BUTTON_SIZES.SMALL && size !== BUTTON_SIZES.XLARGE)
+                .map((size) => (
+                  <option key={size} value={size}>{capitalizeFirstLetter(size)}</option>
+                ))}
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Style</Label>
+            <Select value={dropdownButtonStyle} onChange={(e) => setDropdownButtonStyle(e.target.value)}>
+              <option value={BUTTON_STYLES.PILL}>Pill</option>
+              <option value={BUTTON_STYLES.SQUARE}>Square</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>State</Label>
+            <Select value={dropdownState} onChange={(e) => setDropdownState(e.target.value)}>
+              <option value="">None</option>
+              <option value={STATES.DISABLED}>Disabled</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Theme</Label>
+            <Select value={dropdownTheme} onChange={(e) => setDropdownTheme(e.target.value)}>
+              <option value={THEMES.LIGHT_A}>Light.a</option>
+              <option value={THEMES.DARK_A}>Dark.a</option>
+            </Select>
+          </Control>
+        </ControlsGrid>
+
+        <PreviewSection isDarkMode={isDropdownDarkMode}>
+          <DropdownButton
+            label="Primary"
+            items={['Item', 'Item', 'Item', 'Item', 'Item']}
+            disabled={dropdownState === STATES.DISABLED}
+            buttonStyle={dropdownButtonStyle}
+            size={dropdownSize}
+            isDarkMode={isDropdownDarkMode}
+          />
+          <DropdownButton
+            label="Secondary"
+            items={['Item', 'Item', 'Item', 'Item', 'Item']}
+            disabled={dropdownState === STATES.DISABLED}
+            buttonStyle={dropdownButtonStyle}
+            size={dropdownSize}
+            isDarkMode={isDropdownDarkMode}
+            variant="secondary"
           />
         </PreviewSection>
       </Section>
