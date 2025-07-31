@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Button, { BUTTON_VARIANTS, BUTTON_SIZES, ICON_POSITIONS, BUTTON_STYLES } from '../components/design-system/Button';
+import Button, { BUTTON_VARIANTS, BUTTON_SIZES, ICON_POSITIONS, BUTTON_STYLES, ICON_VARIANTS } from '../components/design-system/Button';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -133,17 +133,23 @@ const ButtonPage = () => {
   const [textButtonStyle, setTextButtonStyle] = useState(BUTTON_STYLES.PILL);
   const isTextDarkMode = textTheme === THEMES.DARK_A;
 
+  // Icon button section state
+  const [iconSize, setIconSize] = useState(BUTTON_SIZES.MEDIUM);
+  const [iconState, setIconState] = useState('');
+  const [iconTheme, setIconTheme] = useState(THEMES.LIGHT_A);
+  const [iconButtonStyle, setIconButtonStyle] = useState(BUTTON_STYLES.PILL);
+  const isIconDarkMode = iconTheme === THEMES.DARK_A;
+
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   };
 
   const getBasicButtonLabel = (variant) => {
-    const variantName = variant.charAt(0).toUpperCase() + variant.slice(1).toLowerCase();
-    return basicIconPosition !== ICON_POSITIONS.NONE ? `${variantName} with icon` : variantName;
+    return variant.charAt(0).toUpperCase() + variant.slice(1).toLowerCase();
   };
 
   const getTextButtonLabel = (variant) => {
-    return textIconPosition !== ICON_POSITIONS.NONE ? `${variant} with icon` : variant;
+    return variant;
   };
 
   return (
@@ -163,9 +169,11 @@ const ButtonPage = () => {
           <Control>
             <Label>Size</Label>
             <Select value={basicSize} onChange={(e) => setBasicSize(e.target.value)}>
-              {Object.values(BUTTON_SIZES).map((size) => (
-                <option key={size} value={size}>{capitalizeFirstLetter(size)}</option>
-              ))}
+              {Object.values(BUTTON_SIZES)
+                .filter(size => size !== BUTTON_SIZES.SMALL)
+                .map((size) => (
+                  <option key={size} value={size}>{capitalizeFirstLetter(size)}</option>
+                ))}
             </Select>
           </Control>
 
@@ -206,7 +214,7 @@ const ButtonPage = () => {
 
         <PreviewSection isDarkMode={isBasicDarkMode}>
           {Object.values(BUTTON_VARIANTS)
-            .filter(variant => variant !== BUTTON_VARIANTS.TEXT)
+            .filter(variant => variant !== BUTTON_VARIANTS.TEXT && variant !== BUTTON_VARIANTS.ICON)
             .map((variant) => (
               <Button
                 key={variant}
@@ -247,9 +255,11 @@ const ButtonPage = () => {
           <Control>
             <Label>Size</Label>
             <Select value={textSize} onChange={(e) => setTextSize(e.target.value)}>
-              {Object.values(BUTTON_SIZES).map((size) => (
-                <option key={size} value={size}>{capitalizeFirstLetter(size)}</option>
-              ))}
+              {Object.values(BUTTON_SIZES)
+                .filter(size => size !== BUTTON_SIZES.SMALL)
+                .map((size) => (
+                  <option key={size} value={size}>{capitalizeFirstLetter(size)}</option>
+                ))}
             </Select>
           </Control>
 
@@ -310,6 +320,71 @@ const ButtonPage = () => {
             disabled={textState === STATES.DISABLED}
             loading={textState === STATES.LOADING}
             isDarkMode={isTextDarkMode}
+          />
+        </PreviewSection>
+      </Section>
+
+      <Section>
+        <SectionTitle>Icon button</SectionTitle>
+        <ControlsGrid>
+          <Control>
+            <Label>Size</Label>
+            <Select value={iconSize} onChange={(e) => setIconSize(e.target.value)}>
+              <option value={BUTTON_SIZES.SMALL}>Small</option>
+              <option value={BUTTON_SIZES.MEDIUM}>Medium</option>
+              <option value={BUTTON_SIZES.LARGE}>Large</option>
+              <option value={BUTTON_SIZES.XLARGE}>XLarge</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Style</Label>
+            <Select value={iconButtonStyle} onChange={(e) => setIconButtonStyle(e.target.value)}>
+              <option value={BUTTON_STYLES.PILL}>Pill</option>
+              <option value={BUTTON_STYLES.SQUARE}>Square</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>State</Label>
+            <Select value={iconState} onChange={(e) => setIconState(e.target.value)}>
+              <option value="">None</option>
+              <option value={STATES.DISABLED}>Disabled</option>
+              <option value={STATES.LOADING}>Loading</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Theme</Label>
+            <Select value={iconTheme} onChange={(e) => setIconTheme(e.target.value)}>
+              <option value={THEMES.LIGHT_A}>Light.a</option>
+              <option value={THEMES.DARK_A}>Dark.a</option>
+            </Select>
+          </Control>
+        </ControlsGrid>
+
+        <PreviewSection isDarkMode={isIconDarkMode}>
+          <Button
+            variant={BUTTON_VARIANTS.ICON}
+            iconVariant={ICON_VARIANTS.PRIMARY}
+            size={iconSize}
+            iconPosition={ICON_POSITIONS.NONE}
+            buttonStyle={iconButtonStyle}
+            aria-label="Download"
+            disabled={iconState === STATES.DISABLED}
+            loading={iconState === STATES.LOADING}
+            isDarkMode={isIconDarkMode}
+          />
+          <Button
+            variant={BUTTON_VARIANTS.ICON}
+            iconVariant={ICON_VARIANTS.SECONDARY}
+            size={iconSize}
+            iconPosition={ICON_POSITIONS.NONE}
+            buttonStyle={iconButtonStyle}
+            aria-label="Download"
+            disabled={iconState === STATES.DISABLED}
+            loading={iconState === STATES.LOADING}
+            isDarkMode={isIconDarkMode}
           />
         </PreviewSection>
       </Section>
