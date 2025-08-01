@@ -28,59 +28,103 @@ interface ToggleGroupProps {
 
 const Container = styled.div<{ $isDarkMode: boolean }>`
   display: inline-flex;
-  background: ${props => props.$isDarkMode ? '#374151' : '#f1f5f9'};
-  padding: 4px;
-  border-radius: 8px;
+  background: ${props => props.$isDarkMode ? '#1F2937' : '#F1F5F9'};
   position: relative;
-  gap: 4px;
+  border-radius: 4px;
+  border: 2px solid ${props => props.$isDarkMode ? '#52525B' : '#CBD5E1'};
+  padding: 0;
+  gap: 0;
+  box-sizing: content-box;
+  overflow: hidden;
 `;
 
 const ToggleButton = styled.button<{
   $selected: boolean;
   $isDarkMode: boolean;
   $size: 'medium' | 'large';
+  $isFirst?: boolean;
+  $isLast?: boolean;
 }>`
   position: relative;
-  padding: ${props => props.$size === 'large' ? '8px 16px' : '6px 12px'};
-  font-size: ${props => props.$size === 'large' ? '14px' : '12px'};
+  padding: ${props => props.$size === 'large' ? '8px 24px' : '6px 16px'};
+  height: ${props => props.$size === 'large' ? '40px' : '32px'};
+  font-size: ${props => props.$size === 'large' ? '15px' : '14px'};
   line-height: 1;
   border: none;
-  border-radius: 6px;
-  font-family: 'Segoe UI', sans-serif;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  white-space: nowrap;
-  min-width: 60px;
+
+  &:not(:last-child) {
+    border-right: 2px solid ${props => props.$isDarkMode 
+      ? '#52525B'
+      : '#CBD5E1'
+    };
+  }
+
+  &:not(:last-child)[aria-checked="true"],
+  &:not(:last-child) + button[aria-checked="true"] {
+    border-right-color: ${props => props.$isDarkMode ? '#52525B' : 'transparent'};
+  }
+  border-radius: ${props => {
+    if (props.$isFirst) return '2px 0 0 2px';
+    if (props.$isLast) return '0 2px 2px 0';
+    return '0';
+  }};
   
-  background: ${props => props.$selected 
-    ? props.$isDarkMode ? '#60a5fa' : '#3b82f6'
-    : 'transparent'
-  };
+  ${props => props.$selected && `
+    background: ${props.$isDarkMode ? '#93C5FD' : '#1D4ED8'};
+    color: ${props.$isDarkMode ? '#18181B' : '#FFFFFF'};
+  `}
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  white-space: nowrap;
+  min-width: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  
+  background: ${props => {
+    if (props.$selected) {
+      return props.$isDarkMode ? '#93C5FD' : '#1D4ED8';
+    }
+    return props.$isDarkMode ? '#CBD5E1' : '#E2E8F0';
+  }};
   
   color: ${props => {
     if (props.$selected) {
-      return props.$isDarkMode ? '#111827' : '#ffffff';
+      return props.$isDarkMode ? '#18181B' : '#FFFFFF';
     }
-    return props.$isDarkMode ? '#e5e7eb' : '#1f2937';
+    return props.$isDarkMode ? '#000000' : '#0F172A';
   }};
 
   &:hover:not(:disabled) {
-    background: ${props => props.$selected
-      ? props.$isDarkMode ? '#60a5fa' : '#3b82f6'
-      : props.$isDarkMode ? 'rgba(156, 163, 175, 0.1)' : 'rgba(0, 0, 0, 0.05)'
-    };
+    background: ${props => {
+      if (props.$selected) {
+        return props.$isDarkMode ? '#60A5FA' : '#1E3A8A';
+      }
+      return props.$isDarkMode ? '#94A3B8' : '#CBD5E1';
+    }};
+  }
+
+  &:active:not(:disabled) {
+    background: ${props => {
+      if (props.$selected) {
+        return props.$isDarkMode ? '#60A5FA' : '#1E3A8A';
+      }
+      return props.$isDarkMode ? '#CBD5E1' : '#CBD5E1';
+    }};
   }
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px ${props => props.$isDarkMode ? '#60a5fa' : '#3b82f6'};
+    box-shadow: 0 0 0 2px ${props => props.$isDarkMode ? '#93C5FD' : '#1D4ED8'};
   }
 
   &:disabled {
-    opacity: 0.5;
+    background: ${props => props.$isDarkMode ? '#1F2937' : '#E5E7EB'} !important;
+    color: ${props => props.$isDarkMode ? '#9CA3AF' : '#475569'};
     cursor: not-allowed;
-    text-decoration: line-through;
   }
 `;
 
@@ -101,11 +145,14 @@ export const ToggleGroup: React.FC<ToggleGroupProps> = ({
   const handleClick = useCallback((clickedValue: string) => {
     if (disabled) return;
 
+    // If clicking the already selected value, deselect it
+    const newValue = selectedValue === clickedValue ? undefined : clickedValue;
+
     if (!isControlled) {
-      setInternalValue(clickedValue);
+      setInternalValue(newValue);
     }
-    onChange?.(clickedValue);
-  }, [disabled, isControlled, onChange]);
+    onChange?.(newValue);
+  }, [disabled, isControlled, onChange, selectedValue]);
 
   return (
     <Container 
@@ -113,13 +160,15 @@ export const ToggleGroup: React.FC<ToggleGroupProps> = ({
       $isDarkMode={isDarkMode}
       role="radiogroup"
     >
-      {options.map((option) => (
+      {options.map((option, index) => (
         <ToggleButton
           key={option.value}
           onClick={() => handleClick(option.value)}
           $selected={selectedValue === option.value}
           $isDarkMode={isDarkMode}
           $size={size}
+          $isFirst={index === 0}
+          $isLast={index === options.length - 1}
           disabled={disabled || option.disabled}
           role="radio"
           aria-checked={selectedValue === option.value}
