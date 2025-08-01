@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Button, { BUTTON_VARIANTS, BUTTON_SIZES, ICON_POSITIONS, BUTTON_STYLES, ICON_VARIANTS } from '../components/design-system/Button';
 import DropdownButton from '../components/design-system/DropdownButton.tsx';
+import ToggleGroup from '../components/design-system/ToggleGroup';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -438,6 +439,83 @@ const ButtonPage = () => {
             variant="secondary"
           />
         </PreviewSection>
+      </Section>
+
+      <Section>
+        <SectionTitle>Toggle group</SectionTitle>
+        <ControlsGrid>
+          <Control>
+            <Label>Size</Label>
+            <Select value={basicSize} onChange={(e) => setBasicSize(e.target.value)}>
+              {Object.values(BUTTON_SIZES)
+                .filter(size => size !== BUTTON_SIZES.SMALL && size !== BUTTON_SIZES.XLARGE)
+                .map((size) => (
+                  <option key={size} value={size}>{capitalizeFirstLetter(size)}</option>
+                ))}
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>State</Label>
+            <Select value={basicState} onChange={(e) => setBasicState(e.target.value)}>
+              <option value="">None</option>
+              <option value={STATES.DISABLED}>Disabled</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Theme</Label>
+            <Select value={basicTheme} onChange={(e) => setBasicTheme(e.target.value)}>
+              <option value={THEMES.LIGHT_A}>Light.a</option>
+              <option value={THEMES.DARK_A}>Dark.a</option>
+            </Select>
+          </Control>
+        </ControlsGrid>
+
+        <PreviewSection isDarkMode={isBasicDarkMode}>
+          <ToggleGroup
+            options={[
+              { label: 'AM', value: 'am' },
+              { label: 'PM', value: 'pm' }
+            ]}
+            defaultValue="am"
+            size={basicSize === BUTTON_SIZES.LARGE ? 'large' : 'medium'}
+            disabled={basicState === STATES.DISABLED}
+            isDarkMode={isBasicDarkMode}
+          />
+
+          <ToggleGroup
+            options={[
+              { label: 'Day', value: 'day' },
+              { label: 'Week', value: 'week' },
+              { label: 'Month', value: 'month' }
+            ]}
+            defaultValue="week"
+            size={basicSize === BUTTON_SIZES.LARGE ? 'large' : 'medium'}
+            disabled={basicState === STATES.DISABLED}
+            isDarkMode={isBasicDarkMode}
+          />
+
+          <ToggleGroup
+            options={[
+              { label: 'Active', value: 'active' },
+              { label: 'Disabled', value: 'disabled', disabled: true },
+              { label: 'Pending', value: 'pending' }
+            ]}
+            defaultValue="active"
+            size={basicSize === BUTTON_SIZES.LARGE ? 'large' : 'medium'}
+            disabled={basicState === STATES.DISABLED}
+            isDarkMode={isBasicDarkMode}
+          />
+        </PreviewSection>
+        <Description style={{ marginTop: '24px' }} data-has-bullets="true">
+          <ul>
+            <li>Toggle groups provide a segmented control for selecting from mutually exclusive options.</li>
+            <li>Support both light and dark themes with appropriate contrast ratios.</li>
+            <li>Individual options can be disabled independently of the group.</li>
+            <li>Proper keyboard navigation and focus management for accessibility.</li>
+          </ul>
+        </Description>
       </Section>
     </PageContainer>
   );
