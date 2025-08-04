@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Accordion from '../components/design-system/Accordion';
+import Accordion from '../components/design-system/Accordion.js';
 
 const PageContainer = styled.div`
   padding: 24px;

@@ -7,6 +7,7 @@ import AboutCake from '../pages/get-started/AboutCake';
 import Home from '../pages/Home';
 import ChipPage from '../pages/ChipPage';
 import ButtonPage from '../pages/ButtonPage';
+import AccordionPage from '../pages/AccordionPage.js';
 
 export const routes = [
   {
@@ -15,6 +16,13 @@ export const routes = [
     title: 'Home',
     description: 'Welcome to Cake Design System',
     category: 'guides'
+  },
+  {
+    path: '/components/accordion',
+    component: AccordionPage,
+    title: 'Accordion',
+    description: 'Expandable and collapsible content sections for organizing information',
+    category: 'components'
   },
   {
     path: '/components/button',
