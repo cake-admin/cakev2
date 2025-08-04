@@ -171,7 +171,7 @@ const SubmenuToggle = styled.button`
   border: none;
   cursor: pointer;
   letter-spacing: 0.08em;
-  text-transform: none;
+  text-transform: uppercase;
   
   &:hover {
     color: ${colorData.slate[900]};

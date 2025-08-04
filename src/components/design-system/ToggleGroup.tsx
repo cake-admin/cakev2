@@ -15,7 +15,7 @@ interface ToggleGroupProps {
   /** Default selected value (uncontrolled mode) */
   defaultValue?: string;
   /** Callback when selection changes */
-  onChange?: (value: string) => void;
+  onChange?: (value: string | undefined) => void;
   /** Whether the entire toggle group is disabled */
   disabled?: boolean;
   /** Additional CSS class name */
