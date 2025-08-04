@@ -25,10 +25,20 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          npm list gh-pages || true
+
+      - name: Build
+        run: |
+          echo "Starting build process..."
+          CI=false npm run build
+          echo "Build completed"
+          ls -la build/
 
       - name: Deploy to GitHub Pages
         run: |
           git config --global user.name github-actions
           git config --global user.email github-actions@github.com
-          npm run deploy 
+          git remote -v
+          npm run deploy -- -u "github-actions-bot <support+actions@github.com>" 
