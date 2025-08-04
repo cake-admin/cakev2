@@ -9,7 +9,7 @@ const AccordionContainer = styled.div`
 
 const GroupContainer = styled.div`
   border: 1px solid ${props => props.theme === 'light' ? '#64748B' : '#71717A'};
-  border-radius: 6px;
+  border-radius: 8px;
   background: ${props => props.theme === 'light' ? '#FFFFFF' : '#18181B'};
   overflow: hidden;
   transition: border-color 200ms ease-in-out;
@@ -45,7 +45,7 @@ const AccordionButton = styled.button`
   &:focus-visible {
     outline: 2px solid #3B82F6;
     outline-offset: -2px;
-    border-radius: 5px;
+    border-radius: 8px;
   }
 
   &:hover {
