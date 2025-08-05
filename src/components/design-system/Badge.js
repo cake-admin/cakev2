@@ -33,11 +33,11 @@ const getBackgroundColor = (color, isDarkMode) => {
 
   switch (color) {
     case BADGE_COLORS.BLUE:
-      return '#3B82F6'; // Blue 500
+      return '#1D4ED8'; // Blue 700
     case BADGE_COLORS.RED:
-      return '#EF4444'; // Red 500
+      return '#B91C1C'; // Red 700
     default:
-      return '#3B82F6';
+      return '#1D4ED8';
   }
 };
 
