@@ -10,6 +10,7 @@ import ButtonPage from '../pages/ButtonPage';
 import AccordionPage from '../pages/AccordionPage.js';
 import IconIdentityPage from '../pages/subsystems/ai/IconIdentityPage';
 import AvatarPage from '../pages/AvatarPage';
+import BadgePage from '../pages/BadgePage';
 
 export const routes = [
   {
@@ -24,6 +25,13 @@ export const routes = [
     component: AvatarPage,
     title: 'Avatar',
     description: 'Component for displaying user profile images, initials, or icons',
+    category: 'components'
+  },
+  {
+    path: '/components/badge',
+    component: BadgePage,
+    title: 'Badge',
+    description: 'Compact UI element for displaying notification counts, status indicators, or numerical labels',
     category: 'components'
   },
   {
