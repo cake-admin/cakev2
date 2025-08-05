@@ -158,8 +158,14 @@ const BadgePage = () => {
             <Input 
               type="text" 
               value={basicContent} 
-              onChange={(e) => setBasicContent(e.target.value)}
-              placeholder="Enter badge content"
+              onChange={(e) => {
+                const value = e.target.value;
+                // Only allow numbers
+                if (value === '' || /^\d+$/.test(value)) {
+                  setBasicContent(value);
+                }
+              }}
+              placeholder="Enter numbers only"
             />
           </Control>
 

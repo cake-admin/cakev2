@@ -131,6 +131,11 @@ const Badge = ({
   className,
   ...props
 }) => {
+  // Validate content - only allow numbers
+  const content = children?.toString() || '';
+  const isValidContent = /^\d+$/.test(content) && content.length > 0;
+  const displayContent = isValidContent ? content : '1';
+
   return (
     <StyledBadge
       color={color}
@@ -138,10 +143,10 @@ const Badge = ({
       isDarkMode={isDarkMode}
       className={className}
       role="status"
-      aria-label={`Badge: ${children}`}
+      aria-label={`Badge: ${displayContent}`}
       {...props}
     >
-      {children}
+      {displayContent}
     </StyledBadge>
   );
 };
