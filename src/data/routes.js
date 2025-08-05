@@ -8,6 +8,7 @@ import Home from '../pages/Home';
 import ChipPage from '../pages/ChipPage';
 import ButtonPage from '../pages/ButtonPage';
 import AccordionPage from '../pages/AccordionPage.js';
+import IconIdentityPage from '../pages/subsystems/ai/IconIdentityPage';
 
 export const routes = [
   {
@@ -79,17 +80,25 @@ export const routes = [
     title: 'About Cake',
     description: 'Introduction to Cake Design System',
     category: 'guides'
+  },
+  {
+    path: '/subsystems/ai/icon-identity',
+    component: IconIdentityPage,
+    title: 'Icon & Identity',
+    description: 'Guidelines and components for AI-powered icon generation and brand identity management',
+    category: 'subsystems'
   }
 ];
 
 export const getSearchResults = (query) => {
-  if (!query.trim()) return { components: [], foundations: [], guides: [] };
+  if (!query.trim()) return { components: [], foundations: [], guides: [], subsystems: [] };
 
   const lowerQuery = query.toLowerCase();
   const results = {
     components: [],
     foundations: [],
-    guides: []
+    guides: [],
+    subsystems: []
   };
 
   routes.forEach(route => {
