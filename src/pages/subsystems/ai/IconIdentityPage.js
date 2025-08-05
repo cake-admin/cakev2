@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import Card from '../../../components/design-system/Card';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 import MotoAi from '../../../assets/ai/moto_ai.svg';
 import MotoAiColor from '../../../assets/ai/moto_ai_color.svg';
 import Robo1 from '../../../assets/ai/robo_1.svg';
@@ -50,17 +52,9 @@ const CardGrid = styled.div`
 
 const StyledCard = styled(Card)`
   position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background-color: ${props => props.type === 'do' ? '#16a34a' : '#dc2626'};
-    border-radius: 12px 12px 0 0;
-  }
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
 `;
 
 const ImageContainer = styled.div`
@@ -77,6 +71,30 @@ const StyledImage = styled.img`
   height: ${props => props.smaller ? '96px' : '108px'};
 `;
 
+
+const CardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  background-color: ${props => props.type === 'do' ? '#f0fdf4' : '#fef2f2'};
+  padding: 16px 16px 12px;
+  margin: -24px -24px 16px -24px;
+  border-bottom: 4px solid ${props => props.type === 'do' ? '#047857' : '#B91C1C'};
+`;
+
+const HeaderIcon = styled.div`
+  color: ${props => props.type === 'do' ? '#047857' : '#B91C1C'};
+  display: flex;
+  align-items: center;
+`;
+
+const HeaderText = styled.h3`
+  font-size: 16px;
+  font-weight: 600;
+  color: ${props => props.type === 'do' ? '#047857' : '#B91C1C'};
+  margin: 0;
+`;
 
 const CardText = styled.p`
   font-size: 14px;
@@ -100,9 +118,14 @@ const IconIdentityPage = () => {
         </SectionText>
         
                 <CardGrid>
-          <StyledCard type="do" elevated>
+          <StyledCard type="do">
             <Card.Body>
-                              <Card.Title>Do's</Card.Title>
+              <CardHeader type="do">
+                <HeaderIcon type="do">
+                  <CheckCircleIcon />
+                </HeaderIcon>
+                <HeaderText type="do">Do</HeaderText>
+              </CardHeader>
               <ImageContainer>
                 <StyledImage src={MotoAiColor} alt="Moto AI color icon" />
                 <StyledImage src={MotoAi} alt="Moto AI icon" />
@@ -111,27 +134,42 @@ const IconIdentityPage = () => {
             </Card.Body>
           </StyledCard>
 
-          <StyledCard type="dont" elevated>
+          <StyledCard type="dont">
             <Card.Body>
-              <Card.Title>Don'ts</Card.Title>
+              <CardHeader type="dont">
+                <HeaderIcon type="dont">
+                  <CancelIcon />
+                </HeaderIcon>
+                <HeaderText type="dont">Don't</HeaderText>
+              </CardHeader>
               <CardText>
                 Do not use AI branding or iconography unless your feature has been reviewed and approved by the Responsible AI Committee. Your feature must meet the established AI feature definition criteria and guidelines before incorporating any AI-specific visual elements.
               </CardText>
             </Card.Body>
           </StyledCard>
 
-          <StyledCard type="dont" elevated>
+          <StyledCard type="dont">
             <Card.Body>
-              <Card.Title>Don'ts</Card.Title>
+              <CardHeader type="dont">
+                <HeaderIcon type="dont">
+                  <CancelIcon />
+                </HeaderIcon>
+                <HeaderText type="dont">Don't</HeaderText>
+              </CardHeader>
               <CardText>
                 Do not modify, alter, or create variations of the Moto AI icon. The icon should be used as provided to maintain consistency across all Lenovo software solutions.
               </CardText>
             </Card.Body>
           </StyledCard>
 
-          <StyledCard type="dont" elevated>
+          <StyledCard type="dont">
             <Card.Body>
-              <Card.Title>Don'ts</Card.Title>
+              <CardHeader type="dont">
+                <HeaderIcon type="dont">
+                  <CancelIcon />
+                </HeaderIcon>
+                <HeaderText type="dont">Don't</HeaderText>
+              </CardHeader>
               <ImageContainer smaller>
                 <StyledImage smaller src={Robo1} alt="Example of robot imagery to avoid - robot 1" />
                 <StyledImage smaller src={Robo2} alt="Example of robot imagery to avoid - robot 2" />
