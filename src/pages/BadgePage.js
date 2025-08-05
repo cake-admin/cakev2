@@ -118,7 +118,6 @@ const THEMES = {
 
 const BadgePage = () => {
   // Basic badge section state
-  const [basicSize, setBasicSize] = useState(BADGE_SIZES.MEDIUM);
   const [basicContent, setBasicContent] = useState('1');
   const [basicTheme, setBasicTheme] = useState(THEMES.LIGHT_A);
   const isBasicDarkMode = basicTheme === THEMES.DARK_A;
@@ -144,15 +143,6 @@ const BadgePage = () => {
       <Section>
         <SectionTitle>Basic badge</SectionTitle>
         <ControlsGrid>
-          <Control>
-            <Label>Size</Label>
-            <Select value={basicSize} onChange={(e) => setBasicSize(e.target.value)}>
-              {Object.values(BADGE_SIZES).map((size) => (
-                <option key={size} value={size}>{capitalizeFirstLetter(size)}</option>
-              ))}
-            </Select>
-          </Control>
-
           <Control>
             <Label>Content</Label>
             <Input 
@@ -181,14 +171,14 @@ const BadgePage = () => {
         <PreviewSection isDarkMode={isBasicDarkMode}>
           <Badge
             color={BADGE_COLORS.BLUE}
-            size={basicSize}
+            size={BADGE_SIZES.MEDIUM}
             isDarkMode={isBasicDarkMode}
           >
             {basicContent}
           </Badge>
           <Badge
             color={BADGE_COLORS.RED}
-            size={basicSize}
+            size={BADGE_SIZES.MEDIUM}
             isDarkMode={isBasicDarkMode}
           >
             {basicContent}
