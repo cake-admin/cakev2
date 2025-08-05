@@ -9,6 +9,7 @@ import ChipPage from '../pages/ChipPage';
 import ButtonPage from '../pages/ButtonPage';
 import AccordionPage from '../pages/AccordionPage.js';
 import IconIdentityPage from '../pages/subsystems/ai/IconIdentityPage';
+import AvatarPage from '../pages/AvatarPage';
 
 export const routes = [
   {
@@ -17,6 +18,13 @@ export const routes = [
     title: 'Home',
     description: 'Welcome to Cake Design System',
     category: 'guides'
+  },
+  {
+    path: '/components/avatar',
+    component: AvatarPage,
+    title: 'Avatar',
+    description: 'Component for displaying user profile images, initials, or icons',
+    category: 'components'
   },
   {
     path: '/components/accordion',
