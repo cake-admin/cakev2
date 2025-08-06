@@ -1,9 +1,20 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Navigation from './components/Navigation';
 import GlobalStyles from './styles/globalStyles';
 import { routes } from './data/routes';
+
+// Component to scroll to top on route changes
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 const Wrapper = styled.div`
   padding-left: 250px;
@@ -49,6 +60,7 @@ function App() {
     <Router basename={baseUrl}>
       <GlobalStyles />
       <Navigation />
+      <ScrollToTop />
       <Wrapper>
         <PageContentWrapper>
           <Routes>
