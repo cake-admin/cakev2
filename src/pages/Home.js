@@ -26,7 +26,7 @@ const PageTitle = styled.h1`
   color: ${colorData.slate[900]};
   font-family: ${fontStack};
   font-weight: 600;
-  font-size: 24px;
+  font-size: 2rem;
   line-height: 28px;
   padding-bottom: 24px;
   margin: 0;
