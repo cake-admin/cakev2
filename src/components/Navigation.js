@@ -439,7 +439,7 @@ const Navigation = () => {
                   <Submenu expanded={expandedMenus.subsystems_ai}>
                     {routesByCategory.subsystems?.filter(route => route.path.startsWith('/subsystems/ai')).map(route => (
                       <SubmenuItem key={route.path}>
-                        <SubmenuLink to={route.path} onClick={closeNav} style={{ paddingLeft: '56px' }}>
+                        <SubmenuLink to={route.path} onClick={closeNav} style={{ paddingLeft: '40px' }}>
                           {route.title}
                         </SubmenuLink>
                       </SubmenuItem>
