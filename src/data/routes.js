@@ -1,4 +1,5 @@
 import CanvasPage from '../pages/CanvasPage';
+import CheckboxPage from '../pages/CheckboxPage';
 import VersionControl from '../pages/VersionControl';
 import ColorsPage from '../pages/foundations/ColorsPage';
 import WhatsNew from '../pages/WhatsNew';
@@ -61,6 +62,13 @@ export const routes = [
     component: CanvasPage,
     title: 'Canvas',
     description: 'Drawing and illustration component',
+    category: 'components'
+  },
+  {
+    path: '/components/checkbox',
+    component: CheckboxPage,
+    title: 'Checkbox',
+    description: 'Interactive checkbox component for form inputs, selections, and toggles with support for checked, unchecked, indeterminate, and disabled states',
     category: 'components'
   },
   {
