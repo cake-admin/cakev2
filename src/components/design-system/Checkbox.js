@@ -94,6 +94,7 @@ const getCheckboxColors = (state, theme, isDisabled, isFocused, isHovered, isPre
 const CheckboxContainer = styled.div`
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   opacity: ${props => props.disabled ? 0.5 : 1};
