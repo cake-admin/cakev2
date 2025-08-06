@@ -116,6 +116,8 @@ const CheckboxPage = () => {
   const [labelText, setLabelText] = useState('Label');
 
 
+  const [interactiveChecked, setInteractiveChecked] = useState(false);
+
   const getCheckboxProps = () => {
     const props = {
       label: labelText,
@@ -136,6 +138,12 @@ const CheckboxPage = () => {
       props.disabled = true;
     } else {
       props.checked = false;
+    }
+
+    // Add interactive functionality for non-disabled states
+    if (!props.disabled) {
+      props.checked = interactiveChecked;
+      props.onChange = (e) => setInteractiveChecked(e.target.checked);
     }
 
     return props;
