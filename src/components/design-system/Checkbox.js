@@ -99,6 +99,7 @@ const CheckboxContainer = styled.div`
   opacity: ${props => props.disabled ? 0.5 : 1};
   user-select: none;
   position: relative;
+  line-height: 1;
 `;
 
 const HiddenInput = styled.input`
@@ -196,7 +197,9 @@ const Label = styled.label`
   font-weight: 600;
   color: ${props => props.colors.label};
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
-  line-height: 1.4;
+  line-height: 1;
+  display: flex;
+  align-items: center;
   transition: color 0.2s ease;
 `;
 
