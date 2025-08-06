@@ -53,7 +53,7 @@ const StyledDropdownButton = styled.button<{
   padding: ${props => props.size === 'large' ? '8px 24px' : '6px 20px'};
   height: ${props => props.size === 'large' ? '40px' : '32px'};
   background-color: ${props => {
-    if (props.disabled) return props.isDarkMode ? '#52525B' : '#E2E8F0';
+    if (props.disabled) return props.isDarkMode ? '#1F2937' : '#E2E8F0';
     if (props.variant === 'secondary') {
       return props.isDarkMode ? '#CBD5E1' : '#E2E8F0';
     }
