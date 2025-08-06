@@ -169,8 +169,8 @@ const CheckboxPage = () => {
           <Control>
             <Label>Theme</Label>
             <Select value={theme} onChange={(e) => setTheme(e.target.value)}>
-              <option value={CHECKBOX_THEMES.LIGHT}>Light</option>
-              <option value={CHECKBOX_THEMES.DARK}>Dark</option>
+              <option value={CHECKBOX_THEMES.LIGHT}>Light.a</option>
+              <option value={CHECKBOX_THEMES.DARK}>Dark.a</option>
             </Select>
           </Control>
 

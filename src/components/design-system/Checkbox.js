@@ -16,8 +16,8 @@ const CHECKBOX_STATES = {
  * Checkbox themes
  */
 const CHECKBOX_THEMES = {
-  LIGHT: 'light',
-  DARK: 'dark'
+  LIGHT: 'light.a',
+  DARK: 'dark.a'
 };
 
 /**
