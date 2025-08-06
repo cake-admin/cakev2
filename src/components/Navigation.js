@@ -146,7 +146,7 @@ const NavLinkStyled = styled(NavLink)`
     bottom: 0;
     width: 4px;
     background: #1D4ED8;
-    border-radius: 4px 0 0 4px;
+    border-radius: 0 4px 4px 0;
   }
 `;
 
@@ -237,7 +237,7 @@ const SubmenuLink = styled(NavLink)`
     bottom: 0;
     width: 4px;
     background: #1D4ED8;
-    border-radius: 4px 0 0 4px;
+    border-radius: 0 4px 4px 0;
   }
 `;
 
