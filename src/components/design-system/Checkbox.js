@@ -211,7 +211,7 @@ const Label = styled.label`
       default: return '14px';
     }
   }};
-  font-weight: 400;
+  font-weight: 600;
   color: ${props => props.colors.label};
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
   line-height: 1.4;
