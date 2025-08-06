@@ -11,6 +11,7 @@ import AccordionPage from '../pages/AccordionPage.js';
 import IconIdentityPage from '../pages/subsystems/ai/IconIdentityPage';
 import AvatarPage from '../pages/AvatarPage';
 import BadgePage from '../pages/BadgePage';
+import BreadcrumbPage from '../pages/BreadcrumbPage';
 
 export const routes = [
   {
@@ -19,6 +20,13 @@ export const routes = [
     title: 'Home',
     description: 'Welcome to Cake Design System',
     category: 'guides'
+  },
+  {
+    path: '/components/accordion',
+    component: AccordionPage,
+    title: 'Accordion',
+    description: 'Expandable and collapsible content sections for organizing information',
+    category: 'components'
   },
   {
     path: '/components/avatar',
@@ -35,10 +43,10 @@ export const routes = [
     category: 'components'
   },
   {
-    path: '/components/accordion',
-    component: AccordionPage,
-    title: 'Accordion',
-    description: 'Expandable and collapsible content sections for organizing information',
+    path: '/components/breadcrumb',
+    component: BreadcrumbPage,
+    title: 'Breadcrumb',
+    description: 'Hierarchical navigation component for displaying page location and navigation context',
     category: 'components'
   },
   {
