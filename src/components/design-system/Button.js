@@ -376,7 +376,11 @@ const StyledButton = styled.button`
   
   background-color: ${props => {
     if (props.$disabled || props.$loading) {
-      return 'transparent';  // No background for disabled/loading states
+      // Disabled state should have a muted background
+      if (props.isDarkMode) {
+        return 'rgba(100, 116, 139, 0.2)'; // Subtle gray background in dark mode
+      }
+      return 'rgba(203, 213, 225, 0.5)'; // Subtle gray background in light mode
     }
     return getBackgroundColor(props.variant, props.isDarkMode);
   }};
@@ -405,7 +409,11 @@ const StyledButton = styled.button`
   &:hover {
     background-color: ${props => {
       if (props.$disabled || props.$loading) {
-        return 'transparent';  // No hover background for disabled/loading states
+        // Keep the same muted background on hover for disabled states
+        if (props.isDarkMode) {
+          return 'rgba(100, 116, 139, 0.2)'; // Subtle gray background in dark mode
+        }
+        return 'rgba(203, 213, 225, 0.5)'; // Subtle gray background in light mode
       }
       return getHoverBackgroundColor(props.variant, props.isDarkMode, props.textVariant, props.iconVariant);
     }};
@@ -414,7 +422,11 @@ const StyledButton = styled.button`
   &:active {
     background-color: ${props => {
       if (props.$disabled || props.$loading) {
-        return 'transparent';  // No active background for disabled/loading states
+        // Keep the same muted background on active for disabled states
+        if (props.isDarkMode) {
+          return 'rgba(100, 116, 139, 0.2)'; // Subtle gray background in dark mode
+        }
+        return 'rgba(203, 213, 225, 0.5)'; // Subtle gray background in light mode
       }
       return getPressedBackgroundColor(props.variant, props.isDarkMode, props.textVariant, props.iconVariant);
     }};
