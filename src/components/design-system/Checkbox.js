@@ -287,6 +287,23 @@ const Checkbox = forwardRef(({
     }
   };
 
+  const handleContainerClick = (event) => {
+    if (disabled) return;
+    
+    // Prevent double-triggering if clicking on the label
+    if (event.target.tagName === 'LABEL') return;
+    
+    // Create a synthetic event to trigger the hidden input
+    const syntheticEvent = {
+      target: {
+        checked: !currentChecked,
+        type: 'checkbox'
+      }
+    };
+    
+    handleChange(syntheticEvent);
+  };
+
   const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
@@ -294,6 +311,7 @@ const Checkbox = forwardRef(({
       disabled={disabled}
       className={className}
       style={style}
+      onClick={handleContainerClick}
     >
       <HiddenInput
         ref={ref}
