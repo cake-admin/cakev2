@@ -327,7 +327,7 @@ const Navigation = () => {
             <CakeLogo src={cakeLogo} alt="Cake Logo" />
             <CakeTitleGroup>
               <CakeTitle>Cake</CakeTitle>
-              <CakeVersion>Version 4.0.1</CakeVersion>
+              <CakeVersion>Version 1.4.0</CakeVersion>
             </CakeTitleGroup>
           </HeaderLink>
         </SidebarHeader>
