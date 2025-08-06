@@ -124,38 +124,18 @@ const CheckboxPage = () => {
       theme: theme,
     };
 
-    // Handle disabled states (non-interactive)
-    if (state === 'disabled-unchecked') {
+    if (state === 'disabled') {
+      // Disabled state - non-interactive
       props.disabled = true;
       props.checked = false;
-    } else if (state === 'disabled-checked') {
-      props.disabled = true;
-      props.checked = true;
-    } else if (state === 'disabled-indeterminate') {
-      props.disabled = true;
-      props.indeterminate = true;
     } else {
-      // Handle interactive states
+      // Default state - interactive
       props.disabled = false;
-      
-      if (state === CHECKBOX_STATES.CHECKED) {
-        props.checked = true;
-      } else if (state === CHECKBOX_STATES.INDETERMINATE) {
-        props.indeterminate = true;
-      } else {
-        // For unchecked state, use interactive state
-        props.checked = interactiveChecked;
-      }
+      props.checked = interactiveChecked;
       
       // Add onChange handler for interactive functionality
       props.onChange = (e) => {
         setInteractiveChecked(e.target.checked);
-        // Update the dropdown state to match the new state
-        if (e.target.checked) {
-          setState(CHECKBOX_STATES.CHECKED);
-        } else {
-          setState(CHECKBOX_STATES.UNCHECKED);
-        }
       };
     }
 
@@ -181,12 +161,8 @@ const CheckboxPage = () => {
           <Control>
             <Label>State</Label>
             <Select value={state} onChange={(e) => setState(e.target.value)}>
-              <option value={CHECKBOX_STATES.UNCHECKED}>Unchecked</option>
-              <option value={CHECKBOX_STATES.CHECKED}>Checked</option>
-              <option value={CHECKBOX_STATES.INDETERMINATE}>Indeterminate</option>
-              <option value="disabled-unchecked">Disabled Unchecked</option>
-              <option value="disabled-checked">Disabled Checked</option>
-              <option value="disabled-indeterminate">Disabled Indeterminate</option>
+              <option value="default">Default</option>
+              <option value="disabled">Disabled</option>
             </Select>
           </Control>
 
