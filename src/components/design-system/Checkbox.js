@@ -136,6 +136,7 @@ const CheckboxBox = styled.div`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-top: 1px;
 `;
 
 const FocusRing = styled.div`
@@ -201,6 +202,7 @@ const Label = styled.label`
   display: flex;
   align-items: center;
   transition: color 0.2s ease;
+  margin-top: -1px;
 `;
 
 const Checkbox = forwardRef(({
