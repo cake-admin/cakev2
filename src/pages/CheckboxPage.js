@@ -124,26 +124,39 @@ const CheckboxPage = () => {
       theme: theme,
     };
 
-    if (state === CHECKBOX_STATES.CHECKED) {
-      props.checked = true;
-    } else if (state === CHECKBOX_STATES.INDETERMINATE) {
-      props.indeterminate = true;
-    } else if (state === 'disabled-unchecked') {
+    // Handle disabled states (non-interactive)
+    if (state === 'disabled-unchecked') {
       props.disabled = true;
-    } else if (state === 'disabled-checked') {
-      props.checked = true;
-      props.disabled = true;
-    } else if (state === 'disabled-indeterminate') {
-      props.indeterminate = true;
-      props.disabled = true;
-    } else {
       props.checked = false;
-    }
-
-    // Add interactive functionality for non-disabled states
-    if (!props.disabled) {
-      props.checked = interactiveChecked;
-      props.onChange = (e) => setInteractiveChecked(e.target.checked);
+    } else if (state === 'disabled-checked') {
+      props.disabled = true;
+      props.checked = true;
+    } else if (state === 'disabled-indeterminate') {
+      props.disabled = true;
+      props.indeterminate = true;
+    } else {
+      // Handle interactive states
+      props.disabled = false;
+      
+      if (state === CHECKBOX_STATES.CHECKED) {
+        props.checked = true;
+      } else if (state === CHECKBOX_STATES.INDETERMINATE) {
+        props.indeterminate = true;
+      } else {
+        // For unchecked state, use interactive state
+        props.checked = interactiveChecked;
+      }
+      
+      // Add onChange handler for interactive functionality
+      props.onChange = (e) => {
+        setInteractiveChecked(e.target.checked);
+        // Update the dropdown state to match the new state
+        if (e.target.checked) {
+          setState(CHECKBOX_STATES.CHECKED);
+        } else {
+          setState(CHECKBOX_STATES.UNCHECKED);
+        }
+      };
     }
 
     return props;
