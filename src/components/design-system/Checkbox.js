@@ -32,62 +32,124 @@ const CHECKBOX_SIZES = {
 const getCheckboxColors = (state, theme, isDisabled, isFocused, isHovered, isPressed) => {
   const isDark = theme === CHECKBOX_THEMES.DARK;
   
-  if (isDisabled) {
-    return {
-      border: '#64748B',
-      background: '#F1F5F9',
-      icon: '#FFFFFF',
-      label: '#475569'
-    };
-  }
+  if (isDark) {
+    // Dark theme colors
+    if (isDisabled) {
+      return {
+        border: '#9CA3AF',
+        background: '#27272A',
+        icon: '#9CA3AF',
+        label: '#9CA3AF'
+      };
+    }
 
-  if (state === CHECKBOX_STATES.CHECKED || state === CHECKBOX_STATES.INDETERMINATE) {
+    if (state === CHECKBOX_STATES.CHECKED || state === CHECKBOX_STATES.INDETERMINATE) {
+      if (isPressed) {
+        return {
+          border: '#52525B',
+          background: '#93C5FD',
+          icon: '#18181B',
+          label: '#D4D4D8'
+        };
+      } else if (isHovered) {
+        return {
+          border: '#52525B',
+          background: '#93C5FD',
+          icon: '#18181B',
+          label: '#D4D4D8'
+        };
+      } else {
+        return {
+          border: '#52525B',
+          background: '#93C5FD',
+          icon: '#18181B',
+          label: '#D4D4D8'
+        };
+      }
+    }
+
+    // Unchecked state for dark theme
     if (isPressed) {
       return {
-        border: '#1D4ED8',
-        background: '#1D4ED8',
-        icon: '#FFFFFF',
+        border: '#71717A',
+        background: 'transparent',
+        icon: 'transparent',
+        label: '#D4D4D8'
+      };
+    } else if (isHovered) {
+      return {
+        border: '#D4D4D8',
+        background: 'transparent',
+        icon: 'transparent',
+        label: '#D4D4D8'
+      };
+    } else {
+      return {
+        border: '#71717A',
+        background: 'transparent',
+        icon: 'transparent',
+        label: '#D4D4D8'
+      };
+    }
+  } else {
+    // Light theme colors (keeping existing implementation)
+    if (isDisabled) {
+      return {
+        border: '#64748B',
+        background: '#F1F5F9',
+        icon: '#475569',
+        label: '#475569'
+      };
+    }
+
+    if (state === CHECKBOX_STATES.CHECKED || state === CHECKBOX_STATES.INDETERMINATE) {
+      if (isPressed) {
+        return {
+          border: '#1D4ED8',
+          background: '#1D4ED8',
+          icon: '#FFFFFF',
+          label: '#0F172A'
+        };
+      } else if (isHovered) {
+        return {
+          border: '#1E3A8A',
+          background: '#1E3A8A',
+          icon: '#FFFFFF',
+          label: '#0F172A'
+        };
+      } else {
+        return {
+          border: '#1D4ED8',
+          background: '#1D4ED8',
+          icon: '#FFFFFF',
+          label: '#0F172A'
+        };
+      }
+    }
+
+    // Unchecked state for light theme
+    if (isPressed) {
+      return {
+        border: '#64748B',
+        background: 'transparent',
+        icon: 'transparent',
         label: '#0F172A'
       };
     } else if (isHovered) {
       return {
-        border: '#1E3A8A',
-        background: '#1E3A8A',
-        icon: '#FFFFFF',
+        border: '#0F172A',
+        background: 'transparent',
+        icon: 'transparent',
         label: '#0F172A'
       };
     } else {
       return {
-        border: '#1D4ED8',
-        background: '#1D4ED8',
-        icon: '#FFFFFF',
+        border: '#64748B',
+        background: 'transparent',
+        icon: 'transparent',
         label: '#0F172A'
       };
     }
-  }
-
-  // Unchecked state
-  if (isPressed) {
-    return {
-      border: '#64748B',
-      background: 'transparent',
-      icon: 'transparent',
-      label: '#0F172A'
-    };
-  } else if (isHovered) {
-    return {
-      border: '#0F172A',
-      background: 'transparent',
-      icon: 'transparent',
-      label: '#0F172A'
-    };
-  } else {
-    return {
-      border: '#64748B',
-      background: 'transparent',
-      icon: 'transparent',
-      label: '#0F172A'
-    };
   }
 };
 
@@ -141,12 +203,12 @@ const CheckboxBox = styled.div`
 
 const FocusRing = styled.div`
   position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  border: 2px solid ${props => props.theme === CHECKBOX_THEMES.DARK ? colorData.blue[400] : colorData.blue[500]};
-  border-radius: 5px;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border: 3px solid ${props => props.theme === CHECKBOX_THEMES.DARK ? '#93C5FD' : '#1D4ED8'};
+  border-radius: 6px;
   opacity: ${props => props.visible ? 1 : 0};
   transition: opacity 0.2s ease;
   pointer-events: none;
@@ -167,7 +229,6 @@ const CheckmarkIcon = styled.svg`
       default: return '10px';
     }
   }};
-  fill: ${props => props.color};
   opacity: ${props => props.visible ? 1 : 0};
   transition: opacity 0.2s ease;
 `;
@@ -202,7 +263,7 @@ const Label = styled.label`
   display: flex;
   align-items: center;
   transition: color 0.2s ease;
-  margin-top: -1px;
+  margin-top: 3px;
 `;
 
 const Checkbox = forwardRef(({
@@ -227,6 +288,7 @@ const Checkbox = forwardRef(({
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
   const [internalChecked, setInternalChecked] = useState(checked);
+  const [showFocusRing, setShowFocusRing] = useState(false);
 
   // Handle controlled vs uncontrolled state
   const isControlled = checked !== undefined;
@@ -264,6 +326,8 @@ const Checkbox = forwardRef(({
 
   const handleFocus = (event) => {
     setIsFocused(true);
+    // Show focus ring for keyboard navigation
+    setShowFocusRing(true);
     if (onFocus) {
       onFocus(event);
     }
@@ -271,6 +335,7 @@ const Checkbox = forwardRef(({
 
   const handleBlur = (event) => {
     setIsFocused(false);
+    setShowFocusRing(false);
     if (onBlur) {
       onBlur(event);
     }
@@ -278,6 +343,9 @@ const Checkbox = forwardRef(({
 
   const handleContainerClick = (event) => {
     if (disabled) return;
+    
+    // Hide focus ring when clicking
+    setShowFocusRing(false);
     
     // Prevent double-triggering if clicking on the label
     if (event.target.tagName === 'LABEL') return;
@@ -348,7 +416,7 @@ const Checkbox = forwardRef(({
         size={size}
       >
         <FocusRing 
-          visible={isFocused} 
+          visible={showFocusRing} 
           theme={theme}
         />
         {visualState === CHECKBOX_STATES.CHECKED && (
@@ -358,7 +426,7 @@ const Checkbox = forwardRef(({
             size={size}
             viewBox="0 0 24 24"
           >
-            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" stroke={colors.icon} strokeWidth="3" fill="none" />
           </CheckmarkIcon>
         )}
         {visualState === CHECKBOX_STATES.INDETERMINATE && (

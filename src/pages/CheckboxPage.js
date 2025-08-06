@@ -103,9 +103,9 @@ const CheckboxContainer = styled.div`
   flex-direction: column;
   gap: 16px;
   padding: 24px;
-  border: 1px solid #E2E8F0;
+  border: 1px solid ${props => props.theme === CHECKBOX_THEMES.DARK ? '#52525B' : '#E2E8F0'};
   border-radius: 8px;
-  background-color: #FFFFFF;
+  background-color: ${props => props.theme === CHECKBOX_THEMES.DARK ? '#18181B' : '#FFFFFF'};
 `;
 
 
@@ -124,9 +124,19 @@ const CheckboxPage = () => {
     };
 
     if (state === 'disabled') {
-      // Disabled state - non-interactive
+      // Disabled state - non-interactive, but preserve the checked state
       props.disabled = true;
-      props.checked = false;
+      props.checked = interactiveChecked;
+    } else if (state === 'indeterminate') {
+      // Indeterminate state - non-interactive, but preserve the checked state
+      props.disabled = false;
+      props.indeterminate = true;
+      props.checked = interactiveChecked;
+    } else if (state === 'disabled-indeterminate') {
+      // Disabled indeterminate state - non-interactive, but preserve the checked state
+      props.disabled = true;
+      props.indeterminate = true;
+      props.checked = interactiveChecked;
     } else {
       // Default state - interactive
       props.disabled = false;
@@ -161,7 +171,9 @@ const CheckboxPage = () => {
             <Label>State</Label>
             <Select value={state} onChange={(e) => setState(e.target.value)}>
               <option value="default">Default</option>
+              <option value="indeterminate">Indeterminate</option>
               <option value="disabled">Disabled</option>
+              <option value="disabled-indeterminate">Disabled Indeterminate</option>
             </Select>
           </Control>
 
@@ -176,7 +188,7 @@ const CheckboxPage = () => {
 
         </ControlsGrid>
 
-        <CheckboxContainer>
+        <CheckboxContainer theme={theme}>
           <Checkbox {...getCheckboxProps()} />
         </CheckboxContainer>
       </Section>
