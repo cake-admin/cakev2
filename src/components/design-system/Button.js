@@ -497,11 +497,19 @@ const Button = ({
   isDarkMode = false,
   className,
   onClick,
+  customIcon,
   ...props
 }) => {
   const isIconButton = variant === BUTTON_VARIANTS.ICON;
   const showIcon = (iconPosition !== ICON_POSITIONS.NONE && !loading) || isIconButton;
-  const icon = isIconButton ? <DownloadIcon /> : <OpenInNewIcon />;
+  
+  // Use custom icon if provided, otherwise use default icons
+  const getIcon = () => {
+    if (customIcon) {
+      return customIcon;
+    }
+    return isIconButton ? <DownloadIcon /> : <OpenInNewIcon />;
+  };
 
   const handleClick = (e) => {
     if (disabled || loading) return;
@@ -523,9 +531,9 @@ const Button = ({
       aria-disabled={disabled || loading}
       {...props}
     >
-      {!loading && (isIconButton || iconPosition === ICON_POSITIONS.LEFT) && <span className="icon">{icon}</span>}
+      {!loading && (isIconButton || iconPosition === ICON_POSITIONS.LEFT) && <span className="icon">{getIcon()}</span>}
       {!isIconButton && <span className="button-text">{label}</span>}
-      {!loading && !isIconButton && iconPosition === ICON_POSITIONS.RIGHT && <span className="icon">{icon}</span>}
+      {!loading && !isIconButton && iconPosition === ICON_POSITIONS.RIGHT && <span className="icon">{getIcon()}</span>}
       {loading && <LoadingSpinner variant={variant} size={size} isDarkMode={isDarkMode} />}
     </StyledButton>
   );
@@ -558,6 +566,8 @@ Button.propTypes = {
   onClick: PropTypes.func,
   /** Whether to force show the focus ring */
   focused: PropTypes.bool,
+  /** Custom icon element to use instead of default icons */
+  customIcon: PropTypes.node,
 };
 
 export { BUTTON_VARIANTS, BUTTON_SIZES, ICON_POSITIONS, BUTTON_STYLES, TEXT_VARIANTS, ICON_VARIANTS };
