@@ -60,7 +60,7 @@ function App() {
               />
             ))}
           </Routes>
-          <Footer>© 2024 Cake Design System. All rights reserved.</Footer>
+          <Footer>© {new Date().getFullYear()} Cake Design System. All rights reserved.</Footer>
         </PageContentWrapper>
       </Wrapper>
     </Router>
