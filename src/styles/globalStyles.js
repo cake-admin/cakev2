@@ -18,6 +18,10 @@ const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     background-color: ${tokens.background.canvas};
   }
+  
+  h1 {
+    font-size: 2rem;
+  }
 `;
 
 export default GlobalStyles; 
