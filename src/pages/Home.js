@@ -13,14 +13,13 @@ import colorData from '../data/colors.json';
 import heroBanner from '../assets/hero/hero-banner.png';
 
 const PageContainer = styled.div`
-  padding: 24px;
-  max-width: 1200px;
+  max-width: 680px;
   margin: 0 auto;
-  min-height: 100vh;
+  padding: 60px 20px 120px 20px;
 `;
 
-const Header = styled.div`
-  margin-bottom: 48px;
+const PageHeader = styled.div`
+  margin-bottom: 40px;
 `;
 
 const PageTitle = styled.h1`
@@ -39,7 +38,6 @@ const PageDescription = styled.p`
   font-size: 14px;
   line-height: 24px;
   margin: 0 0 24px 0;
-  max-width: 800px;
 `;
 
 const Section = styled.section`
@@ -181,12 +179,12 @@ const Home = () => {
 
   return (
     <PageContainer>
-      <Header>
+      <PageHeader>
         <PageTitle>One Lenovo "Cake" Design System</PageTitle>
         <PageDescription>
           The One Lenovo "Cake" Design System is a design framework aimed at creating a unified design language across all Lenovo software. Its purpose is to ensure consistency, improve usability, and enhance the overall user experience of Lenovo's diverse range of digital products.
         </PageDescription>
-      </Header>
+      </PageHeader>
 
       <Section>
         <SectionTitle>What's New</SectionTitle>
