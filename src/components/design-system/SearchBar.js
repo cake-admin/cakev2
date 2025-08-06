@@ -61,6 +61,10 @@ const ShortcutKey = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const KeyboardKey = styled.kbd`
