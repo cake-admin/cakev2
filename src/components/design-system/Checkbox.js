@@ -29,76 +29,66 @@ const CHECKBOX_SIZES = {
   LARGE: 'large'
 };
 
-const getCheckboxColors = (state, theme, isDisabled, isFocused) => {
+const getCheckboxColors = (state, theme, isDisabled, isFocused, isHovered, isPressed) => {
   const isDark = theme === CHECKBOX_THEMES.DARK;
   
   if (isDisabled) {
-    if (isDark) {
-      return {
-        border: colorData.slate[600],
-        background: colorData.slate[700],
-        icon: colorData.slate[500],
-        label: colorData.slate[400]
-      };
-    }
     return {
-      border: colorData.slate[300],
-      background: colorData.slate[100],
-      icon: colorData.slate[400],
-      label: colorData.slate[400]
+      border: '#64748B',
+      background: '#F1F5F9',
+      icon: '#FFFFFF',
+      label: '#475569'
     };
   }
 
   if (state === CHECKBOX_STATES.CHECKED || state === CHECKBOX_STATES.INDETERMINATE) {
-    if (isDark) {
+    if (isPressed) {
       return {
-        border: colorData.blue[400],
-        background: colorData.blue[400],
-        icon: colorData.slate[900],
-        label: colorData.slate[100]
+        border: '#1D4ED8',
+        background: '#1D4ED8',
+        icon: '#FFFFFF',
+        label: '#0F172A'
+      };
+    } else if (isHovered) {
+      return {
+        border: '#1E3A8A',
+        background: '#1E3A8A',
+        icon: '#FFFFFF',
+        label: '#0F172A'
+      };
+    } else {
+      return {
+        border: '#1D4ED8',
+        background: '#1D4ED8',
+        icon: '#FFFFFF',
+        label: '#0F172A'
       };
     }
-    return {
-      border: colorData.blue[500],
-      background: colorData.blue[500],
-      icon: 'white',
-      label: colorData.slate[900]
-    };
   }
 
   // Unchecked state
-  if (isFocused) {
-    if (isDark) {
-      return {
-        border: colorData.blue[400],
-        background: 'transparent',
-        icon: 'transparent',
-        label: colorData.slate[100]
-      };
-    }
+  if (isPressed) {
     return {
-      border: colorData.blue[500],
+      border: '#64748B',
       background: 'transparent',
       icon: 'transparent',
-      label: colorData.slate[900]
+      label: '#0F172A'
     };
-  }
-
-  if (isDark) {
+  } else if (isHovered) {
     return {
-      border: colorData.slate[400],
+      border: '#0F172A',
       background: 'transparent',
       icon: 'transparent',
-      label: colorData.slate[100]
+      label: '#0F172A'
+    };
+  } else {
+    return {
+      border: '#64748B',
+      background: 'transparent',
+      icon: 'transparent',
+      label: '#0F172A'
     };
   }
-  
-  return {
-    border: colorData.slate[300],
-    background: 'transparent',
-    icon: 'transparent',
-    label: colorData.slate[900]
-  };
 };
 
 const CheckboxContainer = styled.div`
@@ -137,7 +127,7 @@ const CheckboxBox = styled.div`
       default: return '16px';
     }
   }};
-  border: 2px solid ${props => props.colors.border};
+  border: 1.5px solid ${props => props.colors.border};
   border-radius: 3px;
   background-color: ${props => props.colors.background};
   transition: all 0.2s ease;
@@ -145,14 +135,6 @@ const CheckboxBox = styled.div`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  
-  &:hover {
-    border-color: ${props => {
-      if (props.disabled) return props.colors.border;
-      if (props.theme === CHECKBOX_THEMES.DARK) return colorData.blue[400];
-      return colorData.blue[500];
-    }};
-  }
 `;
 
 const FocusRing = styled.div`
@@ -237,6 +219,8 @@ const Checkbox = forwardRef(({
   ...props
 }, ref) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
   const [internalChecked, setInternalChecked] = useState(checked);
 
   // Handle controlled vs uncontrolled state
@@ -251,7 +235,7 @@ const Checkbox = forwardRef(({
   };
 
   const visualState = getVisualState();
-  const colors = getCheckboxColors(visualState, theme, disabled, isFocused);
+  const colors = getCheckboxColors(visualState, theme, disabled, isFocused, isHovered, isPressed);
 
   useEffect(() => {
     if (!isControlled) {
@@ -304,6 +288,27 @@ const Checkbox = forwardRef(({
     handleChange(syntheticEvent);
   };
 
+  const handleMouseEnter = () => {
+    if (!disabled) {
+      setIsHovered(true);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setIsPressed(false);
+  };
+
+  const handleMouseDown = () => {
+    if (!disabled) {
+      setIsPressed(true);
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsPressed(false);
+  };
+
   const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
@@ -312,6 +317,10 @@ const Checkbox = forwardRef(({
       className={className}
       style={style}
       onClick={handleContainerClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
     >
       <HiddenInput
         ref={ref}
