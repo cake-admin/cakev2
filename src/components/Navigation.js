@@ -146,7 +146,7 @@ const NavLinkStyled = styled(NavLink)`
     bottom: 0;
     width: 4px;
     background: #1D4ED8;
-    border-radius: 0 4px 4px 0;
+    border-radius: 0px;
   }
 `;
 
@@ -175,7 +175,7 @@ const SubmenuToggle = styled.button`
   
   &:hover {
     color: ${colorData.slate[900]};
-    background: none;
+    background-color: #F1F5F9;
   }
 `;
 
@@ -237,7 +237,7 @@ const SubmenuLink = styled(NavLink)`
     bottom: 0;
     width: 4px;
     background: #1D4ED8;
-    border-radius: 0 4px 4px 0;
+    border-radius: 0px;
   }
 `;
 
