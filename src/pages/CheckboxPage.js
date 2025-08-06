@@ -113,14 +113,13 @@ const CheckboxContainer = styled.div`
 const CheckboxPage = () => {
   const [state, setState] = useState(CHECKBOX_STATES.UNCHECKED);
   const [theme, setTheme] = useState(CHECKBOX_THEMES.LIGHT);
-  const [labelText, setLabelText] = useState('Label');
 
 
   const [interactiveChecked, setInteractiveChecked] = useState(false);
 
   const getCheckboxProps = () => {
     const props = {
-      label: labelText,
+      label: 'Label',
       theme: theme,
     };
 
@@ -174,15 +173,7 @@ const CheckboxPage = () => {
             </Select>
           </Control>
 
-          <Control>
-            <Label>Label Text</Label>
-            <Input
-              type="text"
-              value={labelText}
-              onChange={(e) => setLabelText(e.target.value)}
-              placeholder="Enter label text"
-            />
-          </Control>
+
         </ControlsGrid>
 
         <CheckboxContainer>
