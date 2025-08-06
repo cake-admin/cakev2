@@ -113,23 +113,27 @@ const CheckboxContainer = styled.div`
 const CheckboxPage = () => {
   const [state, setState] = useState(CHECKBOX_STATES.UNCHECKED);
   const [theme, setTheme] = useState(CHECKBOX_THEMES.LIGHT);
-  const [size, setSize] = useState(CHECKBOX_SIZES.MEDIUM);
-  const [disabled, setDisabled] = useState(false);
   const [labelText, setLabelText] = useState('Label');
 
 
   const getCheckboxProps = () => {
     const props = {
       label: labelText,
-      disabled: disabled,
       theme: theme,
-      size: size,
     };
 
     if (state === CHECKBOX_STATES.CHECKED) {
       props.checked = true;
     } else if (state === CHECKBOX_STATES.INDETERMINATE) {
       props.indeterminate = true;
+    } else if (state === 'disabled-unchecked') {
+      props.disabled = true;
+    } else if (state === 'disabled-checked') {
+      props.checked = true;
+      props.disabled = true;
+    } else if (state === 'disabled-indeterminate') {
+      props.indeterminate = true;
+      props.disabled = true;
     } else {
       props.checked = false;
     }
@@ -159,6 +163,9 @@ const CheckboxPage = () => {
               <option value={CHECKBOX_STATES.UNCHECKED}>Unchecked</option>
               <option value={CHECKBOX_STATES.CHECKED}>Checked</option>
               <option value={CHECKBOX_STATES.INDETERMINATE}>Indeterminate</option>
+              <option value="disabled-unchecked">Disabled Unchecked</option>
+              <option value="disabled-checked">Disabled Checked</option>
+              <option value="disabled-indeterminate">Disabled Indeterminate</option>
             </Select>
           </Control>
 
@@ -171,15 +178,6 @@ const CheckboxPage = () => {
           </Control>
 
           <Control>
-            <Label>Size</Label>
-            <Select value={size} onChange={(e) => setSize(e.target.value)}>
-              <option value={CHECKBOX_SIZES.SMALL}>Small</option>
-              <option value={CHECKBOX_SIZES.MEDIUM}>Medium</option>
-              <option value={CHECKBOX_SIZES.LARGE}>Large</option>
-            </Select>
-          </Control>
-
-          <Control>
             <Label>Label Text</Label>
             <Input
               type="text"
@@ -187,17 +185,6 @@ const CheckboxPage = () => {
               onChange={(e) => setLabelText(e.target.value)}
               placeholder="Enter label text"
             />
-          </Control>
-
-          <Control>
-            <Label>
-              <input
-                type="checkbox"
-                checked={disabled}
-                onChange={(e) => setDisabled(e.target.checked)}
-              />
-              {' '}Disabled
-            </Label>
           </Control>
         </ControlsGrid>
 
