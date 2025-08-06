@@ -22,18 +22,27 @@ const CloseIcon = () => (
 );
 
 const PageContainer = styled.div`
-  padding: 2rem;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+`;
+
+const HeaderWrapper = styled.div`
+  margin-bottom: 48px;
 `;
 
 const Header = styled.h1`
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
+  color: #0F172A;
 `;
 
 const Description = styled.p`
-  margin-bottom: 2rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #475569;
   max-width: 800px;
-  line-height: 1.6;
 `;
 
 const ExampleSection = styled.div`
@@ -191,11 +200,13 @@ const CanvasPage = () => {
 
   return (
     <PageContainer>
-      <Header>Canvas</Header>
-      <Description>
-        The canvas background provides a neutral, consistent foundation for application content. 
-        It ensures readability, visual clarity, and appropriate contrast with interactive components.
-      </Description>
+      <HeaderWrapper>
+        <Header>Canvas</Header>
+        <Description>
+          The canvas background provides a neutral, consistent foundation for application content. 
+          It ensures readability, visual clarity, and appropriate contrast with interactive components.
+        </Description>
+      </HeaderWrapper>
 
       <ExampleSection>
         <ExampleHeader>Example</ExampleHeader>

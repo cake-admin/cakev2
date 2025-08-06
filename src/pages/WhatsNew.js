@@ -7,29 +7,26 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import InfoIcon from '@mui/icons-material/Info';
 
 const PageContainer = styled.div`
-  padding: 32px;
-  width: 100%;
-  box-sizing: border-box;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+`;
+
+const Header = styled.div`
+  margin-bottom: 48px;
 `;
 
 const Title = styled.h1`
-  margin: 0 0 24px 0;
-  font-size: 32px;
-  font-weight: 600;
-  color: ${colorData.slate[900]};
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #0F172A;
 `;
 
 const Description = styled.p`
-  margin: 0 0 32px 0;
-  color: ${colorData.slate[700]};
-  font-size: 14px;
-  line-height: 1.6;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #475569;
   max-width: 800px;
 `;
 
@@ -167,13 +164,15 @@ const WhatsNew = () => {
 
   return (
     <PageContainer>
-      <Title>What's New</Title>
-      
-      <Description>
-        Track the latest updates, improvements, and fixes to the Cake Design System. 
-        Each release represents significant changes and additions to help you stay informed 
-        about our evolving design language.
-      </Description>
+      <Header>
+        <Title>What's New</Title>
+        
+        <Description>
+          Track the latest updates, improvements, and fixes to the Cake Design System. 
+          Each release represents significant changes and additions to help you stay informed 
+          about our evolving design language.
+        </Description>
+      </Header>
 
       <ChangelogGrid>
         {(() => {

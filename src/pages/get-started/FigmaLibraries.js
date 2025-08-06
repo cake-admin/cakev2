@@ -3,26 +3,26 @@ import styled from 'styled-components';
 import { fontStack } from '../../styles/globalStyles';
 
 const PageContainer = styled.div`
-  padding: 32px;
-  width: 100%;
-  box-sizing: border-box;
-  font-family: ${fontStack};
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+`;
+
+const Header = styled.div`
+  margin-bottom: 48px;
 `;
 
 const Title = styled.h1`
-  margin: 0 0 24px 0;
-  font-size: 32px;
-  font-weight: 600;
-  color: #333;
-  font-family: ${fontStack};
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #0F172A;
 `;
 
 const Description = styled.p`
-  margin: 0 0 32px 0;
-  color: #666;
-  font-size: 14px;
-  line-height: 1.6;
-  font-family: ${fontStack};
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #475569;
   max-width: 800px;
 `;
 
@@ -40,11 +40,13 @@ const SectionTitle = styled.h2`
 const FigmaLibraries = () => {
   return (
     <PageContainer>
-      <Title>Figma Libraries</Title>
-      <Description>
-        Access and use our official Figma libraries to ensure consistency across your designs.
-        These libraries contain all the components, styles, and patterns used in the Cake design system.
-      </Description>
+      <Header>
+        <Title>Figma Libraries</Title>
+        <Description>
+          Access and use our official Figma libraries to ensure consistency across your designs.
+          These libraries contain all the components, styles, and patterns used in the Cake design system.
+        </Description>
+      </Header>
 
       <Section>
         <SectionTitle>Getting Started</SectionTitle>

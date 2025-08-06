@@ -3,27 +3,27 @@ import styled from 'styled-components';
 import Card from '../components/design-system/Card';
 
 const PageContainer = styled.div`
-  padding: 40px;
+  padding: 24px;
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 100vh;
 `;
 
-const PageHeader = styled.div`
-  margin-bottom: 40px;
+const Header = styled.div`
+  margin-bottom: 48px;
 `;
 
 const PageTitle = styled.h1`
   font-size: 2rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 8px 0;
+  margin-bottom: 16px;
+  color: #0F172A;
 `;
 
 const PageSubtitle = styled.p`
-  font-size: 18px;
-  color: #6b7280;
-  margin: 0;
+  font-size: 1rem;
   line-height: 1.5;
+  color: #475569;
+  max-width: 800px;
 `;
 
 const Section = styled.section`
@@ -241,12 +241,12 @@ const VersionControl = () => {
 
   return (
     <PageContainer>
-      <PageHeader>
+      <Header>
         <PageTitle>Version Control</PageTitle>
         <PageSubtitle>
           Track the evolution of our design system through version history and changelog entries.
         </PageSubtitle>
-      </PageHeader>
+      </Header>
 
       <Section>
         <SectionTitle>Current Version</SectionTitle>
