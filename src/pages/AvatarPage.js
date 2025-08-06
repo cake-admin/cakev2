@@ -9,19 +9,27 @@ const THEMES = {
 };
 
 const PageContainer = styled.div`
-  padding: 40px;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+`;
+
+const Header = styled.div`
+  margin-bottom: 48px;
 `;
 
 const Title = styled.h1`
-  font-size: 32px;
-  margin-bottom: 24px;
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #0F172A;
 `;
 
 const Description = styled.p`
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.5;
-  margin-bottom: 32px;
-  color: #4A5568;
+  color: #475569;
+  max-width: 800px;
 `;
 
 const Section = styled.section`
@@ -93,11 +101,13 @@ const AvatarPage = () => {
 
   return (
     <PageContainer>
-      <Title>Avatar</Title>
-      <Description>
-        Avatars are used to represent people or organizations. They can display
-        images, initials, or a fallback icon.
-      </Description>
+      <Header>
+        <Title>Avatar</Title>
+        <Description>
+          Avatars are used to represent people or organizations. They can display
+          images, initials, or a fallback icon.
+        </Description>
+      </Header>
 
 
       <Section>

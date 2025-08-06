@@ -5,20 +5,20 @@ import colorData from '../../data/colors.json';
 import { fontStack } from '../../styles/globalStyles';
 
 const PageContainer = styled.div`
-  padding: 32px;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  font-family: ${fontStack};
-  overflow-x: hidden;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+`;
+
+const Header = styled.div`
+  margin-bottom: 48px;
 `;
 
 const Title = styled.h1`
-  margin: 0 0 24px 0;
-  font-size: 32px;
-  font-weight: 600;
-  color: ${colorData.slate[900]};
-  font-family: ${fontStack};
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #0F172A;
 `;
 
 const ColorSection = styled.div`
@@ -65,11 +65,9 @@ const ColorGrid = styled.div`
 `;
 
 const Description = styled.p`
-  margin: 0 0 32px 0;
-  color: ${colorData.slate[700]};
-  font-size: 14px;
-  line-height: 1.6;
-  font-family: ${fontStack};
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #475569;
   max-width: 800px;
 `;
 
@@ -121,12 +119,14 @@ const ColorsPage = () => {
 
   return (
     <PageContainer>
-      <Title>Color</Title>
-      <Description>
-        Color is a fundamental part of our design language. It sets the tone for our brand, guides user attention, 
-        and ensures accessible, consistent experiences across products. This section outlines our core color palette 
-        and provides usage guidance to maintain visual harmony, support accessibility, and reinforce brand identity.
-      </Description>
+      <Header>
+        <Title>Color</Title>
+        <Description>
+          Color is a fundamental part of our design language. It sets the tone for our brand, guides user attention, 
+          and ensures accessible, consistent experiences across products. This section outlines our core color palette 
+          and provides usage guidance to maintain visual harmony, support accessibility, and reinforce brand identity.
+        </Description>
+      </Header>
 
       {/* Render all color categories in their original order */}
       {categories.map(category => {
