@@ -76,10 +76,14 @@ const WelcomeTitle = styled.h1`
   color: #0F172A;
   font-family: ${fontStack};
   font-weight: 800;
-  font-size: 3rem;
-  line-height: 1.75rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.2;
   padding-bottom: 1.25rem;
   margin: 0;
+
+  @media (max-width: 640px) {
+    line-height: 1.3;
+  }
 `;
 
 const PageTitle = styled.h1`
