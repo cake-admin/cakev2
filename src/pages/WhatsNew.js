@@ -31,22 +31,11 @@ const Description = styled.p`
 `;
 
 const ChangelogGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  width: 100%;
-  max-width: 1200px;
-`;
-
-const CurrentVersionWrapper = styled.div`
-  width: 100%;
-`;
-
-const OlderVersionsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 24px;
   width: 100%;
+  max-width: 1200px;
 `;
 
 const StyledUpdateDate = styled.div`
@@ -177,69 +166,39 @@ const WhatsNew = () => {
       <ChangelogGrid>
         {(() => {
           const sortedUpdates = updates.sort((a, b) => new Date(b.date) - new Date(a.date));
-          const currentVersion = sortedUpdates.find(update => update.current);
-          const olderVersions = sortedUpdates.filter(update => !update.current);
           
-          return (
-            <>
-              {currentVersion && (
-                <CurrentVersionWrapper>
-                  <Card hoverable elevated>
-                    <Card.Body>
-                      <StyledUpdateDate>{currentVersion.date}</StyledUpdateDate>
-                      <StyledCardTitle>{currentVersion.version}</StyledCardTitle>
-                      <BadgeContainer>
-                        <Chip
-                          type={CHIP_TYPES.SUCCESS}
-                          size={CHIP_SIZES.SMALL}
-                          chipStyle={CHIP_STYLES.PILL}
-                          label="Current"
-                          rightIcon={<StyledSuccessIcon isDarkMode={isDarkMode} />}
-                          isDarkMode={isDarkMode}
-                        />
-                        <Chip
-                          type={CHIP_TYPES.INFO}
-                          size={CHIP_SIZES.SMALL}
-                          chipStyle={CHIP_STYLES.PILL}
-                          label={`${currentVersion.type} release`}
-                          isDarkMode={isDarkMode}
-                        />
-                      </BadgeContainer>
-                      <UpdateList>
-                        {currentVersion.changes.map((change, changeIndex) => (
-                          <li key={changeIndex}>{change}</li>
-                        ))}
-                      </UpdateList>
-                    </Card.Body>
-                  </Card>
-                </CurrentVersionWrapper>
-              )}
-              <OlderVersionsGrid>
-                {olderVersions.map((update, index) => (
-                  <Card key={index} hoverable elevated>
-                    <Card.Body>
-                      <StyledUpdateDate>{update.date}</StyledUpdateDate>
-                      <StyledCardTitle>{update.version}</StyledCardTitle>
-                      <BadgeContainer>
-                        <Chip
-                          type={CHIP_TYPES.INFO}
-                          size={CHIP_SIZES.SMALL}
-                          chipStyle={CHIP_STYLES.PILL}
-                          label={`${update.type} release`}
-                          isDarkMode={isDarkMode}
-                        />
-                      </BadgeContainer>
-                      <UpdateList>
-                        {update.changes.map((change, changeIndex) => (
-                          <li key={changeIndex}>{change}</li>
-                        ))}
-                      </UpdateList>
-                    </Card.Body>
-                  </Card>
-                ))}
-              </OlderVersionsGrid>
-            </>
-          );
+          return sortedUpdates.map((update, index) => (
+            <Card key={index} hoverable elevated>
+              <Card.Body>
+                <StyledUpdateDate>{update.date}</StyledUpdateDate>
+                <StyledCardTitle>{update.version}</StyledCardTitle>
+                <BadgeContainer>
+                  {update.current && (
+                    <Chip
+                      type={CHIP_TYPES.SUCCESS}
+                      size={CHIP_SIZES.SMALL}
+                      chipStyle={CHIP_STYLES.PILL}
+                      label="Current"
+                      rightIcon={<StyledSuccessIcon isDarkMode={isDarkMode} />}
+                      isDarkMode={isDarkMode}
+                    />
+                  )}
+                  <Chip
+                    type={CHIP_TYPES.INFO}
+                    size={CHIP_SIZES.SMALL}
+                    chipStyle={CHIP_STYLES.PILL}
+                    label={`${update.type} release`}
+                    isDarkMode={isDarkMode}
+                  />
+                </BadgeContainer>
+                <UpdateList>
+                  {update.changes.map((change, changeIndex) => (
+                    <li key={changeIndex}>{change}</li>
+                  ))}
+                </UpdateList>
+              </Card.Body>
+            </Card>
+          ));
         })()}
       </ChangelogGrid>
     </PageContainer>

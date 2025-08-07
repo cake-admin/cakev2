@@ -348,8 +348,20 @@ const Navigation = () => {
             </NavItem>
             
             <NavItem>
+              <NavLinkStyled to="/about" onClick={closeNav}>
+                About
+              </NavLinkStyled>
+            </NavItem>
+            
+            <NavItem>
               <NavLinkStyled to="/whats-new" onClick={closeNav}>
                 What's New
+              </NavLinkStyled>
+            </NavItem>
+            
+            <NavItem>
+              <NavLinkStyled to="/resources" onClick={closeNav}>
+                Resources
               </NavLinkStyled>
             </NavItem>
             

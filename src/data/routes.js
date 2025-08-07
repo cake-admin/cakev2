@@ -5,6 +5,8 @@ import ColorsPage from '../pages/foundations/ColorsPage';
 import WhatsNew from '../pages/WhatsNew';
 import FigmaLibraries from '../pages/get-started/FigmaLibraries';
 import AboutCake from '../pages/get-started/AboutCake';
+import About from '../pages/About';
+import Resources from '../pages/Resources';
 import Home from '../pages/Home';
 import ChipPage from '../pages/ChipPage';
 import ButtonPage from '../pages/ButtonPage';
@@ -97,6 +99,20 @@ export const routes = [
     component: WhatsNew,
     title: "What's New",
     description: 'Latest updates and changes',
+    category: 'guides'
+  },
+  {
+    path: '/about',
+    component: About,
+    title: 'About',
+    description: 'Core principles and foundations of the Cake Design System',
+    category: 'guides'
+  },
+  {
+    path: '/resources',
+    component: Resources,
+    title: 'Resources',
+    description: 'Figma libraries and design resources',
     category: 'guides'
   },
   {

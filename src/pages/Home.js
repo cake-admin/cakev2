@@ -1,19 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Card from '../components/design-system/Card';
-import Chip, { CHIP_TYPES, CHIP_SIZES, CHIP_STYLES } from '../components/design-system/Chip';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
-import ExtensionIcon from '@mui/icons-material/Extension';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import Chip from '../components/design-system/Chip';
 import InfoIcon from '@mui/icons-material/Info';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import CampaignIcon from '@mui/icons-material/Campaign';
+import ExploreIcon from '@mui/icons-material/Explore';
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+
 import { fontStack } from '../styles/globalStyles';
 import colorData from '../data/colors.json';
-import heroBanner from '../assets/hero/hero-banner.png';
+
+
+
+
 
 const PageContainer = styled.div`
-  max-width: 680px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 60px 20px 120px 20px;
 `;
@@ -22,78 +27,153 @@ const PageHeader = styled.div`
   margin-bottom: 40px;
 `;
 
-const PageTitle = styled.h1`
-  color: ${colorData.slate[900]};
+const ReleaseCard = styled.div`
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  min-width: 200px;
+`;
+
+const ReleaseDate = styled.div`
+  color: #64748B;
   font-family: ${fontStack};
-  font-weight: 600;
-  font-size: 2rem;
-  line-height: 28px;
-  padding-bottom: 24px;
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+`;
+
+const ReleaseVersion = styled.div`
+  color: #0F172A;
+  font-family: ${fontStack};
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+`;
+
+const ReleaseChips = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+`;
+
+const StyledSuccessIcon = styled(CheckCircleIcon)`
+  color: #047857;
+`;
+
+const EmeraldChip = styled(Chip)`
+  background-color: #D1FAE5 !important;
+  color: #065F46 !important;
+  
+  .icon-left svg {
+    color: #10B981 !important;
+  }
+`;
+
+
+const WelcomeTitle = styled.h1`
+  color: #0F172A;
+  font-family: ${fontStack};
+  font-weight: 800;
+  font-size: 3rem;
+  line-height: 1.75rem;
+  padding-bottom: 1.25rem;
   margin: 0;
 `;
 
-const PageDescription = styled.p`
-  color: ${colorData.slate[700]};
+const PageTitle = styled.h1`
+  color: #0F172A;
   font-family: ${fontStack};
-  font-size: 14px;
-  line-height: 24px;
-  margin: 0 0 24px 0;
+  font-weight: 700;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin: 0 0 1rem 0;
+`;
+
+const PageSubheader = styled.h2`
+  color: #334155;
+  font-family: ${fontStack};
+  font-weight: 400;
+  font-stretch: 580;
+  font-size: 1.75rem;
+  line-height: 1.4;
+  margin: 0 0 0.5rem 0;
+  max-width: 680px;
+`;
+
+const PageDescription = styled.p`
+  color: #334155;
+  font-family: ${fontStack};
+  font-weight: 400;
+  font-stretch: 580;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  margin: 0 0 1.5rem 0;
+  max-width: 680px;
 `;
 
 const Section = styled.section`
-  padding: 16px 0px;
+  padding: 1rem 0px;
 `;
 
 const SectionTitle = styled.h2`
-  color: ${colorData.slate[700]};
+  color: #334155;
   font-family: ${fontStack};
   font-weight: 600;
-  font-size: 18px;
-  margin: 0 0 16px 0;
+  font-size: 1.125rem;
+  margin: 0 0 0.5rem 0;
 `;
 
 const SectionDescription = styled.p`
-  color: ${colorData.slate[700]};
+  color: #334155;
   font-family: ${fontStack};
-  font-size: 14px;
-  line-height: 24px;
-  margin: 0 0 32px 0;
+  font-weight: 400;
+  font-stretch: 580;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  margin: 0 0 1rem 0;
+  max-width: 680px;
 `;
 
 const CardsRow = styled.div`
-  padding-top: 8px;
+  padding-top: 0.5rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
   width: 100%;
+  align-items: stretch;
 `;
 
 const IconWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 16px;
-  color: ${colorData.slate[900]};
+  margin-bottom: 1rem;
+  color: #1E293B;
   
   & > svg {
-    width: 32px;
-    height: 32px;
+    width: 2rem;
+    height: 2rem;
   }
 `;
 
 const CardTitle = styled.h3`
-  margin: 0 0 12px 0;
-  color: ${colorData.slate[900]};
+  margin: 0 0 0.75rem 0;
+  color: #334155;
   font-family: ${fontStack};
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
 `;
 
 const CardText = styled.p`
   margin: 0;
-  color: ${colorData.slate[700]};
+  color: #334155;
   line-height: 1.5;
   font-family: ${fontStack};
-  font-size: 14px;
+  font-weight: 400;
+  font-stretch: 580;
+  font-size: 0.875rem;
+  max-width: 680px;
 
   a {
     color: #1D4ED8;
@@ -105,170 +185,149 @@ const CardText = styled.p`
   }
 `;
 
-const HorizontalCard = styled(Card)`
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  overflow: hidden;
-  cursor: pointer;
-  
-  @media (max-width: 600px) {
-    flex-direction: column;
-  }
-`;
 
-const CardImageWrapper = styled.div`
-  flex: 0 0 220px;
-  
-  @media (max-width: 600px) {
-    flex: 0 0 160px;
-  }
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
-const CardContentWrapper = styled.div`
-  flex: 1;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const CardSubheader = styled.h4`
-  color: ${colorData.slate[700]};
-  font-family: ${fontStack};
-  font-size: 14px;
-  font-weight: 600;
-  margin: 0 0 4px 0;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-`;
-
-const BadgeContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 4px 0 12px;
-`;
-
-const StyledSuccessIcon = styled(CheckCircleIcon)`
-  color: ${props => props.isDarkMode ? '#18181B' : '#047857'};
-`;
-
-const StyledInfoIcon = styled(InfoIcon)`
-  color: ${props => props.isDarkMode ? '#18181B' : '#1D4ED8'};
-`;
-
-const THEMES = {
-  LIGHT_A: 'light.a',
-  DARK_A: 'dark.a'
-};
 
 const Home = () => {
-  const navigate = useNavigate();
-  const isDarkMode = false; // We're using light theme for the homepage
-
-  const handleWhatsNewClick = () => {
-    navigate('/whats-new');
-  };
 
   return (
-    <PageContainer>
+    <>
+      <PageContainer>
       <PageHeader>
-        <PageTitle>One Lenovo "Cake" Design System</PageTitle>
-        <PageDescription>
-          The One Lenovo "Cake" Design System is a design framework aimed at creating a unified design language across all Lenovo software. Its purpose is to ensure consistency, improve usability, and enhance the overall user experience of Lenovo's diverse range of digital products.
-        </PageDescription>
+        <WelcomeTitle>Welcome to Cake</WelcomeTitle>
+        <PageSubheader>Ingredients for great design.</PageSubheader>
       </PageHeader>
 
-      <Section>
-        <SectionTitle>What's New</SectionTitle>
-        <SectionDescription>
-          Stay up to date with the latest updates and improvements to the Cake Design System.
-        </SectionDescription>
-        
-        <HorizontalCard elevated hoverable onClick={handleWhatsNewClick}>
-          <CardImageWrapper>
-            <Card.Image src={heroBanner} alt="Cake Design System Updates" />
-          </CardImageWrapper>
-          <CardContentWrapper>
-            <CardSubheader>Latest Updates</CardSubheader>
-            <CardTitle>v1.4.0</CardTitle>
-            <BadgeContainer>
-              <Chip
-                type={CHIP_TYPES.SUCCESS}
-                size={CHIP_SIZES.SMALL}
-                chipStyle={CHIP_STYLES.PILL}
-                label="Current"
-                rightIcon={<StyledSuccessIcon isDarkMode={isDarkMode} />}
-                isDarkMode={isDarkMode}
-              />
-              <Chip
-                type={CHIP_TYPES.INFO}
-                size={CHIP_SIZES.SMALL}
-                chipStyle={CHIP_STYLES.PILL}
-                label="Major release"
-                isDarkMode={isDarkMode}
-              />
-            </BadgeContainer>
-            <CardText>
-              Our latest major release brings significant improvements to accessibility and user experience. Updated core components now meet WCAG 2.2 guidelines with enhanced interaction consistency and improved color contrast.
-            </CardText>
-          </CardContentWrapper>
-        </HorizontalCard>
-      </Section>
+      <CardsRow>
+        <Link to="/resources" style={{ textDecoration: 'none', color: 'inherit', height: '100%', display: 'block' }}>
+          <Card elevated hoverable style={{ height: '100%' }}>
+            <Card.Body style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                <IconWrapper>
+                  <ExploreIcon />
+                </IconWrapper>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '1.25rem', height: '1.25rem', color: '#475569', opacity: 1 }}>
+                  <ArrowForwardIcon style={{ width: '1.25rem', height: '1.25rem' }} />
+                </div>
+              </div>
+              <CardTitle style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>Get started</CardTitle>
+              <CardText style={{ marginBottom: '1.25rem', flex: 1, fontSize: '1rem' }}>
+              Start building with Cake using Figma libraries for core components, foundations, AI, and subsystems like PC Software, Enterprise, and Gaming.
+              </CardText>
+            </Card.Body>
+          </Card>
+        </Link>
 
-      <Section>
-        <SectionTitle>Core Principles</SectionTitle>
-        <SectionDescription>
-          Our design system is built on a foundation of consistency, accessibility, and flexibility. 
-          Each component is designed to work seamlessly together while maintaining individual functionality.
+        <Link to="/whats-new" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+          <Card elevated hoverable>
+            <Card.Body style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                <IconWrapper>
+                  <CampaignIcon />
+                </IconWrapper>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '1.25rem', height: '1.25rem', color: '#475569', opacity: 1 }}>
+                  <ArrowForwardIcon style={{ width: '1.25rem', height: '1.25rem' }} />
+                </div>
+              </div>
+              <CardTitle style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>What's new</CardTitle>
+              <CardText style={{ marginBottom: '1rem', flex: 1, fontSize: '1rem' }}>
+                Track the latest updates, improvements, and fixes to the Cake Design System.
+              </CardText>
+              <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
+                <div style={{ 
+                  padding: '1rem',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '0.75rem',
+                  background: '#fafafa'
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <ReleaseDate style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>May 1, 2025</ReleaseDate>
+                      <ReleaseVersion style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>v1.4.0</ReleaseVersion>
+                    </div>
+                    <Chip 
+                      type="success" 
+                      label="Current" 
+                      leftIcon={<StyledSuccessIcon />}
+                      size="small"
+                    />
+                  </div>
+                </div>
+              </div>
+
+            </Card.Body>
+          </Card>
+        </Link>
+
+
+      </CardsRow>
+
+      <Section style={{ marginTop: '5rem' }}>
+        <SectionTitle style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem', color: '#0F172A' }}>
+          Why build with Cake?
+        </SectionTitle>
+        <SectionDescription style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>
+          Discover the core principles that make Cake the perfect foundation for your next feature.
         </SectionDescription>
         
         <CardsRow>
-          <Card hoverable elevated>
-            <Card.Body>
-              <IconWrapper>
-                <AutoFixHighIcon />
-              </IconWrapper>
-              <CardTitle>Consistency</CardTitle>
-              <CardText>
-                Unified design language across all components ensures a cohesive user experience.
+          <Card elevated style={{ height: '100%' }}>
+            <Card.Body style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                <IconWrapper>
+                  <svg width="2rem" height="2rem" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V20c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V22H19c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/>
+                  </svg>
+                </IconWrapper>
+              </div>
+              <CardTitle style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>Modularity</CardTitle>
+              <CardText style={{ marginBottom: '1.25rem', flex: 1, fontSize: '1rem' }}>
+                Build with confidence using our modular component system. Mix and match components to create consistent, scalable interfaces that adapt to your needs.
               </CardText>
             </Card.Body>
           </Card>
-          
-          <Card hoverable elevated>
-            <Card.Body>
-              <IconWrapper>
-                <AccessibilityNewIcon />
-              </IconWrapper>
-              <CardTitle>Accessibility</CardTitle>
-              <CardText>
-                All components meet <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener noreferrer">WCAG guidelines</a> and support keyboard navigation.
+
+          <Card elevated style={{ height: '100%' }}>
+            <Card.Body style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                <IconWrapper>
+                  <svg width="2rem" height="2rem" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/>
+                  </svg>
+                </IconWrapper>
+              </div>
+              <CardTitle style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>Accessibility</CardTitle>
+              <CardText style={{ marginBottom: '1.25rem', flex: 1, fontSize: '1rem' }}>
+                Every Cake component is built to meet{' '}
+                <a 
+                  href="https://www.w3.org/TR/WCAG22/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ color: '#1D4ED8', textDecoration: 'none' }}
+                >
+                  WCAG 2.2 AA standards
+                </a>
+                , ensuring your experiences are accessible, inclusive, and usable by everyone, regardless of ability or device.
               </CardText>
             </Card.Body>
           </Card>
-          
-          <Card hoverable elevated>
-            <Card.Body>
-              <IconWrapper>
-                <ExtensionIcon />
-              </IconWrapper>
-              <CardTitle>Flexibility</CardTitle>
-              <CardText>
-                Customizable components that adapt to different use cases and requirements.
+
+          <Card elevated style={{ height: '100%' }}>
+            <Card.Body style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', marginBottom: '1rem' }}>
+                <IconWrapper>
+                  <DesignServicesIcon />
+                </IconWrapper>
+              </div>
+              <CardTitle style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>Brand</CardTitle>
+              <CardText style={{ marginBottom: '1.25rem', flex: 1, fontSize: '1rem' }}>
+                Maintain brand consistency across all your applications. Cake provides the building blocks that reflect Lenovo's design language and values.
               </CardText>
             </Card.Body>
           </Card>
         </CardsRow>
       </Section>
     </PageContainer>
+    </>
   );
 };
 
