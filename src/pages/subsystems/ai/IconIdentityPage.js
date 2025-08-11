@@ -55,6 +55,8 @@ const StyledCard = styled(Card)`
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   overflow: hidden;
+  height: auto;
+  min-height: fit-content;
 `;
 
 const ImageContainer = styled.div`
@@ -108,13 +110,13 @@ const IconIdentityPage = () => {
     <PageContainer>
       <Title>Icon & Identity</Title>
       <Description>
-        Guidelines and components for AI-powered icon generation and brand identity management in the Cake Design System.
+        Our AI icon and identity system ensures a consistent, recognizable look across all products and platforms. It's designed to communicate intelligence, approachability, and trust while aligning with the broader brand language.
       </Description>
       
       <Section>
-        <SectionTitle>AI Identity</SectionTitle>
+        <SectionTitle>Logo usage</SectionTitle>
         <SectionText>
-          Our AI features should feel intelligent, trustworthy, and human-centered — not cold, robotic, or impersonal. This section outlines principles for visually representing AI in a way that reflects our values and product goals.
+          Lenovo's AI identity will maintain consistency across all software applications. The Moto AI logo has been adapted as the standard iconography for AI features within these applications.
         </SectionText>
         
                 <CardGrid>
@@ -130,37 +132,11 @@ const IconIdentityPage = () => {
                 <StyledImage src={MotoAiColor} alt="Moto AI color icon" />
                 <StyledImage src={MotoAi} alt="Moto AI icon" />
               </ImageContainer>
-              <CardText>Use the Moto AI icon as the primary visual identity for AI for Lenovo software solutions.</CardText>
+              <CardText>Use the Moto AI logo as the primary visual identity for Lenovo AI software.</CardText>
             </Card.Body>
           </StyledCard>
 
-          <StyledCard type="dont">
-            <Card.Body>
-              <CardHeader type="dont">
-                <HeaderIcon type="dont">
-                  <CancelIcon />
-                </HeaderIcon>
-                <HeaderText type="dont">Don't</HeaderText>
-              </CardHeader>
-              <CardText>
-                Do not use AI branding or iconography unless your feature has been reviewed and approved by the Responsible AI Committee. Your feature must meet the established AI feature definition criteria and guidelines before incorporating any AI-specific visual elements.
-              </CardText>
-            </Card.Body>
-          </StyledCard>
 
-          <StyledCard type="dont">
-            <Card.Body>
-              <CardHeader type="dont">
-                <HeaderIcon type="dont">
-                  <CancelIcon />
-                </HeaderIcon>
-                <HeaderText type="dont">Don't</HeaderText>
-              </CardHeader>
-              <CardText>
-                Do not modify, alter, or create variations of the Moto AI icon. The icon should be used as provided to maintain consistency across all Lenovo software solutions.
-              </CardText>
-            </Card.Body>
-          </StyledCard>
 
           <StyledCard type="dont">
             <Card.Body>
@@ -175,31 +151,11 @@ const IconIdentityPage = () => {
                 <StyledImage smaller src={Robo2} alt="Example of robot imagery to avoid - robot 2" />
               </ImageContainer>
               <CardText>
-                While robot icons and android faces are a common shorthand for AI, we deliberately steer away from these for several reasons:
+                Do not use robot and / or android images for Lenovo AI software.
               </CardText>
-              <div style={{ marginTop: '16px' }}>
-                <CardText style={{ fontWeight: '600', marginBottom: '8px' }}>1. Cliché and Overused</CardText>
-                <CardText style={{ marginBottom: '16px' }}>
-                  Robot imagery is widely used and lacks distinction. It makes our brand look generic, not thoughtful or innovative.
-                </CardText>
-
-                <CardText style={{ fontWeight: '600', marginBottom: '8px' }}>2. Cold and Mechanical</CardText>
-                <CardText style={{ marginBottom: '16px' }}>
-                  Our AI is designed to be helpful, approachable, and collaborative — not distant or machine-like. Robot faces often send the wrong emotional signal.
-                </CardText>
-
-                <CardText style={{ fontWeight: '600', marginBottom: '8px' }}>3. Limits Brand Flexibility</CardText>
-                <CardText style={{ marginBottom: '16px' }}>
-                  Robotic imagery ties us to a narrow interpretation of AI. As our capabilities grow (e.g., copilots, recommendations, insights), we need a broader and more timeless visual language.
-                </CardText>
-
-                <CardText style={{ fontWeight: '600', marginBottom: '8px' }}>4. May Trigger Distrust</CardText>
-                <CardText>
-                  Robot faces can evoke "uncanny valley" discomfort or fears of AI replacing humans. We want to inspire confidence, not anxiety.
-                </CardText>
-              </div>
             </Card.Body>
           </StyledCard>
+
         </CardGrid>
       </Section>
     </PageContainer>
