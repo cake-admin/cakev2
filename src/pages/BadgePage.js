@@ -141,7 +141,6 @@ const BadgePage = () => {
       </Header>
 
       <Section>
-        <SectionTitle>Basic badge</SectionTitle>
         <ControlsGrid>
           <Control>
             <Label>Value</Label>

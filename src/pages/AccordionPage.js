@@ -132,7 +132,6 @@ const AccordionPage = () => {
       </Header>
 
       <Section>
-        <SectionTitle>Accordion</SectionTitle>
         <ControlsGrid>
           <Control>
             <Label>Theme</Label>

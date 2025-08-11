@@ -187,6 +187,7 @@ const RadioContainer = styled.div`
   cursor: ${props => props.isDisabled ? 'not-allowed' : 'pointer'};
   user-select: none;
   position: relative;
+  outline: none;
 `;
 
 const RadioInput = styled.input`
@@ -289,13 +290,12 @@ const RadioButtonInner = styled.div`
     &::after {
       content: '';
       position: absolute;
-      top: -6px;
-      left: -6px;
-      right: -6px;
-      bottom: -6px;
+      top: -8px;
+      left: -8px;
+      right: -8px;
+      bottom: -8px;
       border: 3px solid #1D4ED8;
       border-radius: 50%;
-      opacity: 0.5;
     }
   `}
 
@@ -303,13 +303,12 @@ const RadioButtonInner = styled.div`
     &::after {
       content: '';
       position: absolute;
-      top: -6px;
-      left: -6px;
-      right: -6px;
-      bottom: -6px;
+      top: -8px;
+      left: -8px;
+      right: -8px;
+      bottom: -8px;
       border: 3px solid #93C5FD;
       border-radius: 50%;
-      opacity: 0.5;
     }
   `}
 `;
@@ -344,8 +343,10 @@ const RadioLabel = styled.label`
   font-weight: 600;
   color: ${props => getRadioColors(props.state, props.theme, props.isDisabled, props.isFocused, props.isHovered, props.isPressed).label};
   cursor: ${props => props.isDisabled ? 'not-allowed' : 'pointer'};
-  line-height: 1.4;
   margin: 0;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
 `;
 
 const Radio = forwardRef(({
@@ -440,6 +441,23 @@ const Radio = forwardRef(({
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (!disabled && (event.key === ' ' || event.key === 'Enter')) {
+      event.preventDefault();
+      
+      // Toggle the checked state
+      const newEvent = {
+        ...event,
+        target: {
+          ...event.target,
+          checked: !checked,
+          value: value
+        }
+      };
+      onChange(newEvent);
+    }
+  };
+
   return (
     <RadioContainer
       isDisabled={disabled}
@@ -448,6 +466,10 @@ const Radio = forwardRef(({
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      tabIndex={disabled ? -1 : 0}
+      role="radio"
+      aria-checked={checked}
       className={className}
     >
       <RadioInput

@@ -209,7 +209,6 @@ const CanvasPage = () => {
       </HeaderWrapper>
 
       <ExampleSection>
-        <ExampleHeader>Example</ExampleHeader>
         <DemoContainer
           id="demo-container"
           onMouseMove={handleMouseMove}

@@ -154,7 +154,6 @@ const BreadcrumbPage = () => {
       </Header>
 
       <Section>
-        <SectionTitle>Basic breadcrumb</SectionTitle>
         <ControlsGrid>
           <Control>
             <Label>Number of Items</Label>

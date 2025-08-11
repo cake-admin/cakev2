@@ -166,7 +166,6 @@ const ChipPage = () => {
       </Header>
 
       <Section>
-        <SectionTitle>Examples</SectionTitle>
         <ControlsGrid>
           <Control>
             <Label>Size</Label>

@@ -165,7 +165,6 @@ const CheckboxPage = () => {
       </Header>
 
       <Section>
-        <SectionTitle>Live Preview</SectionTitle>
         <ControlsGrid>
           <Control>
             <Label>State</Label>
