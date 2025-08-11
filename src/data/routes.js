@@ -15,6 +15,7 @@ import IconIdentityPage from '../pages/subsystems/ai/IconIdentityPage';
 import AvatarPage from '../pages/AvatarPage';
 import BadgePage from '../pages/BadgePage';
 import BreadcrumbPage from '../pages/BreadcrumbPage';
+import RadioPage from '../pages/RadioPage';
 
 export const routes = [
   {
@@ -78,6 +79,13 @@ export const routes = [
     component: ChipPage,
     title: 'Chip',
     description: 'Compact and versatile UI element for displaying discrete information',
+    category: 'components'
+  },
+  {
+    path: '/components/radio',
+    component: RadioPage,
+    title: 'Radio',
+    description: 'Interactive radio component for single-choice selections from multiple options with support for various states and themes',
     category: 'components'
   },
   {
