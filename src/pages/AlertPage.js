@@ -396,10 +396,11 @@ const AlertPage = () => {
             
             {/* Settings card content */}
             <div style={{ 
-              background: '#F8FAFC', 
+              background: '#FFFFFF', 
               border: '1px solid #E2E8F0', 
-              borderRadius: '6px', 
-              padding: '20px'
+              borderRadius: '8px', 
+              padding: '24px',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
             }}>
               <h4 style={{ margin: '0 0 12px 0', fontSize: '1rem', fontWeight: '600', color: '#0F172A' }}>
                 Section title
