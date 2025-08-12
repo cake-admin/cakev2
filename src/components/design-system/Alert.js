@@ -179,6 +179,14 @@ const AlertContainer = styled.div`
       min-width: 280px;
       max-width: calc(100vw - 40px);
       margin: 0 20px;
+      
+      /* Improve centered positioning on mobile */
+      ${props.position === 'top-center' || props.position === 'bottom-center' ? `
+        left: 20px !important;
+        right: 20px !important;
+        transform: none !important;
+        width: calc(100vw - 40px) !important;
+      ` : ''}
     }
     
     @media (max-width: 480px) {
@@ -186,6 +194,14 @@ const AlertContainer = styled.div`
       max-width: calc(100vw - 32px);
       margin: 0 16px;
       padding: ${props.variant === ALERT_VARIANTS.SIMPLE ? '10px 12px' : '14px'};
+      
+      /* Further improve centered positioning on small mobile */
+      ${props.position === 'top-center' || props.position === 'bottom-center' ? `
+        left: 16px !important;
+        right: 16px !important;
+        transform: none !important;
+        width: calc(100vw - 32px) !important;
+      ` : ''}
     }
   `}
   
