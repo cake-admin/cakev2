@@ -287,7 +287,7 @@ const AlertPage = () => {
 
         <PreviewContainer theme={theme}>
           <Alert
-            type={ALERT_TYPES.INLINE}
+            type={ALERT_TYPES.TOAST}
             variant={variant}
             severity={severity}
             theme={theme}
@@ -298,7 +298,6 @@ const AlertPage = () => {
             onDismiss={handleDismiss}
             onAction={handleAction}
             actions={actions}
-            timestamp={timestamp}
           />
         </PreviewContainer>
         
