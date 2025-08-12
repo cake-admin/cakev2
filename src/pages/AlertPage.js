@@ -209,6 +209,9 @@ const AlertPage = () => {
 
       <Section>
         <SectionTitle>Toast Alert</SectionTitle>
+        <Description>
+          The Toast Alert Component is a lightweight and non-intrusive UI element designed to display transient messages or notifications to users. It appears briefly and automatically fades away, providing timely feedback without disrupting the user's workflow.
+        </Description>
         <ControlsGrid>
           <Control>
             <Label>Variant</Label>
@@ -312,6 +315,9 @@ const AlertPage = () => {
 
       <Section>
         <SectionTitle>Inline Alert</SectionTitle>
+        <Description>
+          The Inline Alert Component is a lightweight UI element designed to provide contextual feedback or notifications within a block of content. It seamlessly integrates into your interface, allowing you to convey important information without disrupting the user's workflow.
+        </Description>
         <ControlsGrid>
           <Control>
             <Label>Variant</Label>
