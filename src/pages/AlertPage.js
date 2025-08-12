@@ -388,14 +388,6 @@ const AlertPage = () => {
         
         <div style={{ display: 'grid', gap: '24px', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
           <div>
-            <h3 style={{ margin: '0 0 16px 0', fontSize: '1.125rem', fontWeight: '600', color: '#0F172A' }}>
-              Example 1
-            </h3>
-            <p style={{ margin: '0 0 24px 0', color: '#475569', lineHeight: '1.5' }}>
-              Use an informational Inline Alert to inform users that a setting is disabled because it is already configured in Windows Settings. Include a button for users to navigate directly to the relevant setting for customization.
-            </p>
-            
-            {/* Settings card content */}
             <div style={{ 
               background: '#FFFFFF', 
               border: '1px solid #E2E8F0', 
@@ -403,6 +395,20 @@ const AlertPage = () => {
               padding: '24px',
               boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
             }}>
+              <h3 style={{ margin: '0 0 16px 0', fontSize: '1.125rem', fontWeight: '600', color: '#0F172A' }}>
+                Example 1
+              </h3>
+              <p style={{ margin: '0 0 24px 0', color: '#475569', lineHeight: '1.5' }}>
+                Use an informational Inline Alert to inform users that a setting is disabled because it is already configured in Windows Settings. Include a button for users to navigate directly to the relevant setting for customization.
+              </p>
+              
+              <hr style={{ 
+                border: 'none', 
+                height: '1px', 
+                background: '#E2E8F0', 
+                margin: '0 0 24px 0' 
+              }} />
+              
               <h4 style={{ margin: '0 0 8px 0', fontSize: '1rem', fontWeight: '600', color: '#0F172A' }}>
                 Section title
               </h4>
