@@ -364,6 +364,7 @@ const AlertPage = () => {
             title={inlineTitle}
             message={inlineMessage}
             dismissible={inlineDismissible}
+            keepVisible={true}
             onDismiss={handleDismiss}
             onAction={handleAction}
             actions={inlineActions}
