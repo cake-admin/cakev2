@@ -365,7 +365,7 @@ const StyledButton = styled.button`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: ${props => props.size === BUTTON_SIZES.LARGE ? '16px' : '14px'};
+    font-size: ${props => props.size === BUTTON_SIZES.LARGE ? '1rem' : '0.875rem'};
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -403,7 +403,7 @@ const StyledButton = styled.button`
   }};
   font-family: 'Segoe UI', sans-serif;
   font-weight: 600;
-  font-size: ${props => props.size === BUTTON_SIZES.LARGE ? '16px' : '14px'};
+  font-size: ${props => props.size === BUTTON_SIZES.LARGE ? '1rem' : '0.875rem'};
   line-height: 1;
   cursor: ${props => (props.$disabled || props.$loading) ? 'not-allowed' : 'pointer'};
   transition: all 0.2s ease-in-out;

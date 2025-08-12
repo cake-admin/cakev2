@@ -62,7 +62,7 @@ function App() {
       <Navigation />
       <ScrollToTop />
       <Wrapper>
-        <PageContentWrapper>
+        <PageContentWrapper data-content-container>
           <Routes>
             {routes.map(route => (
               <Route

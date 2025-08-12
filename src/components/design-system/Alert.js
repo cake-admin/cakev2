@@ -2,6 +2,12 @@ import React, { forwardRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import colorData from '../../data/colors.json';
+import Button, { BUTTON_VARIANTS, TEXT_VARIANTS, ICON_VARIANTS } from './Button';
+import CloseIcon from '@mui/icons-material/Close';
+import InfoIcon from '@mui/icons-material/Info';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import WarningIcon from '@mui/icons-material/Warning';
+import ErrorIcon from '@mui/icons-material/Error';
 
 /**
  * Alert types
@@ -55,58 +61,66 @@ const getAlertColors = (severity, theme) => {
   const severityColors = {
     [ALERT_SEVERITIES.SUCCESS]: {
       light: {
-        background: '#F0FDF4',
-        border: '#BBF7D0',
-        icon: '#16A34A',
-        text: '#166534'
+        background: '#FFFFFF',
+        border: '#047857',
+        icon: '#047857',
+        text: '#0F172A',
+        metadata: '#334155'
       },
       dark: {
-        background: '#052e16',
-        border: '#166534',
-        icon: '#4ADE80',
-        text: '#BBF7D0'
+        background: '#27272A',
+        border: '#34D399',
+        icon: '#34D399',
+        text: '#D4D4D8',
+        metadata: '#A1A1AA'
       }
     },
     [ALERT_SEVERITIES.WARNING]: {
       light: {
-        background: '#FFFBEB',
-        border: '#FDE68A',
-        icon: '#D97706',
-        text: '#92400E'
+        background: '#FFFFFF',
+        border: '#C2410C',
+        icon: '#C2410C',
+        text: '#0F172A',
+        metadata: '#334155'
       },
       dark: {
-        background: '#451a03',
-        border: '#92400E',
-        icon: '#FBBF24',
-        text: '#FDE68A'
+        background: '#27272A',
+        border: '#FDBA74',
+        icon: '#FDBA74',
+        text: '#D4D4D8',
+        metadata: '#A1A1AA'
       }
     },
     [ALERT_SEVERITIES.ERROR]: {
       light: {
-        background: '#FEF2F2',
-        border: '#FECACA',
-        icon: '#DC2626',
-        text: '#991B1B'
+        background: '#FFFFFF',
+        border: '#B91C1C',
+        icon: '#B91C1C',
+        text: '#0F172A',
+        metadata: '#334155'
       },
       dark: {
-        background: '#450a0a',
-        border: '#991B1B',
-        icon: '#F87171',
-        text: '#FECACA'
+        background: '#27272A',
+        border: '#FCA5A5',
+        icon: '#FCA5A5',
+        text: '#D4D4D8',
+        metadata: '#A1A1AA'
       }
     },
     [ALERT_SEVERITIES.INFO]: {
       light: {
-        background: '#EFF6FF',
-        border: '#BFDBFE',
-        icon: '#2563EB',
-        text: '#1E40AF'
+        background: '#FFFFFF',
+        border: '#1D4ED8',
+        icon: '#1D4ED8',
+        text: '#0F172A',
+        metadata: '#334155'
       },
       dark: {
-        background: '#0c4a6e',
-        border: '#1E40AF',
+        background: '#27272A',
+        border: '#60A5FA',
         icon: '#60A5FA',
-        text: '#BFDBFE'
+        text: '#D4D4D8',
+        metadata: '#A1A1AA'
       }
     }
   };
@@ -116,32 +130,10 @@ const getAlertColors = (severity, theme) => {
 
 const getSeverityIcon = (severity) => {
   const icons = {
-    [ALERT_SEVERITIES.SUCCESS]: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M20 6L9 17l-5-5" />
-      </svg>
-    ),
-    [ALERT_SEVERITIES.WARNING]: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-        <line x1="12" y1="9" x2="12" y2="13" />
-        <line x1="12" y1="17" x2="12.01" y2="17" />
-      </svg>
-    ),
-    [ALERT_SEVERITIES.ERROR]: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="12" cy="12" r="10" />
-        <line x1="15" y1="9" x2="9" y2="15" />
-        <line x1="9" y1="9" x2="15" y2="15" />
-      </svg>
-    ),
-    [ALERT_SEVERITIES.INFO]: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="12" cy="12" r="10" />
-        <line x1="12" y1="16" x2="12" y2="12" />
-        <line x1="12" y1="8" x2="12.01" y2="8" />
-      </svg>
-    )
+    [ALERT_SEVERITIES.SUCCESS]: <CheckCircleIcon style={{ width: '24px', height: '24px', fill: 'currentColor' }} />,
+    [ALERT_SEVERITIES.WARNING]: <WarningIcon style={{ width: '24px', height: '24px', fill: 'currentColor' }} />,
+    [ALERT_SEVERITIES.ERROR]: <ErrorIcon style={{ width: '24px', height: '24px', fill: 'currentColor' }} />,
+    [ALERT_SEVERITIES.INFO]: <InfoIcon style={{ width: '24px', height: '24px', fill: 'currentColor' }} />
   };
   
   return icons[severity];
@@ -151,44 +143,74 @@ const AlertContainer = styled.div`
   position: ${props => props.type === ALERT_TYPES.TOAST ? 'fixed' : 'relative'};
   ${props => props.type === ALERT_TYPES.TOAST && `
     z-index: 1000;
+    ${props.position === 'top-left' ? 'left: 20px;' : 
+      props.position === 'top-right' ? 'right: 20px;' : 
+      props.position === 'top-center' ? 'left: 50%; transform: translateX(-50%);' :
+      props.position === 'bottom-left' ? 'left: 20px;' :
+      props.position === 'bottom-right' ? 'right: 20px;' :
+      props.position === 'bottom-center' ? 'left: 50%; transform: translateX(-50%);' :
+      'left: 50%; transform: translateX(-50%);'}
     ${props.position.includes('top') ? 'top: 20px;' : 'bottom: 20px;'}
-    ${props.position.includes('left') ? 'left: 20px;' : props.position.includes('right') ? 'right: 20px;' : 'left: 50%; transform: translateX(-50%);'}
   `}
   
   background: ${props => getAlertColors(props.severity, props.theme).background};
-  border: 1px solid ${props => getAlertColors(props.severity, props.theme).border};
-  border-radius: 8px;
+  border: none;
+  border-radius: 4px;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: ${props => props.variant === ALERT_VARIANTS.ADVANCED ? getAlertColors(props.severity, props.theme).icon : props.variant === ALERT_VARIANTS.SIMPLE ? getAlertColors(props.severity, props.theme).icon : getAlertColors(props.severity, props.theme).border};
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
   padding: ${props => props.variant === ALERT_VARIANTS.SIMPLE ? '12px 16px' : '16px'};
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  max-width: ${props => props.type === ALERT_TYPES.TOAST ? '400px' : '100%'};
-  min-width: ${props => props.type === ALERT_TYPES.TOAST ? '300px' : 'auto'};
+  box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15);
+  max-width: 512px;
+  min-width: ${props => props.type === ALERT_TYPES.TOAST ? '512px' : 'auto'};
   
   ${props => props.type === ALERT_TYPES.TOAST && `
-    animation: slideIn 0.3s ease-out;
+    animation: slideIn${props.position.replace('-', '')} 0.3s ease-out;
     
-    @keyframes slideIn {
+    @keyframes slideIn${props.position.replace('-', '')} {
       from {
         opacity: 0;
-        transform: ${props.position.includes('top') ? 'translateY(-100%)' : 'translateY(100%)'} ${props.position.includes('center') ? 'translateX(-50%)' : ''};
+        transform: ${props.position === 'top-left' ? 'translateX(-100%)' : 
+          props.position === 'top-right' ? 'translateX(100%)' : 
+          props.position === 'top-center' ? 'translateY(-100%) translateX(-50%)' :
+          props.position === 'bottom-left' ? 'translateX(-100%)' :
+          props.position === 'bottom-right' ? 'translateX(100%)' :
+          props.position === 'bottom-center' ? 'translateY(100%) translateX(-50%)' :
+          'translateY(100%) translateX(-50%)'};
       }
       to {
         opacity: 1;
-        transform: ${props.position.includes('center') ? 'translateX(-50%)' : 'translateY(0)'};
+        transform: ${props.position === 'top-center' || props.position === 'bottom-center' ? 'translateX(-50%)' : 'translateY(0) translateX(0)'};
       }
     }
   `}
   
   ${props => props.isExiting && props.type === ALERT_TYPES.TOAST && `
-    animation: slideOut 0.3s ease-in;
+    animation: slideOut${props.position.replace('-', '')} 0.3s ease-in;
     
-    @keyframes slideOut {
+    @keyframes slideOut${props.position.replace('-', '')} {
       from {
         opacity: 1;
-        transform: ${props.position.includes('center') ? 'translateX(-50%)' : 'translateY(0)'};
+        transform: ${props.position === 'top-center' || props.position === 'bottom-center' ? 'translateX(-50%)' : 'translateY(0) translateX(0)'};
       }
       to {
         opacity: 0;
-        transform: ${props.position.includes('top') ? 'translateY(-100%)' : 'translateY(100%)'} ${props.position.includes('center') ? 'translateX(-50%)' : ''};
+        transform: ${props.position === 'top-left' ? 'translateX(-100%)' : 
+          props.position === 'top-right' ? 'translateX(100%)' : 
+          props.position === 'top-center' ? 'translateY(-100%) translateX(-50%)' :
+          props.position === 'bottom-left' ? 'translateX(-100%)' :
+          props.position === 'bottom-right' ? 'translateX(100%)' :
+          props.position === 'bottom-center' ? 'translateY(100%) translateX(-50%)' :
+          'translateY(100%) translateX(-50%)'};
       }
     }
   `}
@@ -197,35 +219,44 @@ const AlertContainer = styled.div`
 const AlertContent = styled.div`
   display: flex;
   align-items: ${props => props.variant === ALERT_VARIANTS.SIMPLE ? 'center' : 'flex-start'};
-  gap: 12px;
+  gap: 16px;
 `;
 
 const IconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${props => getAlertColors(props.severity, props.theme).icon};
+  color: ${props => props.variant === ALERT_VARIANTS.SIMPLE ? getAlertColors(props.severity, props.theme).icon : getAlertColors(props.severity, props.theme).icon};
+  background: transparent;
+  border-radius: 0;
+  width: auto;
+  height: auto;
   flex-shrink: 0;
 `;
 
 const TextContainer = styled.div`
   flex: 1;
   min-width: 0;
+  display: ${props => props.variant === ALERT_VARIANTS.SIMPLE ? 'flex' : 'block'};
+  align-items: ${props => props.variant === ALERT_VARIANTS.SIMPLE ? 'center' : 'flex-start'};
+  gap: ${props => props.variant === ALERT_VARIANTS.SIMPLE ? '16px' : '0'};
 `;
 
 const Title = styled.div`
   font-weight: 600;
-  font-size: 14px;
+  font-size: 1rem;
   line-height: 1.4;
   color: ${props => getAlertColors(props.severity, props.theme).text};
   margin-bottom: ${props => props.variant === ALERT_VARIANTS.ADVANCED ? '4px' : '0'};
+  margin-top: ${props => props.variant === ALERT_VARIANTS.SIMPLE ? '2px' : '0'};
 `;
 
 const Message = styled.div`
-  font-size: 14px;
+  font-weight: 400;
+  font-size: 0.875rem;
   line-height: 1.4;
   color: ${props => getAlertColors(props.severity, props.theme).text};
-  opacity: 0.9;
+  opacity: ${props => props.variant === ALERT_VARIANTS.ADVANCED ? '1' : '0.9'};
 `;
 
 const ActionsContainer = styled.div`
@@ -233,30 +264,31 @@ const ActionsContainer = styled.div`
   gap: 8px;
   margin-top: ${props => props.variant === ALERT_VARIANTS.ADVANCED ? '12px' : '0'};
   flex-wrap: wrap;
+  margin-left: ${props => props.variant === ALERT_VARIANTS.SIMPLE ? 'auto' : props.variant === ALERT_VARIANTS.ADVANCED ? '-20px' : '0'};
 `;
 
 const ActionButton = styled.button`
   padding: 6px 12px;
   border: none;
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   
   ${props => props.variant === 'primary' && `
-    background: #3B82F6;
-    color: white;
+    background: transparent;
+    color: ${props => props.isAdvanced ? '#3B82F6' : props => props.isSimple ? '#2563EB' : '#3B82F6'};
     
     &:hover {
-      background: #2563EB;
+      background: ${props => props.isAdvanced ? 'rgba(59, 130, 246, 0.05)' : props => props.isSimple ? 'rgba(37, 99, 235, 0.05)' : 'rgba(59, 130, 246, 0.05)'};
     }
   `}
   
   ${props => props.variant === 'secondary' && `
     background: transparent;
-    color: ${props => getAlertColors(props.severity, props.theme).text};
-    border: 1px solid ${props => getAlertColors(props.severity, props.theme).border};
+    color: ${props => props.isAdvanced ? '#475569' : props => props.isSimple ? '#4B5563' : getAlertColors(props.severity, props.theme).text};
+    border: none;
     
     &:hover {
       background: rgba(0, 0, 0, 0.05);
@@ -265,7 +297,7 @@ const ActionButton = styled.button`
   
   ${props => props.variant === 'tertiary' && `
     background: transparent;
-    color: ${props => getAlertColors(props.severity, props.theme).text};
+    color: ${props => props.isAdvanced ? '#475569' : props => props.isSimple ? '#4B5563' : getAlertColors(props.severity, props.theme).text};
     
     &:hover {
       background: rgba(0, 0, 0, 0.05);
@@ -273,38 +305,13 @@ const ActionButton = styled.button`
   `}
 `;
 
-const CloseButton = styled.button`
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: none;
-  border: none;
-  color: ${props => getAlertColors(props.severity, props.theme).text};
-  opacity: 0.7;
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.2s ease;
-  
-  &:hover {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.05);
-  }
-  
-  svg {
-    width: 16px;
-    height: 16px;
-  }
-`;
+
 
 const Timestamp = styled.div`
   font-size: 12px;
-  color: ${props => getAlertColors(props.severity, props.theme).text};
-  opacity: 0.7;
-  margin-top: ${props => props.variant === ALERT_VARIANTS.ADVANCED ? '8px' : '0'};
+  color: ${props => getAlertColors(props.severity, props.theme).metadata};
+  opacity: ${props => props.variant === ALERT_VARIANTS.ADVANCED ? '1' : '0.7'};
+  margin-top: ${props => props.variant === ALERT_VARIANTS.ADVANCED ? '16px' : '0'};
 `;
 
 const Alert = forwardRef(({
@@ -323,21 +330,70 @@ const Alert = forwardRef(({
   actions = [],
   timestamp,
   className,
+  keepVisible = false,
   ...props
 }, ref) => {
   const [isVisible, setIsVisible] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
   const [timeLeft, setTimeLeft] = useState(autoDismissTime);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDismissing, setIsDismissing] = useState(false);
+  const [currentTimestamp, setCurrentTimestamp] = useState('');
+
+  // Reset animation states when component mounts (for fresh toast instances)
+  useEffect(() => {
+    if (type === ALERT_TYPES.TOAST) {
+      setIsVisible(true);
+      setIsExiting(false);
+      setIsDismissing(false);
+      setIsHovered(false);
+      setTimeLeft(autoDismissTime);
+    }
+  }, [type, autoDismissTime]);
+
+  // Generate and update current timestamp if none provided
+  useEffect(() => {
+    if (!timestamp && variant === ALERT_VARIANTS.ADVANCED) {
+      const updateTimestamp = () => {
+        const now = new Date();
+        const formattedDate = now.toLocaleDateString('en-US', {
+          month: '2-digit',
+          day: '2-digit',
+          year: 'numeric'
+        });
+        const formattedTime = now.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        });
+        setCurrentTimestamp(`${formattedDate} • ${formattedTime}`);
+      };
+
+      // Update immediately
+      updateTimestamp();
+      
+      // Update every minute
+      const interval = setInterval(updateTimestamp, 60000);
+      
+      return () => clearInterval(interval);
+    }
+  }, [timestamp, variant]);
 
   useEffect(() => {
-    if (autoDismiss && type === ALERT_TYPES.TOAST) {
-      const timer = setTimeout(() => {
+    let timer;
+    
+    if (autoDismiss && type === ALERT_TYPES.TOAST && !isHovered && isVisible) {
+      timer = setTimeout(() => {
         handleDismiss();
       }, autoDismissTime);
-      
-      return () => clearTimeout(timer);
     }
-  }, [autoDismiss, autoDismissTime, type]);
+    
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [autoDismiss, autoDismissTime, type, isHovered, isVisible]);
 
   useEffect(() => {
     if (autoDismiss && type === ALERT_TYPES.TOAST) {
@@ -350,6 +406,18 @@ const Alert = forwardRef(({
   }, [autoDismiss, type]);
 
   const handleDismiss = () => {
+    if (isDismissing || !isVisible) {
+      return; // Prevent multiple dismiss calls
+    }
+    
+    if (keepVisible) {
+      // For demonstration purposes, don't hide the alert
+      onDismiss?.();
+      return;
+    }
+    
+    setIsDismissing(true);
+    
     if (type === ALERT_TYPES.TOAST) {
       setIsExiting(true);
       setTimeout(() => {
@@ -384,54 +452,95 @@ const Alert = forwardRef(({
       className={className}
       role="alert"
       aria-live={type === ALERT_TYPES.TOAST ? "polite" : "assertive"}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       {...props}
     >
       <AlertContent variant={variant}>
-        <IconContainer severity={severity} theme={theme}>
+        <IconContainer variant={variant} severity={severity} theme={theme}>
           {getSeverityIcon(severity)}
         </IconContainer>
         
-        <TextContainer>
-          {title && <Title variant={variant} severity={severity} theme={theme}>{title}</Title>}
-          {message && <Message severity={severity} theme={theme}>{message}</Message>}
-          
-          {variant === ALERT_VARIANTS.ADVANCED && actions.length > 0 && (
-            <ActionsContainer variant={variant}>
+        {variant === ALERT_VARIANTS.SIMPLE ? (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+            {title && <Title variant={variant} severity={severity} theme={theme}>{title}</Title>}
+            <ActionsContainer variant={variant} style={{ marginLeft: 'auto', marginTop: 0, gap: '8px' }}>
               {actions.map((action, index) => (
-                <ActionButton
+                <Button
                   key={index}
-                  variant={action.variant || 'secondary'}
-                  severity={severity}
-                  theme={theme}
+                  variant={BUTTON_VARIANTS.TEXT}
+                  textVariant={action.variant === 'primary' ? TEXT_VARIANTS.PRIMARY : TEXT_VARIANTS.SECONDARY}
+                  size="small"
+                  label={action.label}
                   onClick={() => handleAction(action)}
-                >
-                  {action.label}
-                </ActionButton>
+                  style={{ padding: '8px 12px' }}
+                  isDarkMode={theme === ALERT_THEMES.DARK}
+                />
               ))}
+              {(dismissible || variant === ALERT_VARIANTS.SIMPLE) && (
+                <Button
+                  variant={BUTTON_VARIANTS.ICON}
+                  iconVariant={ICON_VARIANTS.SECONDARY}
+                  size="medium"
+                  customIcon={<CloseIcon />}
+                  onClick={handleDismiss}
+                  aria-label="Close alert"
+                  isDarkMode={theme === ALERT_THEMES.DARK}
+                />
+              )}
             </ActionsContainer>
-          )}
-          
-          {variant === ALERT_VARIANTS.ADVANCED && timestamp && (
-            <Timestamp variant={variant} severity={severity} theme={theme}>
-              {timestamp}
-            </Timestamp>
-          )}
-        </TextContainer>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', flex: 1 }}>
+              <TextContainer variant={variant}>
+                {title && <Title variant={variant} severity={severity} theme={theme}>{title}</Title>}
+                {message && variant !== ALERT_VARIANTS.SIMPLE && <Message severity={severity} theme={theme}>{message}</Message>}
+              </TextContainer>
+              
+              {/* Dismiss button for advanced variant */}
+              {(dismissible || variant === ALERT_VARIANTS.ADVANCED) && variant !== ALERT_VARIANTS.SIMPLE && (
+                <Button
+                  variant={BUTTON_VARIANTS.ICON}
+                  iconVariant={ICON_VARIANTS.SECONDARY}
+                  size="medium"
+                  customIcon={<CloseIcon />}
+                  onClick={handleDismiss}
+                  aria-label="Close alert"
+                  isDarkMode={theme === ALERT_THEMES.DARK}
+                  style={{ flexShrink: 0, marginTop: '2px' }}
+                />
+              )}
+            </div>
+            
+            {/* Buttons for advanced variant */}
+            {variant === ALERT_VARIANTS.ADVANCED && actions.length > 0 && (
+              <ActionsContainer variant={variant}>
+                {actions.map((action, index) => (
+                  <Button
+                    key={index}
+                    variant={BUTTON_VARIANTS.TEXT}
+                    textVariant={action.variant === 'primary' ? TEXT_VARIANTS.PRIMARY : TEXT_VARIANTS.SECONDARY}
+                    size="small"
+                    label={action.label}
+                    onClick={() => handleAction(action)}
+                    isDarkMode={theme === ALERT_THEMES.DARK}
+                  />
+                ))}
+              </ActionsContainer>
+            )}
+            
+            {/* Timestamp for advanced variant - positioned below buttons */}
+            {variant === ALERT_VARIANTS.ADVANCED && (timestamp || currentTimestamp) && (
+              <Timestamp variant={variant} severity={severity} theme={theme}>
+                {timestamp || currentTimestamp}
+              </Timestamp>
+            )}
+          </div>
+        )}
       </AlertContent>
       
-      {dismissible && (
-        <CloseButton
-          severity={severity}
-          theme={theme}
-          onClick={handleDismiss}
-          aria-label="Close alert"
-        >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </CloseButton>
-      )}
+
     </AlertContainer>
   );
 });
@@ -457,7 +566,8 @@ Alert.propTypes = {
     onClick: PropTypes.func
   })),
   timestamp: PropTypes.string,
-  className: PropTypes.string
+  className: PropTypes.string,
+  keepVisible: PropTypes.bool
 };
 
 export default Alert;

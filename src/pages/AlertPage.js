@@ -7,6 +7,7 @@ import Alert, {
   ALERT_THEMES, 
   ALERT_POSITIONS 
 } from '../components/design-system/Alert';
+import Button, { BUTTON_VARIANTS, BUTTON_SIZES } from '../components/design-system/Button';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -26,7 +27,7 @@ const Title = styled.h1`
 `;
 
 const Description = styled.p`
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.5;
   color: #475569;
   max-width: 800px;
@@ -37,7 +38,7 @@ const Section = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 24px;
+  font-size: 1.5rem;
   margin-bottom: 24px;
   color: #0F172A;
 `;
@@ -64,7 +65,7 @@ const Select = styled.select`
   padding: 8px 32px 8px 12px;
   border: 1px solid #E2E8F0;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 0.875rem;
   background-color: #FFFFFF;
   color: #0F172A;
   appearance: none;
@@ -89,7 +90,7 @@ const Input = styled.input`
   padding: 8px 12px;
   border: 1px solid #E2E8F0;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 0.875rem;
   background-color: #FFFFFF;
   color: #0F172A;
   
@@ -110,78 +111,36 @@ const Checkbox = styled.input`
   accent-color: #3B82F6;
 `;
 
+
+
 const PreviewContainer = styled.div`
-  background: ${props => props.theme === ALERT_THEMES.DARK ? '#1E293B' : '#F8FAFC'};
-  border: 1px solid #E2E8F0;
+  background: ${props => props.theme === ALERT_THEMES.DARK ? '#18181B' : '#FFFFFF'};
+  padding: 24px;
   border-radius: 8px;
-  padding: 32px;
-  min-height: 200px;
-  position: relative;
-  transition: background-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 `;
 
-const ThemeToggle = styled.button`
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  padding: 8px 16px;
-  background: #3B82F6;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  
-  &:hover {
-    background: #2563EB;
-  }
-`;
 
-const PropsTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 24px;
-`;
 
-const PropsHeader = styled.th`
-  text-align: left;
-  padding: 12px;
-  background: #F1F5F9;
-  border: 1px solid #E2E8F0;
-  font-weight: 600;
-  color: #0F172A;
-`;
 
-const PropsCell = styled.td`
-  padding: 12px;
-  border: 1px solid #E2E8F0;
-  color: #475569;
-  font-size: 14px;
-`;
-
-const CodeBlock = styled.pre`
-  background: #1E293B;
-  color: #E2E8F0;
-  padding: 16px;
-  border-radius: 8px;
-  overflow-x: auto;
-  font-size: 14px;
-  line-height: 1.5;
-`;
 
 const AlertPage = () => {
-  const [alertType, setAlertType] = useState(ALERT_TYPES.INLINE);
   const [variant, setVariant] = useState(ALERT_VARIANTS.SIMPLE);
   const [severity, setSeverity] = useState(ALERT_SEVERITIES.INFO);
   const [theme, setTheme] = useState(ALERT_THEMES.LIGHT);
-  const [position, setPosition] = useState(ALERT_POSITIONS.TOP_RIGHT);
+  const [position, setPosition] = useState(ALERT_POSITIONS.BOTTOM_CENTER);
   const [title, setTitle] = useState('Alert Title');
   const [message, setMessage] = useState('This is an alert message that provides important information to the user.');
   const [dismissible, setDismissible] = useState(false);
-  const [autoDismiss, setAutoDismiss] = useState(false);
-  const [autoDismissTime, setAutoDismissTime] = useState(5000);
-  const [showActions, setShowActions] = useState(false);
+  const [autoDismiss, setAutoDismiss] = useState(true);
+  const [autoDismissTime, setAutoDismissTime] = useState(3000);
+  const [showActions, setShowActions] = useState(true);
+  const [showToast, setShowToast] = useState(false);
+  const [toastPosition, setToastPosition] = useState(ALERT_POSITIONS.BOTTOM_CENTER);
+  const [toastId, setToastId] = useState(0);
 
   const handleDismiss = () => {
     console.log('Alert dismissed');
@@ -191,56 +150,47 @@ const AlertPage = () => {
     console.log('Action clicked:', action);
   };
 
-  const actions = showActions ? [
+  const showToastRight = () => {
+    setShowToast(false); // First hide any existing toast
+    setTimeout(() => {
+      setToastPosition(ALERT_POSITIONS.BOTTOM_RIGHT);
+      setToastId(prev => prev + 1);
+      setShowToast(true);
+    }, 50); // Small delay to ensure clean unmount/remount
+  };
+
+  const showToastCentered = () => {
+    setShowToast(false); // First hide any existing toast
+    setTimeout(() => {
+      setToastPosition(ALERT_POSITIONS.BOTTOM_CENTER);
+      setToastId(prev => prev + 1);
+      setShowToast(true);
+    }, 50); // Small delay to ensure clean unmount/remount
+  };
+
+  const actions = variant === ALERT_VARIANTS.SIMPLE ? [
+    { label: 'Secondary', variant: 'secondary' },
+    { label: 'Primary', variant: 'primary' }
+  ] : showActions ? [
     { label: 'Tertiary', variant: 'tertiary' },
     { label: 'Secondary', variant: 'secondary' },
     { label: 'Primary', variant: 'primary' }
   ] : [];
 
-  const timestamp = variant === ALERT_VARIANTS.ADVANCED ? '01/01/2024 • 9:00 AM' : null;
-
-  const getPropsTable = () => {
-    const props = [
-      { name: 'type', type: 'string', default: 'inline', description: 'Type of alert (toast or inline)' },
-      { name: 'variant', type: 'string', default: 'simple', description: 'Variant of alert (simple or advanced)' },
-      { name: 'severity', type: 'string', default: 'info', description: 'Severity level (success, warning, error, info)' },
-      { name: 'theme', type: 'string', default: 'light.a', description: 'Theme (light.a or dark.a)' },
-      { name: 'position', type: 'string', default: 'top-right', description: 'Position for toast alerts' },
-      { name: 'title', type: 'string', default: '', description: 'Alert title' },
-      { name: 'message', type: 'string', default: '', description: 'Alert message' },
-      { name: 'dismissible', type: 'boolean', default: 'false', description: 'Whether alert can be dismissed' },
-      { name: 'autoDismiss', type: 'boolean', default: 'false', description: 'Auto-dismiss for toast alerts' },
-      { name: 'autoDismissTime', type: 'number', default: '5000', description: 'Auto-dismiss time in milliseconds' },
-      { name: 'onDismiss', type: 'function', default: '', description: 'Callback when alert is dismissed' },
-      { name: 'onAction', type: 'function', default: '', description: 'Callback when action is clicked' },
-      { name: 'actions', type: 'array', default: '[]', description: 'Array of action buttons' },
-      { name: 'timestamp', type: 'string', default: '', description: 'Timestamp for advanced variant' }
-    ];
-
-    return props;
-  };
+  const timestamp = null; // Let the component generate dynamic timestamp
 
   return (
     <PageContainer>
       <Header>
         <Title>Alert</Title>
         <Description>
-          Alert components provide feedback to users about important information, success states, warnings, or errors. 
-          They can be displayed as inline alerts within content or as toast notifications that appear temporarily.
+          The Alert Component is a versatile UI element designed to deliver important messages, notifications, warnings, or feedback to users in an efficient and visually appealing manner. It serves as a crucial part of our design system, ensuring consistent and effective communication across all digital platforms.
         </Description>
       </Header>
 
       <Section>
-        <SectionTitle>Live Preview</SectionTitle>
+        <SectionTitle>Toast Alert</SectionTitle>
         <ControlsGrid>
-          <Control>
-            <Label>Alert Type</Label>
-            <Select value={alertType} onChange={(e) => setAlertType(e.target.value)}>
-              <option value={ALERT_TYPES.INLINE}>Inline</option>
-              <option value={ALERT_TYPES.TOAST}>Toast</option>
-            </Select>
-          </Control>
-
           <Control>
             <Label>Variant</Label>
             <Select value={variant} onChange={(e) => setVariant(e.target.value)}>
@@ -259,204 +209,86 @@ const AlertPage = () => {
             </Select>
           </Control>
 
-          {alertType === ALERT_TYPES.TOAST && (
+          {variant === ALERT_VARIANTS.ADVANCED && (
             <Control>
-              <Label>Position</Label>
-              <Select value={position} onChange={(e) => setPosition(e.target.value)}>
-                <option value={ALERT_POSITIONS.TOP_RIGHT}>Top Right</option>
-                <option value={ALERT_POSITIONS.TOP_LEFT}>Top Left</option>
-                <option value={ALERT_POSITIONS.BOTTOM_RIGHT}>Bottom Right</option>
-                <option value={ALERT_POSITIONS.BOTTOM_LEFT}>Bottom Left</option>
-                <option value={ALERT_POSITIONS.TOP_CENTER}>Top Center</option>
-                <option value={ALERT_POSITIONS.BOTTOM_CENTER}>Bottom Center</option>
+              <Label>Show Actions</Label>
+              <Select 
+                value={showActions ? 'yes' : 'no'} 
+                onChange={(e) => setShowActions(e.target.value === 'yes')}
+              >
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
               </Select>
             </Control>
           )}
 
           <Control>
-            <Label>Title</Label>
-            <Input 
-              value={title} 
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter alert title"
-            />
+            <Label>Theme</Label>
+            <Select 
+              value={theme}
+              onChange={(e) => setTheme(e.target.value)}
+            >
+              <option value={ALERT_THEMES.LIGHT}>Light.a</option>
+              <option value={ALERT_THEMES.DARK}>Dark.a</option>
+            </Select>
           </Control>
-
-          <Control>
-            <Label>Message</Label>
-            <Input 
-              value={message} 
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Enter alert message"
-            />
-          </Control>
-
-          <Control>
-            <Label>
-              <Checkbox 
-                type="checkbox" 
-                checked={dismissible} 
-                onChange={(e) => setDismissible(e.target.checked)}
-              />
-              Dismissible
-            </Label>
-          </Control>
-
-          {alertType === ALERT_TYPES.TOAST && (
-            <>
-              <Control>
-                <Label>
-                  <Checkbox 
-                    type="checkbox" 
-                    checked={autoDismiss} 
-                    onChange={(e) => setAutoDismiss(e.target.checked)}
-                  />
-                  Auto Dismiss
-                </Label>
-              </Control>
-
-              {autoDismiss && (
-                <Control>
-                  <Label>Auto Dismiss Time (ms)</Label>
-                  <Input 
-                    type="number" 
-                    value={autoDismissTime} 
-                    onChange={(e) => setAutoDismissTime(Number(e.target.value))}
-                    min="1000"
-                    step="1000"
-                  />
-                </Control>
-              )}
-            </>
-          )}
-
-          {variant === ALERT_VARIANTS.ADVANCED && (
-            <Control>
-              <Label>
-                <Checkbox 
-                  type="checkbox" 
-                  checked={showActions} 
-                  onChange={(e) => setShowActions(e.target.checked)}
-                />
-                Show Actions
-              </Label>
-            </Control>
-          )}
         </ControlsGrid>
 
+        <div style={{ marginBottom: '24px', display: 'flex', gap: '12px' }}>
+          <Button
+            variant={BUTTON_VARIANTS.SECONDARY}
+            size={BUTTON_SIZES.MEDIUM}
+            onClick={showToastRight}
+            disabled={showToast}
+            label="Show toast right"
+          />
+          <Button
+            variant={BUTTON_VARIANTS.SECONDARY}
+            size={BUTTON_SIZES.MEDIUM}
+            onClick={showToastCentered}
+            disabled={showToast}
+            label="Show toast centered"
+          />
+        </div>
+
         <PreviewContainer theme={theme}>
-          <ThemeToggle onClick={() => setTheme(theme === ALERT_THEMES.LIGHT ? ALERT_THEMES.DARK : ALERT_THEMES.LIGHT)}>
-            {theme === ALERT_THEMES.LIGHT ? 'Dark Theme' : 'Light Theme'}
-          </ThemeToggle>
-          
-          {alertType === ALERT_TYPES.INLINE && (
-            <Alert
-              type={alertType}
-              variant={variant}
-              severity={severity}
-              theme={theme}
-              title={title}
-              message={message}
-              dismissible={dismissible}
-              onDismiss={handleDismiss}
-              onAction={handleAction}
-              actions={actions}
-              timestamp={timestamp}
-            />
-          )}
-          
-          {alertType === ALERT_TYPES.TOAST && (
-            <Alert
-              type={alertType}
-              variant={variant}
-              severity={severity}
-              theme={theme}
-              position={position}
-              title={title}
-              message={message}
-              dismissible={dismissible}
-              autoDismiss={autoDismiss}
-              autoDismissTime={autoDismissTime}
-              onDismiss={handleDismiss}
-              onAction={handleAction}
-              actions={actions}
-              timestamp={timestamp}
-            />
-          )}
+          <Alert
+            type={ALERT_TYPES.INLINE}
+            variant={variant}
+            severity={severity}
+            theme={theme}
+            title={title}
+            message={message}
+            dismissible={dismissible}
+            keepVisible={true}
+            onDismiss={handleDismiss}
+            onAction={handleAction}
+            actions={actions}
+            timestamp={timestamp}
+          />
         </PreviewContainer>
-      </Section>
-
-      <Section>
-        <SectionTitle>Props</SectionTitle>
-        <PropsTable>
-          <thead>
-            <tr>
-              <PropsHeader>Prop</PropsHeader>
-              <PropsHeader>Type</PropsHeader>
-              <PropsHeader>Default</PropsHeader>
-              <PropsHeader>Description</PropsHeader>
-            </tr>
-          </thead>
-          <tbody>
-            {getPropsTable().map((prop, index) => (
-              <tr key={index}>
-                <PropsCell>{prop.name}</PropsCell>
-                <PropsCell>{prop.type}</PropsCell>
-                <PropsCell>{prop.default}</PropsCell>
-                <PropsCell>{prop.description}</PropsCell>
-              </tr>
-            ))}
-          </tbody>
-        </PropsTable>
-      </Section>
-
-      <Section>
-        <SectionTitle>Usage Examples</SectionTitle>
         
-        <div style={{ marginBottom: '24px' }}>
-          <h3 style={{ marginBottom: '12px', color: '#0F172A' }}>Basic Inline Alert</h3>
-          <CodeBlock>{`<Alert
-  severity="info"
-  title="Information"
-  message="This is an informational alert."
-/>`}</CodeBlock>
-        </div>
-
-        <div style={{ marginBottom: '24px' }}>
-          <h3 style={{ marginBottom: '12px', color: '#0F172A' }}>Advanced Toast Alert</h3>
-          <CodeBlock>{`<Alert
-  type="toast"
-  variant="advanced"
-  severity="success"
-  title="Success!"
-  message="Your changes have been saved successfully."
-  dismissible={true}
-  autoDismiss={true}
-  autoDismissTime={3000}
-  actions={[
-    { label: 'Undo', variant: 'secondary' },
-    { label: 'View', variant: 'primary' }
-  ]}
-  timestamp="01/01/2024 • 9:00 AM"
-/>`}</CodeBlock>
-        </div>
-
-        <div style={{ marginBottom: '24px' }}>
-          <h3 style={{ marginBottom: '12px', color: '#0F172A' }}>Error Alert with Actions</h3>
-          <CodeBlock>{`<Alert
-  severity="error"
-  variant="advanced"
-  title="Error Occurred"
-  message="There was an error processing your request. Please try again."
-  dismissible={true}
-  actions={[
-    { label: 'Cancel', variant: 'tertiary' },
-    { label: 'Retry', variant: 'primary' }
-  ]}
-  onDismiss={() => console.log('Dismissed')}
-  onAction={(action) => console.log('Action:', action)}
-/>`}</CodeBlock>
-        </div>
+        {showToast && (
+          <Alert
+            key={toastId}
+            type={ALERT_TYPES.TOAST}
+            variant={variant}
+            severity={severity}
+            theme={theme}
+            position={toastPosition}
+            title={title}
+            message={message}
+            dismissible={dismissible}
+            autoDismiss={true}
+            autoDismissTime={3000}
+            onDismiss={() => {
+              setShowToast(false);
+            }}
+            onAction={handleAction}
+            actions={actions}
+            timestamp={timestamp}
+          />
+        )}
       </Section>
     </PageContainer>
   );
