@@ -442,8 +442,8 @@ const AlertPage = () => {
                 variant={ALERT_VARIANTS.ADVANCED}
                 severity={ALERT_SEVERITIES.INFO}
                 theme={ALERT_THEMES.LIGHT}
-                title="Title"
-                message="Use an informational Inline Alert to inform users that a setting is disabled because it is already configured in Windows Settings. Include a button for users to navigate directly to the relevant setting for customization."
+                title="System Theme"
+                message="This setting is controlled by Windows Settings. You can customize your system theme directly in Windows Settings."
                 dismissible={false}
                 keepVisible={true}
                 actions={[
