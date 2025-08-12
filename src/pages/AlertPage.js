@@ -251,35 +251,6 @@ const AlertPage = () => {
               <option value={ALERT_THEMES.DARK}>Dark.a</option>
             </Select>
           </Control>
-
-          <Control>
-            <Label>Title</Label>
-            <Input 
-              value={title} 
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter alert title"
-            />
-          </Control>
-
-          <Control>
-            <Label>Message</Label>
-            <Input 
-              value={message} 
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Enter alert message"
-            />
-          </Control>
-
-          <Control>
-            <Label>Dismissible</Label>
-            <Select 
-              value={dismissible ? 'yes' : 'no'} 
-              onChange={(e) => setDismissible(e.target.value === 'yes')}
-            >
-              <option value="no">No</option>
-              <option value="yes">Yes</option>
-            </Select>
-          </Control>
         </ControlsGrid>
 
         <div style={{ marginBottom: '24px', display: 'flex', gap: '12px' }}>
@@ -381,35 +352,6 @@ const AlertPage = () => {
             >
               <option value={ALERT_THEMES.LIGHT}>Light.a</option>
               <option value={ALERT_THEMES.DARK}>Dark.a</option>
-            </Select>
-          </Control>
-
-          <Control>
-            <Label>Title</Label>
-            <Input 
-              value={inlineTitle} 
-              onChange={(e) => setInlineTitle(e.target.value)}
-              placeholder="Enter alert title"
-            />
-          </Control>
-
-          <Control>
-            <Label>Message</Label>
-            <Input 
-              value={inlineMessage} 
-              onChange={(e) => setInlineMessage(e.target.value)}
-              placeholder="Enter alert message"
-            />
-          </Control>
-
-          <Control>
-            <Label>Dismissible</Label>
-            <Select 
-              value={inlineDismissible ? 'yes' : 'no'} 
-              onChange={(e) => setInlineDismissible(e.target.value === 'yes')}
-            >
-              <option value="no">No</option>
-              <option value="yes">Yes</option>
             </Select>
           </Control>
         </ControlsGrid>
