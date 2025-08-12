@@ -424,7 +424,6 @@ const AlertPage = () => {
                 message="Use an informational Inline Alert to inform users that a setting is disabled because it is already configured in Windows Settings. Include a button for users to navigate directly to the relevant setting for customization."
                 dismissible={false}
                 keepVisible={true}
-                onDismiss={handleDismiss}
                 actions={[
                   { 
                     label: 'Open in Windows Settings', 
@@ -473,7 +472,6 @@ const AlertPage = () => {
                 message="This feature is currently in beta and may have limited functionality. Please report any issues you encounter."
                 dismissible={false}
                 keepVisible={true}
-                onDismiss={handleDismiss}
                 actions={[]}
               />
             </div>
