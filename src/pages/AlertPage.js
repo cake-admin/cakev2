@@ -287,7 +287,7 @@ const AlertPage = () => {
 
         <PreviewContainer theme={theme}>
           <Alert
-            type={ALERT_TYPES.TOAST}
+            type={ALERT_TYPES.INLINE}
             variant={variant}
             severity={severity}
             theme={theme}
