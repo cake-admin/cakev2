@@ -378,6 +378,131 @@ const AlertPage = () => {
           />
         </PreviewContainer>
       </Section>
+
+      <Section>
+        <SectionTitle>Usage Guidelines</SectionTitle>
+        <Description style={{ marginBottom: '32px' }}>
+          Inline alerts are designed to be integrated seamlessly within your content. Here are some common usage patterns and examples.
+        </Description>
+        
+        <div style={{ display: 'grid', gap: '24px', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
+          {/* Example 1: Alert within a card */}
+          <div style={{ 
+            background: '#FFFFFF', 
+            border: '1px solid #E2E8F0', 
+            borderRadius: '8px', 
+            padding: '24px',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+          }}>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '1.125rem', fontWeight: '600', color: '#0F172A' }}>
+              User Profile Card
+            </h3>
+            <p style={{ margin: '0 0 16px 0', color: '#475569', lineHeight: '1.5' }}>
+              This is an example of how inline alerts can be used within card components to provide contextual feedback or important information.
+            </p>
+            <InlineAlert
+              variant={ALERT_VARIANTS.SIMPLE}
+              severity={ALERT_SEVERITIES.INFO}
+              theme={ALERT_THEMES.LIGHT}
+              title="Profile Updated"
+              message="Your profile information has been successfully updated."
+              dismissible={true}
+              keepVisible={true}
+              onDismiss={handleDismiss}
+              actions={[
+                { label: 'View Changes', variant: 'primary' },
+                { label: 'Dismiss', variant: 'secondary' }
+              ]}
+            />
+          </div>
+
+          {/* Example 2: Alert within form context */}
+          <div style={{ 
+            background: '#FFFFFF', 
+            border: '1px solid #E2E8F0', 
+            borderRadius: '8px', 
+            padding: '24px',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+          }}>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '1.125rem', fontWeight: '600', color: '#0F172A' }}>
+              Form Validation
+            </h3>
+            <p style={{ margin: '0 0 16px 0', color: '#475569', lineHeight: '1.5' }}>
+              Inline alerts are perfect for form validation messages and user feedback within form contexts.
+            </p>
+            <InlineAlert
+              variant={ALERT_VARIANTS.ADVANCED}
+              severity={ALERT_SEVERITIES.ERROR}
+              theme={ALERT_THEMES.LIGHT}
+              title="Validation Error"
+              message="Please check the following fields: email address, password strength, and terms acceptance."
+              dismissible={true}
+              keepVisible={true}
+              onDismiss={handleDismiss}
+              actions={[
+                { label: 'Fix Issues', variant: 'primary' },
+                { label: 'Learn More', variant: 'secondary' }
+              ]}
+            />
+          </div>
+
+          {/* Example 3: Alert within content block */}
+          <div style={{ 
+            background: '#FFFFFF', 
+            border: '1px solid #E2E8F0', 
+            borderRadius: '8px', 
+            padding: '24px',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+          }}>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '1.125rem', fontWeight: '600', color: '#0F172A' }}>
+              Content Integration
+            </h3>
+            <p style={{ margin: '0 0 16px 0', color: '#475569', lineHeight: '1.5' }}>
+              Inline alerts can be seamlessly integrated into content blocks, providing contextual information without disrupting the reading flow.
+            </p>
+            <InlineAlert
+              variant={ALERT_VARIANTS.SIMPLE}
+              severity={ALERT_SEVERITIES.SUCCESS}
+              theme={ALERT_THEMES.LIGHT}
+              title="Success"
+              message="Your changes have been saved successfully."
+              dismissible={true}
+              keepVisible={true}
+              onDismiss={handleDismiss}
+            />
+          </div>
+
+          {/* Example 4: Alert within settings panel */}
+          <div style={{ 
+            background: '#FFFFFF', 
+            border: '1px solid #E2E8F0', 
+            borderRadius: '8px', 
+            padding: '24px',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+          }}>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '1.125rem', fontWeight: '600', color: '#0F172A' }}>
+              Settings Panel
+            </h3>
+            <p style={{ margin: '0 0 16px 0', color: '#475569', lineHeight: '1.5' }}>
+              Use inline alerts in settings panels to provide feedback about configuration changes or system status.
+            </p>
+            <InlineAlert
+              variant={ALERT_VARIANTS.ADVANCED}
+              severity={ALERT_SEVERITIES.WARNING}
+              theme={ALERT_THEMES.LIGHT}
+              title="System Maintenance"
+              message="Scheduled maintenance will begin in 30 minutes. Some features may be temporarily unavailable."
+              dismissible={true}
+              keepVisible={true}
+              onDismiss={handleDismiss}
+              actions={[
+                { label: 'View Schedule', variant: 'primary' },
+                { label: 'Dismiss', variant: 'secondary' }
+              ]}
+            />
+          </div>
+        </div>
+      </Section>
     </PageContainer>
   );
 };
