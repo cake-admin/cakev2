@@ -561,7 +561,7 @@ const Alert = forwardRef(({
             )}
             
             {/* Timestamp for advanced variant - positioned below buttons */}
-            {variant === ALERT_VARIANTS.ADVANCED && (timestamp || currentTimestamp) && type !== ALERT_TYPES.INLINE && (
+            {variant === ALERT_VARIANTS.ADVANCED && (timestamp || currentTimestamp) && (
               <Timestamp variant={variant} severity={severity} theme={theme}>
                 {timestamp || currentTimestamp}
               </Timestamp>
