@@ -429,6 +429,43 @@ const AlertPage = () => {
               />
             </div>
           </div>
+
+          <div>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '1.125rem', fontWeight: '600', color: '#0F172A' }}>
+              Example 2
+            </h3>
+            <p style={{ margin: '0 0 24px 0', color: '#475569', lineHeight: '1.5' }}>
+              Use a warning Inline Alert to inform users about important information or potential issues within content blocks.
+            </p>
+            
+            {/* Settings card content */}
+            <div style={{ 
+              background: '#FFFFFF', 
+              border: '1px solid #E2E8F0', 
+              borderRadius: '8px', 
+              padding: '24px',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+            }}>
+              <h4 style={{ margin: '0 0 8px 0', fontSize: '1rem', fontWeight: '600', color: '#0F172A' }}>
+                Section title
+              </h4>
+              <p style={{ margin: '0 0 16px 0', color: '#475569', lineHeight: '1.5', fontSize: '0.875rem' }}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </p>
+              
+              <InlineAlert
+                variant={ALERT_VARIANTS.SIMPLE}
+                severity={ALERT_SEVERITIES.WARNING}
+                theme={ALERT_THEMES.LIGHT}
+                title=""
+                message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum."
+                dismissible={false}
+                keepVisible={true}
+                onDismiss={handleDismiss}
+                actions={[]}
+              />
+            </div>
+          </div>
         </div>
       </Section>
     </PageContainer>
