@@ -320,7 +320,6 @@ const AlertPage = () => {
             }}
             onAction={handleAction}
             actions={actions}
-            timestamp={timestamp}
           />
         )}
       </Section>
