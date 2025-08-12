@@ -523,6 +523,7 @@ const Alert = forwardRef(({
                     textVariant={action.variant === 'primary' ? TEXT_VARIANTS.PRIMARY : TEXT_VARIANTS.SECONDARY}
                     size="small"
                     label={action.label}
+                    customIcon={action.icon}
                     onClick={() => handleAction(action)}
                     isDarkMode={theme === ALERT_THEMES.DARK}
                   />
@@ -563,6 +564,7 @@ Alert.propTypes = {
   actions: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string.isRequired,
     variant: PropTypes.oneOf(['primary', 'secondary', 'tertiary']),
+    icon: PropTypes.node,
     onClick: PropTypes.func
   })),
   timestamp: PropTypes.string,

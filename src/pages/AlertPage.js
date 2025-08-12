@@ -9,6 +9,7 @@ import Alert, {
 } from '../components/design-system/Alert';
 import InlineAlert from '../components/design-system/InlineAlert';
 import Button, { BUTTON_VARIANTS, BUTTON_SIZES } from '../components/design-system/Button';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -419,7 +420,11 @@ const AlertPage = () => {
                 keepVisible={true}
                 onDismiss={handleDismiss}
                 actions={[
-                  { label: 'Open in Windows Settings', variant: 'primary' }
+                  { 
+                    label: 'Open in Windows Settings', 
+                    variant: 'primary',
+                    icon: <OpenInNewIcon style={{ fontSize: '16px' }} />
+                  }
                 ]}
               />
             </div>
