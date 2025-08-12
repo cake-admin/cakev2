@@ -282,7 +282,7 @@ const AlertPage = () => {
             theme={theme}
             title={title}
             message={message}
-            dismissible={dismissible}
+            dismissible={true}
             keepVisible={true}
             onDismiss={handleDismiss}
             onAction={handleAction}
@@ -370,12 +370,12 @@ const AlertPage = () => {
             theme={inlineTheme}
             title={inlineTitle}
             message={inlineMessage}
-            dismissible={inlineDismissible}
+            dismissible={true}
             keepVisible={true}
             onDismiss={handleDismiss}
             onAction={handleAction}
             actions={inlineActions}
-            timestamp={null}
+            timestamp={timestamp}
           />
         </PreviewContainer>
       </Section>
