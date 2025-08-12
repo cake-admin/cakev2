@@ -197,7 +197,7 @@ const AlertPage = () => {
     { label: 'Primary', variant: 'primary' }
   ] : [];
 
-  const timestamp = null; // Let the component generate dynamic timestamp
+  const timestamp = undefined; // Let the component generate dynamic timestamp for advanced variants
 
   return (
     <PageContainer>
@@ -298,6 +298,7 @@ const AlertPage = () => {
             onDismiss={handleDismiss}
             onAction={handleAction}
             actions={actions}
+            timestamp={variant === ALERT_VARIANTS.ADVANCED ? undefined : null}
           />
         </PreviewContainer>
         
@@ -319,6 +320,7 @@ const AlertPage = () => {
             }}
             onAction={handleAction}
             actions={actions}
+            timestamp={variant === ALERT_VARIANTS.ADVANCED ? undefined : null}
           />
         )}
       </Section>
@@ -395,7 +397,7 @@ const AlertPage = () => {
             onDismiss={handleDismiss}
             onAction={handleAction}
             actions={inlineActions}
-            timestamp={timestamp}
+            timestamp={null}
           />
         </PreviewContainer>
       </Section>
@@ -451,6 +453,7 @@ const AlertPage = () => {
                     icon: <OpenInNewIcon style={{ fontSize: '16px' }} />
                   }
                 ]}
+                timestamp={null}
               />
             </div>
           </div>
@@ -493,6 +496,7 @@ const AlertPage = () => {
                 dismissible={false}
                 keepVisible={true}
                 actions={[]}
+                timestamp={null}
               />
             </div>
           </div>

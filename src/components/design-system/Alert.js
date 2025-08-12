@@ -379,7 +379,7 @@ const Alert = forwardRef(({
 
   // Generate and update current timestamp if none provided
   useEffect(() => {
-    if (!timestamp && variant === ALERT_VARIANTS.ADVANCED) {
+    if (timestamp === undefined && variant === ALERT_VARIANTS.ADVANCED) {
       const updateTimestamp = () => {
         const now = new Date();
         const formattedDate = now.toLocaleDateString('en-US', {
@@ -402,8 +402,11 @@ const Alert = forwardRef(({
       const interval = setInterval(updateTimestamp, 60000);
       
       return () => clearInterval(interval);
+    } else if (timestamp !== undefined) {
+      // Clear current timestamp if a specific timestamp is provided
+      setCurrentTimestamp('');
     }
-  }, [timestamp, variant]);
+  }, [timestamp, variant, type]);
 
   useEffect(() => {
     let timer;
@@ -561,7 +564,7 @@ const Alert = forwardRef(({
             )}
             
             {/* Timestamp for advanced variant - positioned below buttons */}
-            {variant === ALERT_VARIANTS.ADVANCED && (timestamp || currentTimestamp) && type === ALERT_TYPES.TOAST && (
+            {variant === ALERT_VARIANTS.ADVANCED && (timestamp !== null && (timestamp || currentTimestamp)) && (
               <Timestamp variant={variant} severity={severity} theme={theme}>
                 {timestamp || currentTimestamp}
               </Timestamp>
