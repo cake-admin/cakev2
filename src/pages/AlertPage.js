@@ -386,18 +386,11 @@ const AlertPage = () => {
         </Description>
         
         <div style={{ display: 'grid', gap: '24px', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
-          {/* Example 5: Windows Settings integration */}
-          <div style={{ 
-            background: '#FFFFFF', 
-            border: '1px solid #E2E8F0', 
-            borderRadius: '8px', 
-            padding: '24px',
-            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-          }}>
+          <div>
             <h3 style={{ margin: '0 0 16px 0', fontSize: '1.125rem', fontWeight: '600', color: '#0F172A' }}>
               Example 1
             </h3>
-            <p style={{ margin: '0 0 16px 0', color: '#475569', lineHeight: '1.5' }}>
+            <p style={{ margin: '0 0 24px 0', color: '#475569', lineHeight: '1.5' }}>
               Use an informational Inline Alert to inform users that a setting is disabled because it is already configured in Windows Settings. Include a button for users to navigate directly to the relevant setting for customization.
             </p>
             
@@ -406,33 +399,11 @@ const AlertPage = () => {
               background: '#F8FAFC', 
               border: '1px solid #E2E8F0', 
               borderRadius: '6px', 
-              padding: '20px',
-              marginBottom: '16px'
+              padding: '20px'
             }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
-                <h4 style={{ margin: '0', fontSize: '1rem', fontWeight: '600', color: '#0F172A' }}>
-                  Section title
-                </h4>
-                <div style={{ 
-                  width: '44px', 
-                  height: '24px', 
-                  background: '#CBD5E1', 
-                  borderRadius: '12px', 
-                  position: 'relative',
-                  cursor: 'pointer'
-                }}>
-                  <div style={{ 
-                    width: '20px', 
-                    height: '20px', 
-                    background: '#FFFFFF', 
-                    borderRadius: '50%', 
-                    position: 'absolute',
-                    top: '2px',
-                    left: '2px',
-                    transition: 'transform 0.2s'
-                  }}></div>
-                </div>
-              </div>
+              <h4 style={{ margin: '0 0 12px 0', fontSize: '1rem', fontWeight: '600', color: '#0F172A' }}>
+                Section title
+              </h4>
               <p style={{ margin: '0 0 16px 0', color: '#475569', lineHeight: '1.5', fontSize: '0.875rem' }}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
               </p>
