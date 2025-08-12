@@ -380,7 +380,7 @@ const AlertPage = () => {
       </Section>
 
       <Section>
-        <SectionTitle>Usage Guidelines</SectionTitle>
+        <h3 style={{ fontSize: '1.25rem', marginBottom: '24px', color: '#0F172A' }}>Usage Guidelines</h3>
         <Description style={{ marginBottom: '32px' }}>
           Inline alerts are designed to be integrated seamlessly within your content. Here are some common usage patterns and examples.
         </Description>
