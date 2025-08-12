@@ -487,10 +487,10 @@ const AlertPage = () => {
               </p>
               
               <InlineAlert
-                variant={ALERT_VARIANTS.SIMPLE}
+                variant={ALERT_VARIANTS.ADVANCED}
                 severity={ALERT_SEVERITIES.WARNING}
                 theme={ALERT_THEMES.LIGHT}
-                title=""
+                title="Beta Feature"
                 message="This feature is currently in beta and may have limited functionality. Please report any issues you encounter."
                 dismissible={false}
                 keepVisible={true}
