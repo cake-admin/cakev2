@@ -7,6 +7,7 @@ import Alert, {
   ALERT_THEMES, 
   ALERT_POSITIONS 
 } from '../components/design-system/Alert';
+import InlineAlert from '../components/design-system/InlineAlert';
 import Button, { BUTTON_VARIANTS, BUTTON_SIZES } from '../components/design-system/Button';
 
 const PageContainer = styled.div`
@@ -142,6 +143,15 @@ const AlertPage = () => {
   const [toastPosition, setToastPosition] = useState(ALERT_POSITIONS.BOTTOM_CENTER);
   const [toastId, setToastId] = useState(0);
 
+  // Inline alert state
+  const [inlineVariant, setInlineVariant] = useState(ALERT_VARIANTS.SIMPLE);
+  const [inlineSeverity, setInlineSeverity] = useState(ALERT_SEVERITIES.INFO);
+  const [inlineTheme, setInlineTheme] = useState(ALERT_THEMES.LIGHT);
+  const [inlineTitle, setInlineTitle] = useState('Inline Alert Title');
+  const [inlineMessage, setInlineMessage] = useState('This is an inline alert message that appears within the page content.');
+  const [inlineDismissible, setInlineDismissible] = useState(false);
+  const [inlineShowActions, setInlineShowActions] = useState(true);
+
   const handleDismiss = () => {
     console.log('Alert dismissed');
   };
@@ -172,6 +182,15 @@ const AlertPage = () => {
     { label: 'Secondary', variant: 'secondary' },
     { label: 'Primary', variant: 'primary' }
   ] : showActions ? [
+    { label: 'Tertiary', variant: 'tertiary' },
+    { label: 'Secondary', variant: 'secondary' },
+    { label: 'Primary', variant: 'primary' }
+  ] : [];
+
+  const inlineActions = inlineVariant === ALERT_VARIANTS.SIMPLE ? [
+    { label: 'Secondary', variant: 'secondary' },
+    { label: 'Primary', variant: 'primary' }
+  ] : inlineShowActions ? [
     { label: 'Tertiary', variant: 'tertiary' },
     { label: 'Secondary', variant: 'secondary' },
     { label: 'Primary', variant: 'primary' }
@@ -232,6 +251,35 @@ const AlertPage = () => {
               <option value={ALERT_THEMES.DARK}>Dark.a</option>
             </Select>
           </Control>
+
+          <Control>
+            <Label>Title</Label>
+            <Input 
+              value={title} 
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter alert title"
+            />
+          </Control>
+
+          <Control>
+            <Label>Message</Label>
+            <Input 
+              value={message} 
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Enter alert message"
+            />
+          </Control>
+
+          <Control>
+            <Label>Dismissible</Label>
+            <Select 
+              value={dismissible ? 'yes' : 'no'} 
+              onChange={(e) => setDismissible(e.target.value === 'yes')}
+            >
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </Select>
+          </Control>
         </ControlsGrid>
 
         <div style={{ marginBottom: '24px', display: 'flex', gap: '12px' }}>
@@ -289,6 +337,97 @@ const AlertPage = () => {
             timestamp={timestamp}
           />
         )}
+      </Section>
+
+      <Section>
+        <SectionTitle>Inline Alert</SectionTitle>
+        <ControlsGrid>
+          <Control>
+            <Label>Variant</Label>
+            <Select value={inlineVariant} onChange={(e) => setInlineVariant(e.target.value)}>
+              <option value={ALERT_VARIANTS.SIMPLE}>Simple</option>
+              <option value={ALERT_VARIANTS.ADVANCED}>Advanced</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Severity</Label>
+            <Select value={inlineSeverity} onChange={(e) => setInlineSeverity(e.target.value)}>
+              <option value={ALERT_SEVERITIES.INFO}>Info</option>
+              <option value={ALERT_SEVERITIES.SUCCESS}>Success</option>
+              <option value={ALERT_SEVERITIES.WARNING}>Warning</option>
+              <option value={ALERT_SEVERITIES.ERROR}>Error</option>
+            </Select>
+          </Control>
+
+          {inlineVariant === ALERT_VARIANTS.ADVANCED && (
+            <Control>
+              <Label>Show Actions</Label>
+              <Select 
+                value={inlineShowActions ? 'yes' : 'no'} 
+                onChange={(e) => setInlineShowActions(e.target.value === 'yes')}
+              >
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </Select>
+            </Control>
+          )}
+
+          <Control>
+            <Label>Theme</Label>
+            <Select 
+              value={inlineTheme}
+              onChange={(e) => setInlineTheme(e.target.value)}
+            >
+              <option value={ALERT_THEMES.LIGHT}>Light.a</option>
+              <option value={ALERT_THEMES.DARK}>Dark.a</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Title</Label>
+            <Input 
+              value={inlineTitle} 
+              onChange={(e) => setInlineTitle(e.target.value)}
+              placeholder="Enter alert title"
+            />
+          </Control>
+
+          <Control>
+            <Label>Message</Label>
+            <Input 
+              value={inlineMessage} 
+              onChange={(e) => setInlineMessage(e.target.value)}
+              placeholder="Enter alert message"
+            />
+          </Control>
+
+          <Control>
+            <Label>Dismissible</Label>
+            <Select 
+              value={inlineDismissible ? 'yes' : 'no'} 
+              onChange={(e) => setInlineDismissible(e.target.value === 'yes')}
+            >
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </Select>
+          </Control>
+        </ControlsGrid>
+
+        <PreviewContainer theme={inlineTheme}>
+          <InlineAlert
+            variant={inlineVariant}
+            severity={inlineSeverity}
+            theme={inlineTheme}
+            title={inlineTitle}
+            message={inlineMessage}
+            dismissible={inlineDismissible}
+            onDismiss={handleDismiss}
+            onAction={handleAction}
+            actions={inlineActions}
+            timestamp={timestamp}
+          />
+        </PreviewContainer>
       </Section>
     </PageContainer>
   );
