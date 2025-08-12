@@ -14,7 +14,7 @@ const getInlineAlertColors = (severity, theme) => {
   const severityColors = {
     [ALERT_SEVERITIES.SUCCESS]: {
       light: {
-        background: '#F0FDF4', // Slightly different from toast
+        background: '#F8FAFC', // Updated to use F8FAFC for light mode
         border: '#047857',
         icon: '#047857',
         text: '#0F172A',
@@ -30,7 +30,7 @@ const getInlineAlertColors = (severity, theme) => {
     },
     [ALERT_SEVERITIES.WARNING]: {
       light: {
-        background: '#FFFBEB', // Slightly different from toast
+        background: '#F8FAFC', // Updated to use F8FAFC for light mode
         border: '#C2410C',
         icon: '#C2410C',
         text: '#0F172A',
@@ -46,7 +46,7 @@ const getInlineAlertColors = (severity, theme) => {
     },
     [ALERT_SEVERITIES.ERROR]: {
       light: {
-        background: '#FEF2F2', // Slightly different from toast
+        background: '#F8FAFC', // Updated to use F8FAFC for light mode
         border: '#B91C1C',
         icon: '#B91C1C',
         text: '#0F172A',
@@ -62,7 +62,7 @@ const getInlineAlertColors = (severity, theme) => {
     },
     [ALERT_SEVERITIES.INFO]: {
       light: {
-        background: '#EFF6FF', // Slightly different from toast
+        background: '#F8FAFC', // Updated to use F8FAFC for light mode
         border: '#1D4ED8',
         icon: '#1D4ED8',
         text: '#0F172A',
