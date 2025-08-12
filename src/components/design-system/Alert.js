@@ -145,12 +145,17 @@ const AlertContainer = styled.div`
     z-index: 1000;
     ${props.position === 'top-left' ? 'left: 20px;' : 
       props.position === 'top-right' ? 'right: 20px;' : 
-      props.position === 'top-center' ? 'left: 50%; transform: translateX(-50%);' :
+      props.position === 'top-center' ? 'left: 20px; right: 20px;' :
       props.position === 'bottom-left' ? 'left: 20px;' :
       props.position === 'bottom-right' ? 'right: 20px;' :
-      props.position === 'bottom-center' ? 'left: 50%; transform: translateX(-50%);' :
-      'left: 50%; transform: translateX(-50%);'}
+      props.position === 'bottom-center' ? 'left: 20px; right: 20px;' :
+      'left: 20px; right: 20px;'}
     ${props.position.includes('top') ? 'top: 20px;' : 'bottom: 20px;'}
+    
+    @media (min-width: 769px) {
+      ${props.position === 'top-center' ? 'left: 50%; right: auto; transform: translateX(-50%);' : ''}
+      ${props.position === 'bottom-center' ? 'left: 50%; right: auto; transform: translateX(-50%);' : ''}
+    }
   `}
   
   background: ${props => getAlertColors(props.severity, props.theme).background};
@@ -179,14 +184,6 @@ const AlertContainer = styled.div`
       min-width: 280px;
       max-width: calc(100vw - 40px);
       margin: 0 20px;
-      
-      /* Improve centered positioning on mobile */
-      ${props.position === 'top-center' || props.position === 'bottom-center' ? `
-        left: 20px !important;
-        right: 20px !important;
-        transform: none !important;
-        width: calc(100vw - 40px) !important;
-      ` : ''}
     }
     
     @media (max-width: 480px) {
@@ -194,14 +191,6 @@ const AlertContainer = styled.div`
       max-width: calc(100vw - 32px);
       margin: 0 16px;
       padding: ${props.variant === ALERT_VARIANTS.SIMPLE ? '10px 12px' : '14px'};
-      
-      /* Further improve centered positioning on small mobile */
-      ${props.position === 'top-center' || props.position === 'bottom-center' ? `
-        left: 16px !important;
-        right: 16px !important;
-        transform: none !important;
-        width: calc(100vw - 32px) !important;
-      ` : ''}
     }
   `}
   
