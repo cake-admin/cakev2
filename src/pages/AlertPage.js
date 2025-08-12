@@ -374,7 +374,7 @@ const AlertPage = () => {
             onDismiss={handleDismiss}
             onAction={handleAction}
             actions={inlineActions}
-            timestamp={timestamp}
+            timestamp={null}
           />
         </PreviewContainer>
       </Section>
