@@ -136,7 +136,7 @@ const AlertPage = () => {
   const [position, setPosition] = useState(ALERT_POSITIONS.BOTTOM_CENTER);
   const [title, setTitle] = useState('Alert Title');
   const [message, setMessage] = useState('This is an alert message that provides important information to the user.');
-  const [dismissible, setDismissible] = useState(false);
+  const [dismissible, setDismissible] = useState(true);
   const [autoDismiss, setAutoDismiss] = useState(true);
   const [autoDismissTime, setAutoDismissTime] = useState(3000);
   const [showActions, setShowActions] = useState(true);
@@ -150,7 +150,7 @@ const AlertPage = () => {
   const [inlineTheme, setInlineTheme] = useState(ALERT_THEMES.LIGHT);
   const [inlineTitle, setInlineTitle] = useState('Inline Alert Title');
   const [inlineMessage, setInlineMessage] = useState('This is an inline alert message that appears within the page content.');
-  const [inlineDismissible, setInlineDismissible] = useState(false);
+  const [inlineDismissible, setInlineDismissible] = useState(true);
   const [inlineShowActions, setInlineShowActions] = useState(true);
 
   const handleDismiss = () => {
@@ -255,6 +255,17 @@ const AlertPage = () => {
               <option value={ALERT_THEMES.DARK}>Dark.a</option>
             </Select>
           </Control>
+
+          <Control>
+            <Label>Dismissible</Label>
+            <Select 
+              value={dismissible ? 'yes' : 'no'} 
+              onChange={(e) => setDismissible(e.target.value === 'yes')}
+            >
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </Select>
+          </Control>
         </ControlsGrid>
 
         <div style={{ marginBottom: '24px', display: 'flex', gap: '12px' }}>
@@ -282,7 +293,7 @@ const AlertPage = () => {
             theme={theme}
             title={title}
             message={message}
-            dismissible={true}
+            dismissible={dismissible}
             keepVisible={true}
             onDismiss={handleDismiss}
             onAction={handleAction}
@@ -361,6 +372,17 @@ const AlertPage = () => {
               <option value={ALERT_THEMES.DARK}>Dark.a</option>
             </Select>
           </Control>
+
+          <Control>
+            <Label>Dismissible</Label>
+            <Select 
+              value={inlineDismissible ? 'yes' : 'no'} 
+              onChange={(e) => setInlineDismissible(e.target.value === 'yes')}
+            >
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </Select>
+          </Control>
         </ControlsGrid>
 
         <PreviewContainer theme={inlineTheme}>
@@ -370,7 +392,7 @@ const AlertPage = () => {
             theme={inlineTheme}
             title={inlineTitle}
             message={inlineMessage}
-            dismissible={true}
+            dismissible={inlineDismissible}
             keepVisible={true}
             onDismiss={handleDismiss}
             onAction={handleAction}
