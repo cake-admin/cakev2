@@ -2,7 +2,7 @@ import React, { forwardRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import colorData from '../../data/colors.json';
-import Button, { BUTTON_VARIANTS, TEXT_VARIANTS, ICON_VARIANTS } from './Button';
+import Button, { BUTTON_VARIANTS, TEXT_VARIANTS, ICON_VARIANTS, ICON_POSITIONS } from './Button';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -523,6 +523,7 @@ const Alert = forwardRef(({
                     textVariant={action.variant === 'primary' ? TEXT_VARIANTS.PRIMARY : TEXT_VARIANTS.SECONDARY}
                     size="small"
                     label={action.label}
+                    iconPosition={action.icon ? ICON_POSITIONS.LEFT : ICON_POSITIONS.NONE}
                     customIcon={action.icon}
                     onClick={() => handleAction(action)}
                     isDarkMode={theme === ALERT_THEMES.DARK}
