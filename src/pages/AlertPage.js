@@ -437,14 +437,6 @@ const AlertPage = () => {
           </div>
 
           <div>
-            <h3 style={{ margin: '0 0 16px 0', fontSize: '1.125rem', fontWeight: '600', color: '#0F172A' }}>
-              Example 2
-            </h3>
-            <p style={{ margin: '0 0 24px 0', color: '#475569', lineHeight: '1.5' }}>
-              Use a warning Inline Alert to inform users about important information or potential issues within content blocks.
-            </p>
-            
-            {/* Settings card content */}
             <div style={{ 
               background: '#FFFFFF', 
               border: '1px solid #E2E8F0', 
@@ -452,6 +444,20 @@ const AlertPage = () => {
               padding: '24px',
               boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
             }}>
+              <h3 style={{ margin: '0 0 16px 0', fontSize: '1.125rem', fontWeight: '600', color: '#0F172A' }}>
+                Example 2
+              </h3>
+              <p style={{ margin: '0 0 24px 0', color: '#475569', lineHeight: '1.5' }}>
+                Use a warning Inline Alert to inform users about important information or potential issues within content blocks.
+              </p>
+              
+              <hr style={{ 
+                border: 'none', 
+                height: '1px', 
+                background: '#E2E8F0', 
+                margin: '0 0 24px 0' 
+              }} />
+              
               <h4 style={{ margin: '0 0 8px 0', fontSize: '1rem', fontWeight: '600', color: '#0F172A' }}>
                 Section title
               </h4>
