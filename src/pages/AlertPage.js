@@ -421,7 +421,7 @@ const AlertPage = () => {
                 severity={ALERT_SEVERITIES.INFO}
                 theme={ALERT_THEMES.LIGHT}
                 title="Title"
-                message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum."
+                message="Use an informational Inline Alert to inform users that a setting is disabled because it is already configured in Windows Settings. Include a button for users to navigate directly to the relevant setting for customization."
                 dismissible={false}
                 keepVisible={true}
                 onDismiss={handleDismiss}
@@ -448,7 +448,7 @@ const AlertPage = () => {
                 Example 2
               </h3>
               <p style={{ margin: '0 0 24px 0', color: '#475569', lineHeight: '1.5' }}>
-                Use a warning Inline Alert to inform users about important information or potential issues within content blocks.
+                Use a warning Inline Alert to draw attention to critical information about a feature or section.
               </p>
               
               <hr style={{ 
