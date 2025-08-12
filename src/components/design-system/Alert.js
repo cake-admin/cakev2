@@ -480,7 +480,7 @@ const Alert = forwardRef(({
                   isDarkMode={theme === ALERT_THEMES.DARK}
                 />
               ))}
-              {(dismissible || variant === ALERT_VARIANTS.SIMPLE) && (
+              {dismissible && (
                 <Button
                   variant={BUTTON_VARIANTS.ICON}
                   iconVariant={ICON_VARIANTS.SECONDARY}
