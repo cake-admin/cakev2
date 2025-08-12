@@ -501,7 +501,7 @@ const Alert = forwardRef(({
               </TextContainer>
               
               {/* Dismiss button for advanced variant */}
-              {(dismissible || variant === ALERT_VARIANTS.ADVANCED) && variant !== ALERT_VARIANTS.SIMPLE && (
+              {dismissible && variant !== ALERT_VARIANTS.SIMPLE && (
                 <Button
                   variant={BUTTON_VARIANTS.ICON}
                   iconVariant={ICON_VARIANTS.SECONDARY}
