@@ -470,7 +470,7 @@ const AlertPage = () => {
                 severity={ALERT_SEVERITIES.WARNING}
                 theme={ALERT_THEMES.LIGHT}
                 title=""
-                message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum."
+                message="This feature is currently in beta and may have limited functionality. Please report any issues you encounter."
                 dismissible={false}
                 keepVisible={true}
                 onDismiss={handleDismiss}
