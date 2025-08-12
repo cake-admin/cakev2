@@ -403,7 +403,7 @@ const AlertPage = () => {
               padding: '24px',
               boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
             }}>
-              <h4 style={{ margin: '0 0 12px 0', fontSize: '1rem', fontWeight: '600', color: '#0F172A' }}>
+              <h4 style={{ margin: '0 0 8px 0', fontSize: '1rem', fontWeight: '600', color: '#0F172A' }}>
                 Section title
               </h4>
               <p style={{ margin: '0 0 16px 0', color: '#475569', lineHeight: '1.5', fontSize: '0.875rem' }}>
