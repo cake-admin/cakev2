@@ -16,6 +16,7 @@ import AvatarPage from '../pages/AvatarPage';
 import BadgePage from '../pages/BadgePage';
 import BreadcrumbPage from '../pages/BreadcrumbPage';
 import RadioPage from '../pages/RadioPage';
+import AlertPage from '../pages/AlertPage';
 
 export const routes = [
   {
@@ -86,6 +87,13 @@ export const routes = [
     component: RadioPage,
     title: 'Radio',
     description: 'Interactive radio component for single-choice selections from multiple options with support for various states and themes',
+    category: 'components'
+  },
+  {
+    path: '/components/alert',
+    component: AlertPage,
+    title: 'Alert',
+    description: 'Alert components provide feedback to users about important information, success states, warnings, or errors',
     category: 'components'
   },
   {
