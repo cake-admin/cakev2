@@ -9,19 +9,24 @@ import Robo1 from '../../../assets/ai/robo_1.svg';
 import Robo2 from '../../../assets/ai/robo_2.svg';
 
 const PageContainer = styled.div`
-  padding: 40px;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
 `;
 
 const Title = styled.h1`
-  font-size: 32px;
-  margin-bottom: 24px;
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #0F172A;
 `;
 
 const Description = styled.p`
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.5;
+  color: #475569;
+  max-width: 800px;
   margin-bottom: 32px;
-  color: #4A5568;
 `;
 
 const Section = styled.section`
@@ -29,14 +34,16 @@ const Section = styled.section`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 24px;
-  margin-bottom: 16px;
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+  color: #0F172A;
 `;
 
 const SectionText = styled.p`
-  font-size: 16px;
-  line-height: 1.6;
-  color: #4A5568;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #475569;
+  max-width: 800px;
 `;
 
 const CardGrid = styled.div`

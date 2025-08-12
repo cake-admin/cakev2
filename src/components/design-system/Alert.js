@@ -176,18 +176,18 @@ const AlertContainer = styled.div`
   padding: ${props => props.variant === ALERT_VARIANTS.SIMPLE ? '12px 16px' : '16px'};
   box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15);
   max-width: 512px;
-  min-width: ${props => props.type === ALERT_TYPES.TOAST ? '320px' : 'auto'};
+  min-width: ${props => props.type === ALERT_TYPES.TOAST ? (props.variant === ALERT_VARIANTS.SIMPLE ? '400px' : '320px') : 'auto'};
   
   /* Responsive styling for toast alerts */
   ${props => props.type === ALERT_TYPES.TOAST && `
     @media (max-width: 768px) {
-      min-width: 280px;
+      min-width: ${props.variant === ALERT_VARIANTS.SIMPLE ? '360px' : '280px'};
       max-width: calc(100vw - 40px);
       margin: 0 20px;
     }
     
     @media (max-width: 480px) {
-      min-width: 260px;
+      min-width: ${props.variant === ALERT_VARIANTS.SIMPLE ? '320px' : '260px'};
       max-width: calc(100vw - 32px);
       margin: 0 16px;
       padding: ${props.variant === ALERT_VARIANTS.SIMPLE ? '10px 12px' : '14px'};
