@@ -463,7 +463,10 @@ const Alert = forwardRef(({
         
         {variant === ALERT_VARIANTS.SIMPLE ? (
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-            {title && <Title variant={variant} severity={severity} theme={theme}>{title}</Title>}
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+              {title && <Title variant={variant} severity={severity} theme={theme}>{title}</Title>}
+              {message && <Message severity={severity} theme={theme}>{message}</Message>}
+            </div>
             <ActionsContainer variant={variant} style={{ marginLeft: 'auto', marginTop: 0, gap: '8px' }}>
               {actions.map((action, index) => (
                 <Button
