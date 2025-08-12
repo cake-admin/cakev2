@@ -246,17 +246,6 @@ const AlertPage = () => {
           )}
 
           <Control>
-            <Label>Theme</Label>
-            <Select 
-              value={theme}
-              onChange={(e) => setTheme(e.target.value)}
-            >
-              <option value={ALERT_THEMES.LIGHT}>Light.a</option>
-              <option value={ALERT_THEMES.DARK}>Dark.a</option>
-            </Select>
-          </Control>
-
-          <Control>
             <Label>Dismissible</Label>
             <Select 
               value={dismissible ? 'yes' : 'no'} 
@@ -264,6 +253,17 @@ const AlertPage = () => {
             >
               <option value="no">No</option>
               <option value="yes">Yes</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Theme</Label>
+            <Select 
+              value={theme}
+              onChange={(e) => setTheme(e.target.value)}
+            >
+              <option value={ALERT_THEMES.LIGHT}>Light.a</option>
+              <option value={ALERT_THEMES.DARK}>Dark.a</option>
             </Select>
           </Control>
         </ControlsGrid>
@@ -363,17 +363,6 @@ const AlertPage = () => {
           )}
 
           <Control>
-            <Label>Theme</Label>
-            <Select 
-              value={inlineTheme}
-              onChange={(e) => setInlineTheme(e.target.value)}
-            >
-              <option value={ALERT_THEMES.LIGHT}>Light.a</option>
-              <option value={ALERT_THEMES.DARK}>Dark.a</option>
-            </Select>
-          </Control>
-
-          <Control>
             <Label>Dismissible</Label>
             <Select 
               value={inlineDismissible ? 'yes' : 'no'} 
@@ -381,6 +370,17 @@ const AlertPage = () => {
             >
               <option value="no">No</option>
               <option value="yes">Yes</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>Theme</Label>
+            <Select 
+              value={inlineTheme}
+              onChange={(e) => setInlineTheme(e.target.value)}
+            >
+              <option value={ALERT_THEMES.LIGHT}>Light.a</option>
+              <option value={ALERT_THEMES.DARK}>Dark.a</option>
             </Select>
           </Control>
         </ControlsGrid>
