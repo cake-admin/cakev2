@@ -17,6 +17,7 @@ import BadgePage from '../pages/BadgePage';
 import BreadcrumbPage from '../pages/BreadcrumbPage';
 import RadioPage from '../pages/RadioPage';
 import AlertPage from '../pages/AlertPage';
+import IconographyPage from '../pages/IconographyPage';
 
 export const routes = [
   {
@@ -151,6 +152,13 @@ export const routes = [
     title: 'Icon & Identity',
     description: 'Guidelines and components for AI-powered icon generation and brand identity management',
     category: 'subsystems'
+  },
+  {
+    path: '/foundations/iconography',
+    component: IconographyPage,
+    title: 'Iconography',
+    description: 'Material Design icon library usage, guidelines, and implementation patterns',
+    category: 'foundations'
   }
 ];
 
