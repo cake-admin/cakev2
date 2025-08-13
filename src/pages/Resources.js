@@ -142,7 +142,7 @@ const Resources = () => {
     {
       title: 'Cake for AI (C4AI)',
       description: 'Specialized components and patterns for AI-powered interfaces and experiences.',
-      link: '#'
+      link: 'https://www.figma.com/community/file/1537497596724978160/cake-for-ai'
     },
     {
       title: 'Cake for Data Visualization',
