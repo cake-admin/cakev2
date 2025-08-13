@@ -90,7 +90,7 @@ const ColorsPage = () => {
   const showToastNotification = (colorName, hexValue) => {
     setShowToast(false); // First hide any existing toast
     setTimeout(() => {
-      setCopiedColor(`${colorName} (${hexValue})`);
+      setCopiedColor(`${colorName} - ${hexValue}`);
       setToastId(prev => prev + 1);
       setShowToast(true);
     }, 50); // Small delay to ensure clean unmount/remount
@@ -169,7 +169,7 @@ const ColorsPage = () => {
           severity={ALERT_SEVERITIES.SUCCESS}
           position={ALERT_POSITIONS.BOTTOM_CENTER}
           title="Color Copied!"
-          message={`${copiedColor} has been copied to clipboard`}
+          message={`Color ${copiedColor} has been copied to clipboard`}
           dismissible={true}
           autoDismiss={true}
           autoDismissTime={3000}
