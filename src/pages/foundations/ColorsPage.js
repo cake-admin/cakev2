@@ -88,12 +88,9 @@ const ColorsPage = () => {
 
   // Function to show toast notification
   const showToastNotification = (colorName, hexValue) => {
-    setShowToast(false); // First hide any existing toast
-    setTimeout(() => {
-      setCopiedColor(`${colorName} - ${hexValue}`);
-      setToastId(prev => prev + 1);
-      setShowToast(true);
-    }, 50); // Small delay to ensure clean unmount/remount
+    setCopiedColor(`${colorName} - ${hexValue}`);
+    setToastId(prev => prev + 1);
+    setShowToast(true);
   };
 
   // Get all categories in the order they appear in the JSON file
