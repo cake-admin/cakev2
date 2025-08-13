@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ColorBlock from '../../components/design-system/ColorBlock';
+import Alert from '../../components/design-system/Alert';
+import { ALERT_TYPES, ALERT_VARIANTS, ALERT_SEVERITIES, ALERT_POSITIONS } from '../../components/design-system/Alert';
 import colorData from '../../data/colors.json';
 import { fontStack } from '../../styles/globalStyles';
 
@@ -72,11 +74,26 @@ const Description = styled.p`
 `;
 
 const ColorsPage = () => {
+  // Toast state
+  const [showToast, setShowToast] = useState(false);
+  const [toastId, setToastId] = useState(0);
+  const [copiedColor, setCopiedColor] = useState('');
+
   const formatColorName = (category, shade) => {
     if (category === 'common' || category === 'brand') {
       return shade;
     }
     return shade;
+  };
+
+  // Function to show toast notification
+  const showToastNotification = (colorName, hexValue) => {
+    setShowToast(false); // First hide any existing toast
+    setTimeout(() => {
+      setCopiedColor(`${colorName} (${hexValue})`);
+      setToastId(prev => prev + 1);
+      setShowToast(true);
+    }, 50); // Small delay to ensure clean unmount/remount
   };
 
   // Get all categories in the order they appear in the JSON file
@@ -95,6 +112,7 @@ const ColorsPage = () => {
                 key={`${category}-${name}`}
                 name={name}
                 hex={hex}
+                onCopy={() => showToastNotification(name, hex)}
               />
             ))}
           </ColorGrid>
@@ -110,6 +128,7 @@ const ColorsPage = () => {
               key={`${category}-${shade}`}
               name={shade}
               hex={colors[shade]}
+              onCopy={() => showToastNotification(`${category} ${shade}`, colors[shade])}
             />
           ))}
         </ColorGrid>
@@ -140,6 +159,23 @@ const ColorsPage = () => {
           </ColorSection>
         );
       })}
+
+      {/* Toast notification */}
+      {showToast && (
+        <Alert
+          key={toastId}
+          type={ALERT_TYPES.TOAST}
+          variant={ALERT_VARIANTS.SIMPLE}
+          severity={ALERT_SEVERITIES.SUCCESS}
+          position={ALERT_POSITIONS.BOTTOM_CENTER}
+          title="Color Copied!"
+          message={`${copiedColor} has been copied to clipboard`}
+          dismissible={true}
+          autoDismiss={true}
+          autoDismissTime={3000}
+          onDismiss={() => setShowToast(false)}
+        />
+      )}
     </PageContainer>
   );
 };
