@@ -5,7 +5,7 @@ import ColorsPage from '../pages/foundations/ColorsPage';
 import WhatsNew from '../pages/WhatsNew';
 import FigmaLibraries from '../pages/get-started/FigmaLibraries';
 import AboutCake from '../pages/get-started/AboutCake';
-import About from '../pages/About';
+
 import Resources from '../pages/Resources';
 import Home from '../pages/Home';
 import ChipPage from '../pages/ChipPage';
@@ -18,7 +18,7 @@ import BreadcrumbPage from '../pages/BreadcrumbPage';
 import RadioPage from '../pages/RadioPage';
 import AlertPage from '../pages/AlertPage';
 import IconographyPage from '../pages/IconographyPage';
-import InteractiveGridPage from '../pages/InteractiveGridPage';
+
 
 export const routes = [
   {
@@ -119,13 +119,7 @@ export const routes = [
     description: 'Latest updates and changes',
     category: 'guides'
   },
-  {
-    path: '/about',
-    component: About,
-    title: 'About',
-    description: 'Core principles and foundations of the Cake Design System',
-    category: 'guides'
-  },
+
   {
     path: '/resources',
     component: Resources,
@@ -161,13 +155,7 @@ export const routes = [
     description: 'Material Design icon library usage, guidelines, and implementation patterns',
     category: 'foundations'
   },
-  {
-    path: '/components/interactive-grid',
-    component: InteractiveGridPage,
-    title: 'Interactive Grid',
-    description: 'Beautiful animated grid pattern that responds to mouse movement with smooth animations and gradient effects',
-    category: 'components'
-  }
+
 ];
 
 export const getSearchResults = (query) => {

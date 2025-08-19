@@ -347,9 +347,11 @@ const Navigation = () => {
               </NavLinkStyled>
             </NavItem>
             
+
+            
             <NavItem>
-              <NavLinkStyled to="/about" onClick={closeNav}>
-                About
+              <NavLinkStyled to="/resources" onClick={closeNav}>
+                Resources
               </NavLinkStyled>
             </NavItem>
             
@@ -359,32 +361,7 @@ const Navigation = () => {
               </NavLinkStyled>
             </NavItem>
             
-            <NavItem>
-              <NavLinkStyled to="/resources" onClick={closeNav}>
-                Resources
-              </NavLinkStyled>
-            </NavItem>
-            
-            {/* Get Started Section */}
-            <NavItem>
-              <SubmenuToggle onClick={() => toggleMenu('getStarted')}>
-                Get started
-                <Chevron expanded={expandedMenus.getStarted}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
-                  </svg>
-                </Chevron>
-              </SubmenuToggle>
-              <Submenu expanded={expandedMenus.getStarted}>
-                {routesByCategory.guides?.filter(route => route.path.startsWith('/get-started')).map(route => (
-                  <SubmenuItem key={route.path}>
-                    <SubmenuLink to={route.path} onClick={closeNav}>
-                      {route.title}
-                    </SubmenuLink>
-                  </SubmenuItem>
-                ))}
-              </Submenu>
-            </NavItem>
+
             
             {/* Foundations Section */}
             <NavItem>
@@ -441,7 +418,7 @@ const Navigation = () => {
               <Submenu expanded={expandedMenus.subsystems}>
                 <SubmenuItem>
                   <SubmenuToggle onClick={() => toggleMenu('subsystems_ai')} style={{ paddingLeft: '40px' }}>
-                    Cake for AI
+                    Cake AI
                     <Chevron expanded={expandedMenus.subsystems_ai}>
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
