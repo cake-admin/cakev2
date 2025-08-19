@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Card from '../components/design-system/Card';
 import Chip from '../components/design-system/Chip';
+import Button, { BUTTON_VARIANTS, BUTTON_SIZES } from '../components/design-system/Button';
 import InfoIcon from '@mui/icons-material/Info';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CampaignIcon from '@mui/icons-material/Campaign';
@@ -27,7 +28,7 @@ const PageContainer = styled.div`
 `;
 
 const PageHeader = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 const ReleaseCard = styled.div`
@@ -79,13 +80,13 @@ const WelcomeTitle = styled.h1`
   color: #0F172A;
   font-family: ${fontStack};
   font-weight: 800;
-  font-size: clamp(2rem, 5vw, 3rem);
-  line-height: 1.2;
-  padding-bottom: 1.25rem;
+  font-size: clamp(4rem, 12vw, 8rem);
+  line-height: 1.1;
+  padding-bottom: 0.5rem;
   margin: 0;
 
   @media (max-width: 640px) {
-    line-height: 1.3;
+    line-height: 1.2;
   }
 `;
 
@@ -103,7 +104,7 @@ const PageSubheader = styled.h2`
   font-family: ${fontStack};
   font-weight: 400;
   font-stretch: 580;
-  font-size: 1.75rem;
+  font-size: 2.25rem;
   line-height: 1.4;
   margin: 0 0 0.5rem 0;
   max-width: 680px;
@@ -192,6 +193,32 @@ const CardText = styled.p`
   }
 `;
 
+const LinkButton = styled.button`
+  background: none;
+  border: none;
+  color: #1D4ED8;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  
+  &:hover {
+    color: #1E3A8A;
+  }
+  
+  &:focus {
+    outline: none;
+  }
+`;
+
 
 
 const Home = () => {
@@ -201,46 +228,50 @@ const Home = () => {
     <AuroraBackground />
     <PageContainer>
       <PageHeader>
-        <WelcomeTitle>Welcome to Cake</WelcomeTitle>
+        <WelcomeTitle>Cake</WelcomeTitle>
         <PageSubheader>Ingredients for great design.</PageSubheader>
       </PageHeader>
 
       <CardsRow>
-        <Link to="/resources" style={{ textDecoration: 'none', color: 'inherit', height: '100%', display: 'block' }}>
-          <Card elevated hoverable style={{ height: '100%' }}>
-            <Card.Body style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                <IconWrapper>
-                  <ExploreIcon />
-                </IconWrapper>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '1.25rem', height: '1.25rem', color: '#475569', opacity: 1 }}>
-                  <ArrowForwardIcon style={{ width: '1.25rem', height: '1.25rem' }} />
-                </div>
+        <Link to="/resources" style={{ textDecoration: 'none', color: 'inherit', display: 'block', height: '100%' }}>
+          <Card elevated hoverable style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <Card.Body style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+              <div>
+                <CardTitle style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>Get started</CardTitle>
+                <CardText style={{ marginBottom: '1.25rem', fontSize: '1rem' }}>
+                Start building modular, accessible, and brand-aligned features using our core components. Explore foundations, patterns, and reusable components to design faster and more consistently across Lenovo products.
+                </CardText>
               </div>
-              <CardTitle style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>Get started</CardTitle>
-              <CardText style={{ marginBottom: '1.25rem', flex: 1, fontSize: '1rem' }}>
-              Start building with Cake using Figma libraries for core components, foundations, AI, and subsystems like PC Software, Enterprise, and Gaming.
-              </CardText>
+              <div style={{ marginTop: 'auto' }}>
+                <button style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#1D4ED8',
+                  fontFamily: 'Segoe UI, sans-serif',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  padding: '0',
+                  margin: '0',
+                  textAlign: 'left',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}>
+                  Access Figma Libraries
+                  <ArrowForwardIcon style={{ width: '16px', height: '16px' }} />
+                </button>
+              </div>
             </Card.Body>
           </Card>
         </Link>
 
-        <Link to="/whats-new" style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-          <Card elevated hoverable>
-            <Card.Body style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                <IconWrapper>
-                  <CampaignIcon />
-                </IconWrapper>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '1.25rem', height: '1.25rem', color: '#475569', opacity: 1 }}>
-                  <ArrowForwardIcon style={{ width: '1.25rem', height: '1.25rem' }} />
-                </div>
-              </div>
-              <CardTitle style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>What's new</CardTitle>
-              <CardText style={{ marginBottom: '1rem', flex: 1, fontSize: '1rem' }}>
-                Track the latest updates, improvements, and fixes to the Cake Design System.
-              </CardText>
-              <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
+                <Link to="/whats-new" style={{ textDecoration: 'none', color: 'inherit', display: 'block', height: '100%' }}>
+          <Card elevated hoverable style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <Card.Body style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+              <div>
+                <CardTitle style={{ fontSize: '1.125rem', marginBottom: '1rem' }}>What's new</CardTitle>
                 <div style={{ 
                   padding: '1rem',
                   border: '1px solid #E2E8F0',
@@ -261,6 +292,27 @@ const Home = () => {
                   </div>
                 </div>
               </div>
+              <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
+                <button style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#1D4ED8',
+                  fontFamily: 'Segoe UI, sans-serif',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  padding: '0',
+                  margin: '0',
+                  textAlign: 'left',
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}>
+                  Find out what's new
+                  <ArrowForwardIcon style={{ width: '16px', height: '16px' }} />
+                </button>
+              </div>
 
             </Card.Body>
           </Card>
@@ -269,17 +321,14 @@ const Home = () => {
 
       </CardsRow>
 
-      <Section style={{ marginTop: '5rem' }}>
-        <SectionTitle style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem', color: '#0F172A' }}>
+      <Section style={{ marginTop: '2rem' }}>
+        <SectionTitle style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1rem', color: '#0F172A' }}>
           Why build with Cake?
         </SectionTitle>
-        <SectionDescription style={{ fontSize: '1.25rem', marginBottom: '1rem' }}>
-          Discover the core principles that make Cake the perfect foundation for your next feature.
-        </SectionDescription>
         
         <CardsRow>
-          <Card elevated style={{ height: '100%' }}>
-            <Card.Body style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Card elevated style={{ display: 'flex', flexDirection: 'column' }}>
+            <Card.Body style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
               <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', marginBottom: '1rem' }}>
                 <IconWrapper>
                   <svg width="2rem" height="2rem" viewBox="0 0 24 24" fill="currentColor">
@@ -294,8 +343,8 @@ const Home = () => {
             </Card.Body>
           </Card>
 
-          <Card elevated style={{ height: '100%' }}>
-            <Card.Body style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Card elevated style={{ display: 'flex', flexDirection: 'column' }}>
+            <Card.Body style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
               <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', marginBottom: '1rem' }}>
                 <IconWrapper>
                   <svg width="2rem" height="2rem" viewBox="0 0 24 24" fill="currentColor">
@@ -319,8 +368,8 @@ const Home = () => {
             </Card.Body>
           </Card>
 
-          <Card elevated style={{ height: '100%' }}>
-            <Card.Body style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+          <Card elevated style={{ display: 'flex', flexDirection: 'column' }}>
+            <Card.Body style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
               <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', marginBottom: '1rem' }}>
                 <IconWrapper>
                   <DesignServicesIcon />
