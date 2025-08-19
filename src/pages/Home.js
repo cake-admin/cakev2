@@ -9,6 +9,7 @@ import CampaignIcon from '@mui/icons-material/Campaign';
 import ExploreIcon from '@mui/icons-material/Explore';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import AuroraBackground from '../components/AuroraBackground';
 
 import { fontStack } from '../styles/globalStyles';
 import colorData from '../data/colors.json';
@@ -21,6 +22,8 @@ const PageContainer = styled.div`
   max-width: 1000px;
   margin: 0 auto;
   padding: 60px 20px 120px 20px;
+  position: relative;
+  z-index: 1;
 `;
 
 const PageHeader = styled.div`
@@ -193,9 +196,10 @@ const CardText = styled.p`
 
 const Home = () => {
 
-  return (
+    return (
     <>
-      <PageContainer>
+    <AuroraBackground />
+    <PageContainer>
       <PageHeader>
         <WelcomeTitle>Welcome to Cake</WelcomeTitle>
         <PageSubheader>Ingredients for great design.</PageSubheader>
@@ -241,7 +245,7 @@ const Home = () => {
                   padding: '1rem',
                   border: '1px solid #E2E8F0',
                   borderRadius: '0.75rem',
-                  background: '#fafafa'
+                  background: 'white'
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>

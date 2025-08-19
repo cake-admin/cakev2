@@ -18,6 +18,7 @@ import BreadcrumbPage from '../pages/BreadcrumbPage';
 import RadioPage from '../pages/RadioPage';
 import AlertPage from '../pages/AlertPage';
 import IconographyPage from '../pages/IconographyPage';
+import InteractiveGridPage from '../pages/InteractiveGridPage';
 
 export const routes = [
   {
@@ -159,6 +160,13 @@ export const routes = [
     title: 'Iconography',
     description: 'Material Design icon library usage, guidelines, and implementation patterns',
     category: 'foundations'
+  },
+  {
+    path: '/components/interactive-grid',
+    component: InteractiveGridPage,
+    title: 'Interactive Grid',
+    description: 'Beautiful animated grid pattern that responds to mouse movement with smooth animations and gradient effects',
+    category: 'components'
   }
 ];
 
