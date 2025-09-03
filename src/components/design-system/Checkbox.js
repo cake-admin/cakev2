@@ -344,9 +344,6 @@ const Checkbox = forwardRef(({
   const handleContainerClick = (event) => {
     if (disabled) return;
     
-    // Hide focus ring when clicking
-    setShowFocusRing(false);
-    
     // Prevent double-triggering if clicking on the label
     if (event.target.tagName === 'LABEL') return;
     
@@ -382,6 +379,24 @@ const Checkbox = forwardRef(({
     setIsPressed(false);
   };
 
+  const handleKeyDown = (event) => {
+    if (disabled) return;
+    
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      
+      // Create a synthetic event to trigger the change
+      const syntheticEvent = {
+        target: {
+          checked: !currentChecked,
+          type: 'checkbox'
+        }
+      };
+      
+      handleChange(syntheticEvent);
+    }
+  };
+
   const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
@@ -406,6 +421,10 @@ const Checkbox = forwardRef(({
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        onKeyDown={handleKeyDown}
+        tabIndex={disabled ? -1 : 0}
+        role="checkbox"
+        aria-checked={currentChecked}
         aria-describedby={ariaDescribedby}
         {...props}
       />
