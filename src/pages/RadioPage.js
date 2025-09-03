@@ -138,8 +138,8 @@ const RadioPage = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [showFocus, setShowFocus] = useState(false);
   const [showHover, setShowHover] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('option1');
-  const [groupValue, setGroupValue] = useState('option1');
+  const [selectedValue, setSelectedValue] = useState('');
+  const [groupValue, setGroupValue] = useState('');
 
   const isDarkMode = theme === THEMES.DARK_A;
 

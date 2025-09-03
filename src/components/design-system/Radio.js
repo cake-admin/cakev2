@@ -38,7 +38,7 @@ const getRadioColors = (state, theme, isDisabled, isFocused, isHovered, isPresse
         return {
           border: '#9CA3AF',
           background: '#27272A',
-          dot: '#71717A',
+          dot: '#9CA3AF',
           label: '#9CA3AF'
         };
       } else {
@@ -95,12 +95,21 @@ const getRadioColors = (state, theme, isDisabled, isFocused, isHovered, isPresse
   } else {
     // Light theme colors (light.a)
     if (isDisabled) {
-      return {
-        border: '#64748B',
-        background: '#F1F5F9',
-        dot: '#1D4ED8',
-        label: '#475569'
-      };
+      if (state === RADIO_STATES.SELECTED) {
+        return {
+          border: '#64748B',
+          background: '#F1F5F9',
+          dot: '#9CA3AF',
+          label: '#9CA3AF'
+        };
+      } else {
+        return {
+          border: '#64748B',
+          background: '#F1F5F9',
+          dot: 'transparent',
+          label: '#9CA3AF'
+        };
+      }
     }
 
     if (state === RADIO_STATES.SELECTED) {

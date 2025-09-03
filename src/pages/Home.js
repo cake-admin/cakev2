@@ -12,6 +12,7 @@ import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AuroraBackground from '../components/AuroraBackground';
 
+
 import { fontStack } from '../styles/globalStyles';
 import colorData from '../data/colors.json';
 
@@ -229,7 +230,9 @@ const Home = () => {
     <PageContainer>
       <PageHeader>
         <WelcomeTitle>Cake</WelcomeTitle>
-        <PageSubheader>Ingredients for great design.</PageSubheader>
+        <PageSubheader>
+          Ingredients for great design.
+        </PageSubheader>
       </PageHeader>
 
       <CardsRow>
