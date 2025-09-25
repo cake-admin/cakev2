@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { fontStack } from '../../styles/globalStyles';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 // Animation keyframes
@@ -69,7 +70,7 @@ const StyledDropdownButton = styled.button<{
   
   border: none;
   border-radius: ${props => props.buttonStyle === 'pill' ? '100px' : '8px'};
-  font-family: 'Segoe UI', sans-serif;
+  font-family: ${fontStack};
   font-weight: 600;
   font-size: 14px;
   line-height: 1;
@@ -214,7 +215,7 @@ const MenuItem = styled.button<{ selected: boolean; isDarkMode: boolean }>`
   padding: 8px 16px;
   background: none;
   border: none;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: ${fontStack};
   font-size: 14px;
   color: ${props => props.isDarkMode ? '#D4D4D8' : '#374151'}; // text-gray-700 in light mode
   cursor: pointer;

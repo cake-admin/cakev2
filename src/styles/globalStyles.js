@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-export const fontStack = '"Segoe UI", "Lato", "Noto Sans", Arial, sans-serif';
+export const fontStack = '"Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans CJK", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif';
 
 // Define the background.canvas color token
 export const tokens = {

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+import { fontStack } from '../../styles/globalStyles';
 import PropTypes from 'prop-types';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -401,7 +402,7 @@ const StyledButton = styled.button`
     }
     return props.buttonStyle === BUTTON_STYLES.PILL ? '100px' : '4px';
   }};
-  font-family: 'Segoe UI', sans-serif;
+  font-family: ${fontStack};
   font-weight: 600;
   font-size: ${props => props.size === BUTTON_SIZES.LARGE ? '1rem' : '0.875rem'};
   line-height: 1;

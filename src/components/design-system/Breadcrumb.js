@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { fontStack } from '../../styles/globalStyles';
 import PropTypes from 'prop-types';
 import Button, { BUTTON_VARIANTS, TEXT_VARIANTS, ICON_POSITIONS } from './Button';
 
@@ -62,7 +63,7 @@ const BreadcrumbContainer = styled.nav`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: ${fontStack};
   font-size: ${props => getBreadcrumbSize(props.size).fontSize};
   line-height: ${props => getBreadcrumbSize(props.size).lineHeight};
   
