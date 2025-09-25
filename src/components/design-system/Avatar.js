@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { fontStack } from '../../styles/globalStyles';
 import PropTypes from 'prop-types';
 import PersonIcon from '@mui/icons-material/Person';
 
@@ -52,7 +53,7 @@ const StyledAvatar = styled.div`
   }
 
   .initials {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: ${fontStack};
     font-weight: 600;
     color: ${props => props.isDarkMode ? '#000000' : '#0F172A'};
     font-size: ${props => {
