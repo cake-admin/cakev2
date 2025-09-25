@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { fontStack } from '../../styles/globalStyles';
 import colorData from '../../data/colors.json';
 
 const ColorBlockContainer = styled.div`
@@ -24,7 +25,7 @@ const ColorInfo = styled.div`
   right: 0;
   padding: 6px 8px;
   background: rgba(255, 255, 255, 0.9);
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: ${fontStack};
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
 

@@ -198,7 +198,7 @@ const LinkButton = styled.button`
   background: none;
   border: none;
   color: #1D4ED8;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: ${fontStack};
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
@@ -250,7 +250,7 @@ const Home = () => {
                   background: 'none',
                   border: 'none',
                   color: '#1D4ED8',
-                  fontFamily: 'Segoe UI, sans-serif',
+                  fontFamily: fontStack,
                   fontSize: '0.875rem',
                   fontWeight: '600',
                   cursor: 'pointer',
@@ -300,7 +300,7 @@ const Home = () => {
                   background: 'none',
                   border: 'none',
                   color: '#1D4ED8',
-                  fontFamily: 'Segoe UI, sans-serif',
+                  fontFamily: fontStack,
                   fontSize: '0.875rem',
                   fontWeight: '600',
                   cursor: 'pointer',

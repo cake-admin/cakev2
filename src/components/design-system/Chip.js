@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { fontStack } from '../../styles/globalStyles';
 import PropTypes from 'prop-types';
 
 /**
@@ -98,7 +99,7 @@ const ChipContainer = styled.div`
     return props.chipStyle === 'pill' ? '100px' : '4px';
   }};
   color: #0F172A;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: ${fontStack};
   font-weight: 600;
   font-size: ${props => props.size === 'small' ? '12px' : '14px'};
   line-height: 1;

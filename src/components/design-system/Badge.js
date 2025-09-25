@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { fontStack } from '../../styles/globalStyles';
 import PropTypes from 'prop-types';
 
 /**
@@ -80,7 +81,7 @@ const StyledBadge = styled.span`
   justify-content: center;
   position: relative;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: ${fontStack};
   font-weight: 600;
   line-height: 1;
   text-align: center;

@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
+import { fontStack } from '../../styles/globalStyles';
 
 interface ToggleOption {
   label: string;
@@ -73,7 +74,7 @@ const ToggleButton = styled.button<{
     background: ${props.$isDarkMode ? '#93C5FD' : '#1D4ED8'};
     color: ${props.$isDarkMode ? '#18181B' : '#FFFFFF'};
   `}
-  font-family: 'Segoe UI', sans-serif;
+  font-family: ${fontStack};
   font-weight: 700;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
