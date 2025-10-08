@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Navigation from './components/Navigation';
+import LenovoLogo from './components/LenovoLogo';
 import GlobalStyles from './styles/globalStyles';
 import { routes } from './data/routes';
 
@@ -60,6 +61,7 @@ function App() {
     <Router basename={baseUrl}>
       <GlobalStyles />
       <Navigation />
+      <LenovoLogo />
       <ScrollToTop />
       <Wrapper>
         <PageContentWrapper data-content-container>
