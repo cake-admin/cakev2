@@ -11,7 +11,7 @@ import Home from '../pages/Home';
 import ChipPage from '../pages/ChipPage';
 import ButtonPage from '../pages/ButtonPage';
 import AccordionPage from '../pages/AccordionPage.js';
-import IconIdentityPage from '../pages/subsystems/ai/IconIdentityPage';
+import CakeAiPage from '../pages/subsystems/ai/CakeAiPage';
 import AvatarPage from '../pages/AvatarPage';
 import BadgePage from '../pages/BadgePage';
 import BreadcrumbPage from '../pages/BreadcrumbPage';
@@ -142,10 +142,10 @@ export const routes = [
     category: 'guides'
   },
   {
-    path: '/subsystems/ai/icon-identity',
-    component: IconIdentityPage,
-    title: 'Icon & Identity',
-    description: 'Guidelines and components for AI-powered icon generation and brand identity management',
+    path: '/subsystems/ai/cake-ai',
+    component: CakeAiPage,
+    title: 'Cake AI',
+    description: 'AI design system guidelines, icon identity, and resources for AI-powered interfaces',
     category: 'subsystems'
   },
   {

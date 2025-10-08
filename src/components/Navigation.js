@@ -282,8 +282,7 @@ const Navigation = () => {
     getStarted: location.pathname.startsWith('/get-started'),
     foundations: location.pathname.startsWith('/foundations'),
     components: location.pathname.startsWith('/components'),
-    subsystems: location.pathname.startsWith('/subsystems'),
-    subsystems_ai: location.pathname.startsWith('/subsystems/ai')
+    subsystems: location.pathname.startsWith('/subsystems')
   });
 
   const toggleNav = () => {
@@ -416,25 +415,13 @@ const Navigation = () => {
                 </Chevron>
               </SubmenuToggle>
               <Submenu expanded={expandedMenus.subsystems}>
-                <SubmenuItem>
-                  <SubmenuToggle onClick={() => toggleMenu('subsystems_ai')} style={{ paddingLeft: '40px' }}>
-                    Cake AI
-                    <Chevron expanded={expandedMenus.subsystems_ai}>
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
-                      </svg>
-                    </Chevron>
-                  </SubmenuToggle>
-                  <Submenu expanded={expandedMenus.subsystems_ai}>
-                    {routesByCategory.subsystems?.filter(route => route.path.startsWith('/subsystems/ai')).map(route => (
-                      <SubmenuItem key={route.path}>
-                        <SubmenuLink to={route.path} onClick={closeNav} style={{ paddingLeft: '40px' }}>
-                          {route.title}
-                        </SubmenuLink>
-                      </SubmenuItem>
-                    ))}
-                  </Submenu>
-                </SubmenuItem>
+                {routesByCategory.subsystems?.map(route => (
+                  <SubmenuItem key={route.path}>
+                    <SubmenuLink to={route.path} onClick={closeNav}>
+                      {route.title}
+                    </SubmenuLink>
+                  </SubmenuItem>
+                ))}
               </Submenu>
             </NavItem>
           </NavList>
