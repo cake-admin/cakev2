@@ -326,7 +326,7 @@ const StyledButton = styled.button`
     if (props.variant === BUTTON_VARIANTS.ICON) {
       return '0';
     }
-    const verticalPadding = props.size === BUTTON_SIZES.LARGE ? '12px' : '8px';
+    const verticalPadding = props.size === BUTTON_SIZES.LARGE ? '14px' : '10px';
     const horizontalPadding = props.size === BUTTON_SIZES.LARGE ? '24px' : '20px';
     return `${verticalPadding} ${horizontalPadding}`;
   }};
@@ -345,7 +345,7 @@ const StyledButton = styled.button`
           return '32px';
       }
     }
-    return props.size === BUTTON_SIZES.LARGE ? '40px' : '32px';
+    return props.size === BUTTON_SIZES.LARGE ? '44px' : '36px';
   }};
   width: ${props => props.variant === BUTTON_VARIANTS.ICON ? 'auto' : 'fit-content'};
   aspect-ratio: ${props => props.variant === BUTTON_VARIANTS.ICON ? '1 / 1' : 'auto'};
@@ -354,7 +354,7 @@ const StyledButton = styled.button`
   justify-content: center;
   align-items: center;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible;
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
   
@@ -362,17 +362,17 @@ const StyledButton = styled.button`
   span.button-text {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     max-width: 100%;
-    overflow: hidden;
+    overflow: visible;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: ${props => props.size === BUTTON_SIZES.LARGE ? '1rem' : '0.875rem'};
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    transform: translateY(0.5px);
-    min-height: 100%;
-    line-height: 1;
+    line-height: 1.2;
+    vertical-align: baseline;
   }
   
   background-color: ${props => {
@@ -405,7 +405,7 @@ const StyledButton = styled.button`
   font-family: ${fontStack};
   font-weight: 600;
   font-size: ${props => props.size === BUTTON_SIZES.LARGE ? '1rem' : '0.875rem'};
-  line-height: 1;
+  line-height: 1.2;
   cursor: ${props => (props.$disabled || props.$loading) ? 'not-allowed' : 'pointer'};
   transition: all 0.2s ease-in-out;
   user-select: none;
