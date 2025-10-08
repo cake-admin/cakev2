@@ -1,13 +1,19 @@
 {
   "files": {
-    "main.js": "/static/js/main.53823b88.js",
-    "static/media/hero-banner.png": "/static/media/hero-banner.737c3f7a38fc18fd33a0.png",
+    "main.js": "/static/js/main.26049bbd.js",
     "static/media/win_desk.png": "/static/media/win_desk.57f582e536e7ad45a69c.png",
+    "static/media/robo_2.svg": "/static/media/robo_2.e39f3910b4d6fe81f64767d4fc2f53d9.svg",
+    "static/media/robo_1.svg": "/static/media/robo_1.b02753fb44b056683a1c016b94d986ca.svg",
+    "static/media/avatar.svg": "/static/media/avatar.e74bce257af805a2cf17dceb8fadcfc4.svg",
+    "static/media/moto_ai_color.svg": "/static/media/moto_ai_color.dedad4eb8931a964b63a18720feb0c25.svg",
+    "static/media/moto_ai.svg": "/static/media/moto_ai.c5f68773b0ff40aa6a981017f522b827.svg",
+    "static/media/logo_vert.svg": "/static/media/logo_vert.2144fac276ecca3cfa03aa23d92a3571.svg",
+    "static/media/icon full color.svg": "/static/media/icon full color.c5f43b778340b71a9564f8cbea84a26c.svg",
     "index.html": "/index.html",
     "static/media/cake.svg": "/static/media/cake.2dc83bec29f46a24a4fb0d4de2525a9d.svg",
-    "main.53823b88.js.map": "/static/js/main.53823b88.js.map"
+    "main.26049bbd.js.map": "/static/js/main.26049bbd.js.map"
   },
   "entrypoints": [
-    "static/js/main.53823b88.js"
+    "static/js/main.26049bbd.js"
   ]
 }
