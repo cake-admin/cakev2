@@ -144,26 +144,6 @@ const Resources = () => {
       description: 'Specialized components and patterns for AI-powered interfaces and experiences.',
       link: 'https://www.figma.com/community/file/1537497596724978160/cake-for-ai'
     },
-    {
-      title: 'Cake for Data Visualization',
-      description: 'Charts, graphs, and data visualization components for analytics and reporting.',
-      link: '#'
-    },
-    {
-      title: 'Cake for Enterprise',
-      description: 'Enterprise-focused components and patterns for business applications.',
-      link: '#'
-    },
-    {
-      title: 'Red Velvet',
-      description: 'Premium design system with advanced components and sophisticated patterns.',
-      link: '#'
-    },
-    {
-      title: 'Cake for Gaming',
-      description: 'Gaming-specific components and patterns for interactive entertainment experiences.',
-      link: '#'
-    }
   ];
 
 
