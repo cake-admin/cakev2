@@ -281,17 +281,9 @@ const Home = () => {
                   borderRadius: '0.75rem',
                   background: 'white'
                 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <ReleaseDate style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>May 1, 2025</ReleaseDate>
-                      <ReleaseVersion style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>v1.4.0</ReleaseVersion>
-                    </div>
-                    <Chip 
-                      type="success" 
-                      label="Current" 
-                      leftIcon={<StyledSuccessIcon />}
-                      size="small"
-                    />
+                  <div>
+                    <ReleaseDate style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>{new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</ReleaseDate>
+                    <ReleaseVersion style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>🎉 Cake Web V2 Update</ReleaseVersion>
                   </div>
                 </div>
               </div>

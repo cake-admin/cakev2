@@ -38,6 +38,15 @@ const ChangelogGrid = styled.div`
   max-width: 1200px;
 `;
 
+const AnnouncementGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin-bottom: 32px;
+`;
+
 const StyledUpdateDate = styled.div`
   font-size: 14px;
   color: ${colorData.slate[600]};
@@ -85,6 +94,22 @@ const StyledCardTitle = styled(Card.Title)`
 
 const WhatsNew = () => {
   const isDarkMode = false; // Using light theme
+
+  // Get current date for the announcement
+  const getCurrentDate = () => {
+    const now = new Date();
+    return now.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  const announcement = {
+    title: '🎉 Cake Web V2 Update',
+    date: getCurrentDate(),
+    description: 'We\'re thrilled to announce the launch of Cake Web V2! This major update brings a modern, responsive design system built with React that empowers teams to create consistent, high-quality experiences across all Lenovo digital products. With comprehensive accessibility features meeting WCAG 2.2 AA standards, standardized design tokens, and an enhanced component library, Cake V2 is your complete toolkit for building cohesive, user-centered interfaces that reflect Lenovo\'s brand identity.'
+  };
 
   const updates = [
     {
@@ -163,6 +188,20 @@ const WhatsNew = () => {
         </Description>
       </Header>
 
+      {/* Announcement Card */}
+      <AnnouncementGrid>
+        <Card elevated hoverable>
+          <Card.Body>
+            <StyledUpdateDate>{announcement.date}</StyledUpdateDate>
+            <StyledCardTitle>{announcement.title}</StyledCardTitle>
+            <Description style={{ marginTop: '16px', marginBottom: '0' }}>
+              {announcement.description}
+            </Description>
+          </Card.Body>
+        </Card>
+      </AnnouncementGrid>
+
+      {/* Version Updates */}
       <ChangelogGrid>
         {(() => {
           const sortedUpdates = updates.sort((a, b) => new Date(b.date) - new Date(a.date));
