@@ -163,6 +163,13 @@ export const routes = [
     description: 'Guidelines for creating clear, accessible, and purposeful content that aligns with Lenovo\'s tone of voice',
     category: 'foundations'
   },
+  {
+    path: '/typography',
+    component: LanguageGrammarPage,
+    title: 'Typography',
+    description: 'Guidelines for creating clear, accessible, and purposeful content that aligns with Lenovo\'s tone of voice',
+    category: 'foundations'
+  },
 
 ];
 
