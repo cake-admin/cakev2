@@ -237,7 +237,7 @@ const LanguageGrammarPage = () => {
           <SubsectionTitle>Lenovo is</SubsectionTitle>
           
           <GuidelinesGrid>
-            <Card elevated>
+            <Card>
               <Card.Body>
                 <CardTitle>Purposeful</CardTitle>
                 <CardText>
@@ -246,7 +246,7 @@ const LanguageGrammarPage = () => {
               </Card.Body>
             </Card>
             
-            <Card elevated>
+            <Card>
               <Card.Body>
                 <CardTitle>Unexpected</CardTitle>
                 <CardText>
@@ -255,7 +255,7 @@ const LanguageGrammarPage = () => {
               </Card.Body>
             </Card>
             
-            <Card elevated>
+            <Card>
               <Card.Body>
                 <CardTitle>Brave</CardTitle>
                 <CardText>
@@ -275,7 +275,7 @@ const LanguageGrammarPage = () => {
           <SubsectionTitle>Generally, the text itself is</SubsectionTitle>
           
           <GuidelinesGrid>
-            <Card elevated>
+            <Card>
               <Card.Body>
                 <CardTitle>Accessible</CardTitle>
                 <CardText>
@@ -286,7 +286,7 @@ const LanguageGrammarPage = () => {
               </Card.Body>
             </Card>
             
-            <Card elevated>
+            <Card>
               <Card.Body>
                 <CardTitle>Purposeful</CardTitle>
                 <CardText>
@@ -296,7 +296,7 @@ const LanguageGrammarPage = () => {
               </Card.Body>
             </Card>
             
-            <Card elevated>
+            <Card>
               <Card.Body>
                 <CardTitle>Concise</CardTitle>
                 <CardText>
@@ -307,7 +307,7 @@ const LanguageGrammarPage = () => {
               </Card.Body>
             </Card>
             
-            <Card elevated>
+            <Card>
               <Card.Body>
                 <CardTitle>Conversational</CardTitle>
                 <CardText>
@@ -317,7 +317,7 @@ const LanguageGrammarPage = () => {
               </Card.Body>
             </Card>
             
-            <Card elevated>
+            <Card>
               <Card.Body>
                 <CardTitle>Clear</CardTitle>
                 <CardText>
@@ -374,7 +374,7 @@ const LanguageGrammarPage = () => {
         <SectionTitle>Punctuation</SectionTitle>
         
         <GuidelinesGrid>
-          <Card elevated>
+          <Card>
             <Card.Body>
               <CardTitle>Consistent</CardTitle>
               <CardText>
@@ -383,7 +383,7 @@ const LanguageGrammarPage = () => {
             </Card.Body>
           </Card>
           
-          <Card elevated>
+          <Card>
             <Card.Body>
               <CardTitle>Headers</CardTitle>
               <CardText>
@@ -392,7 +392,7 @@ const LanguageGrammarPage = () => {
             </Card.Body>
           </Card>
           
-          <Card elevated>
+          <Card>
             <Card.Body>
               <CardTitle>Full sentences</CardTitle>
               <CardText>
@@ -401,7 +401,7 @@ const LanguageGrammarPage = () => {
             </Card.Body>
           </Card>
           
-          <Card elevated>
+          <Card>
             <Card.Body>
               <CardTitle>Exclamation points</CardTitle>
               <CardText>
@@ -415,25 +415,52 @@ const LanguageGrammarPage = () => {
       <Section>
         <SectionTitle>Body text</SectionTitle>
         
-        <ContentText>
-          Body text should be detailed but not overly technical.
-        </ContentText>
-        
-        <ContentText>
-          Be concise but offer opportunities to learn more.
-        </ContentText>
-        
-        <ContentText>
-          Use familiar language, especially when discussing technical or unfamiliar topics.
-        </ContentText>
-        
-        <ContentText>
-          Support with visuals.
-        </ContentText>
-        
-        <ContentText>
-          One word alone on a line (an orphan) and two words alone on a line (a widow) are to be avoided wherever possible.
-        </ContentText>
+        <GuidelinesGrid>
+          <Card>
+            <Card.Body>
+              <CardTitle>Detailed but not technical</CardTitle>
+              <CardText>
+                Body text should be detailed but not overly technical.
+              </CardText>
+            </Card.Body>
+          </Card>
+          
+          <Card>
+            <Card.Body>
+              <CardTitle>Concise with opportunities</CardTitle>
+              <CardText>
+                Be concise but offer opportunities to learn more.
+              </CardText>
+            </Card.Body>
+          </Card>
+          
+          <Card>
+            <Card.Body>
+              <CardTitle>Familiar language</CardTitle>
+              <CardText>
+                Use familiar language, especially when discussing technical or unfamiliar topics.
+              </CardText>
+            </Card.Body>
+          </Card>
+          
+          <Card>
+            <Card.Body>
+              <CardTitle>Support with visuals</CardTitle>
+              <CardText>
+                Support with visuals.
+              </CardText>
+            </Card.Body>
+          </Card>
+          
+          <Card>
+            <Card.Body>
+              <CardTitle>Avoid orphans and widows</CardTitle>
+              <CardText>
+                One word alone on a line (an orphan) and two words alone on a line (a widow) are to be avoided wherever possible.
+              </CardText>
+            </Card.Body>
+          </Card>
+        </GuidelinesGrid>
         
         <ContentText>
           Example:
