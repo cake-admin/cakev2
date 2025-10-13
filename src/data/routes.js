@@ -18,6 +18,7 @@ import BreadcrumbPage from '../pages/BreadcrumbPage';
 import RadioPage from '../pages/RadioPage';
 import AlertPage from '../pages/AlertPage';
 import IconographyPage from '../pages/IconographyPage';
+import LanguageGrammarPage from '../pages/foundations/LanguageGrammarPage.js';
 
 
 export const routes = [
@@ -153,6 +154,13 @@ export const routes = [
     component: IconographyPage,
     title: 'Iconography',
     description: 'Material Design icon library usage, guidelines, and implementation patterns',
+    category: 'foundations'
+  },
+  {
+    path: '/foundations/language-grammar',
+    component: LanguageGrammarPage,
+    title: 'Language & Grammar',
+    description: 'Guidelines for creating clear, accessible, and purposeful content that aligns with Lenovo\'s tone of voice',
     category: 'foundations'
   },
 
