@@ -19,6 +19,11 @@ import RadioPage from '../pages/RadioPage';
 import AlertPage from '../pages/AlertPage';
 import IconographyPage from '../pages/IconographyPage';
 import LanguageGrammarPage from '../pages/foundations/LanguageGrammarPage.js';
+import AccessPage from '../pages/subsystems/ai/AccessPage.js';
+import ChatPage from '../pages/subsystems/ai/ChatPage.js';
+import DisclaimerPage from '../pages/subsystems/ai/DisclaimerPage.js';
+import InputPage from '../pages/subsystems/ai/InputPage.js';
+import ResponsePage from '../pages/subsystems/ai/ResponsePage.js';
 
 
 export const routes = [
@@ -150,6 +155,41 @@ export const routes = [
     category: 'subsystems'
   },
   {
+    path: '/subsystems/ai/access',
+    component: AccessPage,
+    title: 'AI Access',
+    description: 'Guidelines for AI access patterns and user authentication flows',
+    category: 'subsystems'
+  },
+  {
+    path: '/subsystems/ai/chat',
+    component: ChatPage,
+    title: 'AI Chat',
+    description: 'Design patterns and components for AI chat interfaces',
+    category: 'subsystems'
+  },
+  {
+    path: '/subsystems/ai/disclaimer',
+    component: DisclaimerPage,
+    title: 'AI Disclaimer',
+    description: 'Disclaimer patterns and legal considerations for AI features',
+    category: 'subsystems'
+  },
+  {
+    path: '/subsystems/ai/input',
+    component: InputPage,
+    title: 'AI Input',
+    description: 'Input components and patterns for AI interactions',
+    category: 'subsystems'
+  },
+  {
+    path: '/subsystems/ai/response',
+    component: ResponsePage,
+    title: 'AI Response',
+    description: 'Response patterns and components for AI-generated content',
+    category: 'subsystems'
+  },
+  {
     path: '/foundations/iconography',
     component: IconographyPage,
     title: 'Iconography',
@@ -169,6 +209,41 @@ export const routes = [
     title: 'Typography',
     description: 'Guidelines for creating clear, accessible, and purposeful content that aligns with Lenovo\'s tone of voice',
     category: 'foundations'
+  },
+  {
+    path: '/design-system',
+    component: Home,
+    title: 'Design System',
+    description: 'Welcome to Cake Design System',
+    category: 'guides'
+  },
+  {
+    path: '/components',
+    component: Home,
+    title: 'Components',
+    description: 'Browse all available components in the Cake Design System',
+    category: 'components'
+  },
+  {
+    path: '/foundations',
+    component: Home,
+    title: 'Foundations',
+    description: 'Design foundations including colors, typography, and iconography',
+    category: 'foundations'
+  },
+  {
+    path: '/subsystems',
+    component: Home,
+    title: 'Subsystems',
+    description: 'Specialized design systems for AI and other subsystems',
+    category: 'subsystems'
+  },
+  {
+    path: '/ai',
+    component: CakeAiPage,
+    title: 'AI',
+    description: 'AI design system guidelines, icon identity, and resources for AI-powered interfaces',
+    category: 'subsystems'
   },
 
 ];
