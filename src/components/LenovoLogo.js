@@ -8,18 +8,15 @@ const LogoContainer = styled.div`
   right: 0;
   width: 48px;
   background-color: #e1251b;
-  padding: 8px;
   cursor: pointer;
   z-index: 1000;
   
   @media (max-width: 768px) {
     width: 36px;
-    padding: 6px;
   }
   
   @media (max-width: 480px) {
     width: 32px;
-    padding: 4px;
   }
 `;
 

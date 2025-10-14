@@ -12,6 +12,8 @@ import ChipPage from '../pages/ChipPage';
 import ButtonPage from '../pages/ButtonPage';
 import AccordionPage from '../pages/AccordionPage.js';
 import CakeAiPage from '../pages/subsystems/ai/CakeAiPage';
+import IconIdentityPage from '../pages/subsystems/ai/IconIdentityPage';
+import ResponsePage from '../pages/subsystems/ai/ResponsePage';
 import AvatarPage from '../pages/AvatarPage';
 import BadgePage from '../pages/BadgePage';
 import BreadcrumbPage from '../pages/BreadcrumbPage';
@@ -147,7 +149,24 @@ export const routes = [
     component: CakeAiPage,
     title: 'Cake AI',
     description: 'AI design system guidelines, icon identity, and resources for AI-powered interfaces',
-    category: 'subsystems'
+    category: 'subsystems',
+    hasChildren: true
+  },
+  {
+    path: '/subsystems/ai/icon-identity',
+    component: IconIdentityPage,
+    title: 'Icon & Identity',
+    description: 'AI icon and brand identity guidelines for Lenovo software applications',
+    category: 'subsystems',
+    parentPath: '/subsystems/ai/cake-ai'
+  },
+  {
+    path: '/subsystems/ai/response',
+    component: ResponsePage,
+    title: 'AI Response',
+    description: 'Guidelines and patterns for AI response interactions',
+    category: 'subsystems',
+    parentPath: '/subsystems/ai/cake-ai'
   },
   {
     path: '/foundations/iconography',

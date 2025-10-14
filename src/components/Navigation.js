@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { NavLink, useLocation, useMatch } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import cakeLogo from '../assets/cake.svg';
@@ -241,6 +241,85 @@ const SubmenuLink = styled(NavLink)`
   }
 `;
 
+const NestedSubmenuToggle = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px 0 48px;
+  height: 40px;
+  text-decoration: none;
+  color: ${colorData.slate[900]};
+  position: relative;
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1;
+  border-radius: 0;
+  margin: 0;
+  transition: background 0.2s, color 0.2s;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  
+  &:hover {
+    background-color: #F1F5F9;
+    color: ${colorData.slate[900]};
+  }
+`;
+
+const NestedSubmenu = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: ${props => props.expanded ? '1000px' : '0'};
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+`;
+
+const NestedSubmenuItem = styled.li`
+  width: 100%;
+`;
+
+const NestedSubmenuLink = styled(NavLink)`
+  width: 100%;
+  padding: 0 24px 0 72px;
+  font-weight: 400;
+  font-size: 0.9rem;
+  line-height: 16px;
+  color: #171717;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  position: relative;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  
+  &:hover {
+    background-color: #F1F5F9;
+    color: #171717;
+  }
+  
+  &.active {
+    background-color: #EFF6FF;
+    color: #1D4ED8;
+    font-weight: 600;
+  }
+  
+  &.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #1D4ED8;
+    border-radius: 0px;
+  }
+`;
+
 const MobileToggle = styled.button`
   display: none;
   position: fixed;
@@ -282,7 +361,8 @@ const Navigation = () => {
     getStarted: location.pathname.startsWith('/get-started'),
     foundations: location.pathname.startsWith('/foundations'),
     components: location.pathname.startsWith('/components'),
-    subsystems: location.pathname.startsWith('/subsystems')
+    subsystems: location.pathname.startsWith('/subsystems'),
+    'cake-ai': location.pathname.startsWith('/subsystems/ai/')
   });
 
   const toggleNav = () => {
@@ -300,14 +380,35 @@ const Navigation = () => {
     }));
   };
 
-  // Group routes by category
-  const routesByCategory = routes.reduce((acc, route) => {
-    if (!acc[route.category]) {
-      acc[route.category] = [];
-    }
-    acc[route.category].push(route);
-    return acc;
-  }, {});
+  // Group routes by category and handle nested routes
+  const routesByCategory = useMemo(() => {
+    // Create a deep copy of routes to avoid mutating the original
+    const routesCopy = routes.map(route => ({ ...route, children: [] }));
+    
+    // Attach children to parent routes
+    routesCopy.forEach(route => {
+      if (route.parentPath) {
+        const parentRoute = routesCopy.find(r => r.path === route.parentPath);
+        if (parentRoute) {
+          parentRoute.children.push(route);
+        }
+      }
+    });
+    
+    // Group by category
+    return routesCopy.reduce((acc, route) => {
+      if (!acc[route.category]) {
+        acc[route.category] = [];
+      }
+      
+      // Only add routes without a parentPath to the main category
+      if (!route.parentPath) {
+        acc[route.category].push(route);
+      }
+      
+      return acc;
+    }, {});
+  }, []);
 
   return (
     <>
@@ -417,9 +518,31 @@ const Navigation = () => {
               <Submenu expanded={expandedMenus.subsystems}>
                 {routesByCategory.subsystems?.map(route => (
                   <SubmenuItem key={route.path}>
-                    <SubmenuLink to={route.path} onClick={closeNav}>
-                      {route.title}
-                    </SubmenuLink>
+                    {route.hasChildren ? (
+                      <>
+                        <NestedSubmenuToggle onClick={() => toggleMenu('cake-ai')}>
+                          {route.title}
+                          <Chevron expanded={expandedMenus['cake-ai']}>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
+                            </svg>
+                          </Chevron>
+                        </NestedSubmenuToggle>
+                        <NestedSubmenu expanded={expandedMenus['cake-ai']}>
+                          {route.children?.map(childRoute => (
+                            <NestedSubmenuItem key={childRoute.path}>
+                              <NestedSubmenuLink to={childRoute.path} onClick={closeNav}>
+                                {childRoute.title}
+                              </NestedSubmenuLink>
+                            </NestedSubmenuItem>
+                          ))}
+                        </NestedSubmenu>
+                      </>
+                    ) : (
+                      <SubmenuLink to={route.path} onClick={closeNav}>
+                        {route.title}
+                      </SubmenuLink>
+                    )}
                   </SubmenuItem>
                 ))}
               </Submenu>
