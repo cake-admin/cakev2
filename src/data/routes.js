@@ -17,6 +17,7 @@ import AvatarPage from '../pages/AvatarPage';
 import BadgePage from '../pages/BadgePage';
 import BreadcrumbPage from '../pages/BreadcrumbPage';
 import RadioPage from '../pages/RadioPage';
+import TextInputsPage from '../pages/TextInputsPage';
 import AlertPage from '../pages/AlertPage';
 import IconographyPage from '../pages/IconographyPage';
 import LanguageGrammarPage from '../pages/foundations/LanguageGrammarPage.js';
@@ -98,6 +99,13 @@ export const routes = [
     component: RadioPage,
     title: 'Radio',
     description: 'Interactive radio component for single-choice selections from multiple options with support for various states and themes',
+    category: 'components'
+  },
+  {
+    path: '/components/text-inputs',
+    component: TextInputsPage,
+    title: 'Text Inputs',
+    description: 'Text field and text area components for form inputs with support for labels, helper text, error states, and validation',
     category: 'components'
   },
   {
