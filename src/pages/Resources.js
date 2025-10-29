@@ -139,11 +139,6 @@ const Resources = () => {
       description: 'Core design system components and foundations for Lenovo products.',
       link: 'https://www.figma.com/community/file/1397963315281891204/cake-one-lenovo-design-system'
     },
-    {
-      title: 'Cake for AI (C4AI)',
-      description: 'Specialized components and patterns for AI-powered interfaces and experiences.',
-      link: 'https://www.figma.com/community/file/1537497596724978160/cake-for-ai'
-    },
   ];
 
 
