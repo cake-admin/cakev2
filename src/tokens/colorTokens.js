@@ -633,11 +633,11 @@ const colorTokens = {
       },
       itemSelected: {
         [THEMES.LIGHT_A]: '#EFF6FF',  // blue-50
-        [THEMES.DARK_A]: '#1E3A8A'    // blue-900
+        [THEMES.DARK_A]: 'rgba(29, 78, 216, 0.05)'  // 1D4ED8 at 5% opacity (info-a50) from Figma
       },
       itemSelectedHover: {
         [THEMES.LIGHT_A]: '#DBEAFE',  // blue-100
-        [THEMES.DARK_A]: '#1E40AF'    // blue-800
+        [THEMES.DARK_A]: 'rgba(29, 78, 216, 0.10)'  // 1D4ED8 at 10% opacity (info-a100) from Figma
       },
       itemFocused: {
         [THEMES.LIGHT_A]: '#FFFFFF',  // white
@@ -672,8 +672,8 @@ const colorTokens = {
         [THEMES.DARK_A]: '#F9FAFB'    // gray-50
       },
       itemSelected: {
-        [THEMES.LIGHT_A]: '#1D4ED8',  // blue-700
-        [THEMES.DARK_A]: '#93C5FD'    // blue-300
+        [THEMES.LIGHT_A]: '#0F172A',  // slate-900 (matches text.primary light.a)
+        [THEMES.DARK_A]: '#F9FAFB'    // gray-50 (matches text.primary dark.a)
       },
       itemDisabled: {
         [THEMES.LIGHT_A]: '#9CA3AF',  // gray-400

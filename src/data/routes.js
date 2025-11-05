@@ -19,6 +19,7 @@ import BreadcrumbPage from '../pages/BreadcrumbPage';
 import RadioPage from '../pages/RadioPage';
 import TextInputsPage from '../pages/TextInputsPage';
 import AlertPage from '../pages/AlertPage';
+import MenuPage from '../pages/MenuPage';
 import IconographyPage from '../pages/IconographyPage';
 import LanguageGrammarPage from '../pages/foundations/LanguageGrammarPage.js';
 
@@ -92,6 +93,13 @@ export const routes = [
     component: ChipPage,
     title: 'Chip',
     description: 'Compact and versatile UI element for displaying discrete information',
+    category: 'components'
+  },
+  {
+    path: '/components/menu',
+    component: MenuPage,
+    title: 'Menu',
+    description: 'Menu component for displaying selectable options with search and scroll support',
     category: 'components'
   },
   {
