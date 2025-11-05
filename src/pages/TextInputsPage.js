@@ -225,7 +225,9 @@ const TextInputsPage = () => {
       <Header>
         <Title>Text Inputs</Title>
         <Description>
-          Text field and text area components for form inputs with support for labels, helper text, error states, and validation. These components provide consistent styling and behavior across different themes and states.
+          The Text Input component lets users enter and edit text in forms, dialogs, and other interfaces. It supports various states, validation, and input types to match different use cases, from short labels to longer multiline entries.
+          <br /><br />
+          Use Text Input whenever users need to provide freeform text, such as names, emails, or search terms.
         </Description>
       </Header>
 
