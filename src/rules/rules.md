@@ -17,6 +17,24 @@
 - Use `rem` units for all typography.  
 - Preserve icons, images, and illustrations exactly as they are.  
 
+### Branch Safety Check
+**Before making any file changes or commits, Cursor must check the current git branch.**
+
+- **Branch Check Requirement**: Cursor must check the current git branch before making any file changes or commits.  
+- **Warning Behavior**: If on `main` branch, Cursor must:
+  - Display a clear warning message informing the user they're on the main branch.  
+  - Explain the risk of committing directly to main (main is the only deployable branch per Section 10).  
+  - Ask if they want to create a new branch before proceeding.  
+- **Branch Creation**: If user confirms, Cursor should:
+  - Suggest an appropriate branch name based on the task (following the `type/description` format from Section 12, e.g., `feat/component-name`, `fix/issue-description`, `docs/update-name`).  
+  - Create the new branch using `git checkout -b branch-name`.  
+  - Confirm the branch switch before proceeding with any changes.  
+- **Exception Handling**: Only proceed with changes on main if explicitly confirmed by the user after the warning.
+
+✅ **Cursor Check:**  
+- Verify current branch with `git branch --show-current` before making any modifications.  
+- If on main, display warning and wait for user confirmation before proceeding.  
+
 ---
 
 ## 2. Performance Standards
