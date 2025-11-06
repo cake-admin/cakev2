@@ -137,7 +137,7 @@ const ModalPage = () => {
 
         <PreviewSection>
           <Button
-            variant={BUTTON_VARIANTS.PRIMARY}
+            variant={BUTTON_VARIANTS.SECONDARY}
             label="Open Basic Modal"
             onClick={() => setBasicModalOpen(true)}
           />
@@ -193,7 +193,7 @@ const ModalPage = () => {
 
         <PreviewSection>
           <Button
-            variant={BUTTON_VARIANTS.PRIMARY}
+            variant={BUTTON_VARIANTS.SECONDARY}
             label="Open Confirmation Modal"
             onClick={() => setConfirmationModalOpen(true)}
           />
