@@ -395,8 +395,17 @@ const Navigation = () => {
       }
     });
     
+    // Sort children arrays alphabetically by title
+    routesCopy.forEach(route => {
+      if (route.children.length > 0) {
+        route.children.sort((a, b) => 
+          a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
+        );
+      }
+    });
+    
     // Group by category
-    return routesCopy.reduce((acc, route) => {
+    const grouped = routesCopy.reduce((acc, route) => {
       if (!acc[route.category]) {
         acc[route.category] = [];
       }
@@ -408,6 +417,15 @@ const Navigation = () => {
       
       return acc;
     }, {});
+    
+    // Sort each category array alphabetically by title
+    Object.keys(grouped).forEach(category => {
+      grouped[category].sort((a, b) => 
+        a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
+      );
+    });
+    
+    return grouped;
   }, []);
 
   return (
