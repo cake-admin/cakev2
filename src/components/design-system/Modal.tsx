@@ -9,6 +9,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { fontStack } from '../../styles/globalStyles';
 import { getTokenColor } from '../../tokens/colorTokens';
 import Button, { BUTTON_VARIANTS, BUTTON_STYLES } from './Button';
+import Checkbox from './Checkbox';
 
 // Animation keyframes
 const fadeIn = keyframes`
@@ -299,34 +300,6 @@ const BodyText = styled.p<{ $theme?: string }>`
   line-height: 20px;
   color: ${props => getTokenColor('text.secondary', props.$theme || 'light.a')};
   margin: 0;
-`;
-
-const CheckboxContainer = styled.div<{ $theme?: string }>`
-  box-sizing: border-box;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  height: 24px;
-  padding: 0 4px;
-  border-radius: 4px;
-`;
-
-const CheckboxInput = styled.input<{ $theme?: string }>`
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  cursor: pointer;
-  accent-color: ${props => getTokenColor('checkbox.border.checked', props.$theme || 'light.a')};
-`;
-
-const CheckboxLabel = styled.label<{ $theme?: string }>`
-  font-family: ${fontStack};
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
-  color: ${props => getTokenColor('text.primary', props.$theme || 'light.a')};
-  cursor: pointer;
-  user-select: none;
 `;
 
 const ConfirmationFooter = styled.div<{ $theme?: string }>`
@@ -707,18 +680,13 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               </BodyText>
             </ConfirmationBody>
             {showCheckbox && (
-              <CheckboxContainer $theme={theme}>
-                <CheckboxInput
-                  type="checkbox"
-                  id="confirmation-checkbox"
-                  checked={localCheckboxChecked}
-                  onChange={handleCheckboxChange}
-                  $theme={theme}
-                />
-                <CheckboxLabel htmlFor="confirmation-checkbox" $theme={theme}>
-                  {checkboxLabel}
-                </CheckboxLabel>
-              </CheckboxContainer>
+              <Checkbox
+                checked={localCheckboxChecked}
+                onChange={handleCheckboxChange}
+                label={checkboxLabel}
+                theme={theme}
+                size="medium"
+              />
             )}
           </ConfirmationHeader>
           <ConfirmationFooter $theme={theme}>
