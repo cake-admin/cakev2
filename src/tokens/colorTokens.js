@@ -652,6 +652,89 @@ const colorTokens = {
     }
   },
 
+  // Toggle colors (from Figma variables via cake-color-tokens.json)
+  // Figma variable naming: category-component-type-onSurface-state
+  // Mapped to semantic paths for component usage
+  toggle: {
+    track: {
+      // Maps to: referencePrimary (ON state, rest)
+      on: {
+        [THEMES.LIGHT_A]: '#1D4ED8',  // referencePrimary.lightA (blue-700)
+        [THEMES.DARK_A]: '#93C5FD'     // referencePrimary.darkA (blue-300)
+      },
+      // Maps to: referencePrimaryStrong (ON state, hover)
+      onHover: {
+        [THEMES.LIGHT_A]: '#1E40AF',  // referencePrimaryStrong.lightA (blue-800)
+        [THEMES.DARK_A]: '#60A5FA'     // referencePrimaryStrong.darkA (blue-400)
+      },
+      // Maps to: surfaceToggleSecondary (OFF state, rest)
+      off: {
+        [THEMES.LIGHT_A]: '#334155',   // surfaceToggleSecondary.lightA (slate-700)
+        [THEMES.DARK_A]: '#CBD5E1'     // surfaceToggleSecondary.darkA (slate-300)
+      },
+      // Maps to: surfaceToggleSecondaryHover (OFF state, hover)
+      offHover: {
+        [THEMES.LIGHT_A]: '#0F172A',   // surfaceToggleSecondaryHover.lightA (slate-900)
+        [THEMES.DARK_A]: '#E2E8F0'     // surfaceToggleSecondaryHover.darkA (slate-200)
+      },
+      // Maps to: surfaceToggleDisabled
+      disabled: {
+        [THEMES.LIGHT_A]: '#E5E7EB',   // surfaceToggleDisabled.lightA (gray-200)
+        [THEMES.DARK_A]: '#1F2937'     // surfaceToggleDisabled.darkA (gray-800)
+      }
+    },
+    thumb: {
+      // Maps to: iconOnPrimary (ON state thumb)
+      on: {
+        [THEMES.LIGHT_A]: '#FFFFFF',   // iconOnPrimary.lightA (white)
+        [THEMES.DARK_A]: '#18181B'     // iconOnPrimary.darkA (zinc-900)
+      },
+      // Maps to: iconToggleOnSecondary (OFF state thumb)
+      off: {
+        [THEMES.LIGHT_A]: '#F8FAFC',   // iconToggleOnSecondary.lightA (slate-50)
+        [THEMES.DARK_A]: '#0F172A'     // iconToggleOnSecondary.darkA (slate-900)
+      },
+      // Maps to: iconDisabled
+      disabled: {
+        [THEMES.LIGHT_A]: '#64748B',   // iconDisabled.lightA (slate-500)
+        [THEMES.DARK_A]: '#9CA3AF'     // iconDisabled.darkA (gray-400)
+      },
+      // Maps to: iconOnPrimary (pressed state uses same as ON)
+      pressed: {
+        [THEMES.LIGHT_A]: '#FFFFFF',   // iconOnPrimary.lightA (white)
+        [THEMES.DARK_A]: '#18181B'     // iconOnPrimary.darkA (zinc-900)
+      }
+    },
+    label: {
+      // Maps to: textPrimary
+      default: {
+        [THEMES.LIGHT_A]: '#0F172A',   // textPrimary.lightA (slate-900)
+        [THEMES.DARK_A]: '#D4D4D8'      // textPrimary.darkA (zinc-300)
+      },
+      // Maps to: textDisabled
+      disabled: {
+        [THEMES.LIGHT_A]: '#475569',   // textDisabled.lightA (slate-600)
+        [THEMES.DARK_A]: '#9CA3AF'      // textDisabled.darkA (gray-400)
+      }
+    },
+    focus: {
+      // Maps to: borderFocus (light.a) / referenceFocus (dark.a)
+      ring: {
+        [THEMES.LIGHT_A]: '#1D4ED8',   // borderFocus.lightA (blue-700)
+        [THEMES.DARK_A]: '#93C5FD'      // referenceFocus.darkA (blue-300) - lighter for dark theme
+      },
+      innerBorder: {
+        [THEMES.LIGHT_A]: '#FFFFFF',   // White inner border to create white space effect
+        [THEMES.DARK_A]: '#FFFFFF'      // White inner border - same for dark theme
+      },
+      // Maps to: referenceSecondaryStrong (creates white space between ring and track)
+      background: {
+        [THEMES.LIGHT_A]: '#94A3B8',   // referenceSecondaryStrong.lightA (slate-400)
+        [THEMES.DARK_A]: '#A1A1AA19'    // referenceSecondaryStrong.darkA (zinc-400 with opacity)
+      }
+    }
+  },
+
   // Menu colors (from Figma variables)
   menu: {
     surface: {
