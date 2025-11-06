@@ -20,6 +20,7 @@ import RadioPage from '../pages/RadioPage';
 import TextInputsPage from '../pages/TextInputsPage';
 import AlertPage from '../pages/AlertPage';
 import MenuPage from '../pages/MenuPage';
+import DropdownPage from '../pages/DropdownPage';
 import IconographyPage from '../pages/IconographyPage';
 import LanguageGrammarPage from '../pages/foundations/LanguageGrammarPage.js';
 
@@ -100,6 +101,13 @@ export const routes = [
     component: MenuPage,
     title: 'Menu',
     description: 'Menu component for displaying selectable options with search and scroll support',
+    category: 'components'
+  },
+  {
+    path: '/components/dropdown',
+    component: DropdownPage,
+    title: 'Dropdown',
+    description: 'Dropdown component for selecting options from a list with optional search functionality and scrolling support',
     category: 'components'
   },
   {

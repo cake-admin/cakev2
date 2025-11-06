@@ -530,11 +530,35 @@ const colorTokens = {
     }
   },
 
+  // Reference colors (top-level)
+  reference: {
+    surfaceDisabled: {
+      [THEMES.LIGHT_A]: '#F1F5F9',  // --reference/surface-disabled (slate-100)
+      [THEMES.DARK_A]: '#1F2937'    // gray-800
+    },
+    errorWeak: {
+      [THEMES.LIGHT_A]: '#FEF2F2',  // --reference/error-weak (red-50)
+      [THEMES.DARK_A]: '#2F0808'    // custom dark red
+    }
+  },
+
+  // Surface colors (top-level)
+  surface: {
+    card: {
+      [THEMES.LIGHT_A]: '#FFFFFF',  // --surface/card
+      [THEMES.DARK_A]: '#27272A'    // zinc-800
+    }
+  },
+
   // TextField colors (from Figma variables)
   textField: {
     surface: {
       input: {
         [THEMES.LIGHT_A]: '#F8FAFC',  // --surface/input (slate-50)
+        [THEMES.DARK_A]: '#1F2937'    // gray-800
+      },
+      inputOnCanvas: {
+        [THEMES.LIGHT_A]: '#F1F5F9',  // --surface/input-onCanvas (slate-100)
         [THEMES.DARK_A]: '#1F2937'    // gray-800
       },
       inputHover: {
@@ -617,6 +641,14 @@ const colorTokens = {
         [THEMES.LIGHT_A]: '#9CA3AF',  // --surface/disabled (gray-400) - used for disabled asterisk
         [THEMES.DARK_A]: '#9CA3AF'    // gray-400
       }
+    }
+  },
+
+  // Zinc color tokens
+  zinc: {
+    800: {
+      [THEMES.LIGHT_A]: '#27272A',  // zinc-800 (not typically used in light mode)
+      [THEMES.DARK_A]: '#27272A'    // zinc-800
     }
   },
 

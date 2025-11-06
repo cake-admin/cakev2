@@ -62,7 +62,11 @@ interface MenuItemProps {
   forceState?: string;
 }
 
-const MenuContainer = styled.div<{ $theme?: string }>`
+const MenuContainer = styled.div<{ 
+  $theme?: string;
+  $hasScroll?: boolean;
+  $maxHeight?: number;
+}>`
   background: ${props => getTokenColor('menu.surface.item', props.$theme || 'light.a')};
   border: none;
   border-radius: 8px;
@@ -73,6 +77,12 @@ const MenuContainer = styled.div<{ $theme?: string }>`
   position: relative;
   box-sizing: border-box;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  overflow-x: hidden;
+  
+  ${props => props.$hasScroll && `
+    max-height: ${props.$maxHeight || 300}px;
+    overflow-y: auto;
+  `}
 `;
 
 const MenuItemsContainer = styled.div`
@@ -271,6 +281,8 @@ interface MenuProps {
   className?: string;
   style?: React.CSSProperties;
   itemStates?: MenuItemState[];
+  hasScroll?: boolean;
+  maxHeight?: number;
 }
 
 const Menu: React.FC<MenuProps> = ({
@@ -281,11 +293,15 @@ const Menu: React.FC<MenuProps> = ({
   width = 180,
   className,
   style,
-  itemStates
+  itemStates,
+  hasScroll = false,
+  maxHeight = 300
 }) => {
   return (
     <MenuContainer 
       $theme={theme}
+      $hasScroll={hasScroll}
+      $maxHeight={maxHeight}
       className={className}
       style={{ ...style, width: `${width}px` }}
       role="menu"
@@ -323,7 +339,9 @@ Menu.propTypes = {
     state: PropTypes.string,
     selected: PropTypes.bool,
     disabled: PropTypes.bool
-  }))
+  })),
+  hasScroll: PropTypes.bool,
+  maxHeight: PropTypes.number
 };
 
 export default Menu;
