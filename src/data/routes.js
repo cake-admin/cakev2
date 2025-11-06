@@ -21,6 +21,7 @@ import TextInputsPage from '../pages/TextInputsPage';
 import AlertPage from '../pages/AlertPage';
 import MenuPage from '../pages/MenuPage';
 import DropdownPage from '../pages/DropdownPage';
+import ModalPage from '../pages/ModalPage';
 import IconographyPage from '../pages/IconographyPage';
 import LanguageGrammarPage from '../pages/foundations/LanguageGrammarPage.js';
 
@@ -108,6 +109,13 @@ export const routes = [
     component: DropdownPage,
     title: 'Dropdown',
     description: 'Dropdown component for selecting options from a list with optional search functionality and scrolling support',
+    category: 'components'
+  },
+  {
+    path: '/components/modal',
+    component: ModalPage,
+    title: 'Modal',
+    description: 'Modal components for displaying content, gathering user input, or confirming actions with Basic and Confirmation variants',
     category: 'components'
   },
   {
