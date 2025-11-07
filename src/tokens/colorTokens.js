@@ -540,6 +540,10 @@ const colorTokens = {
 
   // Reference colors (top-level)
   reference: {
+    primary: {
+      [THEMES.LIGHT_A]: cakeColorTokens.referencePrimary.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.referencePrimary.darkA
+    },
     surfaceDisabled: {
       [THEMES.LIGHT_A]: '#F1F5F9',  // --reference/surface-disabled (slate-100)
       [THEMES.DARK_A]: '#1F2937'    // gray-800
@@ -547,6 +551,10 @@ const colorTokens = {
     errorWeak: {
       [THEMES.LIGHT_A]: '#FEF2F2',  // --reference/error-weak (red-50)
       [THEMES.DARK_A]: '#2F0808'    // custom dark red
+    },
+    focus: {
+      [THEMES.LIGHT_A]: cakeColorTokens.referenceFocus.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.referenceFocus.darkA
     }
   },
 
@@ -555,6 +563,27 @@ const colorTokens = {
     card: {
       [THEMES.LIGHT_A]: '#FFFFFF',  // --surface/card
       [THEMES.DARK_A]: '#27272A'    // zinc-800
+    },
+    itemSelectedOnCanvas: {
+      [THEMES.LIGHT_A]: cakeColorTokens.surfaceItemSelectedOnCanvas.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.surfaceItemSelectedOnCanvas.darkA
+    },
+    itemSelectedHover: {
+      [THEMES.LIGHT_A]: cakeColorTokens.surfaceItemSelectedHover.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.surfaceItemSelectedHover.darkA
+    },
+    itemHover: {
+      [THEMES.LIGHT_A]: cakeColorTokens.surfaceItemHover.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.surfaceItemHover.darkA
+    }
+  },
+
+  // Icon colors (top-level)
+  icon: {
+    // Maps to: iconDisabled (from cake-color-tokens.json)
+    disabled: {
+      [THEMES.LIGHT_A]: cakeColorTokens.iconDisabled.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.iconDisabled.darkA
     }
   },
 
