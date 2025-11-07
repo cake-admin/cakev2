@@ -22,9 +22,15 @@ export const THEMES = {
 
 // Parse cake-color-tokens.json (it's stored as a JSON string)
 // Webpack will parse the JSON file once, giving us a string, so we parse it once more to get the object
-const cakeColorTokens = typeof cakeColorTokensData === 'string' 
-  ? JSON.parse(cakeColorTokensData)
-  : cakeColorTokensData;
+let cakeColorTokens;
+try {
+  cakeColorTokens = typeof cakeColorTokensData === 'string' 
+    ? JSON.parse(cakeColorTokensData)
+    : cakeColorTokensData;
+} catch (error) {
+  console.error('Failed to parse cake-color-tokens.json:', error);
+  cakeColorTokens = {};
+}
 
 /**
  * Color token mappings organized by semantic category
@@ -582,8 +588,8 @@ const colorTokens = {
   icon: {
     // Maps to: iconDisabled (from cake-color-tokens.json)
     disabled: {
-      [THEMES.LIGHT_A]: cakeColorTokens.iconDisabled.lightA,
-      [THEMES.DARK_A]: cakeColorTokens.iconDisabled.darkA
+      [THEMES.LIGHT_A]: cakeColorTokens.iconDisabled?.lightA || '#64748B',
+      [THEMES.DARK_A]: cakeColorTokens.iconDisabled?.darkA || '#9CA3AF'
     }
   },
 
