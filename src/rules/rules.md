@@ -81,9 +81,11 @@ Maintain the following folder structure:
 - Separate examples from implementation.  
 - Type-safe props, auto-documented.  
 - No circular dependencies.  
+- **Import file extensions required**: All relative imports must include explicit file extensions (`.js`, `.jsx`, `.ts`, `.tsx`) to ensure consistent module resolution across platforms. Linux-based CI/CD (GitHub Actions) requires explicit extensions, while macOS/Windows may work without them, causing build failures that only appear in CI.
 
 ✅ **Cursor Check:**  
-Run `tsc --noEmit` to validate structure and typing.  
+- Run `tsc --noEmit` to validate structure and typing.  
+- Verify all relative imports include file extensions before committing.  
 
 ---
 
