@@ -18,7 +18,7 @@ import BadgePage from '../pages/BadgePage';
 import BreadcrumbPage from '../pages/BreadcrumbPage';
 import RadioPage from '../pages/RadioPage';
 import TextInputsPage from '../pages/TextInputsPage';
-import TogglePage from '../pages/TogglePage';
+import TogglePage from '../pages/TogglePage.js';
 import TabPage from '../pages/TabPage';
 import AlertPage from '../pages/AlertPage';
 import MenuPage from '../pages/MenuPage';
