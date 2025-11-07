@@ -10,6 +10,7 @@
  */
 
 import colorData from '../data/colors.json';
+import cakeColorTokensData from './cake-color-tokens.json';
 
 /**
  * Theme constants
@@ -19,6 +20,12 @@ export const THEMES = {
   DARK_A: 'dark.a'
 };
 
+// Parse cake-color-tokens.json (it's stored as a JSON string)
+// Webpack will parse the JSON file once, giving us a string, so we parse it once more to get the object
+const cakeColorTokens = typeof cakeColorTokensData === 'string' 
+  ? JSON.parse(cakeColorTokensData)
+  : cakeColorTokensData;
+
 /**
  * Color token mappings organized by semantic category
  * Each token maps to light.a and dark.a theme values
@@ -26,9 +33,10 @@ export const THEMES = {
 const colorTokens = {
   // Background colors
   background: {
+    // Maps to: surfaceCanvas (from cake-color-tokens.json)
     canvas: {
-      [THEMES.LIGHT_A]: '#F8FAFC', // slate-50
-      [THEMES.DARK_A]: '#18181B'   // zinc-900
+      [THEMES.LIGHT_A]: cakeColorTokens.surfaceCanvas.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.surfaceCanvas.darkA
     },
     default: {
       [THEMES.LIGHT_A]: '#FFFFFF',  // white
@@ -797,6 +805,76 @@ const colorTokens = {
       search: {
         [THEMES.LIGHT_A]: '#475569',  // --reference/helper (slate-600)
         [THEMES.DARK_A]: '#9CA3AF'    // gray-400
+      }
+    }
+  },
+
+  // Tab colors (from Figma variables via cake-color-tokens.json)
+  // Figma variable naming: category-component-type-onSurface-state
+  // Token names follow convention: surfaceTabPrimaryRest, textTabPrimaryRest, etc.
+  // Mapped to semantic paths for component usage (backward compatibility)
+  tab: {
+    surface: {
+      // Maps to: surfaceTabPrimarySelectedRest (from cake-color-tokens.json)
+      selected: {
+        [THEMES.LIGHT_A]: cakeColorTokens.surfaceTabPrimarySelectedRest.lightA,
+        [THEMES.DARK_A]: cakeColorTokens.surfaceTabPrimarySelectedRest.darkA
+      },
+      // Maps to: surfaceTabPrimaryRest (from cake-color-tokens.json)
+      unselected: {
+        [THEMES.LIGHT_A]: cakeColorTokens.surfaceTabPrimaryRest.lightA,
+        [THEMES.DARK_A]: cakeColorTokens.surfaceTabPrimaryRest.darkA
+      },
+      // Maps to: surfaceTabPrimaryHover (from cake-color-tokens.json)
+      hover: {
+        [THEMES.LIGHT_A]: cakeColorTokens.surfaceTabPrimaryHover.lightA,
+        [THEMES.DARK_A]: cakeColorTokens.surfaceTabPrimaryHover.darkA
+      },
+      // Maps to: surfaceTabPrimaryDisabled (from cake-color-tokens.json)
+      disabled: {
+        [THEMES.LIGHT_A]: cakeColorTokens.surfaceTabPrimaryDisabled.lightA,
+        [THEMES.DARK_A]: cakeColorTokens.surfaceTabPrimaryDisabled.darkA
+      }
+    },
+    text: {
+      // Maps to: textTabPrimarySelectedRest (from cake-color-tokens.json)
+      selected: {
+        [THEMES.LIGHT_A]: cakeColorTokens.textTabPrimarySelectedRest.lightA,
+        [THEMES.DARK_A]: cakeColorTokens.textTabPrimarySelectedRest.darkA
+      },
+      // Maps to: textTabPrimaryRest (from cake-color-tokens.json)
+      unselected: {
+        [THEMES.LIGHT_A]: cakeColorTokens.textTabPrimaryRest.lightA,
+        [THEMES.DARK_A]: cakeColorTokens.textTabPrimaryRest.darkA
+      },
+      // Maps to: textTabPrimaryDisabled (from cake-color-tokens.json)
+      disabled: {
+        [THEMES.LIGHT_A]: cakeColorTokens.textTabPrimaryDisabled.lightA,
+        [THEMES.DARK_A]: cakeColorTokens.textTabPrimaryDisabled.darkA
+      }
+    },
+    border: {
+      // Maps to: borderTabPrimarySelectedRest (from cake-color-tokens.json)
+      selected: {
+        [THEMES.LIGHT_A]: cakeColorTokens.borderTabPrimarySelectedRest.lightA,
+        [THEMES.DARK_A]: cakeColorTokens.borderTabPrimarySelectedRest.darkA
+      }
+    },
+    icon: {
+      // Maps to: iconTabScrollRest (from cake-color-tokens.json)
+      scroll: {
+        [THEMES.LIGHT_A]: cakeColorTokens.iconTabScrollRest.lightA,
+        [THEMES.DARK_A]: cakeColorTokens.iconTabScrollRest.darkA
+      },
+      // Maps to: iconTabScrollHover (from cake-color-tokens.json)
+      scrollHover: {
+        [THEMES.LIGHT_A]: cakeColorTokens.iconTabScrollHover.lightA,
+        [THEMES.DARK_A]: cakeColorTokens.iconTabScrollHover.darkA
+      },
+      // Maps to: iconTabScrollDisabled (from cake-color-tokens.json)
+      scrollDisabled: {
+        [THEMES.LIGHT_A]: cakeColorTokens.iconTabScrollDisabled.lightA,
+        [THEMES.DARK_A]: cakeColorTokens.iconTabScrollDisabled.darkA
       }
     }
   }
