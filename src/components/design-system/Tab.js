@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { fontStack } from '../../styles/globalStyles';
-import { getTokenColor, THEMES } from '../../tokens/colorTokens';
+import { getTokenColor } from '../../tokens/colorTokens';
 
 /**
  * Tab orientations
