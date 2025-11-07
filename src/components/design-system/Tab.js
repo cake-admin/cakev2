@@ -445,9 +445,6 @@ const Tab = ({
     }
   };
 
-  // Generate unique ID for tablist
-  const tabListId = `tablist-${Math.random().toString(36).substr(2, 9)}`;
-
   return (
     <TabContainer
       className={className}
