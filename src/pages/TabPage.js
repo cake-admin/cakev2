@@ -115,6 +115,11 @@ const TabPage = () => {
   const [overflowState, setOverflowState] = useState('');
   const [overflowSelectedTab, setOverflowSelectedTab] = useState('tab1');
 
+  // Vertical tabs section state
+  const [verticalTheme, setVerticalTheme] = useState(THEMES.LIGHT_A);
+  const [verticalState, setVerticalState] = useState('');
+  const [verticalSelectedTab, setVerticalSelectedTab] = useState('tab1');
+
   // Basic tabs data
   const basicTabs = [
     { id: 'tab1', label: 'Tab' },
@@ -140,6 +145,18 @@ const TabPage = () => {
     { id: 'tab10', label: 'Tab' },
     { id: 'tab11', label: 'Tab' },
     { id: 'tab12', label: 'Tab' }
+  ];
+
+  // Vertical tabs data (8 tabs matching Figma design)
+  const verticalTabs = [
+    { id: 'tab1', label: 'Tab' },
+    { id: 'tab2', label: 'Tab' },
+    { id: 'tab3', label: 'Tab' },
+    { id: 'tab4', label: 'Tab' },
+    { id: 'tab5', label: 'Tab' },
+    { id: 'tab6', label: 'Tab' },
+    { id: 'tab7', label: 'Tab' },
+    { id: 'tab8', label: 'Tab' }
   ];
 
   return (
@@ -213,6 +230,40 @@ const TabPage = () => {
               onTabChange={setOverflowSelectedTab}
               theme={overflowTheme}
               disabled={overflowState === STATES.DISABLED}
+            />
+          </PreviewContainer>
+        </PreviewSection>
+      </Section>
+
+      <Section>
+        <SectionTitle>Vertical tabs</SectionTitle>
+        <ControlsGrid>
+          <Control>
+            <Label>Theme</Label>
+            <Select value={verticalTheme} onChange={(e) => setVerticalTheme(e.target.value)}>
+              <option value={THEMES.LIGHT_A}>Light.a</option>
+              <option value={THEMES.DARK_A}>Dark.a</option>
+            </Select>
+          </Control>
+
+          <Control>
+            <Label>State</Label>
+            <Select value={verticalState} onChange={(e) => setVerticalState(e.target.value)}>
+              <option value="">None</option>
+              <option value={STATES.DISABLED}>Disabled</option>
+            </Select>
+          </Control>
+        </ControlsGrid>
+
+        <PreviewSection theme={verticalTheme}>
+          <PreviewContainer>
+            <Tab
+              tabs={verticalTabs}
+              selectedTab={verticalSelectedTab}
+              onTabChange={setVerticalSelectedTab}
+              theme={verticalTheme}
+              orientation={TAB_ORIENTATIONS.VERTICAL}
+              disabled={verticalState === STATES.DISABLED}
             />
           </PreviewContainer>
         </PreviewSection>

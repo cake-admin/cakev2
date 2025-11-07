@@ -18,6 +18,8 @@ import BadgePage from '../pages/BadgePage';
 import BreadcrumbPage from '../pages/BreadcrumbPage';
 import RadioPage from '../pages/RadioPage';
 import TextInputsPage from '../pages/TextInputsPage';
+import TogglePage from '../pages/TogglePage';
+import TabPage from '../pages/TabPage';
 import AlertPage from '../pages/AlertPage';
 import MenuPage from '../pages/MenuPage';
 import DropdownPage from '../pages/DropdownPage';
@@ -130,6 +132,20 @@ export const routes = [
     component: TextInputsPage,
     title: 'Text Inputs',
     description: 'Text field and text area components for form inputs with support for labels, helper text, error states, and validation',
+    category: 'components'
+  },
+  {
+    path: '/components/toggle',
+    component: TogglePage,
+    title: 'Toggle',
+    description: 'Interactive toggle switch component for binary choices and settings with support for all interaction states and themes',
+    category: 'components'
+  },
+  {
+    path: '/components/tab',
+    component: TabPage,
+    title: 'Tab',
+    description: 'Tab component for organizing content into multiple panels',
     category: 'components'
   },
   {
