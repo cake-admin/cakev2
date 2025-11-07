@@ -1,6 +1,6 @@
 # 🎯 Design System Cursor Rule  
 **Purpose:** Define rules for AI agents and developers (including Cursor, Copilot, and automated CI/CD processes) when creating, maintaining, and deploying the design system documentation site.  
-**Baseline:** Follow all standards from `Design System Documentation Rules.md`.  
+**Baseline:** Follow all standards from `rules.md`.  
 
 ---
 
@@ -23,10 +23,10 @@
 - **Branch Check Requirement**: Cursor must check the current git branch before making any file changes or commits.  
 - **Warning Behavior**: If on `main` branch, Cursor must:
   - Display a clear warning message informing the user they're on the main branch.  
-  - Explain the risk of committing directly to main (main is the only deployable branch per Section 10).  
+  - Explain the risk of committing directly to main (main is the only deployable branch per Section 11).  
   - Ask if they want to create a new branch before proceeding.  
 - **Branch Creation**: If user confirms, Cursor should:
-  - Suggest an appropriate branch name based on the task (following the `type/description` format from Section 12, e.g., `feat/component-name`, `fix/issue-description`, `docs/update-name`).  
+  - Suggest an appropriate branch name based on the task (following the `type/description` format from Section 13, e.g., `feat/component-name`, `fix/issue-description`, `docs/update-name`).  
   - Create the new branch using `git checkout -b branch-name`.  
   - Confirm the branch switch before proceeding with any changes.  
 - **Exception Handling**: Only proceed with changes on main if explicitly confirmed by the user after the warning.
@@ -155,7 +155,74 @@ When implementing components, ensure the following properties are followed exact
 
 ---
 
-## 8. Navigation & Search
+## 8. Color Token Management
+
+When working with colors, always use the Figma MCP to synchronize color tokens:
+
+**CRITICAL RULE: Never invent or create new token names. All token names in `src/tokens/cake-color-tokens.json` must exactly match Figma variable names. If a variable doesn't exist in Figma, use the Figma MCP to fetch it first before adding it to the JSON file. Do not create token names that don't exist in Figma.**
+
+1. Fetch color variables from our Figma design file using the Figma MCP
+
+2. Create a 1:1 mapping from Figma color variable names to our JSON color token definition
+
+3. Follow our token naming convention when creating the mappings
+
+4. Reference `src/tokens/cake-color-tokens.json` to map color variables to React components
+
+5. **Always verify token names exist in Figma before using them** - use Figma MCP `get_variable_defs` to confirm variable names match exactly
+
+### Token Naming Convention
+
+When writing Figma Variables, remove the Category from the variable name to reduce complexity.
+
+If a component does not meet one of the criteria in the naming convention, then that criteria is left off the token name. This helps to reduce complexity and redundancy.
+
+**Token structure:** `category-component-type-onSurface-state`
+
+**Criteria options:**
+
+- **Category:** reference, surface, text, icon, border
+
+- **Component:** button, textButton, inlineAlert, item, input, toggle, modal, card, canvas, range
+
+- **Type:** primary, primary-strong, primary-stronger, primary-weak, primary-weaker, secondary, secondary-strong, secondary-stronger, secondary-weak, secondary-weaker, tertiary, tertiary-strong, tertiary-stronger, tertiary-weak, tertiary-weaker
+
+- **onSurface:** onInfo, onSuccess, onWarning, onError, onCard, onCanvas, onModal
+
+- **State:** rest, hover, press, focus, disabled
+
+**Examples:**
+
+- `button-primary-hover`
+
+- `iconButton-primary-onError-press`
+
+### Mapping to React Components
+
+When applying color tokens to React components:
+
+1. Always reference `src/tokens/cake-color-tokens.json` as the source of truth
+
+2. Use the token names from this JSON file when applying colors in component styles
+
+3. Ensure consistency between Figma variable names and the token names used in React components
+
+4. **Validate token names**: Before using any token, verify it exists in the JSON file and matches the exact Figma variable name. Never assume a token name - always check the JSON first.
+
+When mapping from Figma, preserve this naming structure in the JSON tokens.
+
+### Token Name Validation Process
+
+Before adding or using any color token:
+
+1. **Fetch from Figma first**: Use Figma MCP `get_variable_defs` to get the exact variable name from Figma
+2. **Check JSON file**: Verify the token name exists in `src/tokens/cake-color-tokens.json` with the exact same name
+3. **No invention**: If a token doesn't exist in Figma, don't create it. Use existing Figma variables or request the variable be added to Figma first
+4. **Exact match required**: Token names must be a 1:1 match with Figma variable names (following the naming convention format, but using exact names from Figma)
+
+---
+
+## 9. Navigation & Search
 - Search index includes names, props, examples.  
 - Shortcut: `Cmd/Ctrl + K` required.  
 - Navigation depth ≤ 3 levels.  
@@ -167,7 +234,7 @@ Verify search index updates at build time (not runtime).
 
 ---
 
-## 9. Code Quality Requirements
+## 10. Code Quality Requirements
 - Typed props, ref forwarding, JSDoc on all exports.  
 - No `any` types.  
 - Unit + integration + a11y + visual tests.  
@@ -178,7 +245,7 @@ Run `npm test` and confirm coverage threshold met.
 
 ---
 
-## 10. Build & Deployment Rules
+## 11. Build & Deployment Rules
 **Static builds and deployment use Git + GitHub Pages via GitHub Actions.**
 
 ### Deployment Workflow
@@ -230,7 +297,7 @@ Run `npm test` and confirm coverage threshold met.
 
 ---
 
-## 11. Accessibility Rules
+## 12. Accessibility Rules
 - WCAG 2.1 AA minimum.  
 - Keyboard navigable, visible focus, semantic HTML.  
 - No color-only distinctions.  
@@ -241,7 +308,7 @@ Run `axe-core` scan on docs build.
 
 ---
 
-## 12. Version Control Rules
+## 13. Version Control Rules
 - Semantic commits (`feat/`, `fix/`, `docs/`).  
 - Branch format: `type/description` (e.g., `feat/button-sizes`).  
 - Squash merge only.  
@@ -253,7 +320,7 @@ Verify commit conforms to conventional commit syntax.
 
 ---
 
-## 13. Maintenance Routine
+## 14. Maintenance Routine
 - Unused code audit: monthly  
 - Dependency updates: weekly  
 - Example updates + a11y audits: quarterly  
@@ -265,7 +332,7 @@ Flag stale or deprecated examples with inline warnings.
 
 ---
 
-## 14. Optimization Checklist (Pre-Merge)
+## 15. Optimization Checklist (Pre-Merge)
 - [ ] Images optimized + lazy-loaded  
 - [ ] Examples runnable  
 - [ ] No console errors  
