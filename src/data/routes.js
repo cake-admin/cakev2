@@ -24,6 +24,7 @@ import AlertPage from '../pages/AlertPage';
 import MenuPage from '../pages/MenuPage';
 import DropdownPage from '../pages/DropdownPage';
 import ModalPage from '../pages/ModalPage';
+import TooltipPage from '../pages/TooltipPage';
 import IconographyPage from '../pages/IconographyPage';
 import LanguageGrammarPage from '../pages/foundations/LanguageGrammarPage.js';
 
@@ -146,6 +147,13 @@ export const routes = [
     component: TabPage,
     title: 'Tab',
     description: 'Tab component for organizing content into multiple panels',
+    category: 'components'
+  },
+  {
+    path: '/components/tooltip',
+    component: TooltipPage,
+    title: 'Tooltip',
+    description: 'Tooltip component for displaying contextual information when hovering over or focusing on elements',
     category: 'components'
   },
   {
