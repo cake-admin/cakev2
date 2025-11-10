@@ -17,6 +17,7 @@ import AvatarPage from '../pages/AvatarPage';
 import BadgePage from '../pages/BadgePage';
 import BreadcrumbPage from '../pages/BreadcrumbPage';
 import RadioPage from '../pages/RadioPage';
+import SegmentedControlPage from '../pages/SegmentedControlPage';
 import TextInputsPage from '../pages/TextInputsPage';
 import TogglePage from '../pages/TogglePage.js';
 import TabPage from '../pages/TabPage';
@@ -24,7 +25,6 @@ import SliderPage from '../pages/SliderPage.js';
 import AlertPage from '../pages/AlertPage';
 import MenuPage from '../pages/MenuPage';
 import DropdownPage from '../pages/DropdownPage';
-import DragHandlePage from '../pages/DragHandlePage.js';
 import ModalPage from '../pages/ModalPage';
 import TooltipPage from '../pages/TooltipPage';
 import IconographyPage from '../pages/IconographyPage';
@@ -117,13 +117,6 @@ export const routes = [
     category: 'components'
   },
   {
-    path: '/components/drag-handle',
-    component: DragHandlePage,
-    title: 'Drag Handle',
-    description: 'Drag handle component for reordering and dragging elements with support for all interaction states and themes',
-    category: 'components'
-  },
-  {
     path: '/components/modal',
     component: ModalPage,
     title: 'Modal',
@@ -135,6 +128,13 @@ export const routes = [
     component: RadioPage,
     title: 'Radio',
     description: 'Interactive radio component for single-choice selections from multiple options with support for various states and themes',
+    category: 'components'
+  },
+  {
+    path: '/components/segmented-control',
+    component: SegmentedControlPage,
+    title: 'Segmented Control',
+    description: 'A segmented control component that displays Radio or Checkbox components in a segmented layout with support for single and multiple selection modes',
     category: 'components'
   },
   {
