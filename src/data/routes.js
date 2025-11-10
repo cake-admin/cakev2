@@ -20,6 +20,7 @@ import RadioPage from '../pages/RadioPage';
 import TextInputsPage from '../pages/TextInputsPage';
 import TogglePage from '../pages/TogglePage.js';
 import TabPage from '../pages/TabPage';
+import SliderPage from '../pages/SliderPage.js';
 import AlertPage from '../pages/AlertPage';
 import MenuPage from '../pages/MenuPage';
 import DropdownPage from '../pages/DropdownPage';
@@ -140,6 +141,13 @@ export const routes = [
     component: TogglePage,
     title: 'Toggle',
     description: 'Interactive toggle switch component for binary choices and settings with support for all interaction states and themes',
+    category: 'components'
+  },
+  {
+    path: '/components/slider',
+    component: SliderPage,
+    title: 'Slider',
+    description: 'Interactive slider component for selecting values within a range with support for all interaction states and themes',
     category: 'components'
   },
   {
