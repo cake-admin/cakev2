@@ -117,6 +117,7 @@ const SliderPage = () => {
   const [sliderValue, setSliderValue] = useState(50);
   const [withLabelValue, setWithLabelValue] = useState(50);
   const [withValueDisplayValue, setWithValueDisplayValue] = useState(50);
+  const [variant, setVariant] = useState('standard');
 
   return (
     <PageContainer>
@@ -131,21 +132,17 @@ const SliderPage = () => {
         <SectionTitle>Basic Slider</SectionTitle>
         <ControlsGrid>
           <Control>
+            <Label>Variant</Label>
+            <Select value={variant} onChange={(e) => setVariant(e.target.value)}>
+              <option value="standard">Standard</option>
+              <option value="withInputField">With Input Field</option>
+            </Select>
+          </Control>
+          <Control>
             <Label>Theme</Label>
             <Select value={theme} onChange={(e) => setTheme(e.target.value)}>
               <option value={SLIDER_THEMES.LIGHT}>Light.a</option>
               <option value={SLIDER_THEMES.DARK}>Dark.a</option>
-            </Select>
-          </Control>
-
-          <Control>
-            <Label>Value</Label>
-            <Select value={sliderValue} onChange={(e) => setSliderValue(parseFloat(e.target.value))}>
-              <option value="0">0</option>
-              <option value="25">25</option>
-              <option value="50">50</option>
-              <option value="75">75</option>
-              <option value="100">100</option>
             </Select>
           </Control>
         </ControlsGrid>
@@ -157,6 +154,7 @@ const SliderPage = () => {
             min={0}
             max={100}
             step={1}
+            withInputField={variant === 'withInputField'}
             onChange={(e) => setSliderValue(parseFloat(e.target.value))}
           />
         </SliderContainer>

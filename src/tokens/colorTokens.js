@@ -87,6 +87,10 @@ const colorTokens = {
     success: {
       [THEMES.LIGHT_A]: '#059669',  // emerald-600
       [THEMES.DARK_A]: '#34D399'    // emerald-400
+    },
+    zero: {
+      [THEMES.LIGHT_A]: cakeColorTokens.borderZero.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.borderZero.darkA
     }
   },
 
@@ -557,6 +561,10 @@ const colorTokens = {
     errorWeak: {
       [THEMES.LIGHT_A]: '#FEF2F2',  // --reference/error-weak (red-50)
       [THEMES.DARK_A]: '#2F0808'    // custom dark red
+    },
+    infoWeak: {
+      [THEMES.LIGHT_A]: cakeColorTokens.referenceInfoWeak.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.referenceInfoWeak.darkA
     },
     focus: {
       [THEMES.LIGHT_A]: cakeColorTokens.referenceFocus.lightA,

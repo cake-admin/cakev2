@@ -24,6 +24,7 @@ import SliderPage from '../pages/SliderPage.js';
 import AlertPage from '../pages/AlertPage';
 import MenuPage from '../pages/MenuPage';
 import DropdownPage from '../pages/DropdownPage';
+import DragHandlePage from '../pages/DragHandlePage.js';
 import ModalPage from '../pages/ModalPage';
 import TooltipPage from '../pages/TooltipPage';
 import IconographyPage from '../pages/IconographyPage';
@@ -113,6 +114,13 @@ export const routes = [
     component: DropdownPage,
     title: 'Dropdown',
     description: 'Dropdown component for selecting options from a list with optional search functionality and scrolling support',
+    category: 'components'
+  },
+  {
+    path: '/components/drag-handle',
+    component: DragHandlePage,
+    title: 'Drag Handle',
+    description: 'Drag handle component for reordering and dragging elements with support for all interaction states and themes',
     category: 'components'
   },
   {
