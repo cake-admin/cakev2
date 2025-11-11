@@ -107,7 +107,7 @@ const WhatsNew = () => {
 
   const announcement = {
     title: '🎉 Cake Web V2 Update',
-    date: getCurrentDate(),
+    date: 'October 8, 2025',
     description: 'We\'re thrilled to announce the launch of Cake Web V2! This major update brings a modern, responsive design system built with React that empowers teams to create consistent, high-quality experiences across all Lenovo digital products. With comprehensive accessibility features meeting WCAG 2.2 AA standards, standardized design tokens, and an enhanced component library, Cake V2 is your complete toolkit for building cohesive, user-centered interfaces that reflect Lenovo\'s brand identity.'
   };
 

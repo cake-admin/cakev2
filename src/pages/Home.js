@@ -282,7 +282,7 @@ const Home = () => {
                   background: 'white'
                 }}>
                   <div>
-                    <ReleaseDate style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>{new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</ReleaseDate>
+                    <ReleaseDate style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>October 8, 2025</ReleaseDate>
                     <ReleaseVersion style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>🎉 Cake Web V2 Update</ReleaseVersion>
                   </div>
                 </div>
