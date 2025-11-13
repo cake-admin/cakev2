@@ -22,6 +22,7 @@ import TextInputsPage from '../pages/TextInputsPage';
 import TogglePage from '../pages/TogglePage.js';
 import TabPage from '../pages/TabPage';
 import SliderPage from '../pages/SliderPage.js';
+import SpinnerPage from '../pages/SpinnerPage.js';
 import AlertPage from '../pages/AlertPage';
 import MenuPage from '../pages/MenuPage';
 import DropdownPage from '../pages/DropdownPage';
@@ -156,6 +157,13 @@ export const routes = [
     component: SliderPage,
     title: 'Slider',
     description: 'Interactive slider component for selecting values within a range with support for all interaction states and themes',
+    category: 'components'
+  },
+  {
+    path: '/components/spinner',
+    component: SpinnerPage,
+    title: 'Loading',
+    description: 'Loading indicator component for displaying progress and loading states',
     category: 'components'
   },
   {

@@ -1,9 +1,10 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { fontStack } from '../../styles/globalStyles';
 import PropTypes from 'prop-types';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import DownloadIcon from '@mui/icons-material/Download';
+import Spinner, { SPINNER_SIZES } from './Spinner.js';
 
 /**
  * Button variants for different purposes
@@ -221,56 +222,20 @@ const getTextColor = (variant, isDarkMode, textVariant, iconVariant) => {
   }
 };
 
-const spin = keyframes`
-  0% {
-    transform: rotate(0deg);
+/**
+ * Maps button size to spinner size
+ * @param {string} buttonSize - Button size constant
+ * @param {string} variant - Button variant
+ * @returns {string} Spinner size constant
+ */
+const getSpinnerSize = (buttonSize, variant) => {
+  if (variant === BUTTON_VARIANTS.ICON) {
+    // Icon buttons: SMALL → XSMALL (16px), others → SMALL (24px)
+    return buttonSize === BUTTON_SIZES.SMALL ? SPINNER_SIZES.XSMALL : SPINNER_SIZES.SMALL;
   }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-const LoadingSpinner = styled.div`
-  width: ${props => {
-    if (props.variant === BUTTON_VARIANTS.ICON) {
-      switch (props.size) {
-        case BUTTON_SIZES.SMALL:
-          return '16px';
-        case BUTTON_SIZES.MEDIUM:
-          return '20px';
-        case BUTTON_SIZES.LARGE:
-          return '24px';
-        case BUTTON_SIZES.XLARGE:
-          return '28px';
-        default:
-          return '20px';
-      }
-    }
-    return props.size === BUTTON_SIZES.LARGE ? '20px' : '16px';
-  }};
-  height: ${props => {
-    if (props.variant === BUTTON_VARIANTS.ICON) {
-      switch (props.size) {
-        case BUTTON_SIZES.SMALL:
-          return '16px';
-        case BUTTON_SIZES.MEDIUM:
-          return '20px';
-        case BUTTON_SIZES.LARGE:
-          return '24px';
-        case BUTTON_SIZES.XLARGE:
-          return '28px';
-        default:
-          return '20px';
-      }
-    }
-    return props.size === BUTTON_SIZES.LARGE ? '20px' : '16px';
-  }};
-  border: 2px solid ${props => props.isDarkMode ? '#52525B' : '#CBD5E1'};
-  border-top: 2px solid ${props => props.isDarkMode ? '#93C5FD' : '#1D4ED8'};
-  border-radius: 50%;
-  animation: ${spin} 0.8s linear infinite;
-  margin: 0;
-`;
+  // Regular buttons: SMALL/MEDIUM → XSMALL (16px), LARGE → SMALL (24px)
+  return buttonSize === BUTTON_SIZES.LARGE ? SPINNER_SIZES.SMALL : SPINNER_SIZES.XSMALL;
+};
 
 const StyledButton = styled.button`
   display: inline-flex;
@@ -559,7 +524,7 @@ const Button = ({
       {!loading && (isIconButton || iconPosition === ICON_POSITIONS.LEFT) && <span className="icon">{getIcon()}</span>}
       {!isIconButton && <span className="button-text">{label}</span>}
       {!loading && !isIconButton && iconPosition === ICON_POSITIONS.RIGHT && <span className="icon">{getIcon()}</span>}
-      {loading && <LoadingSpinner variant={variant} size={size} isDarkMode={isDarkMode} />}
+      {loading && <Spinner size={getSpinnerSize(size, variant)} isDarkMode={isDarkMode} ariaLabel="Loading" />}
     </StyledButton>
   );
 };

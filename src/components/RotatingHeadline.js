@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import PropTypes from 'prop-types';
+import Spinner, { SPINNER_SIZES } from './design-system/Spinner.js';
 
 // 3D Flip Animation Keyframes
 const flipIn = keyframes`
@@ -144,28 +145,13 @@ const RotatingWord = styled.span`
   }
 `;
 
-// Loading state
+// Loading state container
 const LoadingContainer = styled.div`
   display: inline-flex;
   align-items: baseline;
+  gap: 0.5rem;
   font-size: ${props => props.fontSize || '2rem'};
   color: ${props => props.textColor || '#1a1a1a'};
-  
-  &::after {
-    content: '';
-    width: 20px;
-    height: 20px;
-    border: 2px solid #e5e7eb;
-    border-top: 2px solid #3b82f6;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-left: 0.5rem;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
 `;
 
 const RotatingHeadline = ({
@@ -242,6 +228,9 @@ const RotatingHeadline = ({
   };
 
   if (isLoading) {
+    // Determine dark mode based on text color (light text suggests dark mode)
+    const isDarkMode = textColor && (textColor === '#ffffff' || textColor === '#fff' || textColor.toLowerCase().includes('white'));
+    
     return (
       <LoadingContainer 
         fontSize={fontSize}
@@ -250,6 +239,7 @@ const RotatingHeadline = ({
         {...props}
       >
         {baseText} <span style={{ color: accentColor, fontWeight: accentWeight }}>loading...</span>
+        <Spinner size={SPINNER_SIZES.SMALL} isDarkMode={isDarkMode} ariaLabel="Loading" />
       </LoadingContainer>
     );
   }
