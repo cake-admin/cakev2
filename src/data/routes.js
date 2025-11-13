@@ -11,7 +11,6 @@ import Home from '../pages/Home';
 import ChipPage from '../pages/ChipPage';
 import ButtonPage from '../pages/ButtonPage';
 import AccordionPage from '../pages/AccordionPage.js';
-import CakeAiPage from '../pages/subsystems/ai/CakeAiPage';
 import IconIdentityPage from '../pages/subsystems/ai/IconIdentityPage';
 import AvatarPage from '../pages/AvatarPage';
 import BadgePage from '../pages/BadgePage';
@@ -28,9 +27,11 @@ import AlertPage from '../pages/AlertPage';
 import MenuPage from '../pages/MenuPage';
 import DropdownPage from '../pages/DropdownPage';
 import ModalPage from '../pages/ModalPage';
+import PinPage from '../pages/PinPage';
 import TooltipPage from '../pages/TooltipPage';
 import IconographyPage from '../pages/IconographyPage';
 import LanguageGrammarPage from '../pages/foundations/LanguageGrammarPage.js';
+import AiResponsePage from '../pages/components/ai/AiResponsePage.js';
 
 
 export const routes = [
@@ -40,6 +41,29 @@ export const routes = [
     title: 'Home',
     description: 'Welcome to Cake Design System',
     category: 'guides'
+  },
+  {
+    path: '/components/ai',
+    title: 'AI',
+    description: 'AI components for chat interfaces and AI-powered features',
+    category: 'components',
+    hasChildren: true
+  },
+  {
+    path: '/components/ai/response',
+    component: AiResponsePage,
+    title: 'AI Response',
+    description: 'Component for displaying AI-generated chat responses with interactive controls for feedback, regeneration, pinning, and favoriting',
+    category: 'components',
+    parentPath: '/components/ai'
+  },
+  {
+    path: '/components/ai/icon-identity',
+    component: IconIdentityPage,
+    title: 'AI Icon & Identity',
+    description: 'AI icon and brand identity guidelines for Lenovo software applications',
+    category: 'components',
+    parentPath: '/components/ai'
   },
   {
     path: '/components/alert',
@@ -123,6 +147,13 @@ export const routes = [
     component: ModalPage,
     title: 'Modal',
     description: 'Modal components for displaying content, gathering user input, or confirming actions with Basic and Confirmation variants',
+    category: 'components'
+  },
+  {
+    path: '/components/pin',
+    component: PinPage,
+    title: 'Pin',
+    description: 'Interactive pin component for marking items as pinned or unpinned with support for all interaction states and themes',
     category: 'components'
   },
   {
@@ -230,22 +261,6 @@ export const routes = [
     title: 'About Cake',
     description: 'Introduction to Cake Design System',
     category: 'guides'
-  },
-  {
-    path: '/subsystems/ai/cake-ai',
-    component: CakeAiPage,
-    title: 'Cake AI',
-    description: 'AI design system guidelines, icon identity, and resources for AI-powered interfaces',
-    category: 'subsystems',
-    hasChildren: true
-  },
-  {
-    path: '/subsystems/ai/icon-identity',
-    component: IconIdentityPage,
-    title: 'Icon & Identity',
-    description: 'AI icon and brand identity guidelines for Lenovo software applications',
-    category: 'subsystems',
-    parentPath: '/subsystems/ai/cake-ai'
   },
   {
     path: '/foundations/iconography',
