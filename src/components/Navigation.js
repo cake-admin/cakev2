@@ -362,8 +362,7 @@ const Navigation = () => {
     getStarted: location.pathname.startsWith('/get-started'),
     foundations: location.pathname.startsWith('/foundations'),
     components: location.pathname.startsWith('/components'),
-    'components-ai': location.pathname.startsWith('/components/ai'),
-    subsystems: location.pathname.startsWith('/subsystems')
+    'components-ai': location.pathname.startsWith('/components/ai')
   });
 
   const toggleNav = () => {
@@ -556,48 +555,6 @@ const Navigation = () => {
               </Submenu>
             </NavItem>
 
-            {/* Subsystems Section */}
-            <NavItem>
-              <SubmenuToggle onClick={() => toggleMenu('subsystems')}>
-                Subsystems
-                <Chevron expanded={expandedMenus.subsystems}>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
-                  </svg>
-                </Chevron>
-              </SubmenuToggle>
-              <Submenu expanded={expandedMenus.subsystems}>
-                {routesByCategory.subsystems?.map(route => (
-                  <SubmenuItem key={route.path}>
-                    {route.hasChildren ? (
-                      <>
-                        <NestedSubmenuToggle onClick={() => toggleMenu('cake-ai')}>
-                          {route.title}
-                          <Chevron expanded={expandedMenus['cake-ai']}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
-                            </svg>
-                          </Chevron>
-                        </NestedSubmenuToggle>
-                        <NestedSubmenu expanded={expandedMenus['cake-ai']}>
-                          {route.children?.map(childRoute => (
-                            <NestedSubmenuItem key={childRoute.path}>
-                              <NestedSubmenuLink to={childRoute.path} onClick={closeNav}>
-                                {childRoute.title}
-                              </NestedSubmenuLink>
-                            </NestedSubmenuItem>
-                          ))}
-                        </NestedSubmenu>
-                      </>
-                    ) : (
-                      <SubmenuLink to={route.path} onClick={closeNav}>
-                        {route.title}
-                      </SubmenuLink>
-                    )}
-                  </SubmenuItem>
-                ))}
-              </Submenu>
-            </NavItem>
           </NavList>
         </SidebarNav>
       </NavContainer>
