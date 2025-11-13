@@ -198,6 +198,7 @@ const Submenu = styled.ul`
   max-height: ${props => props.expanded ? '1000px' : '0'};
   overflow: hidden;
   transition: max-height 0.3s ease-out;
+  padding-left: ${props => props.$indent ? '12px' : '0'};
 `;
 
 const SubmenuItem = styled.li`
@@ -361,6 +362,7 @@ const Navigation = () => {
     getStarted: location.pathname.startsWith('/get-started'),
     foundations: location.pathname.startsWith('/foundations'),
     components: location.pathname.startsWith('/components'),
+    'components-ai': location.pathname.startsWith('/components/ai'),
     subsystems: location.pathname.startsWith('/subsystems'),
     'cake-ai': location.pathname.startsWith('/subsystems/ai/')
   });
@@ -418,11 +420,21 @@ const Navigation = () => {
       return acc;
     }, {});
     
-    // Sort each category array alphabetically by title
+    // Sort each category array alphabetically by title, but place AI first in components
     Object.keys(grouped).forEach(category => {
-      grouped[category].sort((a, b) => 
-        a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
-      );
+      if (category === 'components') {
+        // Find AI route and place it first
+        const aiRoute = grouped[category].find(r => r.path === '/components/ai');
+        const otherRoutes = grouped[category].filter(r => r.path !== '/components/ai');
+        otherRoutes.sort((a, b) => 
+          a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
+        );
+        grouped[category] = aiRoute ? [aiRoute, ...otherRoutes] : otherRoutes;
+      } else {
+        grouped[category].sort((a, b) => 
+          a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
+        );
+      }
     });
     
     return grouped;
@@ -515,9 +527,31 @@ const Navigation = () => {
               <Submenu expanded={expandedMenus.components}>
                 {routesByCategory.components?.map(route => (
                   <SubmenuItem key={route.path}>
-                    <SubmenuLink to={route.path} onClick={closeNav}>
-                      {route.title}
-                    </SubmenuLink>
+                    {route.hasChildren ? (
+                      <>
+                        <SubmenuToggle onClick={() => toggleMenu('components-ai')}>
+                          {route.title}
+                          <Chevron expanded={expandedMenus['components-ai']}>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
+                            </svg>
+                          </Chevron>
+                        </SubmenuToggle>
+                        <Submenu expanded={expandedMenus['components-ai']} $indent={true}>
+                          {route.children?.map(childRoute => (
+                            <SubmenuItem key={childRoute.path}>
+                              <SubmenuLink to={childRoute.path} onClick={closeNav}>
+                                {childRoute.title}
+                              </SubmenuLink>
+                            </SubmenuItem>
+                          ))}
+                        </Submenu>
+                      </>
+                    ) : (
+                      <SubmenuLink to={route.path} onClick={closeNav}>
+                        {route.title}
+                      </SubmenuLink>
+                    )}
                   </SubmenuItem>
                 ))}
               </Submenu>
