@@ -36,7 +36,7 @@ const SpinnerPage = () => {
   return (
     <PageContainer>
       <Header>
-        <Title>Spinner</Title>
+        <Title>Loading</Title>
         <Description>
           Loading indicator component for displaying progress and loading states. 
           The spinner provides visual feedback to users that content is being loaded or processed.
