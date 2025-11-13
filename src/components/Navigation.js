@@ -363,8 +363,7 @@ const Navigation = () => {
     foundations: location.pathname.startsWith('/foundations'),
     components: location.pathname.startsWith('/components'),
     'components-ai': location.pathname.startsWith('/components/ai'),
-    subsystems: location.pathname.startsWith('/subsystems'),
-    'cake-ai': location.pathname.startsWith('/subsystems/ai/')
+    subsystems: location.pathname.startsWith('/subsystems')
   });
 
   const toggleNav = () => {

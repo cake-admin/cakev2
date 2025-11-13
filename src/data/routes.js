@@ -11,7 +11,6 @@ import Home from '../pages/Home';
 import ChipPage from '../pages/ChipPage';
 import ButtonPage from '../pages/ButtonPage';
 import AccordionPage from '../pages/AccordionPage.js';
-import CakeAiPage from '../pages/subsystems/ai/CakeAiPage';
 import IconIdentityPage from '../pages/subsystems/ai/IconIdentityPage';
 import AvatarPage from '../pages/AvatarPage';
 import BadgePage from '../pages/BadgePage';
@@ -262,22 +261,6 @@ export const routes = [
     title: 'About Cake',
     description: 'Introduction to Cake Design System',
     category: 'guides'
-  },
-  {
-    path: '/subsystems/ai/cake-ai',
-    component: CakeAiPage,
-    title: 'Cake AI',
-    description: 'AI design system guidelines, icon identity, and resources for AI-powered interfaces',
-    category: 'subsystems',
-    hasChildren: true
-  },
-  {
-    path: '/subsystems/ai/icon-identity',
-    component: IconIdentityPage,
-    title: 'Icon & Identity',
-    description: 'AI icon and brand identity guidelines for Lenovo software applications',
-    category: 'subsystems',
-    parentPath: '/subsystems/ai/cake-ai'
   },
   {
     path: '/foundations/iconography',
