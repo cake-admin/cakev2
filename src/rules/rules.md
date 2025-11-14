@@ -230,10 +230,35 @@ Before adding or using any color token:
 - Any branch containing token changes must ensure the tokens file is included in its build output before merging to `main`.
 - The GitHub Actions deployment workflow automatically deploys all changes when merged to `main`.
 
+**Common Issue: Token Colors Not Working on Deployed Site**
+
+**Symptoms:**
+- Colors work correctly in local development but show default/fallback colors (black outlines, white fills) on the deployed site
+- Components using `getTokenColor()` return `#000000` (fallback color)
+- Browser console shows warnings like `[ColorTokens] Token path not found` or `Token has no value for theme`
+
+**Root Causes:**
+1. **JSON file not committed**: The `cake-color-tokens.json` file was modified locally but not committed to git before deployment
+2. **JSON file not bundled**: The build process didn't include the latest JSON file (rare, but can happen with caching issues)
+3. **Missing tokens**: Required tokens are missing from the JSON file, causing fallback colors
+
+**Prevention:**
+- ✅ **Build-time validation**: A validation script (`scripts/validate-tokens.js`) runs automatically before every build
+- ✅ **CI/CD validation**: GitHub Actions workflow validates tokens before building
+- ✅ **Improved error handling**: `colorTokens.js` now provides better warnings and fallbacks
+- ✅ **Pre-build hook**: The `prebuild` script automatically validates tokens
+
+**How to Fix:**
+1. Ensure `cake-color-tokens.json` is committed: `git status src/tokens/cake-color-tokens.json`
+2. Verify tokens exist: Run `npm run validate-tokens` locally
+3. Check for missing tokens: Review console warnings in browser dev tools
+4. Rebuild and redeploy: Ensure the latest JSON file is included in the build
+
 ✅ **Cursor Check:**
 - Before committing changes to `cake-color-tokens.json`, verify the file is included in the commit.
 - Confirm that token changes are included in the deployment branch (typically `main`).
 - If modifying tokens, ensure the change is committed and pushed to trigger deployment.
+- Run `npm run validate-tokens` before building to catch missing tokens early.
 
 ### Using Tokens in New Components
 

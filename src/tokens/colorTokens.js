@@ -33,6 +33,34 @@ try {
 }
 
 /**
+ * Safely get a token value from cakeColorTokens with fallback
+ * @param {string} tokenName - Name of the token (e.g., 'surfaceIconButtonSecondaryPress')
+ * @param {string} theme - Theme key ('lightA' or 'darkA')
+ * @param {string} fallback - Fallback color value
+ * @returns {string} Color value or fallback
+ */
+const getTokenValue = (tokenName, theme, fallback = null) => {
+  if (!cakeColorTokens || typeof cakeColorTokens !== 'object') {
+    console.warn(`cakeColorTokens is not available. Token: ${tokenName}`);
+    return fallback;
+  }
+  
+  const token = cakeColorTokens[tokenName];
+  if (!token || typeof token !== 'object') {
+    console.warn(`Token '${tokenName}' not found in cake-color-tokens.json`);
+    return fallback;
+  }
+  
+  const value = token[theme];
+  if (!value) {
+    console.warn(`Theme '${theme}' not found for token '${tokenName}'`);
+    return fallback;
+  }
+  
+  return value;
+};
+
+/**
  * Color token mappings organized by semantic category
  * Each token maps to light.a and dark.a theme values
  */
@@ -91,6 +119,10 @@ const colorTokens = {
     zero: {
       [THEMES.LIGHT_A]: cakeColorTokens.borderZero.lightA,
       [THEMES.DARK_A]: cakeColorTokens.borderZero.darkA
+    },
+    weak: {
+      [THEMES.LIGHT_A]: cakeColorTokens?.borderWeak?.lightA || getTokenValue('borderWeak', 'lightA', '#E2E8F0'),
+      [THEMES.DARK_A]: cakeColorTokens?.borderWeak?.darkA || getTokenValue('borderWeak', 'darkA', '#3F3F46')
     }
   },
 
@@ -566,17 +598,25 @@ const colorTokens = {
       [THEMES.LIGHT_A]: cakeColorTokens.referenceInfoWeak.lightA,
       [THEMES.DARK_A]: cakeColorTokens.referenceInfoWeak.darkA
     },
+    secondaryWeak: {
+      [THEMES.LIGHT_A]: cakeColorTokens.referenceSecondaryWeak.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.referenceSecondaryWeak.darkA
+    },
     focus: {
       [THEMES.LIGHT_A]: cakeColorTokens.referenceFocus.lightA,
       [THEMES.DARK_A]: cakeColorTokens.referenceFocus.darkA
+    },
+    helper: {
+      [THEMES.LIGHT_A]: cakeColorTokens.referenceHelper.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.referenceHelper.darkA
     }
   },
 
   // Surface colors (top-level)
   surface: {
     card: {
-      [THEMES.LIGHT_A]: '#FFFFFF',  // --surface/card
-      [THEMES.DARK_A]: '#27272A'    // zinc-800
+      [THEMES.LIGHT_A]: cakeColorTokens?.surfaceCard?.lightA || '#FFFFFF',  // --surface/card
+      [THEMES.DARK_A]: cakeColorTokens?.surfaceCard?.darkA || '#27272A'    // zinc-800
     },
     itemSelectedOnCanvas: {
       [THEMES.LIGHT_A]: cakeColorTokens.surfaceItemSelectedOnCanvas.lightA,
@@ -589,6 +629,22 @@ const colorTokens = {
     itemHover: {
       [THEMES.LIGHT_A]: cakeColorTokens.surfaceItemHover.lightA,
       [THEMES.DARK_A]: cakeColorTokens.surfaceItemHover.darkA
+    },
+    itemSelected: {
+      [THEMES.LIGHT_A]: cakeColorTokens.surfaceItemSelected.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.surfaceItemSelected.darkA
+    },
+    iconButtonSecondaryHover: {
+      [THEMES.LIGHT_A]: cakeColorTokens?.surfaceIconButtonSecondaryHover?.lightA || getTokenValue('surfaceIconButtonSecondaryHover', 'lightA', '#E2E8F0'),
+      [THEMES.DARK_A]: cakeColorTokens?.surfaceIconButtonSecondaryHover?.darkA || getTokenValue('surfaceIconButtonSecondaryHover', 'darkA', '#E2E8F0')
+    },
+    iconButtonSecondaryPress: {
+      [THEMES.LIGHT_A]: cakeColorTokens?.surfaceIconButtonSecondaryPress?.lightA || getTokenValue('surfaceIconButtonSecondaryPress', 'lightA', '#CBD5E1'),
+      [THEMES.DARK_A]: cakeColorTokens?.surfaceIconButtonSecondaryPress?.darkA || getTokenValue('surfaceIconButtonSecondaryPress', 'darkA', '#F8FAFC')
+    },
+    disabled: {
+      [THEMES.LIGHT_A]: cakeColorTokens.surfaceDisabled.lightA,
+      [THEMES.DARK_A]: cakeColorTokens.surfaceDisabled.darkA
     }
   },
 
@@ -598,6 +654,22 @@ const colorTokens = {
     disabled: {
       [THEMES.LIGHT_A]: cakeColorTokens.iconDisabled?.lightA || '#64748B',
       [THEMES.DARK_A]: cakeColorTokens.iconDisabled?.darkA || '#9CA3AF'
+    },
+    primary: {
+      [THEMES.LIGHT_A]: cakeColorTokens?.iconPrimary?.lightA || getTokenValue('iconPrimary', 'lightA', '#0F172A'),
+      [THEMES.DARK_A]: cakeColorTokens?.iconPrimary?.darkA || getTokenValue('iconPrimary', 'darkA', '#A1A1AA')
+    },
+    iconButtonSecondary: {
+      [THEMES.LIGHT_A]: cakeColorTokens?.iconIconButtonSecondary?.lightA || getTokenValue('iconIconButtonSecondary', 'lightA', '#1E293B'),
+      [THEMES.DARK_A]: cakeColorTokens?.iconIconButtonSecondary?.darkA || getTokenValue('iconIconButtonSecondary', 'darkA', '#E2E8F0')
+    },
+    iconButtonSecondaryHover: {
+      [THEMES.LIGHT_A]: cakeColorTokens?.iconIconButtonSecondaryHover?.lightA || getTokenValue('iconIconButtonSecondaryHover', 'lightA', '#0F172A'),
+      [THEMES.DARK_A]: cakeColorTokens?.iconIconButtonSecondaryHover?.darkA || getTokenValue('iconIconButtonSecondaryHover', 'darkA', '#E2E8F0')
+    },
+    iconButtonSecondaryPressed: {
+      [THEMES.LIGHT_A]: cakeColorTokens?.iconIconButtonSecondaryPressed?.lightA || getTokenValue('iconIconButtonSecondaryPressed', 'lightA', '#0F172A'),
+      [THEMES.DARK_A]: cakeColorTokens?.iconIconButtonSecondaryPressed?.darkA || getTokenValue('iconIconButtonSecondaryPressed', 'darkA', '#E2E8F0')
     }
   },
 
@@ -937,16 +1009,25 @@ export const getTokenColor = (tokenPath, theme = THEMES.LIGHT_A) => {
     if (value && typeof value === 'object' && part in value) {
       value = value[part];
     } else {
-      console.warn(`Color token not found: ${tokenPath}`);
+      console.warn(`[ColorTokens] Token path not found: "${tokenPath}" (failed at "${part}")`);
+      if (process.env.NODE_ENV === 'development') {
+        console.trace('Token lookup trace:');
+      }
       return '#000000'; // Fallback color
     }
   }
 
   if (typeof value === 'object' && theme in value) {
-    return value[theme];
+    const colorValue = value[theme];
+    // Check if the value is undefined or null, which might indicate missing JSON data
+    if (!colorValue && colorValue !== 'transparent') {
+      console.warn(`[ColorTokens] Token "${tokenPath}" has no value for theme "${theme}". This may indicate missing data in cake-color-tokens.json`);
+      return '#000000'; // Fallback color
+    }
+    return colorValue;
   }
 
-  console.warn(`Theme '${theme}' not found for token: ${tokenPath}`);
+  console.warn(`[ColorTokens] Theme '${theme}' not found for token: "${tokenPath}". Available themes: ${typeof value === 'object' ? Object.keys(value).join(', ') : 'none'}`);
   return '#000000'; // Fallback color
 };
 

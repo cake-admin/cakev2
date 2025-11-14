@@ -37,6 +37,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate tokens
+        run: npm run validate-tokens
+        description: Validates that cake-color-tokens.json contains all required tokens
+
       - name: Run tests
         run: npm run test -- --watchAll=false --passWithNoTests
         env:
