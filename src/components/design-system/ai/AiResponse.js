@@ -59,6 +59,10 @@ const StyledActionsGroup = styled.div`
   gap: 8px;
   justify-content: flex-end;
   width: 240px;
+
+  @media (max-width: 768px) {
+    width: auto;
+  }
 `;
 
 const StyledActionButton = styled.button`
@@ -310,6 +314,15 @@ const OverflowMenuWrapper = styled.div`
   z-index: 1000;
 `;
 
+const MobileHiddenWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
 // Format timestamp in user-friendly format
 const formatTimestamp = (date) => {
   const now = new Date();
@@ -546,32 +559,36 @@ const AiResponse = ({
                   </>
                 )}
               </StyledFeedbackContainer>
-              <Tooltip
-                content={regenerateState === 'max' ? "Regenerate (max reached)" : "Regenerate"}
-                position={TOOLTIP_POSITIONS.TOP}
-                isDarkMode={isDarkMode}
-              >
-                <RegenerateActionButton
-                  state={regenerateState}
-                  currentIndex={regenerateCurrentIndex}
-                  totalCount={regenerateTotalCount}
+              <MobileHiddenWrapper>
+                <Tooltip
+                  content={regenerateState === 'max' ? "Regenerate (max reached)" : "Regenerate"}
+                  position={TOOLTIP_POSITIONS.TOP}
                   isDarkMode={isDarkMode}
-                  onRegenerate={onRegenerate}
-                  onPrevious={onRegeneratePrevious}
-                  onNext={onRegenerateNext}
-                />
-              </Tooltip>
-              <Tooltip
-                content={isPinned ? "Unpin" : "Pin"}
-                position={TOOLTIP_POSITIONS.TOP}
-                isDarkMode={isDarkMode}
-              >
-                <Pin
-                  isPinned={isPinned}
-                  theme={isDarkMode ? PIN_THEMES.DARK : PIN_THEMES.LIGHT}
-                  onClick={handlePinClick}
-                />
-              </Tooltip>
+                >
+                  <RegenerateActionButton
+                    state={regenerateState}
+                    currentIndex={regenerateCurrentIndex}
+                    totalCount={regenerateTotalCount}
+                    isDarkMode={isDarkMode}
+                    onRegenerate={onRegenerate}
+                    onPrevious={onRegeneratePrevious}
+                    onNext={onRegenerateNext}
+                  />
+                </Tooltip>
+              </MobileHiddenWrapper>
+              <MobileHiddenWrapper>
+                <Tooltip
+                  content={isPinned ? "Unpin" : "Pin"}
+                  position={TOOLTIP_POSITIONS.TOP}
+                  isDarkMode={isDarkMode}
+                >
+                  <Pin
+                    isPinned={isPinned}
+                    theme={isDarkMode ? PIN_THEMES.DARK : PIN_THEMES.LIGHT}
+                    onClick={handlePinClick}
+                  />
+                </Tooltip>
+              </MobileHiddenWrapper>
               <OverflowMenuContainer>
                 <Tooltip
                   content="More options"
