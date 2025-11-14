@@ -222,6 +222,19 @@ Before adding or using any color token:
 3. **No invention**: If a token doesn't exist in Figma, don't create it. Use existing Figma variables or request the variable be added to Figma first
 4. **Exact match required**: Token names must be a 1:1 match with Figma variable names (following the naming convention format, but using exact names from Figma)
 
+### Token File Deployment Rule
+**CRITICAL: The `src/tokens/cake-color-tokens.json` file must be deployed with every branch that modifies it.**
+
+- When `cake-color-tokens.json` is modified in any branch, the deployment must include the updated tokens file.
+- The tokens file is automatically bundled into the JavaScript during the build process via webpack.
+- Any branch containing token changes must ensure the tokens file is included in its build output before merging to `main`.
+- The GitHub Actions deployment workflow automatically deploys all changes when merged to `main`.
+
+✅ **Cursor Check:**
+- Before committing changes to `cake-color-tokens.json`, verify the file is included in the commit.
+- Confirm that token changes are included in the deployment branch (typically `main`).
+- If modifying tokens, ensure the change is committed and pushed to trigger deployment.
+
 ---
 
 ## 9. Navigation & Search
@@ -266,9 +279,10 @@ Run `npm test` and confirm coverage threshold met.
    - Lint/test coverage thresholds not met  
    - Performance budgets exceeded  
 4. The Action must **cache dependencies** to improve run times.  
-5. Use GitHub’s built-in Pages deployment token (no personal tokens).  
+5. Use GitHub's built-in Pages deployment token (no personal tokens).  
 6. All deployment logs must be visible in the Actions tab.  
 7. Manual deploys (`npm run deploy`) allowed only for recovery or preview branches.
+8. **Token File Deployment**: When `src/tokens/cake-color-tokens.json` is modified, it must be included in the deployment. The tokens file is automatically bundled into the JavaScript during build, ensuring it's always deployed with the application. See Section 8 for detailed token deployment rules.
 
 ✅ **Cursor Check:**  
 - Confirm `.github/workflows/deploy.yml` exists and passes lint.  
