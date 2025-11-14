@@ -31,15 +31,12 @@ const getBackgroundColor = (state, isPinned, theme) => {
   }
   
   if (state === PIN_STATES.HOVER) {
-    // Match other action buttons: use surfaceIconButtonSecondaryHover
-    return getTokenColor('surface.iconButtonSecondaryHover', theme);
+    // Match other action buttons: use reference.secondaryWeak
+    return getTokenColor('reference.secondaryWeak', theme);
   }
   
   // Rest state - both pinned and unpinned use the same background
-  // In dark mode, use transparent background; in light mode, use surface.card
-  if (isDark) {
-    return 'transparent';
-  }
+  // Use surface.card for both light and dark modes to match other action buttons
   return getTokenColor('surface.card', theme);
 };
 
@@ -79,18 +76,15 @@ const StyledPinButton = styled.button`
   transition: all 0.2s ease-in-out;
   user-select: none;
   outline: none;
-  overflow: hidden;
+  overflow: visible;
   
   /* Focus ring - only visible on keyboard navigation (tab), not on mouse click */
   /* Matches Figma: left-0 top-0, h-[24px] w-[32px], border-[1.5px] */
   &::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: -1px;
     box-sizing: border-box;
-    width: 32px;
-    height: 24px;
     border: 1.5px solid ${props => getTokenColor('border.focus', props.theme)};
     border-radius: 4px;
     opacity: 0;
@@ -107,8 +101,8 @@ const StyledPinButton = styled.button`
       if (props.$state === PIN_STATES.DISABLED) {
         return getTokenColor('reference.surfaceDisabled', props.theme);
       }
-      // Match other action buttons: use surfaceIconButtonSecondaryHover
-      return getTokenColor('surface.iconButtonSecondaryHover', props.theme);
+      // Match other action buttons: use reference.secondaryWeak
+      return getTokenColor('reference.secondaryWeak', props.theme);
     }};
   }
   

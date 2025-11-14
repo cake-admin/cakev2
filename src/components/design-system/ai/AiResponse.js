@@ -7,7 +7,7 @@ import Tooltip, { TOOLTIP_POSITIONS } from '../Tooltip.js';
 import RegenerateActionButton from './RegenerateActionButton.js';
 import Pin, { PIN_THEMES } from '../Pin.js';
 import Menu from '../Menu.tsx';
-import cakeColorTokens from '../../../tokens/cake-color-tokens.json';
+import { getTokenColor, THEMES } from '../../../tokens/colorTokens';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
@@ -48,9 +48,7 @@ const StyledTimestamp = styled.p`
   font-weight: 400;
   line-height: 16px;
   color: ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.referenceHelper.darkA 
-      : cakeColorTokens.referenceHelper.lightA};
+    getTokenColor('reference.helper', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   margin: 0;
   white-space: nowrap;
 `;
@@ -72,44 +70,51 @@ const StyledActionButton = styled.button`
   width: 32px;
   height: 24px;
   border: 1px solid ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.borderWeak.darkA 
-      : cakeColorTokens.borderWeak.lightA};
+    getTokenColor('border.weak', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   border-radius: 4px;
   background-color: ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.surfaceCard.darkA 
-      : cakeColorTokens.surfaceCard.lightA};
+    getTokenColor('surface.card', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   cursor: pointer;
   padding: 6px 8px;
-  overflow: hidden;
+  overflow: visible;
+  outline: none;
   transition: background-color 0.2s ease, color 0.2s ease;
+  
+  /* Focus ring - only visible on keyboard navigation (tab), not on mouse click */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    box-sizing: border-box;
+    border: 1.5px solid ${props => 
+      getTokenColor('border.focus', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  &:focus-visible::before {
+    opacity: 1;
+  }
   
   &:hover {
     background-color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.surfaceIconButtonSecondaryHover.darkA 
-        : cakeColorTokens.surfaceIconButtonSecondaryHover.lightA};
+      getTokenColor('reference.secondaryWeak', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     
     svg {
       color: ${props => 
-        props.isDarkMode 
-          ? cakeColorTokens.iconIconButtonSecondaryHover.darkA 
-          : cakeColorTokens.iconIconButtonSecondaryHover.lightA};
+        getTokenColor('icon.primary', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     }
   }
   
   &:active {
     background-color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.surfaceIconButtonSecondaryPress.darkA 
-        : cakeColorTokens.surfaceIconButtonSecondaryPress.lightA};
+      getTokenColor('surface.iconButtonSecondaryPress', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     
     svg {
       color: ${props => 
-        props.isDarkMode 
-          ? cakeColorTokens.iconIconButtonSecondaryPressed.darkA 
-          : cakeColorTokens.iconIconButtonSecondaryPressed.lightA};
+        getTokenColor('icon.primary', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     }
   }
   
@@ -117,9 +122,7 @@ const StyledActionButton = styled.button`
     width: 16px;
     height: 16px;
     color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.iconIconButtonSecondary.darkA 
-        : cakeColorTokens.iconIconButtonSecondary.lightA};
+      getTokenColor('icon.primary', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     transition: color 0.2s ease;
   }
 `;
@@ -134,42 +137,70 @@ const StyledFeedbackButton = styled.button`
   width: 32px;
   border: none;
   background-color: ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.surfaceCard.darkA 
-      : cakeColorTokens.surfaceCard.lightA};
+    getTokenColor('surface.card', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   cursor: pointer;
   padding: 6px 8px;
   overflow: hidden;
+  outline: none;
   transition: background-color 0.2s ease, color 0.2s ease;
+  
+  /* Focus ring - only visible on keyboard navigation (tab), not on mouse click */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: 32px;
+    height: 24px;
+    border: 1.5px solid ${props => 
+      getTokenColor('border.focus', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    ${props => {
+      if (props.$isThumbsUp) {
+        return `
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        `;
+      } else {
+        return `
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          border-top-right-radius: ${props.$showRightBorder ? '0' : '4px'};
+          border-bottom-right-radius: ${props.$showRightBorder ? '0' : '4px'};
+        `;
+      }
+    }}
+  }
+  
+  &:focus-visible::before {
+    opacity: 1;
+  }
   
   &:hover {
     background-color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.surfaceItemHover.darkA 
-        : cakeColorTokens.surfaceItemHover.lightA};
+      getTokenColor('surface.itemHover', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   }
   
   &:active {
     background-color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.surfaceItemSelected.darkA 
-        : cakeColorTokens.surfaceItemSelected.lightA};
+      getTokenColor('surface.itemSelected', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   }
   
   svg {
     width: 16px;
     height: 16px;
     color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.iconPrimary.darkA 
-        : cakeColorTokens.iconPrimary.lightA};
+      getTokenColor('icon.primary', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     transition: color 0.2s ease;
   }
   
   ${props => {
-    const borderColor = props.isDarkMode 
-      ? cakeColorTokens.borderWeak.darkA 
-      : cakeColorTokens.borderWeak.lightA;
+    const borderColor = getTokenColor('border.weak', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A);
     
     if (props.$isThumbsUp) {
       return `
@@ -191,46 +222,61 @@ const StyledGiveFeedbackButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   box-sizing: border-box;
   height: 24px;
   padding: 6px 12px;
   border: none;
-  background-color: ${props => 
-    props.$disabled
-      ? (props.isDarkMode 
-          ? cakeColorTokens.referenceSurfaceDisabled.darkA 
-          : cakeColorTokens.referenceSurfaceDisabled.lightA)
-      : (props.isDarkMode 
-          ? cakeColorTokens.surfaceCard.darkA 
-          : cakeColorTokens.surfaceCard.lightA)};
-  color: ${props => 
-    props.$disabled
-      ? (props.isDarkMode 
-          ? cakeColorTokens.surfaceDisabled.darkA 
-          : cakeColorTokens.surfaceDisabled.lightA)
-      : (props.isDarkMode 
-          ? cakeColorTokens.textPrimary.darkA 
-          : cakeColorTokens.textPrimary.lightA)};
+  background-color: ${props => {
+    const theme = props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A;
+    return props.$disabled
+      ? getTokenColor('reference.surfaceDisabled', theme)
+      : getTokenColor('surface.card', theme);
+  }};
+  color: ${props => {
+    const theme = props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A;
+    return props.$disabled
+      ? getTokenColor('surface.disabled', theme)
+      : getTokenColor('text.primary', theme);
+  }};
   font-family: 'Segoe UI', sans-serif;
   font-size: 12px;
   font-weight: 600;
   line-height: 16px;
   cursor: ${props => props.$disabled ? 'not-allowed' : 'pointer'};
+  outline: none;
   transition: background-color 0.2s ease, color 0.2s ease;
   white-space: nowrap;
   
+  /* Focus ring - only visible on keyboard navigation (tab), not on mouse click */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-sizing: border-box;
+    border: 1.5px solid ${props => 
+      getTokenColor('border.focus', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  &:focus-visible::before {
+    opacity: 1;
+  }
+  
   &:hover:not(:disabled) {
     background-color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.surfaceItemHover.darkA 
-        : cakeColorTokens.surfaceItemHover.lightA};
+      getTokenColor('surface.itemHover', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   }
   
   &:active:not(:disabled) {
     background-color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.surfaceItemSelected.darkA 
-        : cakeColorTokens.surfaceItemSelected.lightA};
+      getTokenColor('surface.itemSelected', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   }
 `;
 
@@ -238,9 +284,7 @@ const StyledFeedbackDivider = styled.div`
   width: 1px;
   height: 23px;
   background-color: ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.borderWeak.darkA 
-      : cakeColorTokens.borderWeak.lightA};
+    getTokenColor('border.weak', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   flex-shrink: 0;
 `;
 
@@ -248,14 +292,10 @@ const StyledFeedbackContainer = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.borderWeak.darkA 
-      : cakeColorTokens.borderWeak.lightA};
+    getTokenColor('border.weak', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   border-radius: 4px;
   background-color: ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.surfaceCard.darkA 
-      : cakeColorTokens.surfaceCard.lightA};
+    getTokenColor('surface.card', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
 `;
 
 const OverflowMenuContainer = styled.div`
@@ -459,15 +499,15 @@ const AiResponse = ({
                   <StyledFeedbackButton
                     isDarkMode={isDarkMode}
                     $isThumbsUp={true}
-                    $showRightBorder={feedbackState !== 'bad'}
+                    $showRightBorder={true}
                     onClick={handleFeedbackGood}
                     aria-label="Thumbs up"
                     aria-pressed={feedbackState === 'good'}
                   >
                     {feedbackState === 'good' ? (
-                      <ThumbUpIcon />
+                      <ThumbUpIcon sx={{ fontSize: '16px' }} />
                     ) : (
-                      <ThumbUpOutlinedIcon />
+                      <ThumbUpOutlinedIcon sx={{ fontSize: '16px' }} />
                     )}
                   </StyledFeedbackButton>
                 </Tooltip>
@@ -479,15 +519,15 @@ const AiResponse = ({
                   <StyledFeedbackButton
                     isDarkMode={isDarkMode}
                     $isThumbsUp={false}
-                    $showRightBorder={feedbackState === 'bad'}
+                    $showRightBorder={false}
                     onClick={handleFeedbackBad}
                     aria-label="Thumbs down"
                     aria-pressed={feedbackState === 'bad'}
                   >
                     {feedbackState === 'bad' ? (
-                      <ThumbDownIcon />
+                      <ThumbDownIcon sx={{ fontSize: '16px' }} />
                     ) : (
-                      <ThumbDownOutlinedIcon />
+                      <ThumbDownOutlinedIcon sx={{ fontSize: '16px' }} />
                     )}
                   </StyledFeedbackButton>
                 </Tooltip>
@@ -546,7 +586,7 @@ const AiResponse = ({
                     aria-haspopup="true"
                     aria-expanded={isMenuOpen}
                   >
-                    <MoreHorizIcon />
+                    <MoreHorizIcon sx={{ fontSize: '16px' }} />
                   </StyledActionButton>
                 </Tooltip>
                 {isMenuOpen && (

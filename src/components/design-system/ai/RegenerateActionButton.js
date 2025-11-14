@@ -5,7 +5,7 @@ import SyncIcon from '@mui/icons-material/Sync';
 import SyncProblemOutlinedIcon from '@mui/icons-material/SyncProblemOutlined';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import cakeColorTokens from '../../../tokens/cake-color-tokens.json';
+import { getTokenColor, THEMES } from '../../../tokens/colorTokens';
 
 const REGENERATE_STATES = {
   REST: 'rest',
@@ -19,14 +19,10 @@ const StyledContainer = styled.div`
   box-sizing: border-box;
   height: 24px;
   border: 1px solid ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.borderWeak.darkA 
-      : cakeColorTokens.borderWeak.lightA};
+    getTokenColor('border.weak', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   border-radius: 4px;
   background-color: ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.surfaceCard.darkA 
-      : cakeColorTokens.surfaceCard.lightA};
+    getTokenColor('surface.card', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   overflow: clip;
 `;
 
@@ -43,47 +39,58 @@ const StyledRestButtonInner = styled.div`
 `;
 
 const StyledRestButton = styled.button`
+  position: relative;
   box-sizing: border-box;
   width: 32px;
   height: 24px;
   border: 1px solid ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.borderWeak.darkA 
-      : cakeColorTokens.borderWeak.lightA};
+    getTokenColor('border.weak', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   border-radius: 4px;
   background-color: ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.surfaceCard.darkA 
-      : cakeColorTokens.surfaceCard.lightA};
+    getTokenColor('surface.card', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   cursor: pointer;
   padding: 0;
+  outline: none;
   transition: background-color 0.2s ease, color 0.2s ease;
+  
+  /* Focus ring - only visible on keyboard navigation (tab), not on mouse click */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: 32px;
+    height: 24px;
+    border: 1.5px solid ${props => 
+      getTokenColor('border.focus', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
+    border-radius: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  &:focus-visible::before {
+    opacity: 1;
+  }
   
   &:hover {
     background-color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.surfaceIconButtonSecondaryHover.darkA 
-        : cakeColorTokens.surfaceIconButtonSecondaryHover.lightA};
+      getTokenColor('reference.secondaryWeak', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     
     svg {
       color: ${props => 
-        props.isDarkMode 
-          ? cakeColorTokens.iconIconButtonSecondaryHover.darkA 
-          : cakeColorTokens.iconIconButtonSecondaryHover.lightA};
+        getTokenColor('icon.primary', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     }
   }
   
   &:active {
     background-color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.surfaceIconButtonSecondaryPress.darkA 
-        : cakeColorTokens.surfaceIconButtonSecondaryPress.lightA};
+      getTokenColor('surface.iconButtonSecondaryPress', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     
     svg {
       color: ${props => 
-        props.isDarkMode 
-          ? cakeColorTokens.iconIconButtonSecondaryPressed.darkA 
-          : cakeColorTokens.iconIconButtonSecondaryPressed.lightA};
+        getTokenColor('icon.primary', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     }
   }
   
@@ -91,9 +98,7 @@ const StyledRestButton = styled.button`
     width: 16px;
     height: 16px;
     color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.iconIconButtonSecondary.darkA 
-        : cakeColorTokens.iconIconButtonSecondary.lightA};
+      getTokenColor('icon.primary', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     transition: color 0.2s ease;
   }
 `;
@@ -107,68 +112,118 @@ const StyledButton = styled.button`
   width: 32px;
   height: 24px;
   border: none;
-  border-radius: 0;
-  background-color: ${props => 
-    props.$disabled
-      ? (props.isDarkMode 
-          ? cakeColorTokens.referenceSurfaceDisabled.darkA 
-          : cakeColorTokens.referenceSurfaceDisabled.lightA)
-      : (props.isDarkMode 
-          ? cakeColorTokens.surfaceCard.darkA 
-          : cakeColorTokens.surfaceCard.lightA)};
+  background-color: ${props => {
+    const theme = props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A;
+    return props.$disabled
+      ? getTokenColor('reference.surfaceDisabled', theme)
+      : getTokenColor('surface.card', theme);
+  }};
   cursor: ${props => props.$disabled ? 'not-allowed' : 'pointer'};
   padding: 6px 8px;
   overflow: clip;
+  outline: none;
   transition: background-color 0.2s ease, color 0.2s ease;
+  
+  /* Border-radius based on position */
+  ${props => {
+    if (props.$isFirst) {
+      return `
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      `;
+    } else if (props.$isLast) {
+      return `
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      `;
+    } else {
+      return `
+        border-radius: 0;
+      `;
+    }
+  }}
+  
+  /* Focus ring - only visible on keyboard navigation (tab), not on mouse click */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    width: 32px;
+    height: 24px;
+    border: 1.5px solid ${props => 
+      getTokenColor('border.focus', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    ${props => {
+      if (props.$isFirst) {
+        return `
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        `;
+      } else if (props.$isLast) {
+        return `
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px;
+        `;
+      } else {
+        return `
+          border-radius: 0;
+        `;
+      }
+    }}
+  }
+  
+  &:focus-visible::before {
+    opacity: 1;
+  }
   
   &:hover:not(:disabled) {
     background-color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.surfaceIconButtonSecondaryHover.darkA 
-        : cakeColorTokens.surfaceIconButtonSecondaryHover.lightA};
+      getTokenColor('reference.secondaryWeak', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     
     svg {
       color: ${props => 
-        props.isDarkMode 
-          ? cakeColorTokens.iconIconButtonSecondaryHover.darkA 
-          : cakeColorTokens.iconIconButtonSecondaryHover.lightA};
+        getTokenColor('icon.primary', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     }
   }
   
   &:active:not(:disabled) {
     background-color: ${props => 
-      props.isDarkMode 
-        ? cakeColorTokens.surfaceIconButtonSecondaryPress.darkA 
-        : cakeColorTokens.surfaceIconButtonSecondaryPress.lightA};
+      getTokenColor('surface.iconButtonSecondaryPress', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     
     svg {
       color: ${props => 
-        props.isDarkMode 
-          ? cakeColorTokens.iconIconButtonSecondaryPressed.darkA 
-          : cakeColorTokens.iconIconButtonSecondaryPressed.lightA};
+        getTokenColor('icon.primary', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
     }
   }
   
   svg {
     width: 16px;
     height: 16px;
-    color: ${props => 
-      props.$disabled
-        ? (props.isDarkMode 
-            ? cakeColorTokens.surfaceDisabled.darkA 
-            : cakeColorTokens.surfaceDisabled.lightA)
-        : (props.isDarkMode 
-            ? cakeColorTokens.iconIconButtonSecondary.darkA 
-            : cakeColorTokens.iconIconButtonSecondary.lightA)};
+    color: ${props => {
+      const theme = props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A;
+      return props.$disabled
+        ? getTokenColor('surface.disabled', theme)
+        : getTokenColor('icon.primary', theme);
+    }};
     transition: color 0.2s ease;
   }
 `;
 
 const StyledPaginationButton = styled(StyledButton)`
   border-left: 1px solid ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.borderWeak.darkA 
-      : cakeColorTokens.borderWeak.lightA};
+    getTokenColor('border.weak', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
 `;
 
 const StyledCounter = styled.div`
@@ -179,13 +234,9 @@ const StyledCounter = styled.div`
   height: 24px;
   padding: 6px 8px;
   border-left: 1px solid ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.borderWeak.darkA 
-      : cakeColorTokens.borderWeak.lightA};
+    getTokenColor('border.weak', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   background-color: ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.surfaceCard.darkA 
-      : cakeColorTokens.surfaceCard.lightA};
+    getTokenColor('surface.card', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
 `;
 
 const StyledCounterInner = styled.div`
@@ -203,9 +254,7 @@ const StyledCounterText = styled.p`
   font-weight: 600;
   line-height: 16px;
   color: ${props => 
-    props.isDarkMode 
-      ? cakeColorTokens.textPrimary.darkA 
-      : cakeColorTokens.textPrimary.lightA};
+    getTokenColor('text.primary', props.isDarkMode ? THEMES.DARK_A : THEMES.LIGHT_A)};
   margin: 0;
   text-align: center;
   flex: 1 1 0;
@@ -257,7 +306,7 @@ const RegenerateActionButton = ({
         {...props}
       >
         <StyledRestButtonInner>
-          <SyncIcon />
+          <SyncIcon fontSize="small" />
         </StyledRestButtonInner>
       </StyledRestButton>
     );
@@ -268,12 +317,13 @@ const RegenerateActionButton = ({
       <StyledButton
         isDarkMode={isDarkMode}
         $disabled={isMaxState}
+        $isFirst={true}
         disabled={isMaxState}
         onClick={handleRegenerate}
         aria-label={isMaxState ? "Regenerate (max reached)" : "Regenerate"}
         aria-disabled={isMaxState}
       >
-        {isMaxState ? <SyncProblemOutlinedIcon /> : <SyncIcon />}
+        {isMaxState ? <SyncProblemOutlinedIcon fontSize="small" /> : <SyncIcon fontSize="small" />}
       </StyledButton>
       <StyledPaginationButton
         isDarkMode={isDarkMode}
@@ -283,7 +333,7 @@ const RegenerateActionButton = ({
         aria-label="Previous regeneration"
         aria-disabled={!canGoPrevious}
       >
-        <ChevronLeftIcon />
+        <ChevronLeftIcon fontSize="small" />
       </StyledPaginationButton>
       <StyledCounter isDarkMode={isDarkMode}>
         <StyledCounterInner>
@@ -295,12 +345,13 @@ const RegenerateActionButton = ({
       <StyledPaginationButton
         isDarkMode={isDarkMode}
         $disabled={!canGoNext}
+        $isLast={true}
         disabled={!canGoNext}
         onClick={handleNext}
         aria-label="Next regeneration"
         aria-disabled={!canGoNext}
       >
-        <ChevronRightIcon />
+        <ChevronRightIcon fontSize="small" />
       </StyledPaginationButton>
     </StyledContainer>
   );
