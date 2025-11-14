@@ -235,6 +235,71 @@ Before adding or using any color token:
 - Confirm that token changes are included in the deployment branch (typically `main`).
 - If modifying tokens, ensure the change is committed and pushed to trigger deployment.
 
+### Using Tokens in New Components
+
+**Standard Pattern for Importing and Using Tokens:**
+
+When creating a new component that needs to use color tokens, follow this pattern:
+
+```javascript
+import cakeColorTokensData from '../../tokens/cake-color-tokens.json';
+
+// Parse cake-color-tokens.json
+let cakeColorTokens;
+try {
+  cakeColorTokens = typeof cakeColorTokensData === 'string' 
+    ? JSON.parse(cakeColorTokensData)
+    : cakeColorTokensData;
+} catch (error) {
+  console.error('Failed to parse cake-color-tokens.json:', error);
+  cakeColorTokens = {};
+}
+
+/**
+ * Get color token value
+ */
+const getColorToken = (tokenName, isDarkMode) => {
+  const themeKey = isDarkMode ? 'darkA' : 'lightA';
+  
+  if (cakeColorTokens[tokenName] && cakeColorTokens[tokenName][themeKey]) {
+    return cakeColorTokens[tokenName][themeKey];
+  }
+  
+  // Fallback colors (add specific fallbacks for your component if needed)
+  console.warn(`Color token "${tokenName}" not found in cake-color-tokens.json`);
+  return isDarkMode ? '#A1A1AA' : '#334155'; // Default fallback
+};
+```
+
+**Usage in styled-components:**
+```javascript
+const StyledComponent = styled.div`
+  color: ${props => getColorToken('textPrimary', props.isDarkMode)};
+  background-color: ${props => getColorToken('surfaceCard', props.isDarkMode)};
+  border: 1px solid ${props => getColorToken('borderPrimary', props.isDarkMode)};
+`;
+```
+
+**Alternative Direct Access Pattern (for simple cases):**
+If you don't need the parsing/fallback logic, you can access tokens directly:
+```javascript
+import cakeColorTokens from '../../tokens/cake-color-tokens.json';
+
+const StyledComponent = styled.div`
+  color: ${props => 
+    props.isDarkMode 
+      ? cakeColorTokens.textPrimary.darkA 
+      : cakeColorTokens.textPrimary.lightA};
+`;
+```
+
+**Important Notes:**
+- Tokens are automatically bundled into the production build - no additional configuration needed
+- Always verify the token name exists in `cake-color-tokens.json` before using it
+- Use the `getColorToken` helper function for consistent error handling and fallbacks
+- Token names must match Figma variable names exactly (see Token Naming Rules above)
+- The tokens file is included in every deployment automatically via webpack bundling
+
 ---
 
 ## 9. Navigation & Search
