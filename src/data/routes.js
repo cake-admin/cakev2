@@ -27,7 +27,6 @@ import AlertPage from '../pages/AlertPage';
 import MenuPage from '../pages/MenuPage';
 import DropdownPage from '../pages/DropdownPage';
 import ModalPage from '../pages/ModalPage';
-import PinPage from '../pages/PinPage';
 import TooltipPage from '../pages/TooltipPage';
 import IconographyPage from '../pages/IconographyPage';
 import LanguageGrammarPage from '../pages/foundations/LanguageGrammarPage.js';
@@ -147,13 +146,6 @@ export const routes = [
     component: ModalPage,
     title: 'Modal',
     description: 'Modal components for displaying content, gathering user input, or confirming actions with Basic and Confirmation variants',
-    category: 'components'
-  },
-  {
-    path: '/components/pin',
-    component: PinPage,
-    title: 'Pin',
-    description: 'Interactive pin component for marking items as pinned or unpinned with support for all interaction states and themes',
     category: 'components'
   },
   {
