@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import AiResponse from '../../../components/design-system/ai/AiResponse.js';
+import UserResponse from '../../../components/design-system/ai/UserResponse.js';
 import {
   PageContainer,
   Header,
@@ -127,6 +128,31 @@ const AiResponsePage = () => {
             onRegenerate={handleRegenerate}
             onRegeneratePrevious={handlePrevious}
             onRegenerateNext={handleNext}
+          />
+        </PreviewSection>
+      </Section>
+
+      <Section>
+        <SectionTitle>User Response</SectionTitle>
+        <Description>
+          The user response component displays a right-aligned message bubble with a timestamp and favorite button. The bubble uses a light blue background to distinguish user messages from AI responses. Click the star icon to favorite or unfavorite the message.
+        </Description>
+        <ControlsGrid>
+          <Control>
+            <Label>Theme</Label>
+            <Select
+              value={theme}
+              onChange={(e) => setTheme(e.target.value)}
+            >
+              <option value={THEMES.LIGHT_A}>Light</option>
+              <option value={THEMES.DARK_A}>Dark</option>
+            </Select>
+          </Control>
+        </ControlsGrid>
+        <PreviewSection theme={theme}>
+          <UserResponse
+            text={RESPONSE_VARIATIONS[0]}
+            isDarkMode={isDarkMode}
           />
         </PreviewSection>
       </Section>
