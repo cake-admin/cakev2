@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import AiResponse from '../../../components/design-system/ai/AiResponse.js';
 import UserResponse from '../../../components/design-system/ai/UserResponse.js';
+import ShimmerThinkingIndicator from '../../../components/design-system/ai/ShimmerThinkingIndicator.js';
 import {
   PageContainer,
   Header,
@@ -128,6 +129,32 @@ const AiResponsePage = () => {
             onRegenerate={handleRegenerate}
             onRegeneratePrevious={handlePrevious}
             onRegenerateNext={handleNext}
+          />
+        </PreviewSection>
+      </Section>
+
+      <Section>
+        <SectionTitle>Thinking</SectionTitle>
+        <Description>
+          The thinking indicator displays an animated shimmer effect to show that the AI is processing. It can display a single message with continuous shimmer animation, or cycle through multiple messages at a specified interval.
+        </Description>
+        <ControlsGrid>
+          <Control>
+            <Label>Theme</Label>
+            <Select
+              value={theme}
+              onChange={(e) => setTheme(e.target.value)}
+            >
+              <option value={THEMES.LIGHT_A}>Light</option>
+              <option value={THEMES.DARK_A}>Dark</option>
+            </Select>
+          </Control>
+        </ControlsGrid>
+        <PreviewSection theme={theme}>
+          <ShimmerThinkingIndicator
+            messages={['Thinking...', 'Processing your request...', 'Almost there...']}
+            interval={2500}
+            isDarkMode={isDarkMode}
           />
         </PreviewSection>
       </Section>
