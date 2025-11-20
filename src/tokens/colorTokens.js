@@ -126,11 +126,11 @@ const colorTokens = {
     }
   },
 
-  // Text colors
+  // Text colors (from Figma variables - mapped 1:1 from cake-color-tokens.json)
   text: {
     primary: {
-      [THEMES.LIGHT_A]: '#0F172A',  // slate-900
-      [THEMES.DARK_A]: '#F9FAFB'    // gray-50
+      [THEMES.LIGHT_A]: getTokenValue('textPrimary', 'lightA', '#0F172A'),
+      [THEMES.DARK_A]: getTokenValue('textPrimary', 'darkA', '#D4D4D8')
     },
     secondary: {
       [THEMES.LIGHT_A]: '#334155',  // slate-700
@@ -673,96 +673,96 @@ const colorTokens = {
     }
   },
 
-  // TextField colors (from Figma variables)
+  // TextField colors (from Figma variables - mapped 1:1 from cake-color-tokens.json)
   textField: {
     surface: {
       input: {
-        [THEMES.LIGHT_A]: '#F8FAFC',  // --surface/input (slate-50)
-        [THEMES.DARK_A]: '#1F2937'    // gray-800
+        [THEMES.LIGHT_A]: getTokenValue('surfaceInput', 'lightA', '#F8FAFC'),
+        [THEMES.DARK_A]: getTokenValue('surfaceInput', 'darkA', '#F8FAFC')
       },
       inputOnCanvas: {
-        [THEMES.LIGHT_A]: '#F1F5F9',  // --surface/input-onCanvas (slate-100)
-        [THEMES.DARK_A]: '#1F2937'    // gray-800
+        [THEMES.LIGHT_A]: getTokenValue('surfaceInputOnCanvas', 'lightA', '#F1F5F9'),
+        [THEMES.DARK_A]: getTokenValue('surfaceInputOnCanvas', 'darkA', '#27272A')
       },
       inputHover: {
-        [THEMES.LIGHT_A]: '#FFFFFF',  // --surface/input-hover
-        [THEMES.DARK_A]: '#27272A'    // zinc-800
+        [THEMES.LIGHT_A]: getTokenValue('surfaceInputHover', 'lightA', '#FFFFFF'),
+        [THEMES.DARK_A]: getTokenValue('surfaceInputHover', 'darkA', '#27272A')
       },
       inputFocus: {
-        [THEMES.LIGHT_A]: '#FFFFFF',  // --surface/input-focus
-        [THEMES.DARK_A]: '#1F2937'    // gray-800
+        [THEMES.LIGHT_A]: getTokenValue('surfaceInputFocus', 'lightA', '#FFFFFF'),
+        [THEMES.DARK_A]: getTokenValue('surfaceInputFocus', 'darkA', '#27272A')
       },
       inputRest: {
-        [THEMES.LIGHT_A]: '#FFFFFF',  // --surface/input-rest
-        [THEMES.DARK_A]: '#27272A'    // zinc-800
+        [THEMES.LIGHT_A]: getTokenValue('surfaceInputRest', 'lightA', '#FFFFFF'),
+        [THEMES.DARK_A]: getTokenValue('surfaceInputRest', 'darkA', '#27272A')
       },
       disabled: {
-        [THEMES.LIGHT_A]: '#F1F5F9',  // --reference/surface-disabled (slate-100)
-        [THEMES.DARK_A]: '#1F2937'    // gray-800
+        [THEMES.LIGHT_A]: getTokenValue('surfaceInputDisabled', 'lightA', '#F1F5F9'),
+        [THEMES.DARK_A]: getTokenValue('surfaceInputDisabled', 'darkA', '#F1F5F9')
       },
       inputError: {
-        [THEMES.LIGHT_A]: '#FEF2F2',  // --surface/input-error (red-50)
-        [THEMES.DARK_A]: '#2F0808'    // custom dark red
+        [THEMES.LIGHT_A]: getTokenValue('surfaceInputError', 'lightA', '#FEF2F2'),
+        [THEMES.DARK_A]: getTokenValue('surfaceInputError', 'darkA', '#FEF2F2')
       },
       errorWeak: {
-        [THEMES.LIGHT_A]: '#FEF2F2',  // --reference/error-weak (red-50)
-        [THEMES.DARK_A]: '#2F0808'    // custom dark red
+        [THEMES.LIGHT_A]: getTokenValue('referenceErrorWeak', 'lightA', '#FEF2F2'),
+        [THEMES.DARK_A]: getTokenValue('referenceErrorWeak', 'darkA', '#2F0808')
       },
       successWeak: {
-        [THEMES.LIGHT_A]: '#ECFDF5',  // --reference/success-weak (emerald-50)
-        [THEMES.DARK_A]: '#064E3B'    // emerald-900
+        [THEMES.LIGHT_A]: getTokenValue('referenceSuccessWeak', 'lightA', '#ECFDF5'),
+        [THEMES.DARK_A]: getTokenValue('referenceSuccessWeak', 'darkA', '#033D2D')
       }
     },
     border: {
       input: {
-        [THEMES.LIGHT_A]: '#64748B',  // --border/input (slate-500)
-        [THEMES.DARK_A]: '#4B5563'    // gray-600
+        [THEMES.LIGHT_A]: getTokenValue('borderInput', 'lightA', '#64748B'),
+        [THEMES.DARK_A]: getTokenValue('borderInput', 'darkA', '#71717A')
       },
       focus: {
-        [THEMES.LIGHT_A]: '#1D4ED8',  // --border/focus (blue-700)
-        [THEMES.DARK_A]: '#3B82F6'    // blue-500
+        [THEMES.LIGHT_A]: getTokenValue('borderFocus', 'lightA', '#1D4ED8'),
+        [THEMES.DARK_A]: getTokenValue('borderFocus', 'darkA', '#1D4ED8')
       },
       inputError: {
-        [THEMES.LIGHT_A]: '#B91C1C',  // --border/input-error (red-700)
-        [THEMES.DARK_A]: '#FCA5A5'    // red-300
+        [THEMES.LIGHT_A]: getTokenValue('borderInputError', 'lightA', '#B91C1C'),
+        [THEMES.DARK_A]: getTokenValue('borderInputError', 'darkA', '#B91C1C')
       },
       inputSuccess: {
-        [THEMES.LIGHT_A]: '#047857',  // --border/input-success (emerald-700)
-        [THEMES.DARK_A]: '#34D399'    // emerald-400
+        [THEMES.LIGHT_A]: getTokenValue('borderInputSuccess', 'lightA', '#047857'),
+        [THEMES.DARK_A]: getTokenValue('borderInputSuccess', 'darkA', '#047857')
       },
       disabled: {
-        [THEMES.LIGHT_A]: '#9CA3AF',  // --border/disabled (gray-400)
-        [THEMES.DARK_A]: '#374151'    // gray-700
+        [THEMES.LIGHT_A]: getTokenValue('borderDisabled', 'lightA', '#9CA3AF'),
+        [THEMES.DARK_A]: getTokenValue('borderDisabled', 'darkA', '#9CA3AF')
       }
     },
     reference: {
       helper: {
-        [THEMES.LIGHT_A]: '#475569',  // --reference/helper (slate-600)
-        [THEMES.DARK_A]: '#9CA3AF'    // gray-400
+        [THEMES.LIGHT_A]: getTokenValue('referenceHelper', 'lightA', '#475569'),
+        [THEMES.DARK_A]: getTokenValue('referenceHelper', 'darkA', '#A1A1AA')
       },
       error: {
-        [THEMES.LIGHT_A]: '#B91C1C',  // --reference/error (red-700)
-        [THEMES.DARK_A]: '#FCA5A5'    // red-300
+        [THEMES.LIGHT_A]: getTokenValue('referenceError', 'lightA', '#B91C1C'),
+        [THEMES.DARK_A]: getTokenValue('referenceError', 'darkA', '#FCA5A5')
       },
       success: {
-        [THEMES.LIGHT_A]: '#047857',  // --reference/success (emerald-700)
-        [THEMES.DARK_A]: '#34D399'    // emerald-400
+        [THEMES.LIGHT_A]: getTokenValue('referenceSuccess', 'lightA', '#047857'),
+        [THEMES.DARK_A]: getTokenValue('referenceSuccess', 'darkA', '#34D399')
       }
     },
     text: {
       disabled: {
-        [THEMES.LIGHT_A]: '#475569',  // --text/disabled (slate-600)
-        [THEMES.DARK_A]: '#6B7280'    // gray-500
+        [THEMES.LIGHT_A]: getTokenValue('textDisabled', 'lightA', '#475569'),
+        [THEMES.DARK_A]: getTokenValue('textDisabled', 'darkA', '#9CA3AF')
       },
       disabledSurface: {
-        [THEMES.LIGHT_A]: '#9CA3AF',  // --surface/disabled (gray-400) - used for disabled asterisk
-        [THEMES.DARK_A]: '#9CA3AF'    // gray-400
+        [THEMES.LIGHT_A]: getTokenValue('surfaceDisabled', 'lightA', '#9CA3AF'),
+        [THEMES.DARK_A]: getTokenValue('surfaceDisabled', 'darkA', '#71717A')
       }
     },
     surface: {
       disabled: {
-        [THEMES.LIGHT_A]: '#9CA3AF',  // --surface/disabled (gray-400) - used for disabled asterisk
-        [THEMES.DARK_A]: '#9CA3AF'    // gray-400
+        [THEMES.LIGHT_A]: getTokenValue('surfaceDisabled', 'lightA', '#9CA3AF'),
+        [THEMES.DARK_A]: getTokenValue('surfaceDisabled', 'darkA', '#71717A')
       }
     }
   },
