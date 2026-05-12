@@ -7,16 +7,15 @@ import imgThinkingLoadingPng from '../../../assets/ai/ai_thinking_loading.png';
 import imgButtonsPng from '../../../assets/ai/ai_buttons.png';
 import imgAiInputPng from '../../../assets/ai/ai_input.png';
 
-// Gradient swatch assets from Figma
-const swatchConsumerPrimary    = 'http://localhost:3845/assets/842fbd3fe513ee83e9cd8b7b297f97a471d15ec9.svg';
-const swatchCommercialPrimary  = 'http://localhost:3845/assets/cbfb62e44e40c0ec5cc93c2bf92f0248df220b0f.svg';
-const swatchInternalPrimary    = 'http://localhost:3845/assets/d049a0c1d6b7142065e800a24ff2af17bca061e5.svg';
-const swatchConsumerSurface    = 'http://localhost:3845/assets/060bb805ad56bbe100bb622bebc4c84820f01d85.svg';
-const swatchCommercialSurface  = 'http://localhost:3845/assets/3301b7cbc73f0fb626aded94e774f0ccf79135c8.svg';
-const swatchInternalSurface    = 'http://localhost:3845/assets/ac88d92cdee824d4dd339790ff9c42b812be056a.svg';
-const swatchConsumerCanvas     = 'http://localhost:3845/assets/e01c4dd8f1df53274ff3ae199ebcea6e4cb439af.svg';
-const swatchCommercialCanvas   = 'http://localhost:3845/assets/f53c500ba76999345862460f8397059e50f026b4.svg';
-const swatchInternalCanvas     = 'http://localhost:3845/assets/de841f84d67991251a3b9dbe531477eae822154e.svg';
+import swatchConsumerPrimary   from '../../../assets/ai/swatchConsumerPrimary.svg';
+import swatchCommercialPrimary from '../../../assets/ai/swatchCommercialPrimary.svg';
+import swatchInternalPrimary   from '../../../assets/ai/swatchInternalPrimary.svg';
+import swatchConsumerSurface   from '../../../assets/ai/swatchConsumerSurface.svg';
+import swatchCommercialSurface from '../../../assets/ai/swatchCommercialSurface.svg';
+import swatchInternalSurface   from '../../../assets/ai/swatchInternalSurface.svg';
+import swatchConsumerCanvas    from '../../../assets/ai/swatchConsumerCanvas.svg';
+import swatchCommercialCanvas  from '../../../assets/ai/swatchCommercialCanvas.svg';
+import swatchInternalCanvas    from '../../../assets/ai/swatchInternalCanvas.svg';
 
 
 // ─── Layout ──────────────────────────────────────────────────────────────────
