@@ -11,7 +11,6 @@ import Home from '../pages/Home';
 import ChipPage from '../pages/ChipPage';
 import ButtonPage from '../pages/ButtonPage';
 import AccordionPage from '../pages/AccordionPage.js';
-import IconIdentityPage from '../pages/subsystems/ai/IconIdentityPage';
 import AvatarPage from '../pages/AvatarPage';
 import BadgePage from '../pages/BadgePage';
 import BreadcrumbPage from '../pages/BreadcrumbPage';
@@ -30,7 +29,11 @@ import ModalPage from '../pages/ModalPage';
 import TooltipPage from '../pages/TooltipPage';
 import IconographyPage from '../pages/IconographyPage';
 import LanguageGrammarPage from '../pages/foundations/LanguageGrammarPage.js';
-import AiResponsePage from '../pages/components/ai/AiResponsePage.js';
+
+// Foundations > AI
+import AiOverviewPage from '../pages/foundations/ai/AiOverviewPage';
+import AiGradientPage from '../pages/foundations/ai/AiGradientPage';
+import AiLogoIconPage from '../pages/foundations/ai/AiLogoIconPage';
 
 
 export const routes = [
@@ -40,29 +43,6 @@ export const routes = [
     title: 'Home',
     description: 'Welcome to Cake Design System',
     category: 'guides'
-  },
-  {
-    path: '/components/ai',
-    title: 'AI',
-    description: 'AI components for chat interfaces and AI-powered features',
-    category: 'components',
-    hasChildren: true
-  },
-  {
-    path: '/components/ai/response',
-    component: AiResponsePage,
-    title: 'AI Response',
-    description: 'Component for displaying AI-generated chat responses with interactive controls for feedback, regeneration, pinning, and favoriting',
-    category: 'components',
-    parentPath: '/components/ai'
-  },
-  {
-    path: '/components/ai/icon-identity',
-    component: IconIdentityPage,
-    title: 'AI Icon & Identity',
-    description: 'AI icon and brand identity guidelines for Lenovo software applications',
-    category: 'components',
-    parentPath: '/components/ai'
   },
   {
     path: '/components/alert',
@@ -218,6 +198,40 @@ export const routes = [
     description: 'Version history and changelog',
     category: 'guides'
   },
+
+  // Foundations > AI
+  {
+    path: '/foundations/ai',
+    title: 'AI',
+    description: 'Lenovo AI visual language — gradients, logos, icons, and system-wide treatments',
+    category: 'foundations',
+    hasChildren: true
+  },
+  {
+    path: '/foundations/ai/overview',
+    component: AiOverviewPage,
+    title: 'AI Overview',
+    description: 'Overview of Lenovo\'s hybrid, tiered AI visual system and design principles',
+    category: 'foundations',
+    parentPath: '/foundations/ai'
+  },
+  {
+    path: '/foundations/ai/gradient',
+    component: AiGradientPage,
+    title: 'AI Gradient',
+    description: 'AI gradient visual treatments and usage guidelines',
+    category: 'foundations',
+    parentPath: '/foundations/ai'
+  },
+  {
+    path: '/foundations/ai/logo-icon',
+    component: AiLogoIconPage,
+    title: 'AI Logo & Icon',
+    description: 'AI logo and icon system guidance for Lenovo products',
+    category: 'foundations',
+    parentPath: '/foundations/ai'
+  },
+
   {
     path: '/foundations/colors',
     component: ColorsPage,

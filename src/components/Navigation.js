@@ -361,8 +361,8 @@ const Navigation = () => {
   const [expandedMenus, setExpandedMenus] = useState({
     getStarted: location.pathname.startsWith('/get-started'),
     foundations: location.pathname.startsWith('/foundations'),
+    'foundations-ai': location.pathname.startsWith('/foundations/ai'),
     components: location.pathname.startsWith('/components'),
-    'components-ai': location.pathname.startsWith('/components/ai')
   });
 
   const toggleNav = () => {
@@ -395,12 +395,16 @@ const Navigation = () => {
       }
     });
     
-    // Sort children arrays alphabetically by title
+    // Sort children arrays: overview first, then alphabetically by title
     routesCopy.forEach(route => {
       if (route.children.length > 0) {
-        route.children.sort((a, b) => 
-          a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
-        );
+        route.children.sort((a, b) => {
+          const aIsOverview = a.path.endsWith('/overview');
+          const bIsOverview = b.path.endsWith('/overview');
+          if (aIsOverview && !bIsOverview) return -1;
+          if (!aIsOverview && bIsOverview) return 1;
+          return a.title.localeCompare(b.title, undefined, { sensitivity: 'base' });
+        });
       }
     });
     
@@ -418,21 +422,11 @@ const Navigation = () => {
       return acc;
     }, {});
     
-    // Sort each category array alphabetically by title, but place AI first in components
+    // Sort each category array alphabetically by title
     Object.keys(grouped).forEach(category => {
-      if (category === 'components') {
-        // Find AI route and place it first
-        const aiRoute = grouped[category].find(r => r.path === '/components/ai');
-        const otherRoutes = grouped[category].filter(r => r.path !== '/components/ai');
-        otherRoutes.sort((a, b) => 
-          a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
-        );
-        grouped[category] = aiRoute ? [aiRoute, ...otherRoutes] : otherRoutes;
-      } else {
-        grouped[category].sort((a, b) => 
-          a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
-        );
-      }
+      grouped[category].sort((a, b) =>
+        a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
+      );
     });
     
     return grouped;
@@ -504,14 +498,36 @@ const Navigation = () => {
               <Submenu expanded={expandedMenus.foundations}>
                 {routesByCategory.foundations?.map(route => (
                   <SubmenuItem key={route.path}>
-                    <SubmenuLink to={route.path} onClick={closeNav}>
-                      {route.title}
-                    </SubmenuLink>
+                    {route.hasChildren ? (
+                      <>
+                        <NestedSubmenuToggle onClick={() => toggleMenu('foundations-ai')}>
+                          {route.title}
+                          <Chevron expanded={expandedMenus['foundations-ai']}>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
+                            </svg>
+                          </Chevron>
+                        </NestedSubmenuToggle>
+                        <NestedSubmenu expanded={expandedMenus['foundations-ai']}>
+                          {route.children?.map(childRoute => (
+                            <NestedSubmenuItem key={childRoute.path}>
+                              <NestedSubmenuLink to={childRoute.path} onClick={closeNav}>
+                                {childRoute.title}
+                              </NestedSubmenuLink>
+                            </NestedSubmenuItem>
+                          ))}
+                        </NestedSubmenu>
+                      </>
+                    ) : (
+                      <SubmenuLink to={route.path} onClick={closeNav}>
+                        {route.title}
+                      </SubmenuLink>
+                    )}
                   </SubmenuItem>
                 ))}
               </Submenu>
             </NavItem>
-            
+
             {/* Components Section */}
             <NavItem>
               <SubmenuToggle onClick={() => toggleMenu('components')}>
@@ -525,35 +541,14 @@ const Navigation = () => {
               <Submenu expanded={expandedMenus.components}>
                 {routesByCategory.components?.map(route => (
                   <SubmenuItem key={route.path}>
-                    {route.hasChildren ? (
-                      <>
-                        <SubmenuToggle onClick={() => toggleMenu('components-ai')}>
-                          {route.title}
-                          <Chevron expanded={expandedMenus['components-ai']}>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M12 16l-6-6 1.41-1.41L12 13.17l4.59-4.58L18 10z"/>
-                            </svg>
-                          </Chevron>
-                        </SubmenuToggle>
-                        <Submenu expanded={expandedMenus['components-ai']} $indent={true}>
-                          {route.children?.map(childRoute => (
-                            <SubmenuItem key={childRoute.path}>
-                              <SubmenuLink to={childRoute.path} onClick={closeNav}>
-                                {childRoute.title}
-                              </SubmenuLink>
-                            </SubmenuItem>
-                          ))}
-                        </Submenu>
-                      </>
-                    ) : (
-                      <SubmenuLink to={route.path} onClick={closeNav}>
-                        {route.title}
-                      </SubmenuLink>
-                    )}
+                    <SubmenuLink to={route.path} onClick={closeNav}>
+                      {route.title}
+                    </SubmenuLink>
                   </SubmenuItem>
                 ))}
               </Submenu>
             </NavItem>
+
 
           </NavList>
         </SidebarNav>

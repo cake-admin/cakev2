@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import Card from '../components/design-system/Card';
 import Chip, { CHIP_TYPES, CHIP_SIZES, CHIP_STYLES } from '../components/design-system/Chip';
 import colorData from '../data/colors.json';
@@ -92,6 +93,28 @@ const StyledCardTitle = styled(Card.Title)`
   margin: 0 !important;
 `;
 
+const AnnouncementLinks = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+`;
+
+const AnnouncementLink = styled(Link)`
+  font-size: 14px;
+  font-weight: 600;
+  color: #1D4ED8;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  &:hover {
+    text-decoration: underline;
+    color: #1E3A8A;
+  }
+`;
+
 const WhatsNew = () => {
   const isDarkMode = false; // Using light theme
 
@@ -106,12 +129,28 @@ const WhatsNew = () => {
   };
 
   const announcement = {
-    title: '🎉 Cake Web V2 Update',
-    date: 'October 8, 2025',
-    description: 'We\'re thrilled to announce the launch of Cake Web V2! This major update brings a modern, responsive design system built with React that empowers teams to create consistent, high-quality experiences across all Lenovo digital products. With comprehensive accessibility features meeting WCAG 2.2 AA standards, standardized design tokens, and an enhanced component library, Cake V2 is your complete toolkit for building cohesive, user-centered interfaces that reflect Lenovo\'s brand identity.'
+    title: '🎉 New AI guidelines added',
+    date: 'May 12, 2026',
+    description: 'We\'ve introduced a new AI section to the Cake design system to support a more consistent and scalable approach to AI experiences across Lenovo products. This update includes AI design principles, gradient usage guidance, and logo and icon direction that define how AI should be communicated through visual treatment, hierarchy, motion, and brand expression rather than relying on a single universal symbol.\n\nThe new guidance outlines when to use AI gradients, how to apply segment-specific treatments for consumer, commercial, and internal products, and when AI logos or icons are appropriate within product experiences. These updates are intended to help teams create recognizable AI moments while avoiding icon overload and maintaining consistency across different product contexts.',
+    links: [
+      { label: 'AI Overview', to: '/foundations/ai/overview' },
+      { label: 'AI Gradient', to: '/foundations/ai/gradient' },
+      { label: 'AI Logo & Icon', to: '/foundations/ai/logo-icon' },
+    ]
   };
 
   const updates = [
+    {
+      version: '🎉 Cake Web V2 Update',
+      date: 'October 8, 2025',
+      type: 'Major',
+      current: false,
+      changes: [
+        'Launched Cake Web V2 — a modern, responsive design system built with React',
+        'Comprehensive accessibility features meeting WCAG 2.2 AA standards',
+        'Standardized design tokens and an enhanced component library'
+      ]
+    },
     {
       version: 'v1.4.0',
       date: 'May 1, 2025',
@@ -194,9 +233,20 @@ const WhatsNew = () => {
           <Card.Body>
             <StyledUpdateDate>{announcement.date}</StyledUpdateDate>
             <StyledCardTitle>{announcement.title}</StyledCardTitle>
-            <Description style={{ marginTop: '16px', marginBottom: '0' }}>
-              {announcement.description}
-            </Description>
+            {announcement.description.split('\n\n').map((para, i) => (
+              <Description key={i} style={{ marginTop: i === 0 ? '16px' : '12px', marginBottom: '0' }}>
+                {para}
+              </Description>
+            ))}
+            {announcement.links && (
+              <AnnouncementLinks>
+                {announcement.links.map(link => (
+                  <AnnouncementLink key={link.to} to={link.to}>
+                    {link.label} →
+                  </AnnouncementLink>
+                ))}
+              </AnnouncementLinks>
+            )}
           </Card.Body>
         </Card>
       </AnnouncementGrid>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Navigation from './components/Navigation';
 import LenovoLogo from './components/LenovoLogo';
@@ -66,13 +66,17 @@ function App() {
       <Wrapper>
         <PageContentWrapper data-content-container>
           <Routes>
-            {routes.map(route => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={<route.component />}
-              />
-            ))}
+            {/* Redirect parent-only group routes to their first child */}
+            <Route path="/foundations/ai" element={<Navigate to="/foundations/ai/overview" replace />} />
+            {routes
+              .filter(route => route.component)
+              .map(route => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<route.component />}
+                />
+              ))}
           </Routes>
           <Footer>© {new Date().getFullYear()} Cake Design System. All rights reserved.</Footer>
         </PageContentWrapper>

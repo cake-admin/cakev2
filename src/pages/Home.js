@@ -282,8 +282,8 @@ const Home = () => {
                   background: 'white'
                 }}>
                   <div>
-                    <ReleaseDate style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>October 8, 2025</ReleaseDate>
-                    <ReleaseVersion style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>🎉 Cake Web V2 Update</ReleaseVersion>
+                    <ReleaseDate style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>May 12, 2026</ReleaseDate>
+                    <ReleaseVersion style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>🎉 New AI guidelines added</ReleaseVersion>
                   </div>
                 </div>
               </div>
