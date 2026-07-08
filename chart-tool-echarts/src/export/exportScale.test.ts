@@ -2,7 +2,7 @@
 import { describe, it, expect } from 'vitest';
 import { renderChartSvg, exportScale } from './renderStaticSvg';
 import { CHART_REGISTRY } from '../charts/registry';
-import { DEFAULT_STYLE } from '../charts/types';
+import { DEFAULT_STYLE, DEFAULT_HEADER } from '../charts/types';
 import { FONT_STEPS } from '../charts/options/common';
 
 function maxFont(svg: string): number {
@@ -51,5 +51,26 @@ describe('export font scaling', () => {
     }
     expect(allFonts.size).toBeGreaterThan(0);
     for (const f of allFonts) expect(FONT_STEPS).toContain(f);
+  });
+
+  it('exports header lines with distinct Figma-readable font sizes (no CSS `font` shorthand)', () => {
+    const def = CHART_REGISTRY.bar;
+    const style = { ...DEFAULT_STYLE, ...def.defaultStyle };
+    const svg = renderChartSvg({
+      type: 'bar',
+      data: def.preset(),
+      color: { variation: 'categorical' },
+      style,
+      mode: 'light',
+      width: 640,
+      height: 420,
+      header: { ...DEFAULT_HEADER, show: true },
+    });
+    // Figma ignores the `font:` shorthand — sizes must be discrete font-size props.
+    expect(svg).not.toMatch(/font:\s*\d/);
+    // The three header lines carry their own sizes (16 / 40 / 14 at 1×).
+    expect(svg).toContain('font-size:16px');
+    expect(svg).toContain('font-size:40px');
+    expect(svg).toContain('font-size:14px');
   });
 });

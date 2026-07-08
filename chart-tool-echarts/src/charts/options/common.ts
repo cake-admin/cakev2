@@ -246,16 +246,20 @@ export function headerGraphic(ctx: ChartContext): EChartsOption['graphic'] {
   const left = h.placement === 'left';
   const children: Array<Record<string, unknown>> = [];
   let y = 0;
+  // Use separate fontSize/fontWeight/fontFamily (NOT the `font` shorthand): the
+  // SVG renderer emits them as discrete `font-size`/`font-weight`/`font-family`
+  // properties, which Figma's SVG importer honors — it ignores the CSS `font`
+  // shorthand, which would otherwise collapse all three lines to one size.
   if (v.title) {
-    children.push({ type: 'text', y, style: { text: h.title, font: `600 ${fs(ctx, 16)}px ${FONT}`, fill: t.text.primary } });
+    children.push({ type: 'text', y, style: { text: h.title, fontFamily: FONT, fontWeight: 600, fontSize: fs(ctx, 16), fill: t.text.primary } });
     y += px(ctx, HEADER_ADVANCE.title);
   }
   if (v.value) {
-    children.push({ type: 'text', y, style: { text: h.value, font: `700 ${fs(ctx, 40)}px ${FONT}`, fill: t.text.primary } });
+    children.push({ type: 'text', y, style: { text: h.value, fontFamily: FONT, fontWeight: 700, fontSize: fs(ctx, 40), fill: t.text.primary } });
     y += px(ctx, HEADER_ADVANCE.value);
   }
   if (v.subtitle) {
-    children.push({ type: 'text', y, style: { text: h.subtitle, font: `${fs(ctx, 14)}px ${FONT}`, fill: t.text.helper } });
+    children.push({ type: 'text', y, style: { text: h.subtitle, fontFamily: FONT, fontWeight: 400, fontSize: fs(ctx, 14), fill: t.text.helper } });
   }
   return [
     {
