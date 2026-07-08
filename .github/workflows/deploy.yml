@@ -56,9 +56,15 @@ jobs:
         working-directory: chart-tool-echarts
         run: npm ci
 
+      # Build directly (tsc + vite) rather than `npm run build`, to skip the
+      # `prebuild` token-regen step: it reads design-token exports from repo-root
+      # "& *" folders that aren't part of the deploy. The committed
+      # src/tokens/tokens.json is the source of truth for the build.
       - name: Build dataviz tool
         working-directory: chart-tool-echarts
-        run: npm run build
+        run: |
+          node node_modules/typescript/bin/tsc --noEmit
+          node node_modules/vite/bin/vite.js build
 
       - name: Add dataviz tool to Pages output
         run: |
