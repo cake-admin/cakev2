@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-ssr
+preview
+*.local
+.vite
+coverage
+.DS_Store

@@ -1,0 +1,43 @@
+{
+  "name": "chart-tool-echarts",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Design-system charting tool (ECharts edition) — token-driven Apache ECharts charts with Figma SVG handoff",
+  "comment": "Scripts invoke tools via `node <bin>` instead of bare `vite`/`tsc` so they work even though this repo's path contains '&' (which breaks the npm/.bin cmd shims on Windows). In a normal path, `npx vite` etc. also work.",
+  "scripts": {
+    "dev": "node node_modules/vite/bin/vite.js",
+    "build:tokens": "node scripts/build-tokens.mjs",
+    "gallery": "node node_modules/vite-node/vite-node.mjs scripts/build-gallery.ts",
+    "prebuild": "node scripts/build-tokens.mjs",
+    "build": "node node_modules/typescript/bin/tsc --noEmit && node node_modules/vite/bin/vite.js build",
+    "preview": "node node_modules/vite/bin/vite.js preview",
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit",
+    "test": "node node_modules/vitest/vitest.mjs run",
+    "test:watch": "node node_modules/vitest/vitest.mjs"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/sortable": "^8.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
+    "culori": "^4.0.1",
+    "d3-array": "^3.2.4",
+    "echarts": "^5.5.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/culori": "^2.1.1",
+    "@types/d3-array": "^3.2.1",
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^25.0.1",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.7",
+    "vitest": "^2.1.8"
+  }
+}
