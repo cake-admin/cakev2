@@ -221,15 +221,37 @@ export function gridFor(ctx: ChartContext, legendShown: boolean): EChartsOption[
   };
 }
 
-/** Center for radial charts (pie/radar) — shifts away from header/legend. */
-export function radialCenter(ctx: ChartContext, legendShown: boolean): [string, string] {
+/**
+ * Layout for radial charts (pie / radar / polar). A top-placed header reserves a
+ * proportional top band, so we BOTH push the center down AND cap the outer radius
+ * to fit the free band below it — otherwise the ring rides up under the header on
+ * export (the old center-only nudge left the top crowding the KPI). The band is
+ * sized by how many header lines are visible so a 1-line header reserves less
+ * than a full KPI. `outer` is the max outer-radius percent (999 = "use the
+ * chart's own default" when there's no top header to reserve against).
+ */
+export function radialFit(
+  ctx: ChartContext,
+  legendShown: boolean,
+): { center: [string, string]; outer: number } {
+  const h = ctx.header;
   let x = 50;
-  let y = 50;
-  if (ctx.header?.show && ctx.header.placement === 'left') x += 16;
-  if (ctx.header?.show && ctx.header.placement === 'top') y += 12;
+  if (h?.show && h.placement === 'left') x += 16;
   if (legendShown && ctx.style.legendPosition === 'right') x -= 10;
-  if (legendShown && ctx.style.legendPosition === 'bottom') y -= 6;
-  return [`${x}%`, `${y}%`];
+
+  let topBand = 0;
+  if (h?.show && h.placement === 'top') {
+    const v = headerLines(h);
+    const lines = (v.title ? 1 : 0) + (v.value ? 1 : 0) + (v.subtitle ? 1 : 0);
+    topBand = lines >= 3 ? 0.32 : lines === 2 ? 0.24 : lines === 1 ? 0.16 : 0;
+  }
+  const bottomBand = legendShown && ctx.style.legendPosition === 'bottom' ? 0.1 : 0;
+
+  // Center vertically within the free band; radius fits it (with a small margin).
+  const y = Math.round((topBand + (1 - bottomBand)) / 2 * 100);
+  const avail = 1 - topBand - bottomBand;
+  const outer = topBand > 0 ? Math.max(30, Math.round(avail * 100) - 6) : 999;
+  return { center: [`${x}%`, `${y}%`], outer };
 }
 
 /**

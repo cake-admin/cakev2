@@ -6,7 +6,7 @@ import {
   fs,
   headerGraphic,
   markStates,
-  radialCenter,
+  radialFit,
   SELECTED_MODE,
   seriesColors,
   tooltipFor,
@@ -21,13 +21,16 @@ export function buildRadialBar(ctx: ChartContext): EChartsOption {
   const first = series[0];
   const { theme } = ctx;
   const colors = seriesColors(ctx, categories.length);
+  const fit = radialFit(ctx, false);
+  const rOut = Math.min(74, fit.outer);
+  const rIn = Math.round((20 / 74) * rOut);
 
   return {
     textStyle: { fontFamily: FONT },
     ...animationOpts(ctx),
     tooltip: { ...tooltipFor(theme), trigger: 'item' },
     graphic: headerGraphic(ctx),
-    polar: { center: radialCenter(ctx, false), radius: ['20%', '74%'] },
+    polar: { center: fit.center, radius: [`${rIn}%`, `${rOut}%`] },
     angleAxis: {
       type: 'category',
       data: categories,

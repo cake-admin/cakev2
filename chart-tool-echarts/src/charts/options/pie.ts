@@ -8,7 +8,7 @@ import {
   legendFor,
   markStates,
   px,
-  radialCenter,
+  radialFit,
   SELECTED_MODE,
   seriesColors,
   tooltipFor,
@@ -22,10 +22,15 @@ export function buildPie(ctx: ChartContext): EChartsOption {
   const { style, theme } = ctx;
   const colors = seriesColors(ctx, slices.length);
   const legendShown = style.showLegend && slices.length > 0;
-  const center = radialCenter(ctx, legendShown);
+  const fit = radialFit(ctx, legendShown);
+  const center = fit.center;
   const variant = style.circularStyle;
+  // Cap the outer radius so a top header never crowds the ring; scale the whole
+  // family (inner rings, nested/polar radii) by the same factor to keep shape.
+  const rOut = Math.min(70, fit.outer);
+  const k = rOut / 70;
   const ratio = Math.min(0.85, Math.max(0, style.donutInnerRatio));
-  const inner = `${Math.round(ratio * 70)}%`;
+  const inner = `${Math.round(ratio * rOut)}%`;
 
   const items = slices.map((s, i) => ({
     name: s.label,
@@ -49,16 +54,17 @@ export function buildPie(ctx: ChartContext): EChartsOption {
     emphasis: { focus: 'self' as const },
   };
 
+  const pct = (n: number) => `${Math.round(n * k)}%`;
   let series: unknown;
   if (variant === 'pie') {
-    series = [{ ...common, radius: '70%', data: items }];
+    series = [{ ...common, radius: `${rOut}%`, data: items }];
   } else if (variant === 'donut') {
-    series = [{ ...common, radius: [inner, '70%'], data: items }];
+    series = [{ ...common, radius: [inner, `${rOut}%`], data: items }];
   } else if (variant === 'half') {
     series = [
       {
         ...common,
-        radius: [inner, '70%'],
+        radius: [inner, `${rOut}%`],
         center: [center[0], '78%'],
         startAngle: 180,
         endAngle: 360,
@@ -67,12 +73,12 @@ export function buildPie(ctx: ChartContext): EChartsOption {
     ];
   } else if (variant === 'nested') {
     series = [
-      { ...common, radius: ['25%', '42%'], label: { show: false }, labelLine: { show: false }, data: items },
-      { ...common, radius: ['50%', '70%'], data: items },
+      { ...common, radius: [pct(25), pct(42)], label: { show: false }, labelLine: { show: false }, data: items },
+      { ...common, radius: [pct(50), `${rOut}%`], data: items },
     ];
   } else {
     // polar rose
-    series = [{ ...common, radius: ['18%', '72%'], roseType: 'area', data: items }];
+    series = [{ ...common, radius: [pct(18), pct(72)], roseType: 'area', data: items }];
   }
 
   return {

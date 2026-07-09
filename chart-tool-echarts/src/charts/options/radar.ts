@@ -7,7 +7,7 @@ import {
   headerGraphic,
   legendFor,
   px,
-  radialCenter,
+  radialFit,
   SELECTED_MODE,
   seriesColors,
   tooltipFor,
@@ -23,6 +23,8 @@ export function buildRadar(ctx: ChartContext): EChartsOption {
   const colors = seriesColors(ctx, series.length);
   const legendShown = style.showLegend && series.length > 0;
   const maxVal = Math.max(1, ...series.flatMap((s) => s.points.map((p) => p.y)));
+  const fit = radialFit(ctx, legendShown);
+  const rOut = Math.min(66, fit.outer);
 
   return {
     textStyle: { fontFamily: FONT },
@@ -31,8 +33,8 @@ export function buildRadar(ctx: ChartContext): EChartsOption {
     legend: legendFor(ctx, legendShown),
     graphic: headerGraphic(ctx),
     radar: {
-      center: radialCenter(ctx, legendShown),
-      radius: '66%',
+      center: fit.center,
+      radius: `${rOut}%`,
       indicator: axes.map((name) => ({ name, max: maxVal })),
       axisName: { color: theme.text.secondary, fontFamily: FONT, fontSize: fs(ctx, 11) },
       axisLine: { lineStyle: { color: theme.grid.line } },
