@@ -25,4 +25,6 @@ yarn-error.log*
 .vscode
 *.swp
 *.swo 
-node_modules
+
+# storybook
+/storybook-static

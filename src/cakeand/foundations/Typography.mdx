@@ -1,0 +1,129 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import {
+  TYPOGRAPHY_ROLES,
+  TYPOGRAPHY_SIZE_PX,
+  typographyPresets,
+  font,
+} from '../tokens/typography';
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+cake& uses **Rookery New** in three weights — **Regular**, **Medium**, and **Bold**.
+Each style is a token named `{weight}.{sizePx}.{role}` (matching Figma).
+
+<p style={{ fontFamily: font.family, fontSize: 14, opacity: 0.7 }}>
+  Font stack: <code>{font.family}</code>
+</p>
+
+## Type scale
+
+export const SAMPLE_LONG =
+  'Lenovo originated as an offshoot of a state-owned research institute in Beijing, China. The company was founded in 1984 by a group of eleven engineers led by Liu Chuanzhi.';
+
+export const SAMPLE_SHORT = 'Smarter technology for all';
+export const SAMPLE_DATA = '42,000';
+
+export const previewForRole = (role) => {
+  if (role === 'data') return SAMPLE_DATA;
+  if (['caption', 'helper', 'body', 'subject'].includes(role)) return SAMPLE_LONG;
+  return SAMPLE_SHORT;
+};
+
+export const WeightColumn = ({ weight, label }) => {
+  const styles = typographyPresets[weight];
+  return (
+    <div style={{ flex: 1, minWidth: 0 }}>
+      <h3 style={{ fontFamily: font.family, fontWeight: font.weight[weight], marginBottom: 16 }}>
+        {label}
+      </h3>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        {TYPOGRAPHY_ROLES.map((role) => {
+          const t = styles[role];
+          return (
+            <div key={role}>
+              <code
+                style={{
+                  display: 'block',
+                  fontSize: 11,
+                  opacity: 0.65,
+                  marginBottom: 6,
+                  wordBreak: 'break-all',
+                }}
+              >
+                {t.token}
+              </code>
+              <div
+                style={{
+                  fontFamily: t.fontFamily,
+                  fontSize: t.fontSize,
+                  fontWeight: t.fontWeight,
+                  lineHeight: t.lineHeight,
+                }}
+              >
+                {previewForRole(role)}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+<div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+  <WeightColumn weight="regular" label="Regular fonts" />
+  <WeightColumn weight="medium" label="Medium fonts" />
+  <WeightColumn weight="bold" label="Bold fonts" />
+</div>
+
+## Token reference
+
+<table style={{ borderCollapse: 'collapse', width: '100%', fontFamily: font.family, marginTop: 32 }}>
+  <thead>
+    <tr style={{ textAlign: 'left', fontSize: 12, opacity: 0.6 }}>
+      <th style={{ padding: 8 }}>Role</th>
+      <th style={{ padding: 8 }}>Size (px)</th>
+      <th style={{ padding: 8 }}>Size (rem)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {TYPOGRAPHY_ROLES.map((role) => (
+      <tr key={role} style={{ borderTop: '1px solid rgba(127,127,127,0.2)' }}>
+        <td style={{ padding: 8 }}><code>{role}</code></td>
+        <td style={{ padding: 8 }}>{TYPOGRAPHY_SIZE_PX[role]}px</td>
+        <td style={{ padding: 8 }}><code>{font.size[role]}</code></td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## Usage in components
+
+Use preset tokens from the theme — never hardcode sizes or weights:
+
+```tsx
+const Title = styled.h2`
+  font-family: ${(p) => p.theme.typography.medium.title.fontFamily};
+  font-size: ${(p) => p.theme.typography.medium.title.fontSize};
+  font-weight: ${(p) => p.theme.typography.medium.title.fontWeight};
+  line-height: ${(p) => p.theme.typography.medium.title.lineHeight};
+`;
+```
+
+Or spread the preset:
+
+```tsx
+const PageHeading = styled.h1`
+  ${(p) => {
+    const t = p.theme.typography.bold.page;
+    return `
+      font-family: ${t.fontFamily};
+      font-size: ${t.fontSize};
+      font-weight: ${t.fontWeight};
+      line-height: ${t.lineHeight};
+    `;
+  }}
+`;
+```

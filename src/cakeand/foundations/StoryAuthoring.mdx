@@ -1,0 +1,67 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Guides/Building a Component" />
+
+# Building a cake& component
+
+Every cake& component follows the same recipe. Use `Switch` and `Dialog` as
+canonical references.
+
+## 1. Start from a Radix primitive
+
+Interactive components **must** wrap a
+[Radix UI](https://www.radix-ui.com/primitives) primitive from the unified
+`radix-ui` package. Radix handles behavior + accessibility; you handle visuals.
+
+```tsx
+import { Switch as RadixSwitch } from 'radix-ui';
+import styled from 'styled-components';
+
+const Track = styled(RadixSwitch.Root)`
+  background: ${(p) => p.theme.color.textIcon.placeholder};
+  &[data-state='checked'] {
+    background: ${(p) => p.theme.color.primary.primary};
+  }
+`;
+```
+
+## 2. Style with tokens only
+
+Read every color, space, radius, and typography value from `props.theme`. Use
+`theme.typography.{regular|medium|bold}.{role}` for type — never hardcode hex,
+px spacing, or font sizes. Style Radix state via its data
+attributes (`[data-state='checked']`, `[data-disabled]`, ...).
+
+## 3. File layout
+
+```
+src/cakeand/components/<Component>/
+  <Component>.tsx          # implementation
+  <Component>.stories.tsx  # story (CSF 3)
+```
+
+- One component per folder. Typed props with JSDoc. Forward refs where relevant.
+- Named export + default export.
+
+## 4. Write the story (CSF 3)
+
+- `title: 'Components/<Component>'`, `tags: ['autodocs']`.
+- Sensible default `args` + grouped `argTypes` (`table.category`).
+- One story per meaningful state (default, on/off, disabled, error, ...).
+- At least one `play` function exercising the primary interaction.
+- **Do not** add a theme control — the global toolbar drives light.a / dark.a
+  through `CakeThemeProvider`.
+
+## 5. Accessibility
+
+Check the **Accessibility** panel on every story and fix violations. Radix gives
+you correct roles and keyboard support for free — don't undo them (e.g. keep
+`aria-label` on icon-only controls like the dialog close button).
+
+## 6. Tokens changed?
+
+Regenerate from Figma before documenting:
+
+```bash
+npm run build:cakeand-tokens
+```

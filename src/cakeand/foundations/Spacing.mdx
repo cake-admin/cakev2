@@ -1,0 +1,58 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { lightTheme } from '../tokens/theme';
+
+<Meta title="Foundations/Spacing" />
+
+# Spacing & Radius
+
+cake& is built on a **4px base grid**. Spacing and radius scales live on the
+theme at `theme.space` and `theme.radius`. Use them for padding, gaps, margins,
+and corners — never arbitrary pixel values.
+
+## Spacing — `theme.space`
+
+export const space = lightTheme.space;
+export const radius = lightTheme.radius;
+
+<table style={{ borderCollapse: 'collapse', width: '100%' }}>
+  <thead>
+    <tr style={{ textAlign: 'left', fontSize: 12, opacity: 0.6 }}>
+      <th style={{ padding: 8 }}>Token</th>
+      <th style={{ padding: 8 }}>Value</th>
+      <th style={{ padding: 8, width: '55%' }}>Scale</th>
+    </tr>
+  </thead>
+  <tbody>
+    {Object.entries(space).map(([name, value]) => (
+      <tr key={name} style={{ borderTop: '1px solid rgba(127,127,127,0.2)' }}>
+        <td style={{ padding: 8 }}><code>space.{name}</code></td>
+        <td style={{ padding: 8 }}><code>{value}</code></td>
+        <td style={{ padding: 8 }}>
+          <span style={{ display: 'inline-block', height: 16, width: value, background: '#394edb', borderRadius: 3 }} />
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+## Radius — `theme.radius`
+
+<div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginTop: 8 }}>
+  {Object.entries(radius).map(([name, value]) => (
+    <div key={name} style={{ textAlign: 'center' }}>
+      <div
+        style={{
+          width: 72,
+          height: 72,
+          background: '#bcc3ff',
+          border: '2px solid #394edb',
+          borderRadius: value === '50%' ? '50%' : value,
+        }}
+      />
+      <div style={{ fontSize: 12, marginTop: 6 }}>
+        <code>{name}</code>
+        <div style={{ opacity: 0.6 }}>{value}</div>
+      </div>
+    </div>
+  ))}
+</div>

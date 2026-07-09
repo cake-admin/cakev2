@@ -1,0 +1,87 @@
+import React from 'react';
+import type { Preview, Decorator } from '@storybook/react-vite';
+
+import {
+  CakeThemeProvider,
+  CakeGlobalStyle,
+} from '../src/cakeand/theme/ThemeProvider';
+import { themes, type ThemeMode } from '../src/cakeand/tokens/theme';
+
+/**
+ * The global "Theme" toolbar toggle is the single source of truth for the mode.
+ * Every story is wrapped in CakeThemeProvider, so components get their tokens
+ * from `props.theme` — stories never set the theme themselves.
+ */
+const withTheme: Decorator = (Story, context) => {
+  const mode = (context.globals.theme as ThemeMode) || 'light.a';
+  const canvas = themes[mode].color.surfaces.canvas;
+
+  return (
+    <CakeThemeProvider mode={mode}>
+      <CakeGlobalStyle />
+      <div
+        data-theme={mode}
+        style={{
+          background: canvas,
+          minHeight: '100vh',
+          padding: '2rem',
+          boxSizing: 'border-box',
+        }}
+      >
+        <Story />
+      </div>
+    </CakeThemeProvider>
+  );
+};
+
+const preview: Preview = {
+  decorators: [withTheme],
+
+  globalTypes: {
+    theme: {
+      description: 'cake& theme mode',
+      toolbar: {
+        title: 'Theme',
+        icon: 'contrast',
+        items: [
+          { value: 'light.a', title: 'Light A', icon: 'sun' },
+          { value: 'dark.a', title: 'Dark A', icon: 'moon' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
+
+  initialGlobals: {
+    theme: 'light.a',
+  },
+
+  parameters: {
+    layout: 'centered',
+    controls: {
+      expanded: true,
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
+    },
+    // The decorator paints the canvas from the theme, so disable the addon bg.
+    backgrounds: { disable: true },
+    a11y: { test: 'todo' },
+    options: {
+      storySort: {
+        order: [
+          'Introduction',
+          'Foundations',
+          ['Colors', 'Typography', 'Spacing'],
+          'Guides',
+          'Components',
+        ],
+      },
+    },
+  },
+
+  tags: ['autodocs'],
+};
+
+export default preview;

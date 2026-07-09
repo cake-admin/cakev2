@@ -1,0 +1,24 @@
+/* Rookery New — cake& brand typeface (served from public/fonts via Storybook staticDirs). */
+@font-face {
+  font-family: 'Rookery New';
+  src: url('/fonts/RookeryNew-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rookery New';
+  src: url('/fonts/RookeryNew-Medium.woff2') format('woff2');
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rookery New';
+  src: url('/fonts/RookeryNew-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
