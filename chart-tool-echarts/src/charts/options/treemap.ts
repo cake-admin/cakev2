@@ -1,6 +1,6 @@
 import type { EChartsOption } from 'echarts';
 import { isPartition } from '../../data/dataModel';
-import { animationOpts, FONT, fs, headerGraphic, headerLeftReserve, headerTopReserve, px, readableText, seriesColors, tooltipFor, type ChartContext } from './common';
+import { animationOpts, EDGE_PAD, FONT, fs, headerGraphic, headerLeftReserve, headerTopReserve, px, readableText, seriesColors, tooltipFor, type ChartContext } from './common';
 
 /** Treemap — flat slices sized by value (squarified). */
 export function buildTreemap(ctx: ChartContext): EChartsOption {
@@ -20,10 +20,10 @@ export function buildTreemap(ctx: ChartContext): EChartsOption {
         roam: false,
         nodeClick: false,
         breadcrumb: { show: false },
-        top: headerTopReserve(ctx) || px(ctx, 8),
-        left: headerLeftReserve(ctx) || px(ctx, 8),
-        right: px(ctx, 8),
-        bottom: px(ctx, 8),
+        top: headerTopReserve(ctx) || px(ctx, EDGE_PAD),
+        left: headerLeftReserve(ctx) || px(ctx, EDGE_PAD),
+        right: px(ctx, EDGE_PAD),
+        bottom: px(ctx, EDGE_PAD),
         itemStyle: { borderColor: theme.surface.card, borderWidth: px(ctx, 2), gapWidth: px(ctx, 2) },
         label: {
           show: true,

@@ -11,6 +11,14 @@ import type { ChartId } from '../registry';
  */
 export const FONT = "'Rookery New','Rookery','Noto Sans',system-ui,sans-serif";
 
+/**
+ * Uniform content inset (base px @1×). The header text, the plot area (via
+ * `containLabel`, so the outermost axis label edge — not the axis line — lands
+ * on this inset), the legend, and edge-hugging charts (treemap) all align to
+ * this same edge so exports read as one composed card with even padding.
+ */
+export const EDGE_PAD = 20;
+
 /** Everything an option builder needs. Pure inputs → one ECharts option. */
 export interface ChartContext {
   type: ChartId;
@@ -162,8 +170,8 @@ export function legendFor(ctx: ChartContext, show: boolean): EChartsOption['lege
     itemGap: px(ctx, 16),
     textStyle: { color: ctx.theme.text.secondary, fontFamily: FONT, fontSize: fs(ctx, 12) },
     ...(right
-      ? { orient: 'vertical', right: px(ctx, 8), top: 'middle' }
-      : { bottom: px(ctx, 8), left: 'center' }),
+      ? { orient: 'vertical', right: px(ctx, 16), top: 'middle' }
+      : { bottom: px(ctx, 14), left: 'center' }),
   };
 }
 
@@ -196,7 +204,7 @@ export function headerTopReserve(ctx: ChartContext): number {
   if (v.title) inner += HEADER_ADVANCE.title;
   if (v.value) inner += HEADER_ADVANCE.value;
   if (v.subtitle) inner += HEADER_ADVANCE.subtitle;
-  return px(ctx, 20 + inner + 24); // group top + content + gap to plot
+  return px(ctx, EDGE_PAD + inner + 24); // group top + content + gap to plot
 }
 
 /** Reserved space (px @ scale) a left-placed header takes off the left of the plot. */
@@ -213,10 +221,10 @@ export function gridFor(ctx: ChartContext, legendShown: boolean): EChartsOption[
   const legBottom = legendShown && ctx.style.legendPosition === 'bottom';
   const legRight = legendShown && ctx.style.legendPosition === 'right';
   return {
-    left: headerLeftReserve(ctx) || px(ctx, 8),
-    right: px(ctx, 16 + (legRight ? 116 : 0)),
-    top: headerTopReserve(ctx) || px(ctx, 16),
-    bottom: px(ctx, 8 + (legBottom ? 40 : 0)),
+    left: headerLeftReserve(ctx) || px(ctx, EDGE_PAD),
+    right: px(ctx, EDGE_PAD + (legRight ? 116 : 0)),
+    top: headerTopReserve(ctx) || px(ctx, EDGE_PAD),
+    bottom: px(ctx, 16 + (legBottom ? 44 : 0)),
     containLabel: true,
   };
 }
@@ -286,8 +294,8 @@ export function headerGraphic(ctx: ChartContext): EChartsOption['graphic'] {
   return [
     {
       type: 'group',
-      left: px(ctx, 20),
-      top: left ? 'middle' : px(ctx, 20),
+      left: px(ctx, EDGE_PAD),
+      top: left ? 'middle' : px(ctx, EDGE_PAD),
       children,
     },
   ] as EChartsOption['graphic'];
