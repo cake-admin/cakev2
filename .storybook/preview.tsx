@@ -15,6 +15,10 @@ import { themes, type ThemeMode } from '../src/cakeand/tokens/theme';
 const withTheme: Decorator = (Story, context) => {
   const mode = (context.globals.theme as ThemeMode) || 'light.a';
   const canvas = themes[mode].color.surfaces.canvas;
+  // In Docs, each story renders in its own preview block — a full-viewport min
+  // height would make every example a 100vh-tall box. Only fill the viewport in
+  // the single-story (canvas) view, where the themed background should bleed.
+  const isDocs = context.viewMode === 'docs';
 
   return (
     <CakeThemeProvider mode={mode}>
@@ -23,8 +27,8 @@ const withTheme: Decorator = (Story, context) => {
         data-theme={mode}
         style={{
           background: canvas,
-          minHeight: '100vh',
-          padding: '2rem',
+          minHeight: isDocs ? 'auto' : '100vh',
+          padding: isDocs ? '1.5rem' : '2rem',
           boxSizing: 'border-box',
         }}
       >
