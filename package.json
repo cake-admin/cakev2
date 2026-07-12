@@ -15,7 +15,8 @@
     "deploy": "gh-pages -d build",
     "build:cakeand-tokens": "node scripts/build-cakeand-tokens.mjs",
     "storybook": "node node_modules/storybook/dist/bin/dispatcher.js dev -p 6006",
-    "build-storybook": "node node_modules/storybook/dist/bin/dispatcher.js build"
+    "build-storybook": "node node_modules/storybook/dist/bin/dispatcher.js build",
+    "build:cakeand-vars": "node scripts/build-cakeand-css-vars.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -52,14 +52,20 @@ src/cakeand/components/<Component>/
    primitive. Do NOT add Radix `Slot` / `asChild` polymorphism — it was
    deliberately removed from this design system; components render real
    elements.
-2. **Tokens only.** Every color/space/radius/type value reads from
-   `props.theme` (see `src/cakeand/tokens/theme.ts`):
-   - colors: `theme.color.<group>.<token>` (e.g. `color.primary.primaryHover`)
-   - spacing: `theme.space.xs…4xl` · radius: `theme.radius.sm…pill|round`
-   - type: `theme.typography.{regular|medium|bold}.{caption|helper|body|subject|subtitle|title|page|greeting|hero|data}`
-   - shadows: `theme.elevation.low|high`
+2. **Tokens only — as CSS custom properties.** Every color/space/radius/type
+   value is a `var()` reference to the generated token layer
+   (`src/cakeand/tokens/cake-vars.css`, built by `npm run build:cakeand-vars`,
+   mode-scoped by `[data-theme]`), consumed inside styled-components:
+   - colors: `var(--color-<group>-<token>)` (e.g. `var(--color-primary-primary-hover)`) —
+     names mirror the Figma variables 1:1
+   - spacing: `var(--space-xs…4xl)` · radius: `var(--radius-sm…pill|round)`
+   - type: `var(--font-family)`, `var(--font-weight-*)`, `var(--type-size-<role>)`
+   - shadows: `var(--elevation-low|high)`
    Never hardcode hex, px spacing, or font sizes. Style Radix state via data
    attributes (`[data-state='checked']`, `[data-disabled]`).
+   *Migration note:* `Button`, `Switch`, and `IconButton` predate this rule and
+   read `props.theme` directly — don't copy that into new components; migrate
+   them opportunistically when touched.
 3. **Typed props with rich JSDoc.** Every public prop gets a JSDoc block that
    will render verbatim in the docs props table:
    - Meaning of each allowed value where non-obvious

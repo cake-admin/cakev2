@@ -1,0 +1,181 @@
+---
+name: figma-component-implementation
+description: >
+  Implement a cake& design-system component from its Figma spec into Storybook
+  — the full devkit workflow: per-component Figma audit via the Figma MCP,
+  token extraction + verification, Radix-wrapped implementation styled with
+  CSS custom properties, stories/docs, play tests + a11y, and verification.
+  Use when asked to implement, build, port, or audit a component from a Figma
+  link, or to plan a design-system/devkit migration. Pairs with the
+  storybook-component-docs skill (docs template) and the figma-design-to-code
+  skill (MCP mechanics).
+---
+
+# cake& component implementation from Figma
+
+The end-to-end recipe for turning a Figma component into a shipped, documented
+Storybook component. Work through the phases **in order** — the audit phase is
+mandatory and produces the spec the implementation is checked against.
+`Switch` (Figma 42:1850) and `IconButton` (43:1888) were built exactly this
+way; read their files when in doubt.
+
+Companion skills — load them when the phase says so:
+
+- **figma-design-to-code** — MUST be loaded before any `get_design_context`
+  call (MCP mechanics, hint priority).
+- **storybook-component-docs** — MUST be followed for the stories/docs file
+  (docs-page anatomy, story taxonomy, argTypes rules).
+
+## Phase A — system-wide devkit audit (only for a fresh system or on request)
+
+When starting a new devkit (not a single component), audit the Figma system
+first and produce an implementation plan — **no code** — containing:
+
+1. Component inventory (every component set, variant counts)
+2. Token inventory (color/spacing/radius/typography/shadow variables and
+   which file exports them)
+3. Font and icon dependencies
+4. Variant/property naming patterns across components
+5. Accessibility + interaction-state patterns (hover/press/focus/disabled)
+6. Recommended Radix primitive mapping per component
+7. Migration order: foundations → primitives → composites
+8. Risks, gaps, and open questions to resolve before implementation
+
+## Phase B — per-component audit (mandatory, NO code yet)
+
+Call `get_design_context` on the component node (load figma-design-to-code
+first). Produce the audit before writing any file:
+
+- **Purpose** — what the component is for; primitive / wrapper / composite.
+- **Variants & properties** — every Figma axis (size, type, container, state)
+  with its values.
+- **Visual tokens** — every fill/border/shadow mapped to a Figma variable.
+- **Typography tokens** — text styles used.
+- **Icon usage** — slot sizes per component size.
+- **Interaction states** — default/hover/press/focus/disabled specifics
+  (focus-ring geometry, press feedback like thumb stretch).
+- **Accessibility expectations** — role, keyboard, required labels.
+- **Radix mapping** — which primitive owns behavior (see table below).
+- **Proposed React API** — typed props the variants map to.
+- **Edge cases** — labelless usage, controlled/uncontrolled, disabled links…
+
+### Audit techniques (learned the hard way)
+
+- **Large component sets** return sparse metadata instead of code. Read the
+  variant taxonomy from the symbol names, then pull **representative
+  variants in parallel waves** (one full state row, one variant per
+  container/type, each size once). Use `excludeScreenshot: true` on all but
+  the first call to preserve context.
+- **Icon/asset colors are unreliable in exported SVGs** (`var(--fill-0, …)`
+  fallbacks may be the icon library's raw color, not the instance override).
+  Verify by rendering the variant with `get_screenshot` (small
+  `maxDimension`), downloading the PNG, and **pixel-sampling** it
+  (PowerShell: `System.Drawing.Bitmap.GetPixel`).
+- **Verify every extracted hex against `src/cakeand/tokens/tokens.json`**
+  with a small node script before trusting a token mapping. A color that
+  matches no token is a finding to raise, not a value to hardcode.
+- **Figma stroke alignment doesn't survive the CSS conversion** — when a
+  ring/border looks different in the screenshot than the generated CSS
+  suggests (e.g. a visible gap), trust the screenshot and adjust offsets.
+
+### Naming translation (Figma ⇄ code)
+
+Component prop vocabulary follows the **codebase**, not Figma's variant
+names; document the Figma name in JSDoc and the docs page:
+
+| Figma | Code |
+|---|---|
+| `container=filled` | `variant="fill"` |
+| `container=none` | `variant="ghost"` |
+| `type=primary/secondary` | `intent` |
+| `size=24 xsml / 32 sml / 40 med / 48 lrg` | `size: 'xs' | 'sm' | 'md' | 'lg'` |
+| state variants (hover/press/focus/disabled) | CSS pseudo-classes / `disabled` prop |
+
+State names must stay consistent across Figma, code, and Storybook story
+names (`Disabled` story ⇄ `state=disabled` ⇄ `:disabled`).
+
+## Phase C — plan the files (before coding)
+
+Inspect the existing package structure and list the exact files to create or
+update. Conventions:
+
+- Component family folders: related components share one folder and one
+  Storybook sidebar folder (`src/cakeand/components/Button/` holds
+  `Button.tsx` + `IconButton.tsx`; titles `Components/Button/Button` and
+  `Components/Button/Icon Button`).
+- Every folder has an `index.ts` barrel exporting components + prop types.
+- One `.stories.tsx` per component (not per folder).
+
+## Phase D — implementation rules (the devkit rules)
+
+1. **Figma variables map to CSS custom properties.** Style with
+   `var(--color-<group>-<token>)`, `var(--space-*)`, `var(--radius-*)`,
+   `var(--type-*)`, `var(--elevation-*)` — consumed inside styled-components.
+   The variables are generated from `tokens.json` by
+   `npm run build:cakeand-vars` → `src/cakeand/tokens/cake-vars.css`
+   (imported by `CakeThemeProvider`; modes scoped by `[data-theme]`). The
+   var names mirror Figma 1:1: `&color/primary/primaryHover` ⇄
+   `--color-primary-primary-hover`. After token changes run
+   `npm run build:cakeand-tokens` then `npm run build:cakeand-vars`.
+2. **No hardcoded** colors, spacing, radius, typography, shadows, or icon
+   sizes. The only allowed raw px are geometry intrinsic to the component's
+   spec (e.g. Switch's 38×24 track, IconButton's 24–48 diameters) — cite the
+   Figma node for them in a comment or JSDoc.
+   *Migration note:* `Button`, `Switch`, and `IconButton` predate this rule
+   and read `props.theme` directly — do **not** copy that pattern into new
+   components; migrate them opportunistically when touched.
+3. **Radix provides behavior where applicable.** Wrap primitives from the
+   unified `radix-ui` package; never re-implement or undo their a11y. No
+   `Slot`/`asChild` polymorphism. Native elements are fine where no primitive
+   exists (`<button>`); use `AccessibleIcon` for icon-only controls. Common
+   mappings: Switch→`Switch`, Dialog→`Dialog`, Tooltip→`Tooltip`,
+   Dropdown→`DropdownMenu`, Tabs→`Tabs`, Checkbox→`Checkbox`,
+   Radio→`RadioGroup`, Select→`Select`, Slider→`Slider`,
+   icon-only→`AccessibleIcon`.
+4. **Figma variants map to typed React props** with rich JSDoc + `@default`
+   (react-docgen feeds the docs props table).
+5. **Icons**: `lucide-react` is the **interim** icon package — a dedicated
+   cake& icon set is coming. Icons must inherit color via `currentColor` and
+   size via the component's icon slot (never per-icon color/size props), so
+   the future swap is a drop-in.
+6. **Fonts**: Rookery New only, via `fonts.css` + the typography tokens
+   (`--type-size-*`, `--font-weight-*` or the theme presets). Never raw
+   font-family/size literals.
+7. **Composites are built from primitives** — an enterprise composite (e.g.
+   a Toolbar, a DataCard) composes existing cake& components; it never
+   re-implements their visuals.
+8. Focus is restyled, never removed. `React.forwardRef`, `displayName`,
+   named export + barrel entry.
+
+## Phase E — stories, docs, tests
+
+Follow the **storybook-component-docs** skill exactly (docs-page anatomy,
+story taxonomy, argTypes rules, AllVariants matrix). Testing policy:
+
+- **Tests = Storybook `play` interaction tests** (at least one per
+  component, named by behavior, tagged `['!autodocs']`) + a clean
+  **Accessibility panel** on every story. No separate unit-test files.
+- The docs `## Design tokens used` table lists the CSS custom properties
+  (which equal the Figma variable names) so designers can cross-check.
+
+## Phase F — verification (all must pass before committing)
+
+```bash
+node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json   # silent for src/cakeand
+npm run build-storybook && rm -rf storybook-static               # must exit 0
+npm run storybook                                                # eyeball on :6006
+```
+
+- Compare rendered variants against the Figma screenshots from Phase B —
+  geometry, every state (hover/press/focus/disabled), both themes via the
+  toolbar.
+- Confirm the play test passes and the a11y panel is clean.
+- Commit to the working branch with a body that records the Figma node id
+  and the verified token mappings. Do not push unless asked.
+
+## Phase G — Code Connect (optional)
+
+When Figma Dev Mode / org access is available, add a Code Connect mapping so
+the Figma component shows the real code snippet (load the
+`figma:figma-code-connect` skill). **Skip without blocking** when access
+isn't set up — note it in the commit/PR instead.

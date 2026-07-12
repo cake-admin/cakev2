@@ -1,5 +1,14 @@
 # Agent instructions — cake& design system
 
+## Implementing a component from Figma
+
+To implement, port, or audit a component from a Figma link — or to plan a
+devkit migration — read and follow
+**[.claude/skills/figma-component-implementation/SKILL.md](.claude/skills/figma-component-implementation/SKILL.md)**.
+It defines the full workflow: per-component Figma audit (MCP), token
+extraction + verification, CSS custom-property styling rules, Radix mappings,
+naming translation, tests policy, verification, and optional Code Connect.
+
 ## Component + Storybook documentation work
 
 Before creating, modifying, or reviewing anything under

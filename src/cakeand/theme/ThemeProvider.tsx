@@ -5,6 +5,7 @@ import {
 } from 'styled-components';
 import { themes, type ThemeMode } from '../tokens/theme';
 import './fonts.css';
+import '../tokens/cake-vars.css';
 
 /**
  * Global baseline for cake&. Paints the canvas + base typography from tokens.
