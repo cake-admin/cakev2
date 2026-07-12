@@ -5,7 +5,7 @@ import { ArrowRight, Plus } from 'lucide-react';
 import { Button } from './Button';
 
 const meta = {
-  title: 'Components/Button',
+  title: 'Components/Button/Button',
   component: Button,
   parameters: {
     layout: 'centered',
