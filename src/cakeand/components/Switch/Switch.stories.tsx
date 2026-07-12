@@ -3,14 +3,70 @@ import { expect, fn, userEvent, within } from 'storybook/test';
 
 import { Switch } from './Switch';
 
-/**
- * A binary on/off control built on the Radix `Switch` primitive and styled with
- * cake& tokens. Use it for instant-effect settings (not for form submission
- * gating, where a checkbox is more appropriate).
- */
 const meta = {
   title: 'Components/Switch',
   component: Switch,
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: `
+A binary on/off control built on the Radix \`Switch\` primitive and styled with
+cake& tokens. Use it for **instant-effect settings** — flipping it applies the
+change immediately. For choices that are submitted later with a form, use a
+Checkbox instead.
+
+Works controlled (\`checked\` + \`onCheckedChange\`, you own the state) or
+uncontrolled (\`defaultChecked\`, the switch owns it). Radix owns the
+accessibility and state machine (\`role="switch"\`, keyboard, \`data-state\`);
+cake& owns the visuals via \`props.theme\` — the **Theme** toolbar toggle
+re-themes every example on this page live.
+
+## Usage
+
+\`\`\`tsx
+<Switch label="Enable notifications" />
+<Switch label="Email digests" defaultChecked />
+<Switch label="Beta features" checked={on} onCheckedChange={setOn} />
+<Switch label="SMS" disabled />
+<Switch aria-label="Enable notifications" />
+\`\`\`
+
+## Design tokens used
+
+| Part | Tokens |
+| --- | --- |
+| Track (off) | \`textIcon.placeholder\`, hover \`textIcon.secondary\` |
+| Track (on) | \`primary.primary\`, hover \`primary.primaryHover\` |
+| Track (disabled) | \`disabled.disabled\` |
+| Thumb | \`radius.round\`, \`elevation.low\` |
+| Focus ring | two-layer: 2px \`surfaces.canvas\` + 4px \`primary.primary\` |
+| Label | \`typography.regular.body\`, \`textIcon.primary\`; disabled \`disabled.disabledInverse\` |
+| Shape / gap | \`radius.pill\` track, \`space.sm\` label gap |
+
+## Accessibility
+
+- Radix provides \`role="switch"\`, the checked state, and Space/Enter keyboard
+  toggling — don't re-implement any of it.
+- A visible \`label\` is wired via \`<label htmlFor>\`, so clicking the text
+  toggles the control.
+- **Labelless switches must pass \`aria-label\`** — the control otherwise has no
+  accessible name.
+- The two-layer focus ring stays visible on any surface; focus is restyled,
+  never removed.
+
+## Do / Don't
+
+| Do | Don't |
+| --- | --- |
+| Use for settings that apply instantly. | Use for choices submitted later — that's a Checkbox. |
+| Give every switch a label (visible or \`aria-label\`). | Ship an unlabeled switch. |
+| Use one switch per independent setting. | Use two switches for mutually exclusive options — use radios. |
+| Keep labels short and stateless ("Email digests"). | Bake the state into the label ("Notifications are on"). |
+`,
+      },
+    },
+  },
   tags: ['autodocs'],
   args: {
     label: 'Enable notifications',
@@ -22,6 +78,7 @@ const meta = {
     defaultChecked: { control: 'boolean', table: { category: 'State' } },
     disabled: { control: 'boolean', table: { category: 'State' } },
     label: { control: 'text', table: { category: 'Content' } },
+    'aria-label': { control: 'text', table: { category: 'Content' } },
     onCheckedChange: { action: 'checkedChange', table: { category: 'Events' } },
   },
 } satisfies Meta<typeof Switch>;
@@ -29,26 +86,59 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+/** Interactive playground — drive every prop from the Controls panel below. */
+export const Playground: Story = {};
 
 export const On: Story = {
   args: { defaultChecked: true },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Checked via `defaultChecked` (uncontrolled). The track switches to ' +
+          '`primary.primary` and the thumb slides right.',
+      },
+    },
+  },
 };
 
 export const Disabled: Story = {
-  args: { disabled: true },
-};
-
-export const DisabledOn: Story = {
-  args: { disabled: true, defaultChecked: true },
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'Both disabled states: the track flattens to `disabled.disabled`, the ' +
+          'label dims to `disabled.disabledInverse`, and the cursor signals ' +
+          'not-allowed.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+      <Switch label="Off + disabled" disabled />
+      <Switch label="On + disabled" disabled defaultChecked />
+    </div>
+  ),
 };
 
 export const WithoutLabel: Story = {
-  args: { label: undefined },
+  args: { label: undefined, 'aria-label': 'Enable notifications' },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A bare control for table rows or tight layouts. **`aria-label` is ' +
+          'required here** — without a visible label it is the only accessible ' +
+          'name the switch has.',
+      },
+    },
+  },
 };
 
-/** Interaction test: toggling fires `onCheckedChange(true)`. */
-export const Playground: Story = {
+/** Pure interaction test (hidden from the docs page): toggling fires `onCheckedChange(true)`. */
+export const TogglesFire: Story = {
+  tags: ['!autodocs'],
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const toggle = canvas.getByRole('switch');

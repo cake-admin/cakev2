@@ -72,16 +72,36 @@ const Label = styled.label`
 `;
 
 export interface SwitchProps {
-  /** Controlled checked state. */
+  /**
+   * Controlled checked state. Pair with `onCheckedChange` and own the state
+   * yourself; leave undefined to let the switch manage its own state
+   * (uncontrolled, seeded by `defaultChecked`).
+   */
   checked?: boolean;
-  /** Uncontrolled initial checked state. */
+  /**
+   * Initial checked state for uncontrolled usage. Ignored when `checked` is
+   * provided.
+   * @default false
+   */
   defaultChecked?: boolean;
-  /** Fired when the checked state changes. */
+  /** Fired with the next checked state whenever the user toggles. */
   onCheckedChange?: (checked: boolean) => void;
-  /** Disables the switch. */
+  /**
+   * Disables the switch (Radix sets `data-disabled`; the label dims and the
+   * cursor changes).
+   * @default false
+   */
   disabled?: boolean;
-  /** Optional text label rendered next to the switch. */
+  /**
+   * Visible text label rendered next to the switch and wired via
+   * `<label htmlFor>` — clicking it toggles. When omitted, pass `aria-label`
+   * instead so the control keeps an accessible name.
+   */
   label?: string;
+  /**
+   * Accessible name for labelless usage. Required whenever `label` is omitted.
+   */
+  'aria-label'?: string;
   /** Form field name. */
   name?: string;
   /** Explicit id (auto-generated when omitted). */

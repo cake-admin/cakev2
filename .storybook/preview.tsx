@@ -62,6 +62,11 @@ const preview: Preview = {
 
   parameters: {
     layout: 'centered',
+    docs: {
+      // Right-rail table of contents on docs pages: picks up the ## sections
+      // from `docs.description.component` plus each story's title.
+      toc: { headingSelector: 'h2, h3' },
+    },
     controls: {
       expanded: true,
       matchers: {

@@ -7,19 +7,50 @@ export type ButtonIntent = 'primary' | 'secondary';
 export type ButtonVariant = 'fill' | 'outline' | 'tonal' | 'ghost';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  /** Height + type scale. @default 'md' */
+  /**
+   * Height + type scale: `xs` 24px, `sm` 32px, `md` 40px, `lg` 48px tall.
+   * All sizes use the bold body type role except `lg`, which steps up to
+   * `bold.subject`.
+   * @default 'md'
+   */
   size?: ButtonSize;
-  /** Which token family drives the color. @default 'primary' */
+  /**
+   * Which cake& token family drives the color: `primary` (indigo family) or
+   * `secondary` (neutral/ink family).
+   * @default 'primary'
+   */
   intent?: ButtonIntent;
-  /** Emphasis treatment. @default 'fill' */
+  /**
+   * Emphasis treatment, highest → lowest: `fill` (the one main action in a
+   * view), `outline` and `tonal` (secondary emphasis), `ghost` (lowest —
+   * dense UIs, toolbars, inline actions).
+   * @default 'fill'
+   */
   variant?: ButtonVariant;
-  /** Leading icon (rendered in a 16px slot). */
+  /**
+   * Leading icon, rendered in a fixed 16px slot before the label. Icons are
+   * decorative — the text label carries the accessible name. Do not use this
+   * to build icon-only buttons; that's the (separate) IconButton component.
+   */
   startIcon?: React.ReactNode;
-  /** Trailing icon (rendered in a 16px slot). */
+  /**
+   * Trailing icon, rendered in a fixed 16px slot after the label. Same rules
+   * as `startIcon`.
+   */
   endIcon?: React.ReactNode;
-  /** Merge props onto the child element instead of rendering a <button> (Radix Slot). */
+  /**
+   * Render into the single child element instead of a `<button>`, merging the
+   * Button's props and styles onto it (Radix `Slot`). Use for link-buttons:
+   * `asChild` + `<a href>` renders a real anchor — keyboard and assistive tech
+   * see a link. `type` is not forced when `asChild` is set.
+   * @default false
+   */
   asChild?: boolean;
-  /** Stretch to the container width. */
+  /**
+   * Stretch to the container's width (not the viewport). For stacked layouts
+   * like dialog footers and mobile forms.
+   * @default false
+   */
   fullWidth?: boolean;
 }
 
@@ -224,6 +255,11 @@ const Label = styled.span`
  * cake& Button — pill-shaped, token-driven, built on Radix `Slot` for `asChild`
  * polymorphism. Cross of intent (primary/secondary) × variant
  * (fill/outline/tonal/ghost) × size (xs/sm/md/lg).
+ *
+ * Renders `<button type="button">` unless `asChild` is set. Disabled buttons
+ * use the native `disabled` attribute plus `pointer-events: none`, and the
+ * `[aria-disabled='true']` styling hook is supported for asChild targets that
+ * can't take `disabled`.
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
