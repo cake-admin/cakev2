@@ -7,7 +7,9 @@ import styled from 'styled-components';
  * component spec (Figma node 42:1850).
  *
  * Radix owns the accessibility + state machine (role, keyboard, `data-state`);
- * cake& owns the visuals via styled-components reading from `props.theme`.
+ * cake& owns the visuals via the token custom properties (`--color-*`,
+ * `--radius-*`, `--space-*`), which mirror the Figma variables and re-theme
+ * via `[data-theme]`.
  *
  * Spec geometry: 38×24 track, 18px thumb inset 3px; while pressed the thumb
  * stretches to 27px (anchored to the side it's on) and springs back on
@@ -19,8 +21,8 @@ const Thumb = styled(RadixSwitch.Thumb)`
   left: 3px;
   width: 18px;
   height: 18px;
-  background: ${(p) => p.theme.color.surfaces.container};
-  border-radius: ${(p) => p.theme.radius.pill};
+  background: var(--color-surfaces-container);
+  border-radius: var(--radius-pill);
   transition: left 150ms ease, width 150ms ease, background 150ms ease;
   will-change: left, width;
 
@@ -28,7 +30,7 @@ const Thumb = styled(RadixSwitch.Thumb)`
     left: 17px;
   }
   &[data-disabled] {
-    background: ${(p) => p.theme.color.disabled.disabled};
+    background: var(--color-disabled-disabled);
   }
 `;
 
@@ -39,26 +41,26 @@ const Track = styled(RadixSwitch.Root)`
   width: 38px;
   height: 24px;
   flex-shrink: 0;
-  border-radius: ${(p) => p.theme.radius.pill};
-  background: ${(p) => p.theme.color.secondary.secondary};
+  border-radius: var(--radius-pill);
+  background: var(--color-secondary-secondary);
   cursor: pointer;
   transition: background 150ms ease;
 
   &:hover {
-    background: ${(p) => p.theme.color.secondary.secondaryHover};
+    background: var(--color-secondary-secondary-hover);
   }
   /* Pressed (off): track holds its default color — feedback is the thumb stretch. */
   &:active:not([data-disabled]) {
-    background: ${(p) => p.theme.color.secondary.secondary};
+    background: var(--color-secondary-secondary);
   }
   &[data-state='checked'] {
-    background: ${(p) => p.theme.color.primary.primary};
+    background: var(--color-primary-primary);
   }
   &[data-state='checked']:hover {
-    background: ${(p) => p.theme.color.primary.primaryHover};
+    background: var(--color-primary-primary-hover);
   }
   &[data-state='checked']:active:not([data-disabled]) {
-    background: ${(p) => p.theme.color.primary.primaryPress};
+    background: var(--color-primary-primary-press);
   }
 
   /* Pressed thumb stretch: 18 → 27px, anchored to the side it sits on
@@ -75,13 +77,13 @@ const Track = styled(RadixSwitch.Root)`
     content: '';
     position: absolute;
     inset: -4px;
-    border: 2px solid ${(p) => p.theme.color.primary.primary};
-    border-radius: ${(p) => p.theme.radius.pill};
+    border: 2px solid var(--color-primary-primary);
+    border-radius: var(--radius-pill);
     pointer-events: none;
   }
 
   &[data-disabled] {
-    background: ${(p) => p.theme.color.disabled.disabledInverse};
+    background: var(--color-disabled-disabled-inverse);
     cursor: not-allowed;
   }
 `;
@@ -89,14 +91,14 @@ const Track = styled(RadixSwitch.Root)`
 const Label = styled.label`
   display: inline-flex;
   align-items: center;
-  gap: ${(p) => p.theme.space.sm};
-  font-family: ${(p) => p.theme.typography.regular.body.fontFamily};
-  font-size: ${(p) => p.theme.typography.regular.body.fontSize};
-  color: ${(p) => p.theme.color.textIcon.primary};
+  gap: var(--space-sm);
+  font-family: var(--font-family);
+  font-size: var(--type-size-body);
+  color: var(--color-text-icon-primary);
   cursor: pointer;
 
   &:has([data-disabled]) {
-    color: ${(p) => p.theme.color.disabled.disabledInverse};
+    color: var(--color-disabled-disabled-inverse);
     cursor: not-allowed;
   }
 `;

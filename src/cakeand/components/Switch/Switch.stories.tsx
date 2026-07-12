@@ -19,8 +19,10 @@ Checkbox instead.
 Works controlled (\`checked\` + \`onCheckedChange\`, you own the state) or
 uncontrolled (\`defaultChecked\`, the switch owns it). Radix owns the
 accessibility and state machine (\`role="switch"\`, keyboard, \`data-state\`);
-cake& owns the visuals via \`props.theme\` — the **Theme** toolbar toggle
-re-themes every example on this page live.
+cake& owns the visuals via the design-token CSS custom properties
+(\`--color-*\`, \`--radius-*\`, \`--space-*\`, 1:1 with the Figma variables) —
+the **Theme** toolbar toggle re-themes every example on this page live via
+\`[data-theme]\`.
 
 Matches the cake& Toggle spec: a 38×24 pill track with an 18px thumb inset
 3px. While pressed, the thumb stretches to 27px (anchored to the side it's
@@ -38,15 +40,18 @@ on) and springs back on release — try holding a click on any example.
 
 ## Design tokens used
 
+Custom-property names mirror the Figma variables
+(\`&color/secondary/secondaryHover\` ⇄ \`--color-secondary-secondary-hover\`).
+
 | Part | Tokens |
 | --- | --- |
-| Track (off) | \`secondary.secondary\`, hover \`secondary.secondaryHover\`, pressed \`secondary.secondary\` |
-| Track (on) | \`primary.primary\`, hover \`primary.primaryHover\`, pressed \`primary.primaryPress\` |
-| Track (disabled) | \`disabled.disabledInverse\` |
-| Thumb | \`surfaces.container\`; disabled \`disabled.disabled\`; stretches 18→27px while pressed |
-| Focus ring | 2px \`primary.primary\` stroke, 2px outside the track |
-| Label | \`typography.regular.body\`, \`textIcon.primary\`; disabled \`disabled.disabledInverse\` |
-| Shape / gap | \`radius.pill\` track + thumb, \`space.sm\` label gap |
+| Track (off) | \`--color-secondary-secondary\`, hover \`--color-secondary-secondary-hover\`, pressed \`--color-secondary-secondary\` |
+| Track (on) | \`--color-primary-primary\`, hover \`--color-primary-primary-hover\`, pressed \`--color-primary-primary-press\` |
+| Track (disabled) | \`--color-disabled-disabled-inverse\` |
+| Thumb | \`--color-surfaces-container\`; disabled \`--color-disabled-disabled\`; stretches 18→27px while pressed |
+| Focus ring | 2px \`--color-primary-primary\` stroke, 2px outside the track |
+| Label | \`--font-family\` + \`--type-size-body\`, \`--color-text-icon-primary\`; disabled \`--color-disabled-disabled-inverse\` |
+| Shape / gap | \`--radius-pill\` track + thumb, \`--space-sm\` label gap |
 
 ## Accessibility
 
@@ -100,7 +105,7 @@ export const On: Story = {
       description: {
         story:
           'Checked via `defaultChecked` (uncontrolled). The track switches to ' +
-          '`primary.primary` and the thumb slides right.',
+          '`--color-primary-primary` and the thumb slides right.',
       },
     },
   },
@@ -112,9 +117,10 @@ export const Disabled: Story = {
     docs: {
       description: {
         story:
-          'Both disabled states: the track flattens to `disabled.disabledInverse` ' +
-          'with a `disabled.disabled` thumb, the label dims to ' +
-          '`disabled.disabledInverse`, and the cursor signals not-allowed.',
+          'Both disabled states: the track flattens to ' +
+          '`--color-disabled-disabled-inverse` with a `--color-disabled-disabled` ' +
+          'thumb, the label dims to `--color-disabled-disabled-inverse`, and the ' +
+          'cursor signals not-allowed.',
       },
     },
   },

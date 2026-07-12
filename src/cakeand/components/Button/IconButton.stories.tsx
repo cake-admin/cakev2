@@ -18,9 +18,10 @@ where a text label doesn't fit. It shares Button's emphasis system — the same
 (\`fill\`, \`outline\`, \`tonal\`, \`ghost\`) — sized 24–48px. If the action
 deserves a visible label, use **Button** (with \`startIcon\`) instead.
 
-Every color, radius, and size value resolves from cake& theme tokens via
-\`props.theme\` — the **Theme** toolbar toggle re-themes every example on this
-page live.
+Every color, radius, and size value resolves from the cake& design tokens as
+CSS custom properties (\`--color-*\`, \`--radius-*\`), whose names mirror the
+Figma variables 1:1 — the **Theme** toolbar toggle re-themes every example on
+this page live via \`[data-theme]\`.
 
 Always renders a real \`<button type="button">\`. Accessibility is built on
 Radix \`AccessibleIcon\`: the **required** \`label\` prop renders as
@@ -42,20 +43,24 @@ it shows only a glyph. Icons inherit the button's state color via
 
 ## Design tokens used
 
+Custom-property names mirror the Figma variables (\`&color/tonal/tonalOverlay\`
+⇄ \`--color-tonal-tonal-overlay\`).
+
 | Variant · intent | Container | Icon | Hover / Press |
 | --- | --- | --- | --- |
-| fill · primary | \`color.primary.primary\` | \`textIcon.inverse\` | \`primaryHover\` / \`primaryPress\` |
-| fill · secondary | \`color.secondary.secondary\` | \`textIcon.onSecondary\` | \`secondaryHover\` / \`secondaryPress\` |
-| outline · primary | transparent + 1px \`primary.primary\` border | \`primary.primary\` | \`primaryOverlay\` / \`primaryOverlayHover\` |
-| outline · secondary | transparent + 1px \`secondary.secondary\` border | \`secondary.secondary\` | \`secondaryOverlay\` / \`secondaryOverlayHover\` |
-| tonal · primary | \`tonal.tonalOverlay\` | \`textIcon.onTonalInverse\` | \`tonalOverlayHover\` / \`tonalOverlayPress\` |
-| tonal · secondary | \`tonal.tonalSecondaryOverlay\` | \`textIcon.onTonalSecondary\` | \`tonalSecondaryOverlayHover\` / \`tonalSecondaryOverlayPress\` |
-| ghost · primary | transparent | \`primary.primary\` | \`primaryOverlay\` / \`primaryOverlayHover\` |
-| ghost · secondary | transparent | \`secondary.secondary\` | \`secondaryOverlay\` / \`secondaryOverlayHover\` |
-| disabled | \`disabled.disabled\` fill (ghost stays transparent), border drops | \`disabled.disabledInverse\` | — |
+| fill · primary | \`--color-primary-primary\` | \`--color-text-icon-inverse\` | \`…primary-hover\` / \`…primary-press\` |
+| fill · secondary | \`--color-secondary-secondary\` | \`--color-text-icon-on-secondary\` | \`…secondary-hover\` / \`…secondary-press\` |
+| outline · primary | transparent + 1px \`--color-primary-primary\` border | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
+| outline · secondary | transparent + 1px \`--color-secondary-secondary\` border | \`--color-secondary-secondary\` | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
+| tonal · primary | \`--color-tonal-tonal-overlay\` | \`--color-text-icon-on-tonal-inverse\` | \`…tonal-overlay-hover\` / \`…tonal-overlay-press\` |
+| tonal · secondary | \`--color-tonal-tonal-secondary-overlay\` | \`--color-text-icon-on-tonal-secondary\` | \`…secondary-overlay-hover\` / \`…secondary-overlay-press\` |
+| ghost · primary | transparent | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
+| ghost · secondary | transparent | \`--color-secondary-secondary\` | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
+| disabled | \`--color-disabled-disabled\` fill (ghost stays transparent), border drops | \`--color-disabled-disabled-inverse\` | — |
 
-Shape is a \`radius.pill\` circle — 24/32/40/48px across with a 16px icon at
-\`xs\` and 24px otherwise; the focus ring is a 3px \`primary.primary\` outline
+(\`…\` = the same family prefix as the row's container.) Shape is a
+\`--radius-pill\` circle — 24/32/40/48px across with a 16px icon at \`xs\` and
+24px otherwise; the focus ring is a 3px \`--color-primary-primary\` outline
 drawn at −2px inset (same as Button).
 
 ## Accessibility
@@ -202,9 +207,10 @@ export const Disabled: Story = {
     docs: {
       description: {
         story:
-          'Disabled treatment: fill/outline/tonal flatten to `disabled.disabled` ' +
-          '(the outline border drops); ghost keeps its transparent container. The ' +
-          'icon dims to `disabled.disabledInverse` and `pointer-events` is off.',
+          'Disabled treatment: fill/outline/tonal flatten to ' +
+          '`--color-disabled-disabled` (the outline border drops); ghost keeps ' +
+          'its transparent container. The icon dims to ' +
+          '`--color-disabled-disabled-inverse` and `pointer-events` is off.',
       },
     },
   },

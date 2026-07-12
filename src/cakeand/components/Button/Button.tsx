@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css, type DefaultTheme } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 export type ButtonIntent = 'primary' | 'secondary';
@@ -50,19 +50,19 @@ const sizeStyles = (size: ButtonSize) => {
   const map = {
     xs: css`
       height: 24px;
-      font-size: ${(p) => p.theme.typography.bold.body.fontSize};
+      font-size: var(--type-size-body);
     `,
     sm: css`
       height: 32px;
-      font-size: ${(p) => p.theme.typography.bold.body.fontSize};
+      font-size: var(--type-size-body);
     `,
     md: css`
       height: 40px;
-      font-size: ${(p) => p.theme.typography.bold.body.fontSize};
+      font-size: var(--type-size-body);
     `,
     lg: css`
       height: 48px;
-      font-size: ${(p) => p.theme.typography.bold.subject.fontSize};
+      font-size: var(--type-size-subject);
     `,
   } as const;
   return map[size];
@@ -74,58 +74,58 @@ const padFor = (size: ButtonSize, variant: ButtonVariant) => {
   return { xs: '4px 12px', sm: '8px 14px', md: '10px 16px', lg: '12px 20px' }[size];
 };
 
-/** intent × variant → background / text / border + hover/press, all from tokens. */
-const colorStyles = (theme: DefaultTheme, intent: ButtonIntent, variant: ButtonVariant) => {
-  const c = theme.color;
+/** intent × variant → background / text / border + hover/press, all from the
+ *  cake& token custom properties (see src/cakeand/tokens/cake-vars.css). */
+const colorStyles = (intent: ButtonIntent, variant: ButtonVariant) => {
   const p = intent === 'primary';
 
   if (variant === 'fill') {
     return p
       ? css`
-          background: ${c.primary.primary};
-          color: ${c.textIcon.onPrimary};
-          &:hover:not(:disabled) { background: ${c.primary.primaryHover}; }
-          &:active:not(:disabled) { background: ${c.primary.primaryPress}; }
+          background: var(--color-primary-primary);
+          color: var(--color-text-icon-on-primary);
+          &:hover:not(:disabled) { background: var(--color-primary-primary-hover); }
+          &:active:not(:disabled) { background: var(--color-primary-primary-press); }
         `
       : css`
-          background: ${c.secondary.secondary};
-          color: ${c.textIcon.inverse};
-          &:hover:not(:disabled) { background: ${c.secondary.secondaryHover}; }
-          &:active:not(:disabled) { background: ${c.secondary.secondaryPress}; }
+          background: var(--color-secondary-secondary);
+          color: var(--color-text-icon-inverse);
+          &:hover:not(:disabled) { background: var(--color-secondary-secondary-hover); }
+          &:active:not(:disabled) { background: var(--color-secondary-secondary-press); }
         `;
   }
 
   if (variant === 'outline') {
     return p
       ? css`
-          background: ${c.surfaces.container};
-          color: ${c.primary.primary};
-          border: 2px solid ${c.primary.primary};
-          &:hover:not(:disabled) { background: ${c.primary.primaryOverlay}; }
-          &:active:not(:disabled) { background: ${c.primary.primaryOverlayHover}; }
+          background: var(--color-surfaces-container);
+          color: var(--color-primary-primary);
+          border: 2px solid var(--color-primary-primary);
+          &:hover:not(:disabled) { background: var(--color-primary-primary-overlay); }
+          &:active:not(:disabled) { background: var(--color-primary-primary-overlay-hover); }
         `
       : css`
-          background: ${c.surfaces.container};
-          color: ${c.secondary.secondary};
-          border: 2px solid ${c.secondary.secondary};
-          &:hover:not(:disabled) { background: ${c.secondary.secondaryOverlay}; }
-          &:active:not(:disabled) { background: ${c.secondary.secondaryOverlayHover}; }
+          background: var(--color-surfaces-container);
+          color: var(--color-secondary-secondary);
+          border: 2px solid var(--color-secondary-secondary);
+          &:hover:not(:disabled) { background: var(--color-secondary-secondary-overlay); }
+          &:active:not(:disabled) { background: var(--color-secondary-secondary-overlay-hover); }
         `;
   }
 
   if (variant === 'tonal') {
     return p
       ? css`
-          background: ${c.tonal.tonal};
-          color: ${c.textIcon.onTonalInverse};
-          &:hover:not(:disabled) { background: ${c.tonal.tonalHover}; }
-          &:active:not(:disabled) { background: ${c.tonal.tonalPress}; }
+          background: var(--color-tonal-tonal);
+          color: var(--color-text-icon-on-tonal-inverse);
+          &:hover:not(:disabled) { background: var(--color-tonal-tonal-hover); }
+          &:active:not(:disabled) { background: var(--color-tonal-tonal-press); }
         `
       : css`
-          background: ${c.tonal.tonalSecondaryOverlay};
-          color: ${c.textIcon.onTonalSecondary};
-          &:hover:not(:disabled) { background: ${c.tonal.tonalSecondaryOverlayHover}; }
-          &:active:not(:disabled) { background: ${c.tonal.tonalSecondaryOverlayPress}; }
+          background: var(--color-tonal-tonal-secondary-overlay);
+          color: var(--color-text-icon-on-tonal-secondary);
+          &:hover:not(:disabled) { background: var(--color-tonal-tonal-secondary-overlay-hover); }
+          &:active:not(:disabled) { background: var(--color-tonal-tonal-secondary-overlay-press); }
         `;
   }
 
@@ -133,21 +133,20 @@ const colorStyles = (theme: DefaultTheme, intent: ButtonIntent, variant: ButtonV
   return p
     ? css`
         background: transparent;
-        color: ${c.primary.primary};
-        &:hover:not(:disabled) { background: ${c.primary.primaryOverlay}; }
-        &:active:not(:disabled) { background: ${c.primary.primaryOverlayHover}; }
+        color: var(--color-primary-primary);
+        &:hover:not(:disabled) { background: var(--color-primary-primary-overlay); }
+        &:active:not(:disabled) { background: var(--color-primary-primary-overlay-hover); }
       `
     : css`
         background: transparent;
-        color: ${c.secondary.secondary};
-        &:hover:not(:disabled) { background: ${c.secondary.secondaryOverlay}; }
-        &:active:not(:disabled) { background: ${c.secondary.secondaryOverlayHover}; }
+        color: var(--color-secondary-secondary);
+        &:hover:not(:disabled) { background: var(--color-secondary-secondary-overlay); }
+        &:active:not(:disabled) { background: var(--color-secondary-secondary-overlay-hover); }
       `;
 };
 
 /** Disabled treatment differs for bordered/transparent variants. */
-const disabledStyles = (theme: DefaultTheme, variant: ButtonVariant) => {
-  const c = theme.color;
+const disabledStyles = (variant: ButtonVariant) => {
   const base = css`
     cursor: not-allowed;
     pointer-events: none;
@@ -156,9 +155,9 @@ const disabledStyles = (theme: DefaultTheme, variant: ButtonVariant) => {
     return css`
       &:disabled, &[aria-disabled='true'] {
         ${base}
-        background: ${c.surfaces.container};
-        border-color: ${c.disabled.disabled};
-        color: ${c.disabled.disabledInverse};
+        background: var(--color-surfaces-container);
+        border-color: var(--color-disabled-disabled);
+        color: var(--color-disabled-disabled-inverse);
       }
     `;
   }
@@ -167,15 +166,15 @@ const disabledStyles = (theme: DefaultTheme, variant: ButtonVariant) => {
       &:disabled, &[aria-disabled='true'] {
         ${base}
         background: transparent;
-        color: ${c.disabled.disabledInverse};
+        color: var(--color-disabled-disabled-inverse);
       }
     `;
   }
   return css`
     &:disabled, &[aria-disabled='true'] {
       ${base}
-      background: ${c.disabled.disabled};
-      color: ${c.disabled.disabledInverse};
+      background: var(--color-disabled-disabled);
+      color: var(--color-disabled-disabled-inverse);
       border-color: transparent;
     }
   `;
@@ -195,15 +194,15 @@ const StyledButton = styled.button<{
   border: none;
   cursor: pointer;
   text-decoration: none;
-  font-family: ${(p) => p.theme.font.family};
-  font-weight: ${(p) => p.theme.typography.bold.body.fontWeight};
-  border-radius: ${(p) => p.theme.radius.pill};
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-pill);
   transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease,
     box-shadow 120ms ease;
 
   ${(p) => sizeStyles(p.$size)}
-  ${(p) => colorStyles(p.theme, p.$intent, p.$variant)}
-  ${(p) => disabledStyles(p.theme, p.$variant)}
+  ${(p) => colorStyles(p.$intent, p.$variant)}
+  ${(p) => disabledStyles(p.$variant)}
 
   &:focus {
     outline: none;
@@ -212,8 +211,8 @@ const StyledButton = styled.button<{
     content: '';
     position: absolute;
     inset: -2px;
-    border: 3px solid ${(p) => p.theme.color.primary.primary};
-    border-radius: ${(p) => p.theme.radius.pill};
+    border: 3px solid var(--color-primary-primary);
+    border-radius: var(--radius-pill);
     pointer-events: none;
   }
 `;
@@ -222,7 +221,7 @@ const StateLayer = styled.span<{ $size: ButtonSize; $variant: ButtonVariant }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: ${(p) => (p.$variant === 'tonal' && p.$size === 'md' ? p.theme.space.xs : p.theme.space.sm)};
+  gap: ${(p) => (p.$variant === 'tonal' && p.$size === 'md' ? 'var(--space-xs)' : 'var(--space-sm)')};
   width: 100%;
   height: 100%;
   padding: ${(p) => padFor(p.$size, p.$variant)};
@@ -245,7 +244,9 @@ const Label = styled.span`
 /**
  * cake& Button — pill-shaped and token-driven. Cross of intent
  * (primary/secondary) × variant (fill/outline/tonal/ghost) × size
- * (xs/sm/md/lg).
+ * (xs/sm/md/lg). Styled entirely from the cake& CSS custom properties
+ * (`--color-*`, `--space-*`, `--radius-*`, `--type-*`), which mirror the
+ * Figma variables and re-theme via `[data-theme]`.
  *
  * Always renders a real `<button type="button">`. Disabled buttons use the
  * native `disabled` attribute plus `pointer-events: none` (with an

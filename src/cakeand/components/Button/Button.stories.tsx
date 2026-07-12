@@ -19,9 +19,11 @@ Pick emphasis by importance: **fill** is the single main action in a view;
 dense UIs, toolbars, and inline actions. Cross any of those with an **intent**
 (\`primary\` indigo / \`secondary\` ink) and a **size** (\`xs\`–\`lg\`).
 
-Every color, radius, spacing, and type value resolves from cake& theme tokens
-via \`props.theme\` — nothing is hardcoded, so the **Theme** toolbar toggle
-re-themes every example on this page live.
+Every color, radius, spacing, and type value resolves from the cake& design
+tokens as CSS custom properties (\`--color-*\`, \`--space-*\`, \`--radius-*\`,
+\`--type-*\`), whose names mirror the Figma variables 1:1 — nothing is
+hardcoded, so the **Theme** toolbar toggle re-themes every example on this
+page live via \`[data-theme]\`.
 
 Always renders a real \`<button type="button">\`. Icon-only buttons are
 intentionally unsupported here — that's the separate IconButton component.
@@ -40,20 +42,25 @@ intentionally unsupported here — that's the separate IconButton component.
 
 ## Design tokens used
 
+Custom-property names mirror the Figma variables (\`&color/primary/primaryHover\`
+⇄ \`--color-primary-primary-hover\`).
+
 | Variant · intent | Background | Text | Hover / Press |
 | --- | --- | --- | --- |
-| fill · primary | \`color.primary.primary\` | \`textIcon.onPrimary\` | \`primaryHover\` / \`primaryPress\` |
-| fill · secondary | \`color.secondary.secondary\` | \`textIcon.inverse\` | \`secondaryHover\` / \`secondaryPress\` |
-| outline · primary | \`surfaces.container\` + 2px \`primary.primary\` border | \`primary.primary\` | \`primaryOverlay\` / \`primaryOverlayHover\` |
-| outline · secondary | \`surfaces.container\` + 2px \`secondary.secondary\` border | \`secondary.secondary\` | \`secondaryOverlay\` / \`secondaryOverlayHover\` |
-| tonal · primary | \`tonal.tonal\` | \`textIcon.onTonalInverse\` | \`tonalHover\` / \`tonalPress\` |
-| tonal · secondary | \`tonal.tonalSecondaryOverlay\` | \`textIcon.onTonalSecondary\` | \`tonalSecondaryOverlayHover\` / \`tonalSecondaryOverlayPress\` |
-| ghost · primary | transparent | \`primary.primary\` | \`primaryOverlay\` / \`primaryOverlayHover\` |
-| ghost · secondary | transparent | \`secondary.secondary\` | \`secondaryOverlay\` / \`secondaryOverlayHover\` |
-| disabled (any) | \`disabled.disabled\` | \`disabled.disabledInverse\` | — |
+| fill · primary | \`--color-primary-primary\` | \`--color-text-icon-on-primary\` | \`…primary-hover\` / \`…primary-press\` |
+| fill · secondary | \`--color-secondary-secondary\` | \`--color-text-icon-inverse\` | \`…secondary-hover\` / \`…secondary-press\` |
+| outline · primary | \`--color-surfaces-container\` + 2px \`--color-primary-primary\` border | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
+| outline · secondary | \`--color-surfaces-container\` + 2px \`--color-secondary-secondary\` border | \`--color-secondary-secondary\` | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
+| tonal · primary | \`--color-tonal-tonal\` | \`--color-text-icon-on-tonal-inverse\` | \`…tonal-hover\` / \`…tonal-press\` |
+| tonal · secondary | \`--color-tonal-tonal-secondary-overlay\` | \`--color-text-icon-on-tonal-secondary\` | \`…secondary-overlay-hover\` / \`…secondary-overlay-press\` |
+| ghost · primary | transparent | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
+| ghost · secondary | transparent | \`--color-secondary-secondary\` | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
+| disabled (any) | \`--color-disabled-disabled\` | \`--color-disabled-disabled-inverse\` | — |
 
-Shape is \`radius.pill\`; the focus ring is a 3px \`primary.primary\` outline
-drawn at −2px inset; icon↔label gap is \`space.sm\` (\`space.xs\` for tonal·md).
+(\`…\` = the same family prefix as the row's background.) Shape is
+\`--radius-pill\`; the focus ring is a 3px \`--color-primary-primary\` outline
+drawn at −2px inset; icon↔label gap is \`--space-sm\` (\`--space-xs\` for
+tonal·md).
 
 ## Accessibility
 
@@ -221,10 +228,10 @@ export const Disabled: Story = {
       description: {
         story:
           'Disabled treatment per variant: fill/tonal flatten to ' +
-          '`disabled.disabled` with `disabled.disabledInverse` text; outline keeps ' +
-          'its surface with a disabled border; ghost just dims its text. Disabled ' +
-          'buttons set `pointer-events: none`. Prefer disabling with nearby ' +
-          'context that explains why.',
+          '`--color-disabled-disabled` with `--color-disabled-disabled-inverse` ' +
+          'text; outline keeps its surface with a disabled border; ghost just ' +
+          'dims its text. Disabled buttons set `pointer-events: none`. Prefer ' +
+          'disabling with nearby context that explains why.',
       },
     },
   },

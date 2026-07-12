@@ -1,6 +1,6 @@
 import React from 'react';
 import { AccessibleIcon } from 'radix-ui';
-import styled, { css, type DefaultTheme } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export type IconButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 export type IconButtonIntent = 'primary' | 'secondary';
@@ -45,24 +45,24 @@ export interface IconButtonProps
 const DIAMETER: Record<IconButtonSize, number> = { xs: 24, sm: 32, md: 40, lg: 48 };
 const ICON: Record<IconButtonSize, number> = { xs: 16, sm: 24, md: 24, lg: 24 };
 
-/** variant × intent → container/icon colors + hover/press, all from tokens. */
-const colorStyles = (theme: DefaultTheme, intent: IconButtonIntent, variant: IconButtonVariant) => {
-  const c = theme.color;
+/** variant × intent → container/icon colors + hover/press, all from the cake&
+ *  token custom properties (see src/cakeand/tokens/cake-vars.css). */
+const colorStyles = (intent: IconButtonIntent, variant: IconButtonVariant) => {
   const p = intent === 'primary';
 
   if (variant === 'fill') {
     return p
       ? css`
-          background: ${c.primary.primary};
-          color: ${c.textIcon.inverse};
-          &:hover:not(:disabled) { background: ${c.primary.primaryHover}; }
-          &:active:not(:disabled) { background: ${c.primary.primaryPress}; }
+          background: var(--color-primary-primary);
+          color: var(--color-text-icon-inverse);
+          &:hover:not(:disabled) { background: var(--color-primary-primary-hover); }
+          &:active:not(:disabled) { background: var(--color-primary-primary-press); }
         `
       : css`
-          background: ${c.secondary.secondary};
-          color: ${c.textIcon.onSecondary};
-          &:hover:not(:disabled) { background: ${c.secondary.secondaryHover}; }
-          &:active:not(:disabled) { background: ${c.secondary.secondaryPress}; }
+          background: var(--color-secondary-secondary);
+          color: var(--color-text-icon-on-secondary);
+          &:hover:not(:disabled) { background: var(--color-secondary-secondary-hover); }
+          &:active:not(:disabled) { background: var(--color-secondary-secondary-press); }
         `;
   }
 
@@ -70,33 +70,33 @@ const colorStyles = (theme: DefaultTheme, intent: IconButtonIntent, variant: Ico
     return p
       ? css`
           background: transparent;
-          color: ${c.primary.primary};
-          border: 1px solid ${c.primary.primary};
-          &:hover:not(:disabled) { background: ${c.primary.primaryOverlay}; }
-          &:active:not(:disabled) { background: ${c.primary.primaryOverlayHover}; }
+          color: var(--color-primary-primary);
+          border: 1px solid var(--color-primary-primary);
+          &:hover:not(:disabled) { background: var(--color-primary-primary-overlay); }
+          &:active:not(:disabled) { background: var(--color-primary-primary-overlay-hover); }
         `
       : css`
           background: transparent;
-          color: ${c.secondary.secondary};
-          border: 1px solid ${c.secondary.secondary};
-          &:hover:not(:disabled) { background: ${c.secondary.secondaryOverlay}; }
-          &:active:not(:disabled) { background: ${c.secondary.secondaryOverlayHover}; }
+          color: var(--color-secondary-secondary);
+          border: 1px solid var(--color-secondary-secondary);
+          &:hover:not(:disabled) { background: var(--color-secondary-secondary-overlay); }
+          &:active:not(:disabled) { background: var(--color-secondary-secondary-overlay-hover); }
         `;
   }
 
   if (variant === 'tonal') {
     return p
       ? css`
-          background: ${c.tonal.tonalOverlay};
-          color: ${c.textIcon.onTonalInverse};
-          &:hover:not(:disabled) { background: ${c.tonal.tonalOverlayHover}; }
-          &:active:not(:disabled) { background: ${c.tonal.tonalOverlayPress}; }
+          background: var(--color-tonal-tonal-overlay);
+          color: var(--color-text-icon-on-tonal-inverse);
+          &:hover:not(:disabled) { background: var(--color-tonal-tonal-overlay-hover); }
+          &:active:not(:disabled) { background: var(--color-tonal-tonal-overlay-press); }
         `
       : css`
-          background: ${c.tonal.tonalSecondaryOverlay};
-          color: ${c.textIcon.onTonalSecondary};
-          &:hover:not(:disabled) { background: ${c.tonal.tonalSecondaryOverlayHover}; }
-          &:active:not(:disabled) { background: ${c.tonal.tonalSecondaryOverlayPress}; }
+          background: var(--color-tonal-tonal-secondary-overlay);
+          color: var(--color-text-icon-on-tonal-secondary);
+          &:hover:not(:disabled) { background: var(--color-tonal-tonal-secondary-overlay-hover); }
+          &:active:not(:disabled) { background: var(--color-tonal-tonal-secondary-overlay-press); }
         `;
   }
 
@@ -104,32 +104,29 @@ const colorStyles = (theme: DefaultTheme, intent: IconButtonIntent, variant: Ico
   return p
     ? css`
         background: transparent;
-        color: ${c.primary.primary};
-        &:hover:not(:disabled) { background: ${c.primary.primaryOverlay}; }
-        &:active:not(:disabled) { background: ${c.primary.primaryOverlayHover}; }
+        color: var(--color-primary-primary);
+        &:hover:not(:disabled) { background: var(--color-primary-primary-overlay); }
+        &:active:not(:disabled) { background: var(--color-primary-primary-overlay-hover); }
       `
     : css`
         background: transparent;
-        color: ${c.secondary.secondary};
-        &:hover:not(:disabled) { background: ${c.secondary.secondaryOverlay}; }
-        &:active:not(:disabled) { background: ${c.secondary.secondaryOverlayHover}; }
+        color: var(--color-secondary-secondary);
+        &:hover:not(:disabled) { background: var(--color-secondary-secondary-overlay); }
+        &:active:not(:disabled) { background: var(--color-secondary-secondary-overlay-hover); }
       `;
 };
 
 /** Disabled: fill/outline/tonal flatten to the disabled fill (border drops);
  *  ghost keeps a transparent container — only the icon dims. */
-const disabledStyles = (theme: DefaultTheme, variant: IconButtonVariant) => {
-  const c = theme.color;
-  return css`
-    &:disabled {
-      cursor: not-allowed;
-      pointer-events: none;
-      background: ${variant === 'ghost' ? 'transparent' : c.disabled.disabled};
-      border-color: transparent;
-      color: ${c.disabled.disabledInverse};
-    }
-  `;
-};
+const disabledStyles = (variant: IconButtonVariant) => css`
+  &:disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    background: ${variant === 'ghost' ? 'transparent' : 'var(--color-disabled-disabled)'};
+    border-color: transparent;
+    color: var(--color-disabled-disabled-inverse);
+  }
+`;
 
 const StyledIconButton = styled.button<{
   $size: IconButtonSize;
@@ -146,11 +143,11 @@ const StyledIconButton = styled.button<{
   flex-shrink: 0;
   width: ${(p) => DIAMETER[p.$size]}px;
   height: ${(p) => DIAMETER[p.$size]}px;
-  border-radius: ${(p) => p.theme.radius.pill};
+  border-radius: var(--radius-pill);
   transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
 
-  ${(p) => colorStyles(p.theme, p.$intent, p.$variant)}
-  ${(p) => disabledStyles(p.theme, p.$variant)}
+  ${(p) => colorStyles(p.$intent, p.$variant)}
+  ${(p) => disabledStyles(p.$variant)}
 
   &:focus {
     outline: none;
@@ -159,8 +156,8 @@ const StyledIconButton = styled.button<{
     content: '';
     position: absolute;
     inset: -2px;
-    border: 3px solid ${(p) => p.theme.color.primary.primary};
-    border-radius: ${(p) => p.theme.radius.pill};
+    border: 3px solid var(--color-primary-primary);
+    border-radius: var(--radius-pill);
     pointer-events: none;
   }
 `;
@@ -181,6 +178,9 @@ const IconSlot = styled.span<{ $size: IconButtonSize }>`
 /**
  * cake& IconButton — a circular, icon-only action (Figma "&icon button",
  * node 43:1888). Same intent × variant families as Button, sized 24–48px.
+ * Styled entirely from the cake& CSS custom properties (`--color-*`,
+ * `--radius-*`), which mirror the Figma variables and re-theme via
+ * `[data-theme]`.
  *
  * Accessibility is built on Radix `AccessibleIcon`: the required `label`
  * renders as visually-hidden text, so the button always has an accessible
