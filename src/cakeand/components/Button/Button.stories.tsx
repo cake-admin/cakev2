@@ -12,8 +12,7 @@ const meta = {
     docs: {
       description: {
         component: `
-The cake& action trigger — pill-shaped and token-driven, built on the Radix
-\`Slot\` primitive for \`asChild\` polymorphism.
+The cake& action trigger — pill-shaped and token-driven.
 
 Pick emphasis by importance: **fill** is the single main action in a view;
 **outline** and **tonal** are secondary emphasis; **ghost** is the lowest —
@@ -24,10 +23,8 @@ Every color, radius, spacing, and type value resolves from cake& theme tokens
 via \`props.theme\` — nothing is hardcoded, so the **Theme** toolbar toggle
 re-themes every example on this page live.
 
-Renders \`<button type="button">\` by default. With \`asChild\` it renders into
-its child instead (e.g. a real \`<a href>\` styled as a button). Icon-only
-buttons are intentionally unsupported here — that's the separate IconButton
-component.
+Always renders a real \`<button type="button">\`. Icon-only buttons are
+intentionally unsupported here — that's the separate IconButton component.
 
 ## Usage
 
@@ -39,7 +36,6 @@ component.
 <Button variant="ghost">Dismiss</Button>
 <Button size="lg" fullWidth>Continue</Button>
 <Button startIcon={<Plus size={16} />}>Add item</Button>
-<Button asChild><a href="/pricing">View pricing</a></Button>
 \`\`\`
 
 ## Design tokens used
@@ -63,12 +59,8 @@ drawn at −2px inset; icon↔label gap is \`space.sm\` (\`space.xs\` for tonal�
 
 - The focus-visible ring is drawn as an \`::after\` overlay — focus is restyled,
   never removed.
-- \`asChild\` preserves the child's semantics: Radix Slot merges props onto the
-  child rather than wrapping it, so a link stays a link for keyboard and
-  assistive tech.
 - Disabled uses the native \`disabled\` attribute (plus a styling hook for
-  \`[aria-disabled='true']\`). Never render a disabled link — disabled links are
-  an a11y anti-pattern; keep unavailable actions as real \`<button disabled>\`.
+  \`[aria-disabled='true']\`).
 - Icons are decorative: the text label always carries the accessible name.
 
 ## Do / Don't
@@ -78,8 +70,7 @@ drawn at −2px inset; icon↔label gap is \`space.sm\` (\`space.xs\` for tonal�
 | Use one fill button per view — the single main action. | Stack several fill buttons; demote the rest to outline/tonal/ghost. |
 | Use ghost in dense UIs: toolbars, table rows, inline actions. | Use ghost for the primary call-to-action. |
 | Always pass a visible text label. | Build icon-only buttons with this component — that's IconButton. |
-| Use \`asChild\` with \`<a href>\` when the action navigates. | Fake navigation with an \`onClick\` on a plain button. |
-| Disable with nearby context explaining why. | Render a disabled link. |
+| Disable with nearby context explaining why. | Hide the main action while it's unavailable. |
 `,
       },
     },
@@ -115,7 +106,6 @@ drawn at −2px inset; icon↔label gap is \`space.sm\` (\`space.xs\` for tonal�
     },
     fullWidth: { control: 'boolean', table: { category: 'Appearance' } },
     disabled: { control: 'boolean', table: { category: 'State' } },
-    asChild: { control: false, table: { category: 'Behavior' } },
     ref: { table: { disable: true } },
   },
 } satisfies Meta<typeof Button>;
@@ -249,37 +239,6 @@ export const Disabled: Story = {
       </Button>
       <Button variant="ghost" disabled>
         Ghost
-      </Button>
-    </Row>
-  ),
-};
-
-export const AsChild: Story = {
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story:
-          'Link buttons: `asChild` renders into the child element instead of a ' +
-          '`<button>`, merging the Button’s props and styles onto it via Radix ' +
-          '`Slot`. The examples below are real `<a href>` elements — right-click ' +
-          'gives the native link menu, keyboard and assistive tech see a link, ' +
-          'and Cmd/Ctrl+Click opens a new tab.\n\n' +
-          'If a navigation action is unavailable, don’t render a disabled link ' +
-          '(an a11y anti-pattern) — swap back to a real `<button disabled>` until ' +
-          'it becomes available.',
-      },
-    },
-  },
-  render: () => (
-    <Row>
-      <Button asChild>
-        <a href="https://example.com">Visit example</a>
-      </Button>
-      <Button asChild variant="ghost">
-        <a href="https://example.com" target="_blank" rel="noreferrer">
-          Open in new tab
-        </a>
       </Button>
     </Row>
   ),

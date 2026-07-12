@@ -1,5 +1,4 @@
 import React from 'react';
-import { Slot } from '@radix-ui/react-slot';
 import styled, { css, type DefaultTheme } from 'styled-components';
 
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
@@ -38,14 +37,6 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
    * as `startIcon`.
    */
   endIcon?: React.ReactNode;
-  /**
-   * Render into the single child element instead of a `<button>`, merging the
-   * Button's props and styles onto it (Radix `Slot`). Use for link-buttons:
-   * `asChild` + `<a href>` renders a real anchor — keyboard and assistive tech
-   * see a link. `type` is not forced when `asChild` is set.
-   * @default false
-   */
-  asChild?: boolean;
   /**
    * Stretch to the container's width (not the viewport). For stacked layouts
    * like dialog footers and mobile forms.
@@ -252,14 +243,13 @@ const Label = styled.span`
 `;
 
 /**
- * cake& Button — pill-shaped, token-driven, built on Radix `Slot` for `asChild`
- * polymorphism. Cross of intent (primary/secondary) × variant
- * (fill/outline/tonal/ghost) × size (xs/sm/md/lg).
+ * cake& Button — pill-shaped and token-driven. Cross of intent
+ * (primary/secondary) × variant (fill/outline/tonal/ghost) × size
+ * (xs/sm/md/lg).
  *
- * Renders `<button type="button">` unless `asChild` is set. Disabled buttons
- * use the native `disabled` attribute plus `pointer-events: none`, and the
- * `[aria-disabled='true']` styling hook is supported for asChild targets that
- * can't take `disabled`.
+ * Always renders a real `<button type="button">`. Disabled buttons use the
+ * native `disabled` attribute plus `pointer-events: none` (with an
+ * `[aria-disabled='true']` styling hook).
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -269,7 +259,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       variant = 'fill',
       startIcon,
       endIcon,
-      asChild = false,
       fullWidth = false,
       children,
       type = 'button',
@@ -279,9 +268,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     return (
       <StyledButton
-        as={asChild ? Slot : undefined}
         ref={ref}
-        type={asChild ? undefined : type}
+        type={type}
         $size={size}
         $intent={intent}
         $variant={variant}
