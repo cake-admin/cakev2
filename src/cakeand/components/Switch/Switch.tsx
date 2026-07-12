@@ -3,25 +3,53 @@ import { Switch as RadixSwitch } from 'radix-ui';
 import styled from 'styled-components';
 
 /**
- * cake& Switch — a Radix `Switch` primitive styled with cake& tokens.
+ * cake& Switch — a Radix `Switch` primitive styled to the cake& "Toggle"
+ * component spec (Figma node 42:1850).
  *
  * Radix owns the accessibility + state machine (role, keyboard, `data-state`);
  * cake& owns the visuals via styled-components reading from `props.theme`.
+ *
+ * Spec geometry: 38×24 track, 18px thumb inset 3px; while pressed the thumb
+ * stretches to 27px (anchored to the side it's on) and springs back on
+ * release.
  */
+const Thumb = styled(RadixSwitch.Thumb)`
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background: ${(p) => p.theme.color.surfaces.container};
+  border-radius: ${(p) => p.theme.radius.pill};
+  transition: left 150ms ease, width 150ms ease, background 150ms ease;
+  will-change: left, width;
+
+  &[data-state='checked'] {
+    left: 17px;
+  }
+  &[data-disabled] {
+    background: ${(p) => p.theme.color.disabled.disabled};
+  }
+`;
+
 const Track = styled(RadixSwitch.Root)`
   all: unset;
   box-sizing: border-box;
-  width: 40px;
+  position: relative;
+  width: 38px;
   height: 24px;
   flex-shrink: 0;
   border-radius: ${(p) => p.theme.radius.pill};
-  background: ${(p) => p.theme.color.textIcon.placeholder};
-  position: relative;
+  background: ${(p) => p.theme.color.secondary.secondary};
   cursor: pointer;
   transition: background 150ms ease;
 
   &:hover {
-    background: ${(p) => p.theme.color.textIcon.secondary};
+    background: ${(p) => p.theme.color.secondary.secondaryHover};
+  }
+  /* Pressed (off): track holds its default color — feedback is the thumb stretch. */
+  &:active:not([data-disabled]) {
+    background: ${(p) => p.theme.color.secondary.secondary};
   }
   &[data-state='checked'] {
     background: ${(p) => p.theme.color.primary.primary};
@@ -29,30 +57,32 @@ const Track = styled(RadixSwitch.Root)`
   &[data-state='checked']:hover {
     background: ${(p) => p.theme.color.primary.primaryHover};
   }
-  &:focus-visible {
-    box-shadow:
-      0 0 0 2px ${(p) => p.theme.color.surfaces.canvas},
-      0 0 0 4px ${(p) => p.theme.color.primary.primary};
+  &[data-state='checked']:active:not([data-disabled]) {
+    background: ${(p) => p.theme.color.primary.primaryPress};
   }
+
+  /* Pressed thumb stretch: 18 → 27px, anchored to the side it sits on
+     (off: left edge stays at 3px; on: right edge stays at 3px → left 8px). */
+  &:active:not([data-disabled]) ${Thumb} {
+    width: 27px;
+  }
+  &:active:not([data-disabled]) ${Thumb}[data-state='checked'] {
+    left: 8px;
+  }
+
+  /* Focus ring: 2px primary stroke sitting 2px outside the track. */
+  &:focus-visible::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 2px solid ${(p) => p.theme.color.primary.primary};
+    border-radius: ${(p) => p.theme.radius.pill};
+    pointer-events: none;
+  }
+
   &[data-disabled] {
-    background: ${(p) => p.theme.color.disabled.disabled};
+    background: ${(p) => p.theme.color.disabled.disabledInverse};
     cursor: not-allowed;
-  }
-`;
-
-const Thumb = styled(RadixSwitch.Thumb)`
-  display: block;
-  width: 20px;
-  height: 20px;
-  background: #ffffff;
-  border-radius: ${(p) => p.theme.radius.round};
-  box-shadow: ${(p) => p.theme.elevation.low};
-  transform: translateX(2px);
-  transition: transform 150ms ease;
-  will-change: transform;
-
-  &[data-state='checked'] {
-    transform: translateX(18px);
   }
 `;
 

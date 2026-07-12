@@ -22,6 +22,10 @@ accessibility and state machine (\`role="switch"\`, keyboard, \`data-state\`);
 cake& owns the visuals via \`props.theme\` — the **Theme** toolbar toggle
 re-themes every example on this page live.
 
+Matches the cake& Toggle spec: a 38×24 pill track with an 18px thumb inset
+3px. While pressed, the thumb stretches to 27px (anchored to the side it's
+on) and springs back on release — try holding a click on any example.
+
 ## Usage
 
 \`\`\`tsx
@@ -36,13 +40,13 @@ re-themes every example on this page live.
 
 | Part | Tokens |
 | --- | --- |
-| Track (off) | \`textIcon.placeholder\`, hover \`textIcon.secondary\` |
-| Track (on) | \`primary.primary\`, hover \`primary.primaryHover\` |
-| Track (disabled) | \`disabled.disabled\` |
-| Thumb | \`radius.round\`, \`elevation.low\` |
-| Focus ring | two-layer: 2px \`surfaces.canvas\` + 4px \`primary.primary\` |
+| Track (off) | \`secondary.secondary\`, hover \`secondary.secondaryHover\`, pressed \`secondary.secondary\` |
+| Track (on) | \`primary.primary\`, hover \`primary.primaryHover\`, pressed \`primary.primaryPress\` |
+| Track (disabled) | \`disabled.disabledInverse\` |
+| Thumb | \`surfaces.container\`; disabled \`disabled.disabled\`; stretches 18→27px while pressed |
+| Focus ring | 2px \`primary.primary\` stroke, 2px outside the track |
 | Label | \`typography.regular.body\`, \`textIcon.primary\`; disabled \`disabled.disabledInverse\` |
-| Shape / gap | \`radius.pill\` track, \`space.sm\` label gap |
+| Shape / gap | \`radius.pill\` track + thumb, \`space.sm\` label gap |
 
 ## Accessibility
 
@@ -108,9 +112,9 @@ export const Disabled: Story = {
     docs: {
       description: {
         story:
-          'Both disabled states: the track flattens to `disabled.disabled`, the ' +
-          'label dims to `disabled.disabledInverse`, and the cursor signals ' +
-          'not-allowed.',
+          'Both disabled states: the track flattens to `disabled.disabledInverse` ' +
+          'with a `disabled.disabled` thumb, the label dims to ' +
+          '`disabled.disabledInverse`, and the cursor signals not-allowed.',
       },
     },
   },
@@ -134,6 +138,34 @@ export const WithoutLabel: Story = {
       },
     },
   },
+};
+
+export const AllVariants: Story = {
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'The QA matrix: off/on × default/disabled, plus a labelless control. ' +
+          'Hold a click on the enabled ones to see the pressed thumb stretch. ' +
+          'Use it with the Theme toolbar to audit both `light.a` and `dark.a` ' +
+          'at a glance.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+        <Switch label="Off" />
+        <Switch label="On" defaultChecked />
+        <Switch aria-label="Labelless" />
+      </div>
+      <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+        <Switch label="Off + disabled" disabled />
+        <Switch label="On + disabled" disabled defaultChecked />
+      </div>
+    </div>
+  ),
 };
 
 /** Pure interaction test (hidden from the docs page): toggling fires `onCheckedChange(true)`. */
