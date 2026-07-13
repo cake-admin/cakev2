@@ -26,7 +26,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Show Node.js and npm versions
@@ -49,6 +49,27 @@ jobs:
         run: npm run build
         env:
           CI: false
+
+      # Data-visualization tool (ECharts edition) — built at base /dataviz/ and
+      # nested under the main site so it goes live at cake.lenovo.com/dataviz.
+      - name: Install dataviz tool dependencies
+        working-directory: chart-tool-echarts
+        run: npm ci
+
+      # Build directly (tsc + vite) rather than `npm run build`, to skip the
+      # `prebuild` token-regen step: it reads design-token exports from repo-root
+      # "& *" folders that aren't part of the deploy. The committed
+      # src/tokens/tokens.json is the source of truth for the build.
+      - name: Build dataviz tool
+        working-directory: chart-tool-echarts
+        run: |
+          node node_modules/typescript/bin/tsc --noEmit
+          node node_modules/vite/bin/vite.js build
+
+      - name: Add dataviz tool to Pages output
+        run: |
+          mkdir -p build/dataviz
+          cp -r chart-tool-echarts/dist/. build/dataviz/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
