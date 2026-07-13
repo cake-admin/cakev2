@@ -109,18 +109,22 @@ update. Conventions:
 ## Phase D — implementation rules (the devkit rules)
 
 1. **Figma variables map to CSS custom properties.** Style with
-   `var(--color-<group>-<token>)`, `var(--space-*)`, `var(--radius-*)`,
-   `var(--type-*)`, `var(--elevation-*)` — consumed inside styled-components.
-   The variables are generated from `tokens.json` by
-   `npm run build:cakeand-vars` → `src/cakeand/tokens/cake-vars.css`
-   (imported by `CakeThemeProvider`; modes scoped by `[data-theme]`). The
-   var names mirror Figma 1:1: `&color/primary/primaryHover` ⇄
-   `--color-primary-primary-hover`. After token changes run
+   `var(--color-<group>-<token>)`, `var(--space-025…-1000)`,
+   `var(--radius-50…-1000)`, `var(--stroke-100…-600)`, `var(--type-*)`,
+   `var(--elevation-*)` — consumed inside styled-components. The variables are
+   generated from `tokens.json` by `npm run build:cakeand-vars` →
+   `src/cakeand/tokens/cake-vars.css` (imported by `CakeThemeProvider`; modes
+   scoped by `[data-theme]`). Var names mirror Figma 1:1:
+   `&color/primary/primaryHover` ⇄ `--color-primary-primary-hover`,
+   `Spacing/Small/space-100` ⇄ `--space-100`, `Border/Radius/radius-1000` ⇄
+   `--radius-1000` (999px pill), `Border/Stroke/stroke-300` ⇄ `--stroke-300`.
+   Sources: colors from `& theme.a/*.tokens.json`, spacing/radius/stroke from
+   `& value/Value.tokens.json`. After token changes run
    `npm run build:cakeand-tokens` then `npm run build:cakeand-vars`.
-2. **No hardcoded** colors, spacing, radius, typography, shadows, or icon
-   sizes. The only allowed raw px are geometry intrinsic to the component's
-   spec (e.g. Switch's 38×24 track, IconButton's 24–48 diameters) — cite the
-   Figma node for them in a comment or JSDoc.
+2. **No hardcoded** colors, spacing, radius, stroke/border widths,
+   typography, shadows, or icon sizes. The only allowed raw px are geometry
+   intrinsic to the component's spec (e.g. Switch's 38×24 track, IconButton's
+   24–48 diameters) — cite the Figma node for them in a comment or JSDoc.
    *Migration note:* `Button`, `Switch`, and `IconButton` predate this rule
    and read `props.theme` directly — do **not** copy that pattern into new
    components; migrate them opportunistically when touched.

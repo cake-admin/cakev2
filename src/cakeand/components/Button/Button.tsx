@@ -70,8 +70,13 @@ const sizeStyles = (size: ButtonSize) => {
 
 /** stateLayer padding per size (tonal+md uses a tighter inset, matching Figma). */
 const padFor = (size: ButtonSize, variant: ButtonVariant) => {
-  if (variant === 'tonal' && size === 'md') return '8px 12px';
-  return { xs: '4px 12px', sm: '8px 14px', md: '10px 16px', lg: '12px 20px' }[size];
+  if (variant === 'tonal' && size === 'md') return 'var(--space-100) var(--space-200)';
+  return {
+    xs: 'var(--space-050) var(--space-200)',
+    sm: 'var(--space-100) var(--space-250)',
+    md: 'var(--space-150) var(--space-300)',
+    lg: 'var(--space-200) var(--space-400)',
+  }[size];
 };
 
 /** intent × variant → background / text / border + hover/press, all from the
@@ -100,14 +105,14 @@ const colorStyles = (intent: ButtonIntent, variant: ButtonVariant) => {
       ? css`
           background: var(--color-surfaces-container);
           color: var(--color-primary-primary);
-          border: 2px solid var(--color-primary-primary);
+          border: var(--stroke-200) solid var(--color-primary-primary);
           &:hover:not(:disabled) { background: var(--color-primary-primary-overlay); }
           &:active:not(:disabled) { background: var(--color-primary-primary-overlay-hover); }
         `
       : css`
           background: var(--color-surfaces-container);
           color: var(--color-secondary-secondary);
-          border: 2px solid var(--color-secondary-secondary);
+          border: var(--stroke-200) solid var(--color-secondary-secondary);
           &:hover:not(:disabled) { background: var(--color-secondary-secondary-overlay); }
           &:active:not(:disabled) { background: var(--color-secondary-secondary-overlay-hover); }
         `;
@@ -196,7 +201,7 @@ const StyledButton = styled.button<{
   text-decoration: none;
   font-family: var(--font-family);
   font-weight: var(--font-weight-bold);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-1000);
   transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease,
     box-shadow 120ms ease;
 
@@ -211,8 +216,8 @@ const StyledButton = styled.button<{
     content: '';
     position: absolute;
     inset: -2px;
-    border: 3px solid var(--color-primary-primary);
-    border-radius: var(--radius-pill);
+    border: var(--stroke-300) solid var(--color-primary-primary);
+    border-radius: var(--radius-1000);
     pointer-events: none;
   }
 `;
@@ -221,7 +226,7 @@ const StateLayer = styled.span<{ $size: ButtonSize; $variant: ButtonVariant }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: ${(p) => (p.$variant === 'tonal' && p.$size === 'md' ? 'var(--space-xs)' : 'var(--space-sm)')};
+  gap: ${(p) => (p.$variant === 'tonal' && p.$size === 'md' ? 'var(--space-050)' : 'var(--space-100)')};
   width: 100%;
   height: 100%;
   padding: ${(p) => padFor(p.$size, p.$variant)};

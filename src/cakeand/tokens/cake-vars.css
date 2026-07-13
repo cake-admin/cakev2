@@ -124,25 +124,46 @@
   --color-warning-warn-overlay: rgba(252, 187, 66, 0.12);
   --color-warning-warn: #f36420;
 
-  /* Spacing — theme.space */
-  --space-none: 0;
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 12px;
-  --space-lg: 16px;
-  --space-xl: 20px;
-  --space-2xl: 24px;
-  --space-3xl: 32px;
-  --space-4xl: 48px;
+  /* Spacing — Figma Spacing/<bucket>/space-* */
+  --space-025: 2px;
+  --space-050: 4px;
+  --space-075: 6px;
+  --space-100: 8px;
+  --space-150: 10px;
+  --space-200: 12px;
+  --space-250: 14px;
+  --space-300: 16px;
+  --space-350: 18px;
+  --space-400: 20px;
+  --space-500: 24px;
+  --space-600: 32px;
+  --space-650: 36px;
+  --space-700: 40px;
+  --space-800: 48px;
+  --space-900: 64px;
+  --space-1000: 80px;
 
-  /* Radius — theme.radius */
-  --radius-none: 0;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-pill: 999px;
-  --radius-round: 50%;
+  /* Radius — Figma Border/Radius/radius-* */
+  --radius-50: 4px;
+  --radius-100: 6px;
+  --radius-150: 8px;
+  --radius-200: 12px;
+  --radius-300: 16px;
+  --radius-400: 24px;
+  --radius-1000: 999px;
+
+  /* Stroke widths — Figma Border/Stroke/stroke-* */
+  --stroke-100: 1px;
+  --stroke-150: 1.5px;
+  --stroke-200: 2px;
+  --stroke-250: 2.5px;
+  --stroke-300: 3px;
+  --stroke-350: 3.5px;
+  --stroke-400: 4px;
+  --stroke-450: 4.5px;
+  --stroke-500: 5px;
+  --stroke-550: 5.5px;
+  --stroke-600: 6px;
 
   /* Typography — theme.font / theme.typography (rem @ 16px root) */
   --font-family: 'Rookery New', 'Rookery', system-ui, sans-serif;

@@ -58,14 +58,15 @@ src/cakeand/components/<Component>/
    mode-scoped by `[data-theme]`), consumed inside styled-components:
    - colors: `var(--color-<group>-<token>)` (e.g. `var(--color-primary-primary-hover)`) —
      names mirror the Figma variables 1:1
-   - spacing: `var(--space-xs…4xl)` · radius: `var(--radius-sm…pill|round)`
+   - spacing: `var(--space-025 … --space-1000)` (Figma `Spacing/<bucket>/space-*`, 2–80px)
+   - radius: `var(--radius-50 … --radius-1000)` (`--radius-1000` = 999px pill/circle)
+   - stroke widths: `var(--stroke-100 … --stroke-600)` (1–6px — borders,
+     outlines; focus rings use `--stroke-300`, Switch's ring `--stroke-200`)
    - type: `var(--font-family)`, `var(--font-weight-*)`, `var(--type-size-<role>)`
    - shadows: `var(--elevation-low|high)`
-   Never hardcode hex, px spacing, or font sizes. Style Radix state via data
-   attributes (`[data-state='checked']`, `[data-disabled]`).
-   *Migration note:* `Button`, `Switch`, and `IconButton` predate this rule and
-   read `props.theme` directly — don't copy that into new components; migrate
-   them opportunistically when touched.
+   Never hardcode hex, px spacing, border widths, or font sizes. Style Radix
+   state via data attributes (`[data-state='checked']`, `[data-disabled]`).
+   `Button`, `IconButton`, and `Switch` are fully migrated exemplars.
 3. **Typed props with rich JSDoc.** Every public prop gets a JSDoc block that
    will render verbatim in the docs props table:
    - Meaning of each allowed value where non-obvious

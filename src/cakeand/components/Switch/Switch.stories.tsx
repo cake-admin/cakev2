@@ -49,9 +49,9 @@ Custom-property names mirror the Figma variables
 | Track (on) | \`--color-primary-primary\`, hover \`--color-primary-primary-hover\`, pressed \`--color-primary-primary-press\` |
 | Track (disabled) | \`--color-disabled-disabled-inverse\` |
 | Thumb | \`--color-surfaces-container\`; disabled \`--color-disabled-disabled\`; stretches 18→27px while pressed |
-| Focus ring | 2px \`--color-primary-primary\` stroke, 2px outside the track |
+| Focus ring | \`--stroke-200\` \`--color-primary-primary\` stroke, 2px outside the track |
 | Label | \`--font-family\` + \`--type-size-body\`, \`--color-text-icon-primary\`; disabled \`--color-disabled-disabled-inverse\` |
-| Shape / gap | \`--radius-pill\` track + thumb, \`--space-sm\` label gap |
+| Shape / gap | \`--radius-1000\` track + thumb, \`--space-100\` label gap |
 
 ## Accessibility
 

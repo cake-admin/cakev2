@@ -27,14 +27,15 @@ const Track = styled(RadixSwitch.Root)`
 
 ## 2. Style with tokens only
 
-Every color, space, radius, and typography value is a CSS custom property from
-the generated token layer (`src/cakeand/tokens/cake-vars.css`, regenerate with
-`npm run build:cakeand-vars`) — `var(--color-primary-primary-hover)`,
-`var(--space-sm)`, `var(--radius-pill)`, `var(--type-size-body)` — consumed
-inside styled-components. Variable names mirror the Figma variables 1:1. Never
-hardcode hex, px spacing, or font sizes. Style Radix state via its data
-attributes (`[data-state='checked']`, `[data-disabled]`, ...). (Existing
-components that read `props.theme` predate this rule and will migrate.)
+Every color, space, radius, stroke, and typography value is a CSS custom
+property from the generated token layer (`src/cakeand/tokens/cake-vars.css`,
+regenerate with `npm run build:cakeand-tokens` + `npm run build:cakeand-vars`)
+— `var(--color-primary-primary-hover)`, `var(--space-100)`,
+`var(--radius-1000)`, `var(--stroke-200)`, `var(--type-size-body)` — consumed
+inside styled-components. Variable names mirror the Figma variables 1:1
+(colors from `& theme.a`, spacing/radius/stroke from `& value`). Never
+hardcode hex, px spacing, border widths, or font sizes. Style Radix state via
+its data attributes (`[data-state='checked']`, `[data-disabled]`, ...).
 
 ## 3. File layout
 

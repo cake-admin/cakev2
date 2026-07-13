@@ -71,14 +71,14 @@ const colorStyles = (intent: IconButtonIntent, variant: IconButtonVariant) => {
       ? css`
           background: transparent;
           color: var(--color-primary-primary);
-          border: 1px solid var(--color-primary-primary);
+          border: var(--stroke-100) solid var(--color-primary-primary);
           &:hover:not(:disabled) { background: var(--color-primary-primary-overlay); }
           &:active:not(:disabled) { background: var(--color-primary-primary-overlay-hover); }
         `
       : css`
           background: transparent;
           color: var(--color-secondary-secondary);
-          border: 1px solid var(--color-secondary-secondary);
+          border: var(--stroke-100) solid var(--color-secondary-secondary);
           &:hover:not(:disabled) { background: var(--color-secondary-secondary-overlay); }
           &:active:not(:disabled) { background: var(--color-secondary-secondary-overlay-hover); }
         `;
@@ -143,7 +143,7 @@ const StyledIconButton = styled.button<{
   flex-shrink: 0;
   width: ${(p) => DIAMETER[p.$size]}px;
   height: ${(p) => DIAMETER[p.$size]}px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-1000);
   transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
 
   ${(p) => colorStyles(p.$intent, p.$variant)}
@@ -156,8 +156,8 @@ const StyledIconButton = styled.button<{
     content: '';
     position: absolute;
     inset: -2px;
-    border: 3px solid var(--color-primary-primary);
-    border-radius: var(--radius-pill);
+    border: var(--stroke-300) solid var(--color-primary-primary);
+    border-radius: var(--radius-1000);
     pointer-events: none;
   }
 `;

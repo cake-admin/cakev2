@@ -49,8 +49,8 @@ Custom-property names mirror the Figma variables (\`&color/primary/primaryHover\
 | --- | --- | --- | --- |
 | fill · primary | \`--color-primary-primary\` | \`--color-text-icon-on-primary\` | \`…primary-hover\` / \`…primary-press\` |
 | fill · secondary | \`--color-secondary-secondary\` | \`--color-text-icon-inverse\` | \`…secondary-hover\` / \`…secondary-press\` |
-| outline · primary | \`--color-surfaces-container\` + 2px \`--color-primary-primary\` border | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
-| outline · secondary | \`--color-surfaces-container\` + 2px \`--color-secondary-secondary\` border | \`--color-secondary-secondary\` | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
+| outline · primary | \`--color-surfaces-container\` + \`--stroke-200\` \`--color-primary-primary\` border | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
+| outline · secondary | \`--color-surfaces-container\` + \`--stroke-200\` \`--color-secondary-secondary\` border | \`--color-secondary-secondary\` | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
 | tonal · primary | \`--color-tonal-tonal\` | \`--color-text-icon-on-tonal-inverse\` | \`…tonal-hover\` / \`…tonal-press\` |
 | tonal · secondary | \`--color-tonal-tonal-secondary-overlay\` | \`--color-text-icon-on-tonal-secondary\` | \`…secondary-overlay-hover\` / \`…secondary-overlay-press\` |
 | ghost · primary | transparent | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
@@ -58,9 +58,9 @@ Custom-property names mirror the Figma variables (\`&color/primary/primaryHover\
 | disabled (any) | \`--color-disabled-disabled\` | \`--color-disabled-disabled-inverse\` | — |
 
 (\`…\` = the same family prefix as the row's background.) Shape is
-\`--radius-pill\`; the focus ring is a 3px \`--color-primary-primary\` outline
-drawn at −2px inset; icon↔label gap is \`--space-sm\` (\`--space-xs\` for
-tonal·md).
+\`--radius-1000\`; the focus ring is a \`--stroke-300\` \`--color-primary-primary\`
+outline drawn at −2px inset; icon↔label gap is \`--space-100\` (\`--space-050\`
+for tonal·md); per-size paddings use \`--space-050\`…\`--space-400\`.
 
 ## Accessibility
 

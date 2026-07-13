@@ -22,7 +22,7 @@ const Thumb = styled(RadixSwitch.Thumb)`
   width: 18px;
   height: 18px;
   background: var(--color-surfaces-container);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-1000);
   transition: left 150ms ease, width 150ms ease, background 150ms ease;
   will-change: left, width;
 
@@ -41,7 +41,7 @@ const Track = styled(RadixSwitch.Root)`
   width: 38px;
   height: 24px;
   flex-shrink: 0;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-1000);
   background: var(--color-secondary-secondary);
   cursor: pointer;
   transition: background 150ms ease;
@@ -77,8 +77,8 @@ const Track = styled(RadixSwitch.Root)`
     content: '';
     position: absolute;
     inset: -4px;
-    border: 2px solid var(--color-primary-primary);
-    border-radius: var(--radius-pill);
+    border: var(--stroke-200) solid var(--color-primary-primary);
+    border-radius: var(--radius-1000);
     pointer-events: none;
   }
 
@@ -91,7 +91,7 @@ const Track = styled(RadixSwitch.Root)`
 const Label = styled.label`
   display: inline-flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: var(--space-100);
   font-family: var(--font-family);
   font-size: var(--type-size-body);
   color: var(--color-text-icon-primary);

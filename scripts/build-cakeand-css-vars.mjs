@@ -12,7 +12,12 @@ const here = dirname(fileURLToPath(import.meta.url));
 const tokensPath = join(here, '..', 'src', 'cakeand', 'tokens', 'tokens.json');
 const outPath = join(here, '..', 'src', 'cakeand', 'tokens', 'cake-vars.css');
 
-const { theme } = JSON.parse(readFileSync(tokensPath, 'utf8'));
+const { theme, value } = JSON.parse(readFileSync(tokensPath, 'utf8'));
+if (!value) {
+  throw new Error(
+    '[cake-vars] tokens.json has no `value` section (spacing/radius/stroke) — run `npm run build:cakeand-tokens` first.'
+  );
+}
 
 const kebab = (s) => s.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 
@@ -28,28 +33,14 @@ function colorLines(mode) {
   return lines.sort();
 }
 
-/** Mode-independent structure (mirrors theme.ts — update both together). */
-const structure = `
-  /* Spacing — theme.space */
-  --space-none: 0;
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 12px;
-  --space-lg: 16px;
-  --space-xl: 20px;
-  --space-2xl: 24px;
-  --space-3xl: 32px;
-  --space-4xl: 48px;
+/** Value tokens (spacing / radius / stroke) from the Figma "Value" export,
+ *  flowing through tokens.json. Names map 1:1 to the Figma variables:
+ *  `Spacing/Small/space-100` ⇄ `--space-100` · `Border/Radius/radius-200` ⇄
+ *  `--radius-200` · `Border/Stroke/stroke-300` ⇄ `--stroke-300`. */
+const valueLines = (items, comment) =>
+  `\n  /* ${comment} */\n` + items.map((t) => `  --${t.name}: ${t.px}px;`).join('\n') + '\n';
 
-  /* Radius — theme.radius */
-  --radius-none: 0;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-pill: 999px;
-  --radius-round: 50%;
-
+const structure = `${valueLines(value.spacing, 'Spacing — Figma Spacing/<bucket>/space-*')}${valueLines(value.radius, 'Radius — Figma Border/Radius/radius-*')}${valueLines(value.stroke, 'Stroke widths — Figma Border/Stroke/stroke-*')}
   /* Typography — theme.font / theme.typography (rem @ 16px root) */
   --font-family: 'Rookery New', 'Rookery', system-ui, sans-serif;
   --font-weight-regular: 400;

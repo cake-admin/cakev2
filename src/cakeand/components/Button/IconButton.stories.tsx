@@ -50,8 +50,8 @@ Custom-property names mirror the Figma variables (\`&color/tonal/tonalOverlay\`
 | --- | --- | --- | --- |
 | fill · primary | \`--color-primary-primary\` | \`--color-text-icon-inverse\` | \`…primary-hover\` / \`…primary-press\` |
 | fill · secondary | \`--color-secondary-secondary\` | \`--color-text-icon-on-secondary\` | \`…secondary-hover\` / \`…secondary-press\` |
-| outline · primary | transparent + 1px \`--color-primary-primary\` border | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
-| outline · secondary | transparent + 1px \`--color-secondary-secondary\` border | \`--color-secondary-secondary\` | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
+| outline · primary | transparent + \`--stroke-100\` \`--color-primary-primary\` border | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
+| outline · secondary | transparent + \`--stroke-100\` \`--color-secondary-secondary\` border | \`--color-secondary-secondary\` | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
 | tonal · primary | \`--color-tonal-tonal-overlay\` | \`--color-text-icon-on-tonal-inverse\` | \`…tonal-overlay-hover\` / \`…tonal-overlay-press\` |
 | tonal · secondary | \`--color-tonal-tonal-secondary-overlay\` | \`--color-text-icon-on-tonal-secondary\` | \`…secondary-overlay-hover\` / \`…secondary-overlay-press\` |
 | ghost · primary | transparent | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
@@ -59,9 +59,9 @@ Custom-property names mirror the Figma variables (\`&color/tonal/tonalOverlay\`
 | disabled | \`--color-disabled-disabled\` fill (ghost stays transparent), border drops | \`--color-disabled-disabled-inverse\` | — |
 
 (\`…\` = the same family prefix as the row's container.) Shape is a
-\`--radius-pill\` circle — 24/32/40/48px across with a 16px icon at \`xs\` and
-24px otherwise; the focus ring is a 3px \`--color-primary-primary\` outline
-drawn at −2px inset (same as Button).
+\`--radius-1000\` circle — 24/32/40/48px across with a 16px icon at \`xs\` and
+24px otherwise; the focus ring is a \`--stroke-300\` \`--color-primary-primary\`
+outline drawn at −2px inset (same as Button).
 
 ## Accessibility
 
