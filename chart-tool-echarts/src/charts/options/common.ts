@@ -121,9 +121,10 @@ export function seriesColors(ctx: ChartContext, count: number): string[] {
 export const SELECTED_MODE = false as const;
 
 /**
- * Token-driven interaction states for a mark, mirroring the visx edition:
+ * Token-driven interaction states for a mark:
  *  - hover  → emphasis.itemStyle.color  (real token Hover sibling or OKLCH-derived)
- *  - press  → select.itemStyle.color    (token Press), engaged on press
+ *  - press  → select.itemStyle.color    (token Press), engaged on press by the
+ *    EChart wrapper (see src/charts/EChart.tsx)
  * Spread onto a series (series-colored charts) or a data item (per-mark colors).
  */
 export function markStates(ctx: ChartContext, rest: string, focus: 'self' | 'series' | 'none' = 'self') {

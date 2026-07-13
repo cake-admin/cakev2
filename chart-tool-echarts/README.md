@@ -1,104 +1,124 @@
-# Cake Charts — design-system charting tool
+# Cake Charts — design-system charting tool (ECharts edition)
 
-An internal web app for designers to pick/customize charts, preview their
-animation, and hand them off to Figma as **clean, editable SVG**. Charts are
-built from scratch (no dependency on the legacy design-system components) and are
-**100% token-driven** — light and dark are derived from the same base tokens.
+An internal web app for designers to pick and customize charts, preview them
+live, and hand them off to **Figma as clean, editable SVG**. Built on
+[Apache ECharts](https://echarts.apache.org/) and **100% token-driven** — every
+color traces to a cake& design token, and light/dark both come from the same
+token export.
 
-> Standalone app. It lives in `chart-tool/` and does not touch the rest of the repo.
+**Live:** https://cake.lenovo.com/dataviz (deployed from `main` by the Pages
+workflow, nested under the main design-system site).
 
 ## Quick start
 
 ```bash
-cd chart-tool
+cd chart-tool-echarts
 npm install
 npm run dev        # http://localhost:5173
 ```
 
-Scripts:
-
 | Script | What |
 |--------|------|
 | `npm run dev` | Vite dev server |
-| `npm run build` | Typecheck (`tsc --noEmit`) + production build |
+| `npm run build` | Regenerate tokens (`prebuild`) + typecheck + production build |
 | `npm run typecheck` | Types only |
-| `npm test` | Vitest (color system, theme token-traceability, SVG export) |
+| `npm test` | Vitest — color system, token traceability, SVG-export guarantees |
+| `npm run gallery` | Renders every chart × both modes to `preview/index.html` for a quick visual audit |
+| `npm run build:tokens` | Regenerate `src/tokens/tokens.json` from the Figma exports |
 
-> ⚠️ This repo's path contains `&`, which breaks the npm/.bin cmd shims (and `npx`)
-> on Windows. The npm scripts are therefore wired to call tools via `node <bin>`,
-> so they work as-is. Avoid bare `npx vite` / `tsc` from this folder.
+> ⚠️ This repo's path contains `&`, which breaks the npm `.bin` cmd shims (and
+> `npx`) on Windows. The npm scripts already call tools via `node <bin>`, so
+> they work as-is — avoid bare `npx vite` / `tsc` from this folder.
 
 ## Tokens (source of truth)
 
-Chart tokens are **generated from the design system's Figma export** in the repo-root
-`& theme.a/` folder (DTCG format), not hand-authored:
+`scripts/build-tokens.mjs` generates `src/tokens/tokens.json` from the design
+system's Figma DTCG exports at the repo root — it is **never hand-edited**:
 
-- `npm run build:tokens` reads `../& theme.a/Light.a.tokens.json` + `Dark.a.tokens.json`
-  via `scripts/build-tokens.mjs` and writes `src/tokens/tokens.json` (structural tokens
-  + the design system's **badge categorical palette**). It runs automatically on `prebuild`.
-- The chart token names → DTCG paths mapping lives in `scripts/build-tokens.mjs`;
-  required names are listed in `src/tokens/tokens.types.ts`.
+- `../& theme.a/Light.a.tokens.json` + `Dark.a.tokens.json` (`&color` group) →
+  structural tokens (surfaces, text, axis/grid, tooltip, semantic roles).
+- `../& color hero/color.tokens.json` (named tones like `indigo/60`,
+  mode-independent) → the fixed palettes:
+  - **categorical** — 12 cake& hero tones, identical in light & dark (both pass contrast)
+  - **sequential** — indigo single-hue ramp (80→30)
+  - **semantic scale** — red→green (bad→good)
+  - **diverging** — jade↔violet, two-ended
+  - **single tokens** — the primary/secondary/tonal families selectable as one solid color
 
-> **Styling reference (pulled from Figma):** the six reference components were read
-> live via the Figma MCP and their specs applied:
-> - **Progress bar → bars:** pill fills (rounded, `radius = min(cornerRadius, barW/2)`,
->   default 12), solid flat categorical fills, track = `stroke/border`.
-> - **Divider → grid/axis:** 1px strokes — axis baseline = `stroke/border`, gridlines = `stroke/border low`.
-> - **Tooltips → hover:** radius 12, padding 8×12, two-layer shadow (heavier on dark),
->   bg = `surfaces/inverseContainer`, text = `text+icon/inverse`.
-> - **Loading → spinner:** 3.5px stroke, primary arc on a `tonal/tonalSecondaryOverlay` track.
-> Re-pull anytime with the Figma MCP; constants live in `src/theme/buildChartTheme.ts`.
+`prebuild` regenerates automatically for local builds. **CI does not** — the
+deploy workflow builds `tsc + vite` directly because the `& *` export folders
+aren't tracked; the committed `tokens.json` is the build's source of truth.
 
-## How it works
+## Architecture
 
 ```
-tokens.json ──► buildChartTheme(mode) ──► ChartTheme ──► chart components (visx SVG)
-                       │                        ▲                 │
-                 colorScales (OKLCH)            │            renderStaticSvg ──► copy / download (light + dark)
-                 categorical + tonal,      ThemeProvider
-                 mode-aware                (light/dark)
+tokens.json ─► buildChartTheme(mode) ─► ChartTheme ─┐
+                     │                              ▼
+               colorScales.ts              buildOption(ctx) ── one pure fn per chart
+               (palettes, ramps,                    │           (src/charts/options/*)
+                hover/press states)                 ▼
+                                     ┌── EChart.tsx (live preview, canvas,
+                                     │    token hover/press interaction)
+                                     └── renderStaticSvg (SSR SVG export,
+                                          light + dark, Figma-safe)
 ```
 
-- **Color** (`src/theme/colorScales.ts`): **categorical** scales use the design
-  system's authored badge palette (18 hues, already mode-correct); **tonal** scales
-  are derived in **OKLCH** from the chosen base with per-mode lightness/chroma windows
-  (lighter + slightly desaturated on dark, so colors don't go muddy). A near-neutral
-  base (e.g. the DS's black/white secondary) is dropped from categorical leads so it
-  doesn't read as text. Falls back to fully OKLCH-derived scales if no palette is present.
-  Architected to add more bases and scale types (diverging, multi-hue) without rework.
-- **Charts** (`src/charts/*`): Bar, Line, Area, Pie/Donut, Scatter — each built on
-  shared primitives (`ChartFrame`, `Axis`, `GridLines`, `Legend`). Styling is mapped
-  from the Figma references (progress→bars, divider→grid, tooltips→hover, button→
-  controls, tables→data editor, loading→skeleton).
-- **Registry** (`src/charts/registry.ts`): the one extension point. Add a chart =
-  add one entry (preset + default style + component). Future types map cleanly:
-  stacked/grouped reuse `series`; bubble reuses `xy` (size scale already present);
-  sparkline is a chrome-disabled variant; combo composes primitives; heatmap adds a
-  mark + reuses the tonal/sequential color path.
-- **Data** (`src/data/*`): one model, three shapes — `series` (bar/line/area),
-  `xy` (scatter), `partition` (pie). The data editor adapts to the shape and supports
-  add / edit / drag-reorder / remove, seeded from per-type presets.
-- **Animation** (`src/animation/motion.ts`): one shared timing (duration/easing/
-  stagger) across all charts — bars grow, lines draw, areas reveal, arcs fade,
-  points scale in. Preview-only; honors `prefers-reduced-motion`; stripped on export.
-- **Export** (`src/export/*`): `renderChartSvg` re-renders the chart in `exportMode`
-  (no motion, no interactivity) via `renderToStaticMarkup`, then `serializeSvg`
-  normalizes it. Output has named `<g>` groups (`axis`, `bars`, `legend`, …), real
-  `<text>`, `<title>`/`<desc>`, and no `foreignObject` — so Figma imports a tidy,
-  editable layer tree. Both **light and dark** are offered, via **Copy** (clipboard
-  writes `image/svg+xml` + `text/plain`) and **Download** `.svg`.
+- **Option builders** (`src/charts/options/*.ts`) — each chart type is a pure
+  function `(ChartContext) → EChartsOption`; `buildOption.ts` dispatches on
+  chart id. `ChartContext` carries `{ type, data, color, style, header, theme,
+  staticFrame?, scale? }` — the same builder renders the live preview and the
+  export. Shared helpers live in `common.ts` (axes, legend, grid insets, KPI
+  header, font ladder, interaction states).
+- **Registry** (`src/charts/registry.ts`) — 14 chart types (bar, line, area,
+  pie family, scatter, jitter/strip, radar, treemap, funnel, gauge, heatmap,
+  radial bar, positive/negative bar, waterfall). Adding a chart = one registry
+  entry + one option builder. The "＋ More charts" catalog searches this list.
+- **Color system** (`src/theme/colorScales.ts`) — `resolve(config, n)` returns
+  mark colors for any variation (categorical / sequential / semantic /
+  diverging / primary / secondary); ramps interpolate in **OKLab** beyond
+  their token stops (straight-line mixing — no surprise hues through the
+  neutral midpoint). `states()` supplies token Hover/Press colors; the
+  `EChart` wrapper drives the pressed state (ECharts renders hover above
+  select, so press rides on `emphasis`).
+- **Data** (`src/data/*`) — one model, two shapes: `series` (cartesian) and
+  `partition` (pie/treemap/funnel). The editor adapts to the chart type
+  (single-series charts get a simple Category+Value editor).
+- **Export** (`src/export/renderStaticSvg.tsx`) — ECharts' SSR SVG renderer at
+  the requested pixel dimensions, animation off. Font sizes are pre-baked via
+  `exportScale` and snapped to the type ladder (12/14/16/20/24/28…) because
+  Figma won't rescale `<text>` on resize. Both light and dark variants are
+  always produced; `clipboard.ts` copies, `CodeExport` emits the runnable
+  ECharts option snippet.
 
-## Verifying the Figma handoff
+## Figma-handoff gotchas (hard-won — don't regress)
 
-`npm test` asserts every chart exports as `<svg>` with named groups + real `<text>`
-in both modes. To verify the round-trip manually: Export → **Copy** → paste into
-Figma (you should get vector layers grouped as `axis` / `bars` / `legend` …), and
-**Download** → drag the `.svg` into Figma.
+1. **Font-family quoting**: the family string uses **single quotes**
+   (`'Rookery New',…`) because ECharts emits it inside a double-quoted SVG
+   `style="…"` attribute — double quotes produce invalid XML that Figma
+   refuses to import. A test asserts this.
+2. **Baselines**: Figma ignores `dominant-baseline="central"`, so
+   `bakeBaselines()` rewrites it to `dy="0.32em"` — otherwise labels float
+   above their swatches/ticks. Also test-guarded.
+3. **Text sizing**: exports bake absolute font sizes for the chosen W×H
+   (`exportScale`, geometric mean of the area ratio vs the 640×420 baseline),
+   snapped to the ladder — no odd sizes like 11px or 22px.
+4. All mark colors are exact token hexes — see the header/KPI, axis, and grid
+   colors in `buildChartTheme.ts`.
 
-## Notes / future work
+## Verifying changes
 
-- During export you may see benign `useLayoutEffect` SSR warnings from framer-motion
-  (renderToStaticMarkup). They don't affect output; tests confirm the SVG is clean.
-- Future: CSV import, shareable config (URL/JSON), "download both" as a zip,
-  per-chart code-splitting via the registry, ΔE palette nudging for >6 categories,
-  Storybook for primitives, and visual snapshot tests.
+```bash
+npm test            # 48 tests: palettes, token traceability, export guarantees
+npm run build       # typecheck + bundle
+npm run gallery     # eyeball all 14 charts × 2 modes in preview/index.html
+```
+
+Manual round-trip: Export → **Copy** → paste into Figma (editable vectors,
+real text) — or **Download** and drag the `.svg` in.
+
+## Deployment
+
+Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds this
+app at base `/dataviz/` and nests it into the main site's Pages artifact →
+**cake.lenovo.com/dataviz**. If you change the workflow, keep the dataviz
+steps (they're what put the tool on the live site).
