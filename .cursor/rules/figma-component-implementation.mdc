@@ -1,0 +1,16 @@
+---
+description: Implementing, porting, or auditing a cake& component from a Figma link, or planning a design-system/devkit migration — the full Figma-to-Storybook workflow
+alwaysApply: false
+---
+
+When implementing, porting, or auditing a component from Figma (or planning a
+devkit migration), read and follow the full skill at
+[.claude/skills/figma-component-implementation/SKILL.md](../../.claude/skills/figma-component-implementation/SKILL.md).
+
+It defines the phased workflow: per-component Figma audit before any code
+(variant taxonomy, token extraction + verification against tokens.json,
+pixel-sampling for baked asset colors), file planning, the devkit
+implementation rules (Figma variables ⇄ CSS custom properties, Radix
+primitives own behavior, typed props from variants, lucide-react interim
+icons), stories/docs via the storybook-component-docs skill, play tests +
+a11y, verification, and optional Code Connect.
