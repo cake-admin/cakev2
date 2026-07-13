@@ -119,15 +119,14 @@ update. Conventions:
    `Spacing/Small/space-100` ⇄ `--space-100`, `Border/Radius/radius-1000` ⇄
    `--radius-1000` (999px pill), `Border/Stroke/stroke-300` ⇄ `--stroke-300`.
    Sources: colors from `& theme.a/*.tokens.json`, spacing/radius/stroke from
-   `& value/Value.tokens.json`. After token changes run
+   `& spacing/Value.tokens.json`. After token changes run
    `npm run build:cakeand-tokens` then `npm run build:cakeand-vars`.
 2. **No hardcoded** colors, spacing, radius, stroke/border widths,
    typography, shadows, or icon sizes. The only allowed raw px are geometry
    intrinsic to the component's spec (e.g. Switch's 38×24 track, IconButton's
    24–48 diameters) — cite the Figma node for them in a comment or JSDoc.
-   *Migration note:* `Button`, `Switch`, and `IconButton` predate this rule
-   and read `props.theme` directly — do **not** copy that pattern into new
-   components; migrate them opportunistically when touched.
+   `Button`, `IconButton`, and `Switch` are fully migrated exemplars of this
+   rule.
 3. **Radix provides behavior where applicable.** Wrap primitives from the
    unified `radix-ui` package; never re-implement or undo their a11y. No
    `Slot`/`asChild` polymorphism. Native elements are fine where no primitive
