@@ -4,7 +4,7 @@ import { expect, within } from 'storybook/test';
 import { HelperString } from './HelperString';
 
 const meta = {
-  title: 'Components/Elements/Helper String',
+  title: 'Elements/Helper String',
   component: HelperString,
   parameters: {
     layout: 'centered',

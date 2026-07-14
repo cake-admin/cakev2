@@ -82,8 +82,8 @@ src/cakeand/components/<Component>/
 
 ```tsx
 const meta = {
-  title: 'Components/<Component>',
-  component: <Component>,
+  title: 'Components/<Component>',   // reusable form elements composed by
+  component: <Component>,            // fields use 'Elements/<Element>' instead
   parameters: {
     layout: 'centered',
     docs: { description: { component: `…see anatomy below…` } },

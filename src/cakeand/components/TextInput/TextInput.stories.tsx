@@ -13,10 +13,10 @@ const meta = {
       description: {
         component: `
 A single-line text field, **composed from the reusable form elements**:
-[Input Label](?path=/docs/components-elements-input-label--docs) above, the
-input box, and [Helper String](?path=/docs/components-elements-helper-string--docs)
-below — stacked with a \`--space-100\` label gap and a \`--space-050\` helper
-gap per the Figma auto-layout. Use Textarea (future) for multi-line text.
+[Input Label](?path=/docs/elements-input-label--docs) above, the input box,
+and [Helper String](?path=/docs/elements-helper-string--docs) below — stacked
+with a \`--space-100\` label gap and a \`--space-050\` helper gap per the
+Figma auto-layout. Use Textarea (future) for multi-line text.
 
 Every color, spacing, radius, and stroke value resolves from the cake& design
 tokens as CSS custom properties, whose names mirror the Figma variables 1:1 —

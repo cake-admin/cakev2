@@ -103,6 +103,10 @@ update. Conventions:
   Storybook sidebar folder (`src/cakeand/components/Button/` holds
   `Button.tsx` + `IconButton.tsx`; titles `Components/Button/Button` and
   `Components/Button/Icon Button`).
+- Reusable form elements (pieces composed by field components — e.g.
+  InputLabel, HelperString) live in `src/cakeand/components/Elements/` and
+  title under the top-level `Elements/` sidebar section (sorted before
+  Components in `.storybook/preview.tsx`).
 - Every folder has an `index.ts` barrel exporting components + prop types.
 - One `.stories.tsx` per component (not per folder).
 
