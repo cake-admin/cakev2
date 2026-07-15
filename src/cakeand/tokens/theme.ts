@@ -8,7 +8,7 @@ import { font } from './typography';
  * scripts/build-cakeand-tokens.mjs. Spacing, radius, and typography are
  * design-system conventions layered on top (no token export for them yet).
  */
-export type ThemeMode = 'light.a' | 'dark.a';
+export type ThemeMode = 'light.a' | 'dark.a' | 'win hct';
 
 export type CakeColors = (typeof tokensData)['theme']['light.a'];
 
@@ -52,12 +52,17 @@ const makeTheme = (mode: ThemeMode) => {
 
 export const lightTheme = makeTheme('light.a');
 export const darkTheme = makeTheme('dark.a');
+/** Windows High-Contrast theme contributed in Figma ("& win hct"). */
+export const winHctTheme = makeTheme('win hct');
 
 export const themes: Record<ThemeMode, CakeTheme> = {
   'light.a': lightTheme,
   'dark.a': darkTheme,
+  'win hct': winHctTheme,
 };
 
 export type CakeTheme = ReturnType<typeof makeTheme>;
 
-export const isDarkMode = (mode: ThemeMode) => mode === 'dark.a';
+// win hct is a dark-canvas theme, so treat it as dark for any luminance-based
+// UI decisions (e.g. syntax-highlight themes, image treatments).
+export const isDarkMode = (mode: ThemeMode) => mode !== 'light.a';

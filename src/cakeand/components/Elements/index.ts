@@ -2,3 +2,7 @@ export { InputLabel } from './InputLabel';
 export type { InputLabelProps } from './InputLabel';
 export { HelperString } from './HelperString';
 export type { HelperStringProps, HelperTone } from './HelperString';
+export { PasswordMenu } from './PasswordMenu';
+export type { PasswordMenuProps, PasswordRequirement, PasswordStrength } from './PasswordMenu';
+export { Divider } from './Divider';
+export type { DividerDirection, DividerProps, DividerWeight } from './Divider';

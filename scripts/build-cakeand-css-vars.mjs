@@ -79,8 +79,13 @@ ${structure}${elevation}}
 [data-theme='dark.a'] {
 ${colorLines('dark.a').join('\n')}
 }
+
+[data-theme='win hct'] {
+${colorLines('win hct').join('\n')}
+}
 `;
 
 writeFileSync(outPath, css);
 const count = colorLines('light.a').length;
-console.log(`[cake-vars] wrote src/cakeand/tokens/cake-vars.css — ${count} color vars × 2 modes + structure.`);
+const modeCount = Object.keys(theme).length;
+console.log(`[cake-vars] wrote src/cakeand/tokens/cake-vars.css — ${count} color vars × ${modeCount} modes + structure.`);

@@ -8,8 +8,9 @@ import tokens from '../tokens/tokens.json';
 cake& colors are the **semantic** layer of the Figma variable system
 (`&color.<group>.<leaf>`), exported to
 [`src/cakeand/tokens/tokens.json`](../tokens/tokens.json) by
-`scripts/build-cakeand-tokens.mjs`. Each token has a `light.a` and `dark.a`
-value. Consume them in components via `props.theme.color.<group>.<leaf>`.
+`scripts/build-cakeand-tokens.mjs`. Each token has a `light.a`, `dark.a`, and
+`win hct` (Windows High-Contrast) value. Consume them in components via
+`props.theme.color.<group>.<leaf>`.
 
 export const groups = [...new Set(tokens.list.map((t) => t.group))];
 
@@ -38,6 +39,7 @@ export const Group = ({ name }) => (
           <th style={{ padding: 6 }}>Token</th>
           <th style={{ padding: 6 }}>Light A</th>
           <th style={{ padding: 6 }}>Dark A</th>
+          <th style={{ padding: 6 }}>Win HCT</th>
         </tr>
       </thead>
       <tbody>
@@ -58,6 +60,10 @@ export const Group = ({ name }) => (
               <td style={{ padding: 6, background: '#121318', borderRadius: 6 }}>
                 <Chip color={t.darkA} />{' '}
                 <code style={{ fontSize: 11, color: '#e4e4e7' }}>{t.darkA}</code>
+              </td>
+              <td style={{ padding: 6, background: '#202020', borderRadius: 6 }}>
+                <Chip color={t.winHct} />{' '}
+                <code style={{ fontSize: 11, color: '#e4e4e7' }}>{t.winHct}</code>
               </td>
             </tr>
           ))}

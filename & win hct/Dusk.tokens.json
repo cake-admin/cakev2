@@ -1,0 +1,165 @@
+{
+  "SystemColorWindowColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.1764705926179886,
+        0.19607843458652496,
+        0.21176470816135406
+      ],
+      "alpha": 1,
+      "hex": "#2D3236"
+    },
+    "$description": "Background of pages, panes, popups, and windows. Pair with SystemColorWindowTextColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4273",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorWindowTextColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        1,
+        1,
+        1
+      ],
+      "alpha": 1,
+      "hex": "#FFFFFF"
+    },
+    "$description": "Headings, body copy, lists, placeholder text, app and window borders, non-interactive UI. Pair with SystemColorWindowColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4274",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorHotlightColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.43921568989753723,
+        0.9215686321258545,
+        0.8705882430076599
+      ],
+      "alpha": 1,
+      "hex": "#70EBDE"
+    },
+    "$description": "Hyperlinks. Pair with SystemColorWindowColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4275",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorGrayTextColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.6509804129600525,
+        0.6509804129600525,
+        0.6509804129600525
+      ],
+      "alpha": 1,
+      "hex": "#A6A6A6"
+    },
+    "$description": "Inactive or disabled UI. Pair with SystemColorWindowColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4276",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorHighlightColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.6313725709915161,
+        0.7490196228027344,
+        0.8705882430076599
+      ],
+      "alpha": 1,
+      "hex": "#A1BFDE"
+    },
+    "$description": "Background or accent of selected, hovered, pressed, or in-progress UI. Pair with SystemColorHighlightTextColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4277",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorHighlightTextColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.12941177189350128,
+        0.1764705926179886,
+        0.23137255012989044
+      ],
+      "alpha": 1,
+      "hex": "#212D3B"
+    },
+    "$description": "Foreground of selected, hovered, pressed, or in-progress text/UI. Pair with SystemColorHighlightColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4278",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorButtonFaceColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.1764705926179886,
+        0.19607843458652496,
+        0.21176470816135406
+      ],
+      "alpha": 1,
+      "hex": "#2D3236"
+    },
+    "$description": "Background of buttons and interactive UI. Pair with SystemColorButtonTextColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4279",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorButtonTextColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.7137255072593689,
+        0.9647058844566345,
+        0.9411764740943909
+      ],
+      "alpha": 1,
+      "hex": "#B6F6F0"
+    },
+    "$description": "Foreground of buttons and interactive UI. Pair with SystemColorButtonFaceColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4280",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Dusk"
+  }
+}

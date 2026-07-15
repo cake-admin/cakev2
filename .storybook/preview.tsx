@@ -27,6 +27,8 @@ const withTheme: Decorator = (Story, context) => {
         data-theme={mode}
         style={{
           background: canvas,
+          width: '100%',
+          alignSelf: 'stretch',
           minHeight: isDocs ? 'auto' : '100vh',
           padding: isDocs ? '1.5rem' : '2rem',
           boxSizing: 'border-box',
@@ -50,6 +52,7 @@ const preview: Preview = {
         items: [
           { value: 'light.a', title: 'Light A', icon: 'sun' },
           { value: 'dark.a', title: 'Dark A', icon: 'moon' },
+          { value: 'win hct', title: 'Win HCT', icon: 'accessibility' },
         ],
         dynamicTitle: true,
       },
