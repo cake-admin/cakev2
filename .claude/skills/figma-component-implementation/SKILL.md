@@ -56,7 +56,16 @@ first). Produce the audit before writing any file:
   (focus-ring geometry, press feedback like thumb stretch).
 - **Accessibility expectations** — role, keyboard, required labels.
 - **Radix mapping** — which primitive owns behavior (see table below).
-- **Proposed React API** — typed props the variants map to.
+- **Reuse map** — before proposing any new markup, scan the design for parts
+  that are **already-built cake& Elements or Components**, and list them.
+  Figma composite/nested components almost always contain existing pieces:
+  a field's label row is `Elements/InputLabel`, its assistive line is
+  `Elements/HelperString`, an inline action is `Button`/`IconButton`, a rule
+  is `Elements/Divider`, a toggle is `Checkbox`/`Radio`/`Switch`. Match by
+  Figma layer name (`&input.label`, `&helper.string`, `&button`, …) and by
+  shape. Anything already built is **imported, not re-created**.
+- **Proposed React API** — typed props the variants map to (including any
+  props that pass through to the reused pieces).
 - **Edge cases** — labelless usage, controlled/uncontrolled, disabled links…
 
 ### Audit techniques (learned the hard way)
@@ -148,9 +157,24 @@ update. Conventions:
 6. **Fonts**: Rookery New only, via `fonts.css` + the typography tokens
    (`--type-size-*`, `--font-weight-*` or the theme presets). Never raw
    font-family/size literals.
-7. **Composites are built from primitives** — an enterprise composite (e.g.
-   a Toolbar, a DataCard) composes existing cake& components; it never
-   re-implements their visuals.
+7. **Compose from what's already built — never rebuild it.** If the Reuse map
+   (Phase B) found an existing cake& Element or Component that covers a part
+   of the design, **import and render it**; do not re-create its markup,
+   styles, or a11y. This is mandatory, not optional:
+   - Fields compose the form Elements — `TextInput` renders `InputLabel`
+     (label row) + `HelperString` (assistive line), wiring them via `htmlFor`
+     / `aria-describedby` and passing state down (e.g. the field's status
+     drives the helper's `tone`). New fields (Textarea, Select) do the same.
+   - Composites (Toolbar, DataCard, Dialog footer, …) render existing
+     `Button`/`IconButton`/`Checkbox`/`Divider`/… — they never reimplement a
+     button, a checkbox, or a rule.
+   - Reused pieces stay the single source of truth: fix a shared behavior in
+     the Element/Component, and every composer inherits it. If the design
+     needs a piece the existing component can't express, extend that
+     component (a new prop) rather than forking a private copy.
+   - Only build new internal markup for parts that have **no** existing
+     Element/Component — and if such a part is reusable (a label, a counter,
+     a rule), build it as a new `Elements/` piece first, then compose it.
 8. Focus is restyled, never removed. `React.forwardRef`, `displayName`,
    named export + barrel entry.
 
