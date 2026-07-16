@@ -26,4 +26,15 @@
     font-style: normal;
     font-display: swap;
   }
+
+  /* Docs pages: wide markdown tables (e.g. "Design tokens used") must scroll
+     inside the content column instead of overflowing under the right-rail
+     TOC. display:block turns the table into a scroll container; width
+     max-content + max-width keeps narrow tables at their natural size. */
+  .sbdocs-content table {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+  }
 </style>
