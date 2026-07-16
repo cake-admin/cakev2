@@ -196,6 +196,11 @@ const StyledButton = styled.button<{
   align-items: center;
   justify-content: center;
   width: ${(p) => (p.$fullWidth ? '100%' : 'auto')};
+  /* Kill the UA button padding (1px 6px in Chromium) — the StateLayer owns
+     ALL padding via the spacing tokens; without this reset every button was
+     6px wider per side than the Figma spec. */
+  appearance: none;
+  padding: 0;
   border: none;
   cursor: pointer;
   text-decoration: none;
