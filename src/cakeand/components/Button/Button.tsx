@@ -7,9 +7,8 @@ export type ButtonVariant = 'fill' | 'outline' | 'tonal' | 'ghost';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
-   * Height + type scale: `xs` 24px, `sm` 32px, `md` 40px, `lg` 48px tall.
-   * All sizes use the bold body type role except `lg`, which steps up to
-   * `bold.subject`.
+   * Height + type scale, always bold: `xs` 24px tall / 12px text, `sm` 32px /
+   * 12px, `md` 40px / 14px, `lg` 48px / 16px.
    * @default 'md'
    */
   size?: ButtonSize;
@@ -45,16 +44,17 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   fullWidth?: boolean;
 }
 
-/** Height + font size per size step (font sizes come from the type scale). */
+/** Height + font size per size step — bold at every size: xs/sm 12px
+ *  (caption), md 14px (body), lg 16px (subject). */
 const sizeStyles = (size: ButtonSize) => {
   const map = {
     xs: css`
       height: 24px;
-      font-size: var(--type-size-body);
+      font-size: var(--type-size-caption);
     `,
     sm: css`
       height: 32px;
-      font-size: var(--type-size-body);
+      font-size: var(--type-size-caption);
     `,
     md: css`
       height: 40px;

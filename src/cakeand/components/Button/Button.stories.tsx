@@ -165,8 +165,9 @@ export const Sizes: Story = {
     docs: {
       description: {
         story:
-          'Four heights: `xs` 24px, `sm` 32px, `md` 40px (default), `lg` 48px. ' +
-          'All sizes use the bold body type role; `lg` steps up to `bold.subject`.',
+          'Four heights: `xs` 24px, `sm` 32px, `md` 40px (default), `lg` 48px — ' +
+          'all bold, with the type stepping 12px (`caption`) at xs/sm, 14px ' +
+          '(`body`) at md, 16px (`subject`) at lg.',
       },
     },
   },
