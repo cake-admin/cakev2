@@ -54,7 +54,7 @@ Custom-property names mirror the Figma variables (\`&color/primary/primaryHover\
 | tonal · primary | \`--color-tonal-tonal\` | \`--color-text-icon-on-tonal-inverse\` | \`…tonal-hover\` / \`…tonal-press\` |
 | tonal · secondary | \`--color-tonal-tonal-secondary-overlay\` | \`--color-text-icon-on-tonal-secondary\` | \`…secondary-overlay-hover\` / \`…secondary-overlay-press\` |
 | ghost · primary | transparent | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
-| ghost · secondary | transparent | \`--color-secondary-secondary\` | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
+| ghost · secondary | transparent | \`--color-secondary-secondary\` (label underlined) | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
 | disabled (any) | \`--color-disabled-disabled\` | \`--color-disabled-disabled-inverse\` | — |
 
 (\`…\` = the same family prefix as the row's background.) Shape is
@@ -69,6 +69,9 @@ for tonal·md); per-size paddings use \`--space-050\`…\`--space-400\`.
 - Disabled uses the native \`disabled\` attribute (plus a styling hook for
   \`[aria-disabled='true']\`).
 - Icons are decorative: the text label always carries the accessible name.
+- The **ghost · secondary** button has a persistent label underline. With no
+  background or border, color alone would set it apart, so the underline is the
+  required non-color affordance (WCAG 1.4.1 Use of Color).
 
 ## Do / Don't
 

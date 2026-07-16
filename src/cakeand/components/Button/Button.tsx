@@ -250,9 +250,20 @@ const IconSlot = styled.span`
   justify-content: center;
 `;
 
-const Label = styled.span`
+const Label = styled.span<{ $underline: boolean }>`
   white-space: nowrap;
   line-height: 1.35;
+  /* Secondary ghost buttons have no background or border, so color alone would
+     distinguish them (WCAG 1.4.1). A persistent underline is the non-color
+     affordance (matches Figma container=none, type=secondary). */
+  ${(p) =>
+    p.$underline
+      ? css`
+          text-decoration: underline;
+          text-decoration-skip-ink: none;
+          text-underline-position: from-font;
+        `
+      : ''}
 `;
 
 /**
@@ -293,7 +304,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         <StateLayer $size={size} $variant={variant}>
           {startIcon ? <IconSlot>{startIcon}</IconSlot> : null}
-          <Label>{children}</Label>
+          <Label $underline={variant === 'ghost' && intent === 'secondary'}>{children}</Label>
           {endIcon ? <IconSlot>{endIcon}</IconSlot> : null}
         </StateLayer>
       </StyledButton>
