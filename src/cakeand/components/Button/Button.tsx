@@ -100,19 +100,23 @@ const colorStyles = (intent: ButtonIntent, variant: ButtonVariant) => {
         `;
   }
 
+  /* Outline strokes are drawn as INSET box-shadows, not borders: Figma
+     strokes are inside-aligned and overlap the padding, so the text inset
+     stays identical to fill/tonal/ghost (a CSS border would add its width
+     and make outline buttons read 2px wider per side). */
   if (variant === 'outline') {
     return p
       ? css`
           background: var(--color-surfaces-container);
           color: var(--color-primary-primary);
-          border: var(--stroke-200) solid var(--color-primary-primary);
+          box-shadow: inset 0 0 0 var(--stroke-200) var(--color-primary-primary);
           &:hover:not(:disabled) { background: var(--color-primary-primary-overlay); }
           &:active:not(:disabled) { background: var(--color-primary-primary-overlay-hover); }
         `
       : css`
           background: var(--color-surfaces-container);
           color: var(--color-secondary-secondary);
-          border: var(--stroke-200) solid var(--color-secondary-secondary);
+          box-shadow: inset 0 0 0 var(--stroke-200) var(--color-secondary-secondary);
           &:hover:not(:disabled) { background: var(--color-secondary-secondary-overlay); }
           &:active:not(:disabled) { background: var(--color-secondary-secondary-overlay-hover); }
         `;
@@ -161,7 +165,7 @@ const disabledStyles = (variant: ButtonVariant) => {
       &:disabled, &[aria-disabled='true'] {
         ${base}
         background: var(--color-surfaces-container);
-        border-color: var(--color-disabled-disabled);
+        box-shadow: inset 0 0 0 var(--stroke-200) var(--color-disabled-disabled);
         color: var(--color-disabled-disabled-inverse);
       }
     `;

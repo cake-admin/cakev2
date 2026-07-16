@@ -49,8 +49,8 @@ Custom-property names mirror the Figma variables (\`&color/primary/primaryHover\
 | --- | --- | --- | --- |
 | fill · primary | \`--color-primary-primary\` | \`--color-text-icon-on-primary\` | \`…primary-hover\` / \`…primary-press\` |
 | fill · secondary | \`--color-secondary-secondary\` | \`--color-text-icon-inverse\` | \`…secondary-hover\` / \`…secondary-press\` |
-| outline · primary | \`--color-surfaces-container\` + \`--stroke-200\` \`--color-primary-primary\` border | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
-| outline · secondary | \`--color-surfaces-container\` + \`--stroke-200\` \`--color-secondary-secondary\` border | \`--color-secondary-secondary\` | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
+| outline · primary | \`--color-surfaces-container\` + \`--stroke-200\` \`--color-primary-primary\` inset stroke | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
+| outline · secondary | \`--color-surfaces-container\` + \`--stroke-200\` \`--color-secondary-secondary\` inset stroke | \`--color-secondary-secondary\` | \`…secondary-overlay\` / \`…secondary-overlay-hover\` |
 | tonal · primary | \`--color-tonal-tonal\` | \`--color-text-icon-on-tonal-inverse\` | \`…tonal-hover\` / \`…tonal-press\` |
 | tonal · secondary | \`--color-tonal-tonal-secondary-overlay\` | \`--color-text-icon-on-tonal-secondary\` | \`…secondary-overlay-hover\` / \`…secondary-overlay-press\` |
 | ghost · primary | transparent | \`--color-primary-primary\` | \`…primary-overlay\` / \`…primary-overlay-hover\` |
