@@ -149,6 +149,11 @@ const colorStyles = (intent: ButtonIntent, variant: ButtonVariant) => {
     : css`
         background: transparent;
         color: var(--color-secondary-secondary);
+        /* Persistent label underline (per the Figma spec, e.g. the toast
+           button group): with no fill or border, color alone would set this
+           apart from plain text — the underline is the non-color affordance
+           (WCAG 1.4.1). */
+        text-decoration: underline;
         &:hover:not(:disabled) { background: var(--color-secondary-secondary-overlay); }
         &:active:not(:disabled) { background: var(--color-secondary-secondary-overlay-hover); }
       `;
