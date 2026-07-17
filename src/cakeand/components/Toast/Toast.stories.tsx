@@ -183,6 +183,10 @@ Viewport allows.
     layout: 'simple',
     title: 'Title',
     description: 'Lorem ipsum dolor sit amet.',
+    // The complex footer shows a timestamp beside the actions (per Figma
+    // 109:6541). Defaulted so flipping the Playground to layout="complex"
+    // matches the spec instead of showing an empty footer-left.
+    timestamp: '01/01/2024 • 9:00 AM',
     secondaryActionLabel: 'Secondary',
     primaryActionLabel: 'Primary',
     onSecondaryAction: fn(),
