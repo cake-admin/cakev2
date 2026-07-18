@@ -105,7 +105,7 @@ controls.
 | header title | \`--type-size-subject\` (16px), \`--font-weight-medium\`, \`--color-text-icon-primary\` |
 | list container | \`--radius-400\` (24px), \`--stroke-100\` \`--color-stroke-border-low\` border + item dividers |
 | footer alert | \`--color-primary-primary-overlay\` fill, rounded bottom \`--radius-400\`; message \`--color-text-icon-primary\` |
-| padding / gaps | \`--space-300\` (16px) panel padding, \`--space-500\` (24px) header↔list, \`--space-100\` (8px) header actions, \`--space-600\` (32px) footer padding/gap |
+| padding / gaps | \`--space-300\` (16px) panel padding, \`--space-500\` (24px) header↔list, \`--space-100\` (8px) header actions; the footer alert connects flush to the panel bottom with \`--space-300\` (16px) padding |
 
 The panel maxes at 432px (400px list + 16px padding each side) and fills
 narrower containers. The list items are \`Notification\`s with \`flush\` set —

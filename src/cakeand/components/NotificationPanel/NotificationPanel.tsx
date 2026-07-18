@@ -84,14 +84,16 @@ const List = styled.div`
   }
 `;
 
-/** Bottom footer alert — a full-bleed inline snackbar anchored to the panel's
- *  bottom edge, with matching rounded bottom corners. */
+/** Bottom footer alert — a full-bleed inline snackbar that connects flush to
+ *  the panel's bottom edge (no top gap), with matching rounded bottom corners.
+ *  Negative margins cancel the panel's padding so it spans edge to edge and
+ *  reaches the very bottom. */
 const Footer = styled.div`
   display: flex;
   align-items: center;
-  gap: var(--space-600);
-  margin: var(--space-300) calc(-1 * var(--space-300)) calc(-1 * var(--space-300));
-  padding: var(--space-300) var(--space-600);
+  gap: var(--space-300);
+  margin: 0 calc(-1 * var(--space-300)) calc(-1 * var(--space-300));
+  padding: var(--space-300);
   background: var(--color-primary-primary-overlay);
   border-bottom-left-radius: var(--radius-400);
   border-bottom-right-radius: var(--radius-400);
