@@ -18,7 +18,7 @@ const STATUS_ICON: Record<NotificationStatus, ModalIconType> = {
   neutral: 'neutral',
 };
 
-const Card = styled.article`
+const Card = styled.article<{ $flush: boolean }>`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -28,14 +28,22 @@ const Card = styled.article`
      sibling) so a normal message fits without cramping. The card still fills
      whatever narrower width its container gives it. */
   max-width: 480px;
-  border-radius: var(--radius-400);
-  overflow: hidden;
   background: var(--color-surfaces-on-container-high);
-  /* Figma "elevation/0" — a slight resting drop shadow (0 1px 2px light +
-     0 0 4px heavy), so a notification card lifts off the page it sits on. */
-  box-shadow:
-    0 1px 2px 0 var(--color-elevation-drop-shadow-light),
-    0 0 4px 0 var(--color-elevation-drop-shadow-heavy);
+
+  /* Standalone (default): rounded corners + the Figma "elevation/0" resting
+     drop shadow (0 1px 2px light + 0 0 4px heavy) so the card lifts off the
+     page. flush drops both so the card tiles inside a list/panel that owns
+     the rounding, clipping, and dividers (see NotificationPanel). */
+  ${(p) =>
+    p.$flush
+      ? ''
+      : `
+    border-radius: var(--radius-400);
+    overflow: hidden;
+    box-shadow:
+      0 1px 2px 0 var(--color-elevation-drop-shadow-light),
+      0 0 4px 0 var(--color-elevation-drop-shadow-heavy);
+  `}
 `;
 
 const Structure = styled.div`
@@ -193,6 +201,13 @@ export interface NotificationProps extends Omit<React.HTMLAttributes<HTMLElement
   onDismiss?: React.MouseEventHandler<HTMLButtonElement>;
   /** Accessible name for the close control. @default 'Dismiss notification' */
   dismissLabel?: string;
+  /**
+   * Renders flush — no own corner radius or drop shadow — so the card tiles
+   * inside a list/panel that provides the rounding, clipping, and dividers.
+   * `NotificationPanel` sets this on its items.
+   * @default false
+   */
+  flush?: boolean;
 }
 
 /**
@@ -226,6 +241,7 @@ export const Notification = React.forwardRef<HTMLElement, NotificationProps>(
       primaryActionDisabled = false,
       onDismiss,
       dismissLabel = 'Dismiss notification',
+      flush = false,
       ...props
     },
     ref,
@@ -265,6 +281,7 @@ export const Notification = React.forwardRef<HTMLElement, NotificationProps>(
     return (
       <Card
         ref={ref}
+        $flush={flush}
         aria-labelledby={title ? titleId : undefined}
         aria-describedby={description ? descId : undefined}
         {...props}
