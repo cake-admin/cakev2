@@ -27,7 +27,6 @@ const Panel = styled.section`
   flex-direction: column;
   width: 100%;
   max-width: 432px;
-  padding: var(--space-300);
   border-radius: var(--radius-400);
   overflow: hidden;
   background: var(--color-surfaces-container-blur);
@@ -40,6 +39,15 @@ const Panel = styled.section`
   box-shadow:
     0 4px 12px 0 var(--color-elevation-drop-shadow-light),
     0 3px 24px 0 var(--color-elevation-drop-shadow-heavy);
+`;
+
+/** Padded content region (header + list). Its own padding is the panel inset,
+ *  and its bottom padding is the gap down to the full-bleed footer alert. */
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--space-300);
 `;
 
 const Header = styled.div`
@@ -84,16 +92,18 @@ const List = styled.div`
   }
 `;
 
-/** Bottom footer alert — a full-bleed inline snackbar that connects flush to
- *  the panel's bottom edge (no top gap), with matching rounded bottom corners.
- *  Negative margins cancel the panel's padding so it spans edge to edge and
- *  reaches the very bottom. */
+/** Bottom footer alert — a full-bleed inline snackbar (Figma "notification
+ *  panel alert", node 114:5756). It's a direct child of the clipped panel, so
+ *  it spans the full panel width edge-to-edge and reaches the very bottom; the
+ *  Body's bottom padding leaves the gap above it. Its 32px inline padding
+ *  aligns the message with the notification icon column (16px list inset + 16px
+ *  card padding). The panel's overflow clip rounds its bottom corners. */
 const Footer = styled.div`
   display: flex;
   align-items: center;
   gap: var(--space-300);
-  margin: 0 calc(-1 * var(--space-300)) calc(-1 * var(--space-300));
-  padding: var(--space-300);
+  width: 100%;
+  padding: var(--space-300) var(--space-600);
   background: var(--color-primary-primary-overlay);
   border-bottom-left-radius: var(--radius-400);
   border-bottom-right-radius: var(--radius-400);
@@ -227,11 +237,13 @@ export const NotificationPanel = React.forwardRef<HTMLElement, NotificationPanel
 
     return (
       <Panel ref={ref} aria-labelledby={title ? headingId : undefined} {...props}>
-        <Header>
-          {title ? <Heading id={headingId}>{title}</Heading> : <span style={{ flex: 1 }} />}
-          <HeaderActions>{headerActions ?? defaultHeaderActions}</HeaderActions>
-        </Header>
-        <List>{children}</List>
+        <Body>
+          <Header>
+            {title ? <Heading id={headingId}>{title}</Heading> : <span style={{ flex: 1 }} />}
+            <HeaderActions>{headerActions ?? defaultHeaderActions}</HeaderActions>
+          </Header>
+          <List>{children}</List>
+        </Body>
         {footerNode}
       </Panel>
     );
