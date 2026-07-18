@@ -23,7 +23,11 @@ const Card = styled.article`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 400px;
+  /* Figma draws the card at 400px, but the description truncates awkwardly at
+     that width; widen the ceiling to 480px (matching the Toast-complex
+     sibling) so a normal message fits without cramping. The card still fills
+     whatever narrower width its container gives it. */
+  max-width: 480px;
   border-radius: var(--radius-400);
   overflow: hidden;
   background: var(--color-surfaces-on-container-high);

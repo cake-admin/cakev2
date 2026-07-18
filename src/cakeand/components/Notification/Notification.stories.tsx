@@ -10,7 +10,7 @@ const Stack = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  width: 400px;
+  width: 480px;
   max-width: 100%;
 `;
 
@@ -76,8 +76,9 @@ control is **IconButton**.
 | content gaps | \`--space-300\` (16px) icon↔text, \`--space-600\` (32px) text↔close, \`--space-075\` (6px) title↔description |
 | footer | \`--space-700\` (40px) indent (icon width + gap), \`--space-050\` (4px) within the meta line, \`--space-100\` (8px) between actions |
 
-Figma specifies a 400px width; treat it as a maximum — the card fills whatever
-width its container allows.
+Figma draws the card at 400px, but that truncates a normal message; the card
+maxes at **480px** (matching the Toast-complex sibling) and fills whatever
+narrower width its container allows.
 
 ## Accessibility
 
@@ -135,7 +136,7 @@ width its container allows.
     onPrimaryAction: { action: 'primary action', table: { category: 'Events' } },
     onDismiss: { action: 'dismiss', table: { category: 'Events' } },
   },
-  decorators: [(Story) => <div style={{ width: 400, maxWidth: '100%' }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ width: 480, maxWidth: '100%' }}>{Story()}</div>],
 } satisfies Meta<typeof Notification>;
 
 export default meta;
