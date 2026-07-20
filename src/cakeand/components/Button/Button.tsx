@@ -42,6 +42,16 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
    * @default false
    */
   fullWidth?: boolean;
+  /**
+   * Whether the label is underlined. Defaults to `true` for `ghost` +
+   * `secondary` only: with no fill or border those buttons would otherwise be
+   * distinguishable from plain text by color alone (WCAG 1.4.1).
+   *
+   * Set `false` when the button already sits in something that makes it
+   * obviously a control — a segmented control, a pager — where the underline
+   * reads as a stray link instead.
+   */
+  underline?: boolean;
 }
 
 /** Height + font size per size step — bold at every size: xs/sm 12px
@@ -199,6 +209,7 @@ const StyledButton = styled.button<{
   $intent: ButtonIntent;
   $variant: ButtonVariant;
   $fullWidth: boolean;
+  $underline: boolean;
 }>`
   position: relative;
   display: inline-flex;
@@ -222,6 +233,14 @@ const StyledButton = styled.button<{
   ${(p) => sizeStyles(p.$size)}
   ${(p) => colorStyles(p.$intent, p.$variant)}
   ${(p) => disabledStyles(p.$variant)}
+
+  /* Opting out of the ghost/secondary underline has to undo it here too, since
+     colorStyles sets it on the button as well as on the Label. */
+  ${(p) =>
+    !p.$underline &&
+    css`
+      text-decoration: none;
+    `}
 
   &:focus {
     outline: none;
@@ -291,12 +310,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       startIcon,
       endIcon,
       fullWidth = false,
+      underline,
       children,
       type = 'button',
       ...props
     },
     ref,
   ) => {
+    /* Ghost/secondary underlines by default (see Label); `underline` lets a
+       caller opt out where the affordance is already obvious. */
+    const showUnderline = underline ?? (variant === 'ghost' && intent === 'secondary');
+
     return (
       <StyledButton
         ref={ref}
@@ -305,11 +329,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         $intent={intent}
         $variant={variant}
         $fullWidth={fullWidth}
+        $underline={showUnderline}
         {...props}
       >
         <StateLayer $size={size} $variant={variant}>
           {startIcon ? <IconSlot>{startIcon}</IconSlot> : null}
-          <Label $underline={variant === 'ghost' && intent === 'secondary'}>{children}</Label>
+          <Label $underline={showUnderline}>{children}</Label>
           {endIcon ? <IconSlot>{endIcon}</IconSlot> : null}
         </StateLayer>
       </StyledButton>
