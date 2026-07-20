@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { ChevronDown } from 'lucide-react';
 import { Tabs as RadixTabs } from 'radix-ui';
 
 /**
@@ -113,6 +114,28 @@ const Label = styled.span`
   white-space: nowrap;
 `;
 
+/* Figma 147:8716 puts a 24px chevron in the trailing slot of a row that owns
+   sub-items. It inherits the row's color via currentColor, so it turns accent
+   along with the label when selected. */
+const Chevron = styled.span<{ $expanded: boolean }>`
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  transform: rotate(${(p) => (p.$expanded ? '180deg' : '0deg')});
+  transition: transform 150ms ease;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+`;
+
 export interface VerticalTabItemProps
   extends React.ComponentPropsWithoutRef<typeof RadixTabs.Trigger> {
   /** Value linking this row to its `VerticalTabsContent` panel. */
@@ -121,14 +144,43 @@ export interface VerticalTabItemProps
   children: React.ReactNode;
   /** Dims the row and drops it from the tab order. @default false */
   disabled?: boolean;
+  /**
+   * Marks this row as owning sub-items and sets their disclosure state. Passing
+   * it renders the trailing chevron and sets `aria-expanded`; leave it
+   * undefined for a plain row.
+   */
+  expanded?: boolean;
+  /** Fires with the next disclosure state when a collapsible row is activated. */
+  onExpandedChange?: (expanded: boolean) => void;
 }
 
 export const VerticalTabItem = React.forwardRef<HTMLButtonElement, VerticalTabItemProps>(
-  ({ children, ...props }, ref) => (
-    <Trigger ref={ref} {...props}>
-      <Label>{children}</Label>
-    </Trigger>
-  ),
+  ({ children, expanded, onExpandedChange, onClick, ...props }, ref) => {
+    /* Only a row that was given `expanded` is collapsible. The chevron is drawn
+       inside the trigger rather than as its own button: a button cannot nest
+       inside a button, so the row itself both selects and toggles, and
+       `aria-expanded` tells assistive tech what activating it will do. */
+    const collapsible = expanded !== undefined;
+
+    return (
+      <Trigger
+        ref={ref}
+        aria-expanded={collapsible ? expanded : undefined}
+        onClick={(event) => {
+          onClick?.(event);
+          if (collapsible) onExpandedChange?.(!expanded);
+        }}
+        {...props}
+      >
+        <Label>{children}</Label>
+        {collapsible ? (
+          <Chevron $expanded={Boolean(expanded)} aria-hidden>
+            <ChevronDown />
+          </Chevron>
+        ) : null}
+      </Trigger>
+    );
+  },
 );
 
 VerticalTabItem.displayName = 'VerticalTabItem';

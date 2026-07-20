@@ -11,9 +11,10 @@ import { Tabs as RadixTabs } from 'radix-ui';
  * trigger↔panel wiring. `VerticalTabItem` and `VerticalTabSubItem` are the rows
  * that go inside `VerticalTabsList`.
  *
- * Note: Figma specs the *rows* (nodes 145:8456 / 145:8584), not the surrounding
- * layout, so the rail↔panel gap and the spacing between rows are chosen from
- * cake& spacing tokens rather than lifted from the design.
+ * The rail's own geometry comes from the assembled Figma nav (node 147:8709):
+ * `--space-050` padding, `--space-025` between rows, `--radius-200` corners.
+ * Only the rail↔panel gap is still a local choice, since Figma draws the nav on
+ * its own without a panel beside it.
  */
 
 const Root = styled(RadixTabs.Root)`
@@ -27,7 +28,9 @@ const List = styled(RadixTabs.List)`
   display: flex;
   flex-direction: column;
   flex: none;
-  gap: var(--space-050);
+  gap: var(--space-025);
+  padding: var(--space-050);
+  border-radius: var(--radius-200);
 `;
 
 const Content = styled(RadixTabs.Content)`
