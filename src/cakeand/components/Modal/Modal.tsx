@@ -3,6 +3,7 @@ import { Dialog } from 'radix-ui';
 import styled, { keyframes } from 'styled-components';
 
 import { ModalTitle, type ModalTitleProps } from './ModalTitle';
+import { nativeScrollbarStyles } from '../Elements/Scrollbar';
 
 /**
  * Figma 105:5863 intrinsic modal sizing: the design opens at 448px and may grow
@@ -50,6 +51,11 @@ const Content = styled(Dialog.Content)`
   max-width: min(${MAX_WIDTH}px, calc(100vw - var(--space-500) * 2));
   max-height: calc(100vh - var(--space-800));
   overflow: hidden auto;
+  /* Native-overflow scrollbar shared with the Scrollbar element — Dialog.Content
+     is itself the scroll container (Radix owns it for focus trapping and
+     dismiss), so it can't host a ScrollArea; this keeps a tall modal's
+     scrollbar identical to every other cake& scrollbar. */
+  ${nativeScrollbarStyles}
   transform: translate(-50%, -50%);
   border-radius: var(--radius-400);
   background: var(--color-surfaces-container);

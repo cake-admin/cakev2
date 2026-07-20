@@ -27,11 +27,12 @@ Every color, spacing, radius, and shadow value resolves from cake& CSS custom
 properties that mirror Figma variables. The **Theme** toolbar re-themes every
 example live; nothing is hardcoded.
 
-Scrolling is delegated to the Radix \`ScrollArea\` primitive. Set \`maxHeight\`
-to cap the content height; the tokenized scrollbar only appears when the
-content overflows. The container is intentionally semantic-neutral so it can
-host non-menu content — pass \`role="menu"\` yourself when the children are
-actual menu items.
+Scrolling is delegated to the shared **Scrollbar** element (\`Elements/Scrollbar\`,
+the cake& Radix \`ScrollArea\` wrapper) rather than re-styled here. Set
+\`maxHeight\` to cap the content height; the tokenized scrollbar only appears
+when the content overflows. The container is intentionally semantic-neutral so
+it can host non-menu content — pass \`role="menu"\` yourself when the children
+are actual menu items.
 
 ## Usage
 
@@ -169,7 +170,7 @@ export const Scrolling: Story = {
     docs: {
       description: {
         story:
-          'With `maxHeight` set, overflowing content scrolls inside the Radix scroll area and the ' +
+          'With `maxHeight` set, overflowing content scrolls inside the shared `Scrollbar` element and the ' +
           'tokenized scrollbar thumb (`--color-stroke-border-high`) appears.',
       },
     },

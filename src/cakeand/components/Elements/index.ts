@@ -6,3 +6,5 @@ export { PasswordMenu } from './PasswordMenu';
 export type { PasswordMenuProps, PasswordRequirement, PasswordStrength } from './PasswordMenu';
 export { Divider } from './Divider';
 export type { DividerDirection, DividerProps, DividerWeight } from './Divider';
+export { Scrollbar, nativeScrollbarStyles } from './Scrollbar';
+export type { ScrollbarProps } from './Scrollbar';

@@ -5,6 +5,7 @@ import { ChevronDown } from 'lucide-react';
 
 import { InputLabel } from '../Elements/InputLabel';
 import { HelperString, type HelperTone } from '../Elements/HelperString';
+import { nativeScrollbarStyles } from '../Elements/Scrollbar';
 
 /**
  * cake& Dropdown — a single-select field (Figma "Dropdowns", node 62:3493),
@@ -172,16 +173,9 @@ const Viewport = styled(RadixSelect.Viewport)`
   flex-direction: column;
   gap: var(--space-050);
 
-  /* Slim tonal scrollbar echoing the Figma menu scrollbar. */
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-stroke-border-high) transparent;
-  &::-webkit-scrollbar {
-    width: var(--space-050);
-  }
-  &::-webkit-scrollbar-thumb {
-    background: var(--color-stroke-border-high);
-    border-radius: var(--radius-50);
-  }
+  /* Native-overflow scrollbar shared with the Scrollbar element, so Radix
+     Select's own viewport matches every other cake& scrollbar. */
+  ${nativeScrollbarStyles}
 `;
 
 const Item = styled(RadixSelect.Item)`
