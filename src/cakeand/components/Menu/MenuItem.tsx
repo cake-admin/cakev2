@@ -51,7 +51,12 @@ const Row = styled.div<{ $variant: MenuItemVariant; $selected: boolean; $disable
   ${(p) =>
     !p.$disabled &&
     css`
-      &:hover {
+      /* \`:has\` picks up Radix's highlight: inside a DropdownMenu/ContextMenu the
+         primitive marks the active item with data-highlighted (pointer hover and
+         arrow-key navigation alike), and that background is the affordance —
+         see the matching outline suppression on Action. */
+      &:hover,
+      &:has(> button[data-highlighted]) {
         background: ${p.$selected
           ? 'var(--color-tonal-tonal-overlay-hover)'
           : 'var(--color-tonal-tonal-secondary-overlay-hover)'};
@@ -95,6 +100,17 @@ const Action = styled.button<{ $selected: boolean; $disabled: boolean }>`
     outline: var(--stroke-200) solid var(--color-primary-primary);
     outline-offset: var(--space-025);
     border-radius: var(--radius-100);
+  }
+
+  /* Inside a Radix menu the primitive owns the active row: it sets
+     data-highlighted and moves DOM focus to the item on *pointer hover* as well
+     as arrow-key navigation, which would otherwise paint a keyboard focus ring
+     just for hovering. There the row highlight (see Row) is the affordance, so
+     drop the ring. Standalone MenuItems are unaffected — nothing sets
+     data-highlighted outside a Radix menu, so Tab still shows the ring. */
+  &[data-highlighted],
+  &[data-highlighted]:focus-visible {
+    outline: none;
   }
 `;
 
