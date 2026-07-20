@@ -160,6 +160,23 @@ const Input = styled.input`
   }
 `;
 
+const Suffix = styled.span`
+  flex-shrink: 0;
+  padding-right: var(--space-100);
+  font-family: var(--font-family);
+  font-size: var(--type-size-body);
+  line-height: 1.35;
+  color: var(--color-text-icon-secondary);
+
+  ${Box}:focus-within & {
+    color: var(--color-text-icon-primary);
+  }
+
+  ${Box}:has(input:disabled) & {
+    color: var(--color-disabled-disabled-inverse);
+  }
+`;
+
 /** Decrement/increment sit flush against the box's trailing edge, adjacent
  *  with no gap (per the Figma layout). */
 const Stepper = styled.div`
@@ -203,6 +220,8 @@ export interface NumberInputProps
   max?: number;
   /** Amount the stepper buttons add/subtract per click. @default 1 */
   step?: number;
+  /** Non-editable text shown after the value, such as `%` or `kg`. */
+  suffix?: React.ReactNode;
   /** Fires with the new value (or `undefined` if cleared) on every change. */
   onValueChange?: (value: number | undefined) => void;
   /** Shows the decrement ("−") button. @default true */
@@ -225,6 +244,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
       min,
       max,
       step = 1,
+      suffix,
       onValueChange,
       showDecrement = true,
       showIncrement = true,
@@ -319,6 +339,7 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               onFocus={onFocus}
               {...props}
             />
+            {suffix != null ? <Suffix aria-hidden>{suffix}</Suffix> : null}
             <Stepper>
               {showDecrement ? (
                 <IconButton

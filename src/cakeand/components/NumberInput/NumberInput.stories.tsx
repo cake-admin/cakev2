@@ -101,6 +101,7 @@ the stepper buttons' \`IconButton\` \`md\`/\`sm\` diameters 1:1; the value inset
     label: { control: 'text', table: { category: 'Content' } },
     placeholder: { control: 'text', table: { category: 'Content' } },
     helperText: { control: 'text', table: { category: 'Content' } },
+    suffix: { control: 'text', table: { category: 'Content' } },
     showLabelInfo: { control: 'boolean', table: { category: 'Content' } },
     showDecrement: { control: 'boolean', table: { category: 'Content' } },
     showIncrement: { control: 'boolean', table: { category: 'Content' } },

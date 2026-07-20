@@ -10,7 +10,7 @@ const Row = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
-const TYPES: ModalIconType[] = ['icon', 'info', 'success', 'warning', 'error'];
+const TYPES: ModalIconType[] = ['icon', 'info', 'success', 'warning', 'error', 'neutral'];
 
 const meta = {
   title: 'Components/Modal/Modal Icon',
@@ -23,7 +23,9 @@ const meta = {
 Modal Icon is the 32px leading visual for modal headers. Use a semantic type
 for informational, successful, warning, or error dialogs. Use the generic
 \`icon\` type only when a custom 24px glyph adds useful context. Modal Title
-exclusively composes this component for its leading treatment.
+exclusively composes this component for its leading treatment. This shared
+semantic glyph set is also what the \`Toast\` component composes for its
+status icon (\`neutral\` covers Toast's colorless "greyscale" status).
 
 Every color, spacing, radius, and type value resolves from cake& CSS custom
 properties that mirror Figma variables. The **Theme** toolbar re-themes every
@@ -42,6 +44,7 @@ is decorative, because the dialog heading already communicates the meaning.
 <ModalIcon type="error" />
 <ModalIcon type="icon" icon={<PanelsTopLeft />} label="Workspace" />
 <ModalIcon type="success" decorative />
+<ModalIcon type="neutral" />
 \`\`\`
 
 ## Design tokens used
@@ -53,6 +56,7 @@ is decorative, because the dialog heading already communicates the meaning.
 | success | \`--color-success-success\` |
 | warning | \`--color-warning-warn\` |
 | error | \`--color-error-error\` |
+| neutral | \`--color-text-icon-primary\` (info circle-i shape) |
 | glyph inset | \`--space-050\` (4px) |
 
 Figma node 97:5706 specifies a 24px glyph with 4px state-layer padding,

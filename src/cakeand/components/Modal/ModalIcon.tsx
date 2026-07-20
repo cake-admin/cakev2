@@ -2,7 +2,7 @@ import React from 'react';
 import { AccessibleIcon } from 'radix-ui';
 import styled from 'styled-components';
 
-export type ModalIconType = 'icon' | 'info' | 'success' | 'warning' | 'error';
+export type ModalIconType = 'icon' | 'info' | 'success' | 'warning' | 'error' | 'neutral';
 
 /** Figma 97:5706 intrinsic icon geometry: 24px glyph inside 4px state padding. */
 const GLYPH_SIZE = 24;
@@ -12,15 +12,14 @@ const GLYPH_SIZE = 24;
  * shapes stay faithful while `currentColor` lets the active cake& theme drive
  * their color. `icon` is the generic fallback glyph.
  */
+/** Circle-i glyph shared by `info` (blue) and `neutral` (ink) — same Figma
+ *  shape, recolored per status via `COLOR`. */
+const INFO_CIRCLE_PATH =
+  'M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12ZM13 7V9H11V7H13ZM13 17V10H11V17H13Z';
+
 const GLYPH: Record<ModalIconType, React.ReactNode> = {
-  info: (
-    <path
-      fillRule="evenodd"
-      clipRule="evenodd"
-      d="M22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12ZM13 7V9H11V7H13ZM13 17V10H11V17H13Z"
-      fill="currentColor"
-    />
-  ),
+  info: <path fillRule="evenodd" clipRule="evenodd" d={INFO_CIRCLE_PATH} fill="currentColor" />,
+  neutral: <path fillRule="evenodd" clipRule="evenodd" d={INFO_CIRCLE_PATH} fill="currentColor" />,
   success: (
     <path
       fillRule="evenodd"
@@ -61,6 +60,7 @@ const COLOR: Record<ModalIconType, string> = {
   success: 'var(--color-success-success)',
   warning: 'var(--color-warning-warn)',
   error: 'var(--color-error-error)',
+  neutral: 'var(--color-text-icon-primary)',
 };
 
 const DEFAULT_LABEL: Record<ModalIconType, string> = {
@@ -69,6 +69,7 @@ const DEFAULT_LABEL: Record<ModalIconType, string> = {
   success: 'Success',
   warning: 'Warning',
   error: 'Error',
+  neutral: 'Notice',
 };
 
 const Root = styled.span<{ $type: ModalIconType }>`
@@ -116,7 +117,11 @@ export interface ModalIconProps extends React.HTMLAttributes<HTMLSpanElement> {
  * cake& ModalIcon — the modal leading item (Figma `_elements / modal leading
  * item`, node 97:5706). It supplies the semantic 24px glyph and its 4px
  * tokenized state padding; ModalTitle exclusively composes this component for
- * leading icon treatments.
+ * leading icon treatments. The same semantic glyph set (`info`/`success`/
+ * `warning`/`error`) is the exact shape used by Toast's status icon — Toast
+ * reuses this component rather than forking its own copy. `neutral` extends
+ * the set for Toast's colorless "greyscale" status (Figma node 108:5974),
+ * reusing the `info` circle-i shape recolored to the neutral ink token.
  */
 export const ModalIcon = React.forwardRef<HTMLSpanElement, ModalIconProps>(
   (

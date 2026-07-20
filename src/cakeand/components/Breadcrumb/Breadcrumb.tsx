@@ -154,6 +154,13 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
   ) => {
     const lastIndex = items.length - 1;
 
+    /* Radix returns focus to the trigger when the menu closes. That's right for
+       Escape — keyboard users need focus back — but when the menu is dismissed
+       by clicking the page, the restored focus inherits the :focus-visible
+       state from the menu item it came from and paints a focus ring nobody
+       asked for. Track pointer dismissals and skip the restore for those only. */
+    const dismissedByPointer = React.useRef(false);
+
     /* Collapse only when it actually hides something — otherwise the overflow
        control would open an empty menu. */
     const hidden =
@@ -186,7 +193,18 @@ export const Breadcrumb = React.forwardRef<HTMLElement, BreadcrumbProps>(
               />
             </RadixDropdownMenu.Trigger>
             <RadixDropdownMenu.Portal>
-              <RadixDropdownMenu.Content asChild sideOffset={8} align="start">
+              <RadixDropdownMenu.Content
+                asChild
+                sideOffset={8}
+                align="start"
+                onPointerDownOutside={() => {
+                  dismissedByPointer.current = true;
+                }}
+                onCloseAutoFocus={(event) => {
+                  if (dismissedByPointer.current) event.preventDefault();
+                  dismissedByPointer.current = false;
+                }}
+              >
                 <MenuContainer width="max-content">
                   {hidden.map((item, i) => (
                     <RadixDropdownMenu.Item asChild key={`hidden-${i}`}>
