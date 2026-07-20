@@ -63,6 +63,7 @@ export const generatedTokensSchema = z.object({
   diverging: paletteSchema.optional(),
   semantic: semanticSchema.optional(),
   singleTokens: z.array(singleTokenSchema).optional().default([]),
+  paletteTokens: z.record(z.string(), z.array(singleTokenSchema)).optional().default({}),
 });
 
 export type RawToken = z.infer<typeof rawTokenSchema>;
@@ -71,6 +72,8 @@ export type Palette = z.infer<typeof paletteSchema>;
 export type Semantic = z.infer<typeof semanticSchema>;
 export type SemanticRole = keyof Semantic;
 export type SingleToken = z.infer<typeof singleTokenSchema>;
+/** Per-stop provenance for the fixed palettes, keyed by variation name. */
+export type PaletteTokens = Record<string, SingleToken[]>;
 export type GeneratedTokens = z.infer<typeof generatedTokensSchema>;
 
 /**

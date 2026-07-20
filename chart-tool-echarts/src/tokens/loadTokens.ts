@@ -6,6 +6,7 @@ import {
   type Mode,
   type Palette,
   type RawTokens,
+  type PaletteTokens,
   type Semantic,
   type SemanticRole,
   type SingleToken,
@@ -52,6 +53,7 @@ function parseTokens(): {
   diverging: Palette;
   semantic: Semantic;
   singleTokens: SingleToken[];
+  paletteTokens: PaletteTokens;
 } {
   const { $comment, ...rest } = rawTokensJson as Record<string, unknown>;
   void $comment;
@@ -66,6 +68,7 @@ function parseTokens(): {
       diverging?: Palette;
       semantic?: Semantic;
       singleTokens?: SingleToken[];
+      paletteTokens?: PaletteTokens;
     };
     return {
       tokens: fallback.tokens ?? {},
@@ -75,6 +78,7 @@ function parseTokens(): {
       diverging: fallback.diverging ?? FALLBACK_DIVERGING,
       semantic: fallback.semantic ?? FALLBACK_SEMANTIC,
       singleTokens: fallback.singleTokens ?? [],
+      paletteTokens: fallback.paletteTokens ?? {},
     };
   }
   return {
@@ -98,6 +102,15 @@ export const SEMANTIC: Semantic = parsed.semantic;
 /** Named token variations (primary/secondary/tonal families) selectable as a
  *  chart's single color. Used by the color controls list. */
 export const SINGLE_TOKENS: SingleToken[] = parsed.singleTokens;
+
+/** Per-stop provenance for the fixed palettes (categorical, sequential, …), so the
+ *  color controls can list each stop's token name/path next to its swatch. */
+export const PALETTE_TOKENS: PaletteTokens = parsed.paletteTokens;
+
+/** The named token stops behind a fixed palette variation, or [] if unknown. */
+export function paletteTokensFor(variation: string): SingleToken[] {
+  return PALETTE_TOKENS[variation] ?? [];
+}
 
 /** The design system's categorical chart palette for a mode. */
 export function categoricalFor(mode: Mode): string[] {

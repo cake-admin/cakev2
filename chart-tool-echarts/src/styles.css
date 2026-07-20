@@ -129,6 +129,11 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.55);
   pointer-events: none;
 }
+/* A bright white top edge reads as plastic on a dark surface. Dim the highlight
+   and let a deeper drop shadow carry the lift instead. */
+[data-theme='dark'] .app__brand-float {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
 
 .stage {
   flex: 1;
@@ -756,6 +761,17 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+/* Read-only listing of a fixed palette's stops — no hover/press affordance. */
+.token-row--static {
+  cursor: default;
+  transition: none;
+}
+.token-row--static:hover {
+  border-color: var(--chrome-border-strong);
+}
+.token-row--static:active {
+  transform: none;
 }
 .token-list--scroll {
   max-height: 300px;

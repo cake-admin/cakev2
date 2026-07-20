@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 65 65" width="65" height="65" role="img" aria-label="cake&amp;">
+  <!-- The official cake& mark (src/assets/cake.svg). The tile is snapped to fill
+       the viewBox — the source art insets it by 0.18px, an export artifact that
+       shows as a hairline gap at favicon sizes. Geometry is otherwise untouched,
+       and the brand red holds in both light and dark themes. -->
+  <rect width="65" height="65" rx="16.25" fill="#E1251B" />
+  <circle cx="32.5" cy="13.4667" r="4.04" fill="#ffffff" />
+  <rect x="19.0333" y="21.5467" width="26.9333" height="5.38667" rx="2.69333" fill="#ffffff" />
+  <rect x="19.0333" y="30.9734" width="26.9333" height="5.38667" rx="2.69333" fill="#ffffff" />
+  <rect x="10.9533" y="40.4" width="43.0933" height="5.38667" rx="2.69333" fill="#ffffff" />
+  <rect x="24.42" y="49.8267" width="16.16" height="5.38667" rx="2.69333" fill="#ffffff" />
+</svg>

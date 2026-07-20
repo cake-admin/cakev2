@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useChartStore } from '../../state/chartStore';
 import { useChartTheme } from '../../theme/ThemeProvider';
-import { SINGLE_TOKENS } from '../../tokens/loadTokens';
+import { SINGLE_TOKENS, paletteTokensFor } from '../../tokens/loadTokens';
 import type { Variation } from '../../theme/chartTheme.types';
 import type { SingleToken } from '../../tokens/tokens.types';
 
@@ -18,6 +18,14 @@ const VISIBLE_VARIATIONS = VARIATIONS.filter((v) => !v.hidden);
 
 /** Variations that pick a single token from a family (vs. a fixed palette). */
 const TOKEN_VARIATIONS: ReadonlySet<Variation> = new Set(['primary', 'secondary']);
+
+/** Fixed-palette variations → the key their token stops are emitted under. */
+const PALETTE_TOKEN_KEY: Partial<Record<Variation, string>> = {
+  categorical: 'categorical',
+  sequential: 'sequential',
+  semantic: 'semanticScale',
+  diverging: 'diverging',
+};
 
 const KIND_ORDER = ['Normal', 'Tonal', 'Overlay'] as const;
 type Kind = (typeof KIND_ORDER)[number];
@@ -64,6 +72,10 @@ export function ColorControls() {
   const preview =
     rampOf[color.variation] ?? theme.color.resolve(color, color.variation === 'categorical' ? 12 : 1);
   const activeVariation = VARIATIONS.find((v) => v.id === color.variation);
+
+  // Fixed palettes list their token stops read-only — same anatomy as the
+  // wireframe picker, but informational (nothing here is selectable).
+  const paletteTokens = paletteTokensFor(PALETTE_TOKEN_KEY[color.variation] ?? '');
 
   const selectVariation = (id: Variation) => {
     if (!TOKEN_VARIATIONS.has(id)) {
@@ -133,6 +145,27 @@ export function ColorControls() {
           <span key={`${c}-${i}`} className="swatch" style={{ background: c }} />
         ))}
       </div>
+
+      {paletteTokens.length > 0 ? (
+        <div className="token-list token-list--scroll token-list--static" style={{ marginTop: 12 }}>
+          <div className="token-group">
+            <div className="token-group__title">Tokens</div>
+            {paletteTokens.map((t) => {
+              const c = swatchOf(t);
+              return (
+                <div key={t.id} className="token-row token-row--static">
+                  <span className="token-row__swatch" style={{ background: c }} />
+                  <span className="token-row__meta">
+                    <span className="token-row__label">{t.label}</span>
+                    <span className="token-row__sub">{t.path}</span>
+                    <span className="token-row__value">{displayValue(c)}</span>
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
     </>
   );
 }

@@ -66,22 +66,28 @@ const CATEGORICAL_TONES = [
   ['red', '70'],
   ['pure neutral', '70'],
 ];
-const catHexes = CATEGORICAL_TONES.map(([group, tone]) => {
+/** Hero tone → a listable token entry (same shape as singleTokens) so the UI can
+ *  show each palette stop's name/path/value, not just its swatch. */
+function heroToken(group, tone) {
   const h = heroHex(group, tone);
   if (!h) warnings.push(`missing hero ${group}/${tone}`);
-  return h;
-}).filter(Boolean);
+  return h
+    ? { id: `hero.${group}.${tone}`, label: `${group} ${tone}`, group: 'Hero', path: `&color hero/${group}/${tone}`, lightA: h, darkA: h }
+    : null;
+}
+const heroTokens = (tones) => tones.map(([g, t]) => heroToken(g, t)).filter(Boolean);
+const hexesOf = (list) => list.map((t) => t.lightA);
+
+const categoricalTokens = heroTokens(CATEGORICAL_TONES);
+const catHexes = hexesOf(categoricalTokens);
 const categorical = { lightA: catHexes, darkA: catHexes };
 
 // Sequential single-hue ramp (light → dark) for value-encoded charts: heatmap,
 // choropleth, area, funnel, calendar. Sourced from the indigo hero tones (80→30),
 // identical in light & dark like the categorical set.
-const SEQUENTIAL_TONES = ['80', '70', '60', '50', '40', '30'];
-const seqHexes = SEQUENTIAL_TONES.map((tone) => {
-  const h = heroHex('indigo', tone);
-  if (!h) warnings.push(`missing hero indigo/${tone}`);
-  return h;
-}).filter(Boolean);
+const SEQUENTIAL_TONES = ['80', '70', '60', '50', '40', '30'].map((tone) => ['indigo', tone]);
+const sequentialTokens = heroTokens(SEQUENTIAL_TONES);
+const seqHexes = hexesOf(sequentialTokens);
 const sequential = { lightA: seqHexes, darkA: seqHexes };
 
 // Semantic "bad → good" ramp (red → green through amber/yellow/lime) for value-
@@ -93,11 +99,8 @@ const SEMANTIC_SCALE_TONES = [
   ['lime', '80'],
   ['green', '60'],
 ];
-const semScaleHexes = SEMANTIC_SCALE_TONES.map(([group, tone]) => {
-  const h = heroHex(group, tone);
-  if (!h) warnings.push(`missing hero ${group}/${tone}`);
-  return h;
-}).filter(Boolean);
+const semanticScaleTokens = heroTokens(SEMANTIC_SCALE_TONES);
+const semScaleHexes = hexesOf(semanticScaleTokens);
 const semanticScale = { lightA: semScaleHexes, darkA: semScaleHexes };
 
 // Diverging ramp (jade ↔ warm-neutral ↔ violet) — a neutral two-ended scale for
@@ -109,11 +112,8 @@ const DIVERGING_TONES = [
   ['violet', '70'],
   ['violet', '40'],
 ];
-const divHexes = DIVERGING_TONES.map(([group, tone]) => {
-  const h = heroHex(group, tone);
-  if (!h) warnings.push(`missing hero ${group}/${tone}`);
-  return h;
-}).filter(Boolean);
+const divergingTokens = heroTokens(DIVERGING_TONES);
+const divHexes = hexesOf(divergingTokens);
 const diverging = { lightA: divHexes, darkA: divHexes };
 
 // Semantic color set for meaning-based charts (positive/negative bars, waterfall).
@@ -172,6 +172,14 @@ const out = {
   diverging,
   semantic,
   singleTokens,
+  // Per-stop provenance for the fixed palettes above, so the color controls can
+  // list each stop's token name / path alongside its swatch.
+  paletteTokens: {
+    categorical: categoricalTokens,
+    sequential: sequentialTokens,
+    semanticScale: semanticScaleTokens,
+    diverging: divergingTokens,
+  },
 };
 
 writeFileSync(join(here, '..', 'src', 'tokens', 'tokens.json'), JSON.stringify(out, null, 2) + '\n');
