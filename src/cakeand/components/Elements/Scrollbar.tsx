@@ -42,18 +42,23 @@ const Viewport = styled(RadixScrollArea.Viewport)<{ $horizontal: boolean }>`
   max-height: var(--_max-height);
   max-width: var(--_max-width);
 
-  /* Radix sets its content wrapper to \`display: table; min-width: 100%\` so it
-     can measure content on both axes — and so wide content can grow past the
-     viewport, which is what makes horizontal scrolling work. Keep that default
-     whenever a horizontal axis is in play. For vertical-only scrollers force
-     block instead: table sizing lets a wide child stretch the wrapper beyond
-     100%, which breaks \`text-overflow: ellipsis\` in menus. */
+  /* Radix sets its content wrapper to display:table with min-width:100%, and
+     that table display is load-bearing: it makes the wrapper size to its
+     children on both axes, which is how Radix measures content to work out the
+     thumb's length. Overriding it to block defeats that measurement and the
+     thumb renders full-length instead of proportional.
+
+     Vertical-only scrollers still need the wrapper not to grow past the
+     viewport, or a wide child stretches the table and text-overflow:ellipsis
+     stops working in menus. Capping max-width does that without touching the
+     display, so measurement survives. Horizontal axes get no cap — content
+     growing wider is exactly what makes them scroll. */
   ${(p) =>
     p.$horizontal
       ? ''
       : css`
           & > div {
-            display: block !important;
+            max-width: 100%;
           }
         `}
 `;
