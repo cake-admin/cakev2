@@ -157,11 +157,19 @@ a prop through every child:
 ## Overflow
 
 The rail scrolls when the rows outgrow it, so a long nav never overruns the
-footer. It uses native overflow with the shared \`nativeScrollbarStyles\` rather
-than the \`Scrollbar\` element: this region is sized by flexbox, and \`Scrollbar\`
-bounds its viewport with an explicit \`maxHeight\`, which would mean hard-coding a
-height here. Same reasoning as **Modal** and the Select viewports — the
-scrollbar still looks identical.
+footer. It uses the cake& **Scrollbar** element — the rail is an ordinary div we
+own, so nothing stops it hosting a ScrollArea (unlike **Modal** or a Select
+viewport, where Radix owns the scroll container and the shared
+\`nativeScrollbarStyles\` are used instead).
+
+No \`maxHeight\` is needed: as a flex item with \`flex: 1; min-height: 0\` the
+scroll root takes a definite height from the flex layout, which the viewport's
+\`height: 100%\` resolves against.
+
+Radix positions ScrollArea scrollbars **absolutely over** the viewport, so
+nothing reserves space for them by default and rows would run underneath. The
+row list carries a \`--space-200\` right inset — the bar's full track (4px thumb
+plus a 4px inset each side) — so the two never overlap.
 
 ## Accessibility
 

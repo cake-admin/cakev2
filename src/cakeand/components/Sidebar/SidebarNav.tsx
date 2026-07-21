@@ -4,7 +4,7 @@ import { MoreHorizontal, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 import { Avatar } from '../Avatar/Avatar';
 import { IconButton } from '../Button/IconButton';
-import { nativeScrollbarStyles } from '../Elements/Scrollbar';
+import { Scrollbar } from '../Elements/Scrollbar';
 import { SidebarList } from './Sidebar';
 import { SidebarCollapsedContext } from './SidebarContext';
 import { SidebarDivider } from './SidebarSection';
@@ -78,31 +78,45 @@ const Main = styled.div`
  * The scrolling region for the rows, so a long rail scrolls rather than
  * overrunning the footer.
  *
- * Native overflow with the shared `nativeScrollbarStyles` rather than the
- * `Scrollbar` element: this region is sized by flexbox (`flex: 1; min-height:
- * 0`), and `Scrollbar` bounds its viewport with an explicit `maxHeight`, so it
- * would need a hard-coded height here. Same reasoning as Modal and the Select
- * viewports — the scrollbar still looks identical.
+ * This is the cake& `Scrollbar` element, not native overflow: the rail is an
+ * ordinary div we own, so nothing stops it hosting a ScrollArea (unlike Modal
+ * or a Select viewport, where Radix owns the scroll container).
+ *
+ * It needs no `maxHeight` — as a flex item with `flex: 1; min-height: 0` the
+ * root gets a definite height from the flex layout, which the viewport's
+ * `height: 100%` resolves against.
  */
-const Rail = styled.div`
+const Rail = styled(Scrollbar)`
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
+`;
 
-  ${nativeScrollbarStyles}
+/**
+ * Reserves the scrollbar's track so rows don't run underneath it. Radix
+ * positions ScrollArea scrollbars absolutely over the viewport, so nothing
+ * reserves space for them by default; the inset matches the bar's full track
+ * (4px thumb + 4px inset each side).
+ */
+const RailList = styled(SidebarList)`
+  padding-right: var(--space-200);
 `;
 
 const Brand = styled.div<{ $collapsed: boolean }>`
   display: flex;
+  flex: none;
   align-items: center;
   gap: ${(p) => (p.$collapsed ? 'var(--space-150)' : 'var(--space-300)')};
-  height: ${BRAND_ROW_HEIGHT}px;
+  /* min-height, not height: the two-line lockup runs a little over 40px at
+     18px, and a fixed height clipped the app name's descenders. Figma's row
+     doesn't clip either. */
+  min-height: ${BRAND_ROW_HEIGHT}px;
   width: 100%;
   padding-left: ${(p) => (p.$collapsed ? '0' : 'var(--space-100)')};
+  /* Matches the scrollbar track reserved inside the rail, so the logo lines up
+     with the row icons instead of sitting 6px to their right. */
+  padding-right: var(--space-200);
   justify-content: ${(p) => (p.$collapsed ? 'center' : 'flex-start')};
-  overflow: hidden;
 `;
 
 const Logo = styled.span`
@@ -130,8 +144,10 @@ const BrandText = styled.div`
   color: var(--color-text-icon-primary);
   font-size: var(--type-size-subtitle);
   letter-spacing: -0.4px;
-  line-height: 1.15;
-  overflow: hidden;
+  /* Enough leading for descenders — 1.15 cropped the "p" in "Appname". */
+  line-height: 1.25;
+  /* Clip horizontally only; vertical clipping is what cut the app name off. */
+  overflow-x: hidden;
 `;
 
 const ProductName = styled.span`
@@ -154,7 +170,22 @@ const Footer = styled.div`
   align-items: flex-start;
   width: 100%;
   flex: none;
+  /* The rail reserves a scrollbar track on its right, which narrows the rows.
+     The footer sits outside the scroll area, so without the same reservation
+     its controls drift right of the row icons — most visibly the collapse
+     toggle against the icon rail. */
+  padding-right: var(--space-200);
 `;
+
+/*
+ * The footer controls are 32px (IconButton, Avatar) while a row's icon is 24px.
+ * Given the same 16px inset their boxes line up but their glyph centres sit 4px
+ * apart, which reads as the collapse control being out of line with the nav
+ * icons. Pulling the footer in by that 4px puts the centres on one axis:
+ *   row icon   12 (frame) + 16 (row) + 12 (half of 24) = 40
+ *   footer     12 (frame) + 12 (this) + 16 (half of 32) = 40
+ */
+const FOOTER_INSET = 'calc(var(--space-300) - var(--space-050))';
 
 const ToggleRow = styled.div<{ $collapsed: boolean }>`
   display: flex;
@@ -162,7 +193,7 @@ const ToggleRow = styled.div<{ $collapsed: boolean }>`
   justify-content: center;
   align-items: ${(p) => (p.$collapsed ? 'center' : 'flex-start')};
   width: 100%;
-  padding: var(--space-200) var(--space-300);
+  padding: var(--space-200) var(--space-300) var(--space-200) ${FOOTER_INSET};
 `;
 
 const UserRow = styled.div<{ $collapsed: boolean }>`
@@ -170,7 +201,9 @@ const UserRow = styled.div<{ $collapsed: boolean }>`
   align-items: center;
   gap: var(--space-300);
   width: 100%;
-  padding: var(--space-200) var(--space-300);
+  /* Same 4px pull as the toggle — the avatar is 32px, so this puts its centre
+     on the same axis as the row icons. */
+  padding: var(--space-200) var(--space-300) var(--space-200) ${FOOTER_INSET};
   justify-content: ${(p) => (p.$collapsed ? 'center' : 'flex-start')};
 `;
 
@@ -274,7 +307,7 @@ export const SidebarNav = React.forwardRef<HTMLElement, SidebarNavProps>(
           ) : null}
 
           <Rail>
-            <SidebarList aria-label={ariaLabel}>{children}</SidebarList>
+            <RailList aria-label={ariaLabel}>{children}</RailList>
           </Rail>
         </Main>
 
