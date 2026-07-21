@@ -33,13 +33,14 @@ const Root = styled(RadixTabs.Root)`
   font-family: var(--font-family);
 `;
 
+/* Figma 160:9406 — the rail stacks rows with a 4px gap and no padding of its
+   own; the inset comes from the surrounding shell (SidebarNav). */
 const List = styled(RadixTabs.List)`
   display: flex;
   flex-direction: column;
   flex: none;
-  gap: var(--space-025);
-  padding: var(--space-050);
-  border-radius: var(--radius-200);
+  gap: var(--space-050);
+  width: 100%;
 `;
 
 const Content = styled(RadixTabs.Content)`
