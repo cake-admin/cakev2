@@ -5,7 +5,7 @@ import { Home, ShoppingBag } from 'lucide-react';
 
 import { SidebarSubItem } from './SidebarSubItem';
 import { SidebarItem } from './SidebarItem';
-import { VerticalTabs, VerticalTabsList } from './VerticalTabs';
+import { VerticalTabs, VerticalTabsList } from '../VerticalTabs/VerticalTabs';
 
 /** Triggers need Radix Tabs context, so every example sits in a rail. */
 const Rail = ({
@@ -23,7 +23,7 @@ const Rail = ({
 );
 
 const meta = {
-  title: 'Components/Vertical Tabs/Sidebar Sub-item',
+  title: 'Components/Sidebar/Sidebar Sub-item',
   component: SidebarSubItem,
   parameters: {
     layout: 'centered',
@@ -56,9 +56,9 @@ Differences from the parent row, all from Figma:
 ## Usage
 
 \`\`\`tsx
-import {
-  VerticalTabs, VerticalTabsList, SidebarItem, SidebarSubItem,
-} from '@/cakeand/components/VerticalTabs';
+import { SidebarItem, SidebarSubItem } from '@/cakeand/components/Sidebar';
+// the rail itself comes from the vertical-tabs family
+import { VerticalTabs, VerticalTabsList } from '@/cakeand/components/VerticalTabs';
 
 <VerticalTabs defaultValue="deals">
   <VerticalTabsList aria-label="Main navigation">

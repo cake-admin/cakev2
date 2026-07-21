@@ -5,7 +5,7 @@ import { Home, Settings, ShoppingBag, User } from 'lucide-react';
 
 import { SidebarItem } from './SidebarItem';
 import { SidebarSubItem } from './SidebarSubItem';
-import { VerticalTabs, VerticalTabsList } from './VerticalTabs';
+import { VerticalTabs, VerticalTabsList } from '../VerticalTabs/VerticalTabs';
 
 /** Triggers need Radix Tabs context, so every example sits in a rail. */
 const Rail = ({
@@ -23,7 +23,7 @@ const Rail = ({
 );
 
 const meta = {
-  title: 'Components/Vertical Tabs/Sidebar Item',
+  title: 'Components/Sidebar/Sidebar Item',
   component: SidebarItem,
   parameters: {
     layout: 'centered',
@@ -57,9 +57,10 @@ dimension, so they're separate components that happen to share a rail:
 ## Usage
 
 \`\`\`tsx
+import { SidebarItem, SidebarSubItem } from '@/cakeand/components/Sidebar';
+// the rail itself comes from the vertical-tabs family
 import {
   VerticalTabs, VerticalTabsList, VerticalTabsContent,
-  SidebarItem, SidebarSubItem,
 } from '@/cakeand/components/VerticalTabs';
 
 <VerticalTabs defaultValue="home">
