@@ -137,6 +137,32 @@ The 280/80px widths and the 40px brand row are intrinsic geometry from Figma
 > the top-level rail is **4px gap with no padding of its own** — the inset comes
 > from this shell. \`SidebarList\` was corrected to match.
 
+## Collapsing
+
+Collapsing is more than a width change, and the rows need to know about it — so
+\`SidebarNav\` publishes the state on context rather than requiring you to thread
+a prop through every child:
+
+- **Row labels go visually hidden**, not removed. The icon centres and the label
+  stays in the accessibility tree, so a screen-reader user still hears "Shop".
+  (Previously the label merely got *clipped* by the 80px rail — that looked
+  right by accident and would have broken if the width ever changed.)
+- **Section headers become rules.** Figma's collapsed variants render a divider
+  in that slot instead of the label (node 160:9430 in place of 160:9458): an
+  80px rail has no room for a word, and a truncated "Feat…" is worse than a
+  clean separator.
+- **Disclosure chevrons disappear**, since there's no room for one and the
+  group's sub-items aren't shown anyway.
+
+## Overflow
+
+The rail scrolls when the rows outgrow it, so a long nav never overruns the
+footer. It uses native overflow with the shared \`nativeScrollbarStyles\` rather
+than the \`Scrollbar\` element: this region is sized by flexbox, and \`Scrollbar\`
+bounds its viewport with an explicit \`maxHeight\`, which would mean hard-coding a
+height here. Same reasoning as **Modal** and the Select viewports — the
+scrollbar still looks identical.
+
 ## Accessibility
 
 - The shell is a \`<nav>\` landmark; pass \`aria-label\` so it's a named region
@@ -146,9 +172,9 @@ The 280/80px widths and the 40px brand row are intrinsic geometry from Figma
 - The collapse toggle is a real \`IconButton\` whose accessible name **changes
   with state** ("Collapse sidebar" ↔ "Expand sidebar"), so it's never a mystery
   control.
-- Collapsing hides the labels visually, but each row keeps its accessible name —
-  a screen-reader user loses nothing. Sighted users of an icon-only rail rely on
-  recognisable icons, so give every row one.
+- Collapsing hides the labels visually, but each row keeps its accessible name
+  in the tree — a screen-reader user loses nothing. Sighted users of an
+  icon-only rail rely on recognisable icons, so give every row one.
 - The logo is \`aria-hidden\`; the brand text carries the name.
 - The footer rule is decorative and hidden from assistive tech.
 
@@ -236,6 +262,53 @@ export const Collapsed: Story = {
     },
   },
   args: { collapsed: true },
+};
+
+export const Overflowing: Story = {
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          'A rail with more rows than fit. The row list scrolls and the footer ' +
+          'stays put — previously the rows overran it and the collapse control ' +
+          'ended up sitting in the middle of the list.',
+      },
+    },
+  },
+  render: function Overflow() {
+    const items = [
+      ['home', 'Home', <Home key="h" />],
+      ['shop', 'Shop', <ShoppingBag key="s" />],
+      ['devices', 'Devices', <Boxes key="d" />],
+      ['whats-new', "What's new", <Sparkles key="w" />],
+      ['support', 'Support', <LifeBuoy key="l" />],
+      ['settings', 'Settings', <Settings key="g" />],
+    ] as const;
+    return (
+      <div style={{ display: 'flex', height: 420 }}>
+        <Sidebar defaultValue="home">
+          <SidebarNav
+            aria-label="Main navigation"
+            surface="solid"
+            logo={<Mark />}
+            productName="Lenovo"
+            appName="Appname"
+            onCollapsedChange={fn()}
+            user={{ name: 'Jane Doe', onAction: fn() }}
+          >
+            {[0, 1, 2].map((pass) =>
+              items.map(([value, label, icon]) => (
+                <SidebarItem key={`${pass}-${value}`} value={`${pass}-${value}`} icon={icon}>
+                  {label}
+                </SidebarItem>
+              )),
+            )}
+          </SidebarNav>
+        </Sidebar>
+      </div>
+    );
+  },
 };
 
 export const Surfaces: Story = {

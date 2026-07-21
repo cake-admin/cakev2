@@ -4,7 +4,9 @@ import { MoreHorizontal, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
 import { Avatar } from '../Avatar/Avatar';
 import { IconButton } from '../Button/IconButton';
+import { nativeScrollbarStyles } from '../Elements/Scrollbar';
 import { SidebarList } from './Sidebar';
+import { SidebarCollapsedContext } from './SidebarContext';
 import { SidebarDivider } from './SidebarSection';
 
 /**
@@ -66,7 +68,30 @@ const Main = styled.div`
   gap: var(--space-500);
   width: 100%;
   flex: 1 1 auto;
+  /* Without this the rows overflow this box instead of shrinking it, and spill
+     straight over the footer — which is what put the collapse control in the
+     middle of the row list. */
   min-height: 0;
+`;
+
+/**
+ * The scrolling region for the rows, so a long rail scrolls rather than
+ * overrunning the footer.
+ *
+ * Native overflow with the shared `nativeScrollbarStyles` rather than the
+ * `Scrollbar` element: this region is sized by flexbox (`flex: 1; min-height:
+ * 0`), and `Scrollbar` bounds its viewport with an explicit `maxHeight`, so it
+ * would need a hard-coded height here. Same reasoning as Modal and the Select
+ * viewports — the scrollbar still looks identical.
+ */
+const Rail = styled.div`
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  ${nativeScrollbarStyles}
 `;
 
 const Brand = styled.div<{ $collapsed: boolean }>`
@@ -233,7 +258,8 @@ export const SidebarNav = React.forwardRef<HTMLElement, SidebarNavProps>(
     const showBrandText = !collapsed && (productName || appName);
 
     return (
-      <Frame ref={ref} $collapsed={collapsed} $surface={surface} {...props}>
+      <SidebarCollapsedContext.Provider value={collapsed}>
+        <Frame ref={ref} $collapsed={collapsed} $surface={surface} {...props}>
         <Main>
           {logo || showBrandText ? (
             <Brand $collapsed={collapsed}>
@@ -247,7 +273,9 @@ export const SidebarNav = React.forwardRef<HTMLElement, SidebarNavProps>(
             </Brand>
           ) : null}
 
-          <SidebarList aria-label={ariaLabel}>{children}</SidebarList>
+          <Rail>
+            <SidebarList aria-label={ariaLabel}>{children}</SidebarList>
+          </Rail>
         </Main>
 
         <Footer>
@@ -285,7 +313,8 @@ export const SidebarNav = React.forwardRef<HTMLElement, SidebarNavProps>(
             </UserRow>
           ) : null}
         </Footer>
-      </Frame>
+        </Frame>
+      </SidebarCollapsedContext.Provider>
     );
   },
 );

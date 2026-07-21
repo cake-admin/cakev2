@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { ChevronDown } from 'lucide-react';
 import { Tabs as RadixTabs } from 'radix-ui';
 
+import { useSidebarCollapsed } from './SidebarContext';
+
 /**
  * cake& SidebarItem — a top-level row in an app sidebar (Figma
  * ".elements/sidebar_item", node 156:8735).
@@ -114,12 +116,31 @@ const Trigger = styled(RadixTabs.Trigger)`
   }
 `;
 
-const Content = styled.span`
+const Content = styled.span<{ $collapsed: boolean }>`
   display: flex;
   align-items: center;
+  justify-content: ${(p) => (p.$collapsed ? 'center' : 'flex-start')};
   gap: var(--space-300);
   width: 100%;
   height: ${CONTENT_HEIGHT}px;
+`;
+
+/**
+ * Keeps the label in the accessibility tree while the icon rail hides it.
+ * Without this the label would merely be *clipped* by the 80px rail, which
+ * happens to look right but isn't a decision — and would break the moment the
+ * rail width changed.
+ */
+const HiddenLabel = styled.span`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 `;
 
 /** Leading glyph. Inherits the row color via currentColor, so it turns
@@ -191,7 +212,10 @@ export interface SidebarItemProps
 
 export const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>(
   ({ children, icon, expanded, onExpandedChange, onClick, ...props }, ref) => {
-    const collapsible = expanded !== undefined;
+    const collapsed = useSidebarCollapsed();
+    /* A collapsed rail has no room for a disclosure control, and its group's
+       sub-items aren't shown anyway — so the chevron goes with the label. */
+    const collapsible = expanded !== undefined && !collapsed;
 
     return (
       <Trigger
@@ -203,9 +227,9 @@ export const SidebarItem = React.forwardRef<HTMLButtonElement, SidebarItemProps>
         }}
         {...props}
       >
-        <Content>
+        <Content $collapsed={collapsed}>
           {icon ? <IconSlot aria-hidden>{icon}</IconSlot> : null}
-          <Label>{children}</Label>
+          {collapsed ? <HiddenLabel>{children}</HiddenLabel> : <Label>{children}</Label>}
           {collapsible ? (
             <Chevron $expanded={Boolean(expanded)} aria-hidden>
               <ChevronDown />
