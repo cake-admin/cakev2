@@ -60,9 +60,24 @@ imports.
 > \`aria-controls\` at panels that may not exist. Worth deciding deliberately
 > rather than inheriting.
 
-Figma specs the rows and the block but not the surrounding rail, so the rail's
-spacing follows the tokens the sidebar block uses: \`--space-025\` between rows,
-\`--space-050\` inset.
+The rail's spacing comes from the assembled sidebar (node 160:9406): rows are
+stacked with a \`--space-050\` (4px) gap and the rail carries **no padding of its
+own** — the inset comes from whatever wraps it, normally \`SidebarNav\`.
+
+**Scrolling.** \`SidebarList\` doesn't scroll by itself; it grows to fit its rows.
+\`SidebarNav\` wraps it in the cake& **Scrollbar** element so a long rail scrolls
+instead of overrunning the footer. Using \`SidebarList\` bare, cap and scroll it
+yourself — the simplest way is the same \`Scrollbar\` element:
+
+\`\`\`tsx
+<Scrollbar maxHeight={480}>
+  <SidebarList aria-label="Main navigation">…</SidebarList>
+</Scrollbar>
+\`\`\`
+
+Note that Radix positions ScrollArea scrollbars **absolutely over** the
+viewport, so reserve the bar's track (\`--space-200\`) on the row list or the rows
+will run underneath it.
 
 ## Usage
 
@@ -90,7 +105,7 @@ import {
 | Part | Tokens |
 | --- | --- |
 | root layout | \`display: flex\`, \`--space-500\` (24px) rail↔panel gap |
-| rail | column, \`--space-025\` (2px) between rows, \`--space-050\` (4px) inset, \`--radius-200\` |
+| rail | column, \`--space-050\` (4px) between rows, no padding of its own |
 | panel | \`--type-size-body\`, \`--color-text-icon-primary\` |
 | panel focus ring | \`--stroke-200\` \`--color-primary-primary\` at \`--space-025\` offset |
 

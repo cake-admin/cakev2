@@ -54,6 +54,21 @@ dimension, so they're separate components that happen to share a rail:
 > **Requires context.** Must be rendered inside \`SidebarList\` within
 > \`Sidebar\`.
 
+### In a collapsed rail
+
+Inside a collapsed \`SidebarNav\` the row reshapes itself — it reads the collapsed
+state from context, so there's no prop to pass:
+
+- The **icon centres** and the label goes *visually hidden* rather than being
+  removed, so it stays in the accessibility tree and a screen-reader user still
+  hears the row's name. (It used to merely be clipped by the 80px rail, which
+  looked right by accident and would have broken if the width changed.)
+- The **disclosure chevron is dropped** — there's no room for it, and the
+  group's sub-items aren't shown in a collapsed rail anyway.
+
+Since the label is invisible in that state, **give every row an icon**: it's the
+only thing a sighted user has to go on.
+
 ## Usage
 
 \`\`\`tsx
