@@ -5,7 +5,7 @@ import { Home, Settings, ShoppingBag, User } from 'lucide-react';
 
 import { SidebarItem } from './SidebarItem';
 import { SidebarSubItem } from './SidebarSubItem';
-import { VerticalTabs, VerticalTabsList } from '../VerticalTabs/VerticalTabs';
+import { Sidebar, SidebarList } from './Sidebar';
 
 /** Triggers need Radix Tabs context, so every example sits in a rail. */
 const Rail = ({
@@ -15,11 +15,11 @@ const Rail = ({
   children: ReactNode;
   defaultValue?: string;
 }) => (
-  <VerticalTabs defaultValue={defaultValue}>
-    <VerticalTabsList aria-label="Sidebar" style={{ width: 268 }}>
+  <Sidebar defaultValue={defaultValue}>
+    <SidebarList aria-label="Sidebar" style={{ width: 268 }}>
       {children}
-    </VerticalTabsList>
-  </VerticalTabs>
+    </SidebarList>
+  </Sidebar>
 );
 
 const meta = {
@@ -51,20 +51,18 @@ dimension, so they're separate components that happen to share a rail:
 | selected label | \`--color-primary-primary\` | \`--color-text-icon-on-tonal\` |
 | indicator | 4×16px | 4×32px |
 
-> **Requires context.** Must be rendered inside \`VerticalTabsList\` within
-> \`VerticalTabs\`.
+> **Requires context.** Must be rendered inside \`SidebarList\` within
+> \`Sidebar\`.
 
 ## Usage
 
 \`\`\`tsx
-import { SidebarItem, SidebarSubItem } from '@/cakeand/components/Sidebar';
-// the rail itself comes from the vertical-tabs family
 import {
-  VerticalTabs, VerticalTabsList, VerticalTabsContent,
-} from '@/cakeand/components/VerticalTabs';
+  Sidebar, SidebarList, SidebarContent, SidebarItem, SidebarSubItem,
+} from '@/cakeand/components/Sidebar';
 
-<VerticalTabs defaultValue="home">
-  <VerticalTabsList aria-label="Main navigation">
+<Sidebar defaultValue="home">
+  <SidebarList aria-label="Main navigation">
     <SidebarItem value="home" icon={<Home />}>Home</SidebarItem>
 
     {/* a row that owns children takes \`expanded\` */}
@@ -72,10 +70,10 @@ import {
       Shop
     </SidebarItem>
     {open ? <SidebarSubItem value="deals">Deals</SidebarSubItem> : null}
-  </VerticalTabsList>
+  </SidebarList>
 
-  <VerticalTabsContent value="home">…</VerticalTabsContent>
-</VerticalTabs>
+  <SidebarContent value="home">…</SidebarContent>
+</Sidebar>
 \`\`\`
 
 ## Design tokens used
@@ -117,7 +115,7 @@ Two things worth knowing:
 - The leading icon is \`aria-hidden\`; the label carries the accessible name.
 - A collapsible row carries \`aria-expanded\`, so activating it announces that it
   also opens or closes its group.
-- Always give \`VerticalTabsList\` an \`aria-label\`.
+- Always give \`SidebarList\` an \`aria-label\`.
 
 ## Do / Don't
 
@@ -146,11 +144,11 @@ Two things worth knowing:
   },
   decorators: [
     (Story) => (
-      <VerticalTabs defaultValue="home">
-        <VerticalTabsList aria-label="Sidebar" style={{ width: 268 }}>
+      <Sidebar defaultValue="home">
+        <SidebarList aria-label="Sidebar" style={{ width: 268 }}>
           {Story()}
-        </VerticalTabsList>
-      </VerticalTabs>
+        </SidebarList>
+      </Sidebar>
     ),
   ],
 } satisfies Meta<typeof SidebarItem>;

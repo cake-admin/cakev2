@@ -15,7 +15,7 @@ import { Tabs as RadixTabs } from 'radix-ui';
  * fill when selected at rest, and paints a solid `--color-disabled-disabled`
  * fill when disabled.
  *
- * Must be rendered inside `VerticalTabsList` within `VerticalTabs`.
+ * Must be rendered inside `SidebarList` within `Sidebar`.
  */
 
 /* The leading inset aligns this label with the parent row's label:
@@ -103,7 +103,7 @@ const Label = styled.span`
 
 export interface SidebarSubItemProps
   extends React.ComponentPropsWithoutRef<typeof RadixTabs.Trigger> {
-  /** Value linking this row to its `VerticalTabsContent` panel. */
+  /** Value linking this row to its `SidebarContent` panel. */
   value: string;
   /** The row label. */
   children: React.ReactNode;

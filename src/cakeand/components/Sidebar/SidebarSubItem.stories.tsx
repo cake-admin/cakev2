@@ -5,7 +5,7 @@ import { Home, ShoppingBag } from 'lucide-react';
 
 import { SidebarSubItem } from './SidebarSubItem';
 import { SidebarItem } from './SidebarItem';
-import { VerticalTabs, VerticalTabsList } from '../VerticalTabs/VerticalTabs';
+import { Sidebar, SidebarList } from './Sidebar';
 
 /** Triggers need Radix Tabs context, so every example sits in a rail. */
 const Rail = ({
@@ -15,11 +15,11 @@ const Rail = ({
   children: ReactNode;
   defaultValue?: string;
 }) => (
-  <VerticalTabs defaultValue={defaultValue}>
-    <VerticalTabsList aria-label="Sidebar" style={{ width: 268 }}>
+  <Sidebar defaultValue={defaultValue}>
+    <SidebarList aria-label="Sidebar" style={{ width: 268 }}>
       {children}
-    </VerticalTabsList>
-  </VerticalTabs>
+    </SidebarList>
+  </Sidebar>
 );
 
 const meta = {
@@ -50,18 +50,18 @@ Differences from the parent row, all from Figma:
 > components, not a decision made here — the same one the vertical tab rows
 > have. Implemented faithfully rather than quietly normalised.
 
-> **Requires context.** Must be rendered inside \`VerticalTabsList\` within
-> \`VerticalTabs\`.
+> **Requires context.** Must be rendered inside \`SidebarList\` within
+> \`Sidebar\`.
 
 ## Usage
 
 \`\`\`tsx
-import { SidebarItem, SidebarSubItem } from '@/cakeand/components/Sidebar';
-// the rail itself comes from the vertical-tabs family
-import { VerticalTabs, VerticalTabsList } from '@/cakeand/components/VerticalTabs';
+import {
+  Sidebar, SidebarList, SidebarItem, SidebarSubItem,
+} from '@/cakeand/components/Sidebar';
 
-<VerticalTabs defaultValue="deals">
-  <VerticalTabsList aria-label="Main navigation">
+<Sidebar defaultValue="deals">
+  <SidebarList aria-label="Main navigation">
     <SidebarItem value="shop" icon={<ShoppingBag />} expanded={open} onExpandedChange={setOpen}>
       Shop
     </SidebarItem>
@@ -71,8 +71,8 @@ import { VerticalTabs, VerticalTabsList } from '@/cakeand/components/VerticalTab
         <SidebarSubItem value="new">New arrivals</SidebarSubItem>
       </>
     ) : null}
-  </VerticalTabsList>
-</VerticalTabs>
+  </SidebarList>
+</Sidebar>
 \`\`\`
 
 ## Design tokens used
@@ -134,11 +134,11 @@ silent:
   },
   decorators: [
     (Story) => (
-      <VerticalTabs defaultValue="deals">
-        <VerticalTabsList aria-label="Sidebar" style={{ width: 268 }}>
+      <Sidebar defaultValue="deals">
+        <SidebarList aria-label="Sidebar" style={{ width: 268 }}>
           {Story()}
-        </VerticalTabsList>
-      </VerticalTabs>
+        </SidebarList>
+      </Sidebar>
     ),
   ],
 } satisfies Meta<typeof SidebarSubItem>;

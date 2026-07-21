@@ -24,7 +24,7 @@ import { Tabs as RadixTabs } from 'radix-ui';
  * | selected label | `--color-primary-primary` | `--color-text-icon-on-tonal` |
  * | indicator | 4×16px | 4×32px |
  *
- * Must be rendered inside `VerticalTabsList` within `VerticalTabs`.
+ * Must be rendered inside `SidebarList` within `Sidebar`.
  */
 
 /* Figma 156:8736 intrinsic geometry: a 40px content row inside 4px of block
@@ -171,7 +171,7 @@ const Chevron = styled.span<{ $expanded: boolean }>`
 
 export interface SidebarItemProps
   extends React.ComponentPropsWithoutRef<typeof RadixTabs.Trigger> {
-  /** Value linking this row to its `VerticalTabsContent` panel. */
+  /** Value linking this row to its `SidebarContent` panel. */
   value: string;
   /** The row label. */
   children: React.ReactNode;
