@@ -30,10 +30,12 @@ import { SidebarDivider } from './SidebarSection';
  * ```
  */
 
-/* Figma 160:9394 intrinsic geometry: the rail is 280px expanded and collapses
-   to an 80px icon rail; the brand row and logo are 40px and 32px. */
+/* Figma 160:9394 intrinsic geometry: the rail is 280px expanded and 80px
+   collapsed; brand row 40px, logo 32px. The collapsed rail is widened to 96px
+   so a centred 24px icon keeps comfortable breathing room beside the scrollbar
+   gutter — Figma draws the collapsed rail without a scrollbar. */
 const WIDTH_EXPANDED = 280;
-const WIDTH_COLLAPSED = 80;
+const WIDTH_COLLAPSED = 96;
 const BRAND_ROW_HEIGHT = 40;
 const LOGO_SIZE = 32;
 
@@ -86,20 +88,28 @@ const Main = styled.div`
  * root gets a definite height from the flex layout, which the viewport's
  * `height: 100%` resolves against.
  */
+/*
+ * The scrollbar gutter. Radix pins its ScrollArea bar as an overlay at the
+ * Root's right edge, so instead of trying to inset the rows around it (fragile —
+ * the row and its selected pill are full-width), we narrow the scrolling
+ * viewport by this much. The bar then lives in the freed strip and the rows
+ * physically cannot sit under it, whatever their alignment. --space-300 (16px)
+ * covers the bar's hover-widened track (8px thumb + 4px each side).
+ *
+ * The brand and footer sit outside the scroll area, so they take the same gutter
+ * as plain right padding — that keeps every icon, the logo and the footer
+ * controls centred/aligned in one usable column beside the bar.
+ */
+const RAIL_GUTTER = 'var(--space-300)';
+
 const Rail = styled(Scrollbar)`
   flex: 1 1 auto;
   min-height: 0;
   width: 100%;
-`;
 
-/**
- * Reserves the scrollbar's track so rows don't run underneath it. Radix
- * positions ScrollArea scrollbars absolutely over the viewport, so nothing
- * reserves space for them by default; the inset matches the bar's full track
- * (4px thumb + 4px inset each side).
- */
-const RailList = styled(SidebarList)`
-  padding-right: var(--space-200);
+  [data-radix-scroll-area-viewport] {
+    width: calc(100% - ${RAIL_GUTTER}) !important;
+  }
 `;
 
 const Brand = styled.div<{ $collapsed: boolean }>`
@@ -111,11 +121,12 @@ const Brand = styled.div<{ $collapsed: boolean }>`
      18px, and a fixed height clipped the app name's descenders. Figma's row
      doesn't clip either. */
   min-height: ${BRAND_ROW_HEIGHT}px;
+  box-sizing: border-box;
   width: 100%;
   padding-left: ${(p) => (p.$collapsed ? '0' : 'var(--space-100)')};
-  /* Matches the scrollbar track reserved inside the rail, so the logo lines up
-     with the row icons instead of sitting 6px to their right. */
-  padding-right: var(--space-200);
+  /* Same gutter the rail reserves for the scrollbar, so the logo shares the
+     usable column with the row icons rather than sitting beside the bar. */
+  padding-right: ${RAIL_GUTTER};
   justify-content: ${(p) => (p.$collapsed ? 'center' : 'flex-start')};
 `;
 
@@ -168,22 +179,23 @@ const Footer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  box-sizing: border-box;
   width: 100%;
   flex: none;
-  /* The rail reserves a scrollbar track on its right, which narrows the rows.
-     The footer sits outside the scroll area, so without the same reservation
-     its controls drift right of the row icons — most visibly the collapse
-     toggle against the icon rail. */
-  padding-right: var(--space-200);
+  /* Same gutter the rail reserves for the scrollbar, so the footer's controls
+     share the usable column with the row icons rather than drifting toward the
+     bar. */
+  padding-right: ${RAIL_GUTTER};
 `;
 
 /*
  * The footer controls are 32px (IconButton, Avatar) while a row's icon is 24px.
- * Given the same 16px inset their boxes line up but their glyph centres sit 4px
- * apart, which reads as the collapse control being out of line with the nav
- * icons. Pulling the footer in by that 4px puts the centres on one axis:
- *   row icon   12 (frame) + 16 (row) + 12 (half of 24) = 40
- *   footer     12 (frame) + 12 (this) + 16 (half of 32) = 40
+ * Centred (collapsed) their glyph centres coincide, but when the footer is
+ * left-aligned (expanded) the 4px size difference offsets them, so the toggle
+ * reads as out of line with the row icons. Pulling the left inset in by that 4px
+ * puts the centres on one axis:
+ *   row icon   16 (row pad) + 12 (half of 24) = 28
+ *   footer     12 (this)    + 16 (half of 32) = 28
  */
 const FOOTER_INSET = 'calc(var(--space-300) - var(--space-050))';
 
@@ -192,18 +204,22 @@ const ToggleRow = styled.div<{ $collapsed: boolean }>`
   flex-direction: column;
   justify-content: center;
   align-items: ${(p) => (p.$collapsed ? 'center' : 'flex-start')};
+  box-sizing: border-box;
   width: 100%;
-  padding: var(--space-200) var(--space-300) var(--space-200) ${FOOTER_INSET};
+  /* Footer already reserves the scrollbar gutter, so only the left inset varies:
+     nudged for glyph-centre alignment when expanded, none when centred. */
+  padding: var(--space-200) 0 var(--space-200) ${(p) => (p.$collapsed ? '0' : FOOTER_INSET)};
 `;
 
 const UserRow = styled.div<{ $collapsed: boolean }>`
   display: flex;
   align-items: center;
   gap: var(--space-300);
+  box-sizing: border-box;
   width: 100%;
-  /* Same 4px pull as the toggle — the avatar is 32px, so this puts its centre
-     on the same axis as the row icons. */
-  padding: var(--space-200) var(--space-300) var(--space-200) ${FOOTER_INSET};
+  /* Same as the toggle: the Footer reserves the gutter, so only the left inset
+     varies — the 4px avatar-centre nudge when expanded, none when centred. */
+  padding: var(--space-200) 0 var(--space-200) ${(p) => (p.$collapsed ? '0' : FOOTER_INSET)};
   justify-content: ${(p) => (p.$collapsed ? 'center' : 'flex-start')};
 `;
 
@@ -307,7 +323,7 @@ export const SidebarNav = React.forwardRef<HTMLElement, SidebarNavProps>(
           ) : null}
 
           <Rail>
-            <RailList aria-label={ariaLabel}>{children}</RailList>
+            <SidebarList aria-label={ariaLabel}>{children}</SidebarList>
           </Rail>
         </Main>
 
