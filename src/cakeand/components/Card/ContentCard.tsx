@@ -108,7 +108,9 @@ const Media = styled.div`
   background: var(--color-surfaces-on-container);
 `;
 
-export interface ContentCardProps extends React.HTMLAttributes<HTMLDivElement> {
+/* `title` is redeclared as a ReactNode, so the DOM's `title?: string` (the
+   tooltip attribute) is omitted rather than conflicting with it. */
+export interface ContentCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Eyebrow text above the title (Figma "Leading text", secondary color). */
   leadingText?: React.ReactNode;
   /** Optional 24px icon before the leading text; inherits the text color. */

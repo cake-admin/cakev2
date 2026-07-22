@@ -86,7 +86,9 @@ const Actions = styled.div`
   gap: var(--space-300);
 `;
 
-export interface SimpleCardProps extends React.HTMLAttributes<HTMLDivElement> {
+/* `title` is redeclared as a ReactNode, so the DOM's `title?: string` (the
+   tooltip attribute) is omitted rather than conflicting with it. */
+export interface SimpleCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Full-bleed media on top — an image or any node; clipped to the Card's corners. */
   media?: React.ReactNode;
   /** The card title (Figma 18px `bold.18`). */

@@ -98,7 +98,9 @@ const Close = styled(IconButton)`
   margin-right: calc(-1 * (var(--space-100) + var(--space-050)));
 `;
 
-export interface ModalTitleProps extends React.HTMLAttributes<HTMLDivElement> {
+/* `title` is redeclared as a ReactNode heading, so the DOM's `title?: string`
+   (the tooltip attribute) is omitted rather than conflicting with it. */
+export interface ModalTitleProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Visible dialog heading, rendered through Radix `Dialog.Title`. */
   title: React.ReactNode;
   /** Optional supporting text, rendered through Radix `Dialog.Description`. */

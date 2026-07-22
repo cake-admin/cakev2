@@ -215,7 +215,12 @@ const TopBtns = styled.div`
   gap: var(--space-100);
 `;
 
-export interface ToastProps extends Omit<React.HTMLAttributes<HTMLLIElement>, 'title'> {
+/* `onPause`/`onResume` are omitted with `title`: the DOM declares them as media
+   ReactEventHandlers, while Radix `Toast.Root` — which this spreads its props
+   onto — types them as bare `() => void` callbacks for its timer. Inheriting the
+   DOM signatures made the whole spread unassignable. */
+export interface ToastProps
+  extends Omit<React.HTMLAttributes<HTMLLIElement>, 'title' | 'onPause' | 'onResume'> {
   /**
    * Semantic treatment (Figma `status`: info/success/error/warn/greyscale).
    * Drives the status icon and its color; `neutral` is Figma's colorless

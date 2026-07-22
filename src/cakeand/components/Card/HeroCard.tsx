@@ -110,7 +110,9 @@ const Actions = styled.div`
   gap: var(--space-300);
 `;
 
-export interface HeroCardProps extends React.HTMLAttributes<HTMLDivElement> {
+/* `title` is redeclared as a ReactNode, so the DOM's `title?: string` (the
+   tooltip attribute) is omitted rather than conflicting with it. */
+export interface HeroCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Eyebrow text above the title (Figma "Leading text"). */
   leadingText?: React.ReactNode;
   /** Optional 24px icon before the leading text; inherits the text color. */
