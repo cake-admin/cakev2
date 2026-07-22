@@ -1,16 +1,21 @@
 import React from 'react';
 import type { Preview, Decorator } from '@storybook/react-vite';
 
-import {
-  CakeThemeProvider,
-  CakeGlobalStyle,
-} from '../src/cakeand/theme/ThemeProvider';
+import { CakeProvider } from '../src/cakeand/theme/CakeProvider';
 import { themes, type ThemeMode } from '../src/cakeand/tokens/theme';
 
 /**
  * The global "Theme" toolbar toggle is the single source of truth for the mode.
- * Every story is wrapped in CakeThemeProvider, so components get their tokens
- * from `props.theme` — stories never set the theme themselves.
+ * Every story is wrapped in CakeProvider — the same wrapper consuming apps use —
+ * so components get their tokens from both the CSS custom properties and
+ * `props.theme`. Stories never set the theme themselves.
+ *
+ * CakeProvider puts `data-theme` on `<html>`, which is what keeps Radix
+ * portals themed: Modal, Dropdown, both Tooltips, Breadcrumb, NumberDropdown,
+ * and Pagination render into `document.body`, outside this decorator's subtree,
+ * so an attribute on the wrapper div alone would leave them on `:root`
+ * (light.a) in dark mode. The div keeps its own `data-theme` too, so the canvas
+ * is themed on the very first paint.
  */
 const withTheme: Decorator = (Story, context) => {
   const mode = (context.globals.theme as ThemeMode) || 'light.a';
@@ -21,8 +26,7 @@ const withTheme: Decorator = (Story, context) => {
   const isDocs = context.viewMode === 'docs';
 
   return (
-    <CakeThemeProvider mode={mode}>
-      <CakeGlobalStyle />
+    <CakeProvider mode={mode}>
       <div
         data-theme={mode}
         style={{
@@ -36,7 +40,7 @@ const withTheme: Decorator = (Story, context) => {
       >
         <Story />
       </div>
-    </CakeThemeProvider>
+    </CakeProvider>
   );
 };
 

@@ -29,3 +29,6 @@ yarn-error.log*
 # storybook
 /storybook-static
 node_modules
+
+# Publishable design-system package build output
+dist-package
