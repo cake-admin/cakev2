@@ -9,6 +9,7 @@
     "validate-tokens": "node scripts/validate-tokens.js",
     "prebuild": "npm run validate-tokens",
     "build": "react-scripts build",
+    "postbuild": "npm run build-storybook && node scripts/nest-storybook.mjs",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",

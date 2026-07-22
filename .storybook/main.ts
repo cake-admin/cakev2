@@ -25,8 +25,13 @@ const config: StorybookConfig = {
     options: {},
   },
 
-  // Serve Rookery font files from public/fonts in the Storybook preview + manager.
-  staticDirs: ['../public'],
+  // Serve Rookery fonts + favicon only — never the whole `public/` tree.
+  // Copying `public/` wholesale overwrites Storybook's manager `index.html`
+  // with the CRA SPA shell (and drops CNAME / 404.html into the SB output).
+  staticDirs: [
+    { from: '../public/fonts', to: '/fonts' },
+    { from: '../public/favicon.svg', to: '/favicon.svg' },
+  ],
 
   // react-docgen reads BOTH JS PropTypes and TS prop types, which is required
   // for this mixed .js/.tsx codebase to get auto-generated props tables.
@@ -43,6 +48,14 @@ const config: StorybookConfig = {
     const { mergeConfig, transformWithEsbuild } = await import('vite');
 
     return mergeConfig(config, {
+      // Nested under the design-system Pages site at cake.lenovo.com/storybook.
+      // Dev (`npm run storybook`) stays at `/`; only the static build uses the
+      // subpath so asset URLs resolve under GitHub Pages.
+      base: configType === 'PRODUCTION' ? '/storybook/' : '/',
+      // Vite's default `publicDir: 'public'` would copy the CRA SPA shell
+      // (index.html, 404.html, CNAME) over Storybook's manager output. Fonts
+      // and the favicon are already served via `staticDirs` above.
+      publicDir: false,
       plugins: [
         {
           // This design system authors JSX inside plain `.js` files (a
