@@ -1,0 +1,15 @@
+---
+description: cake& design-system repo conventions and agent entry points
+alwaysApply: true
+---
+
+Read [AGENTS.md](../../AGENTS.md) before working in this repo. Key points:
+
+- This repo's path contains `&`, which breaks npm `.bin` shims and `npx` on
+  Windows — invoke tools via `node node_modules/<pkg>/<bin>.js` or the npm
+  scripts (which already do this).
+- Agent skills live in `.claude/skills/` — they are plain markdown and are
+  the source of truth for component and docs work (see the other rules in
+  this folder for when each applies).
+- `chart-tool-echarts/` is a separate Vite app (the data-viz tool deployed at
+  cake.lenovo.com/dataviz) with its own docs, scripts, and tests.

@@ -1,0 +1,37 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Introduction" />
+
+# cake&
+
+Welcome to **cake&** — the next-generation Lenovo design system. This Storybook
+is the source of truth for cake&: its tokens, foundations, and components,
+documented in isolation.
+
+## Principles
+
+- **Radix-first.** Every interactive component is built on a
+  [Radix UI](https://www.radix-ui.com/primitives) primitive. Radix owns
+  behavior and accessibility (focus management, keyboard, ARIA, state); cake&
+  owns the visual layer.
+- **Token-driven.** Colors come from the Figma DTCG export (`& theme.a`) and are
+  generated into a typed theme. Components never hardcode hex values — they read
+  from `props.theme` via styled-components.
+- **Themed by context.** A single `CakeThemeProvider` supplies the theme. Switch
+  between **Light A** and **Dark A** with the **Theme** toolbar toggle at the top
+  of the screen.
+
+## Structure
+
+- **Foundations** — Colors, Typography, Spacing.
+- **Guides** — how to author a component + its story.
+- **Components** — each component with live controls, an auto-generated props
+  table, and accessibility checks (see `Switch` and `Button`).
+
+## Running locally
+
+```bash
+npm run build:cakeand-tokens   # regenerate tokens from "& theme.a"
+npm run storybook              # dev server on http://localhost:6006
+npm run build-storybook        # static build in storybook-static/
+```

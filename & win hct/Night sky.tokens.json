@@ -1,0 +1,165 @@
+{
+  "SystemColorWindowColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0,
+        0,
+        0
+      ],
+      "alpha": 1,
+      "hex": "#000000"
+    },
+    "$description": "Background of pages, panes, popups, and windows. Pair with SystemColorWindowTextColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4273",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorWindowTextColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        1,
+        1,
+        1
+      ],
+      "alpha": 1,
+      "hex": "#FFFFFF"
+    },
+    "$description": "Headings, body copy, lists, placeholder text, app and window borders, non-interactive UI. Pair with SystemColorWindowColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4274",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorHotlightColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.501960813999176,
+        0.501960813999176,
+        1
+      ],
+      "alpha": 1,
+      "hex": "#8080FF"
+    },
+    "$description": "Hyperlinks. Pair with SystemColorWindowColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4275",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorGrayTextColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.6509804129600525,
+        0.6509804129600525,
+        0.6509804129600525
+      ],
+      "alpha": 1,
+      "hex": "#A6A6A6"
+    },
+    "$description": "Inactive or disabled UI. Pair with SystemColorWindowColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4276",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorHighlightColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.8392156958580017,
+        0.7058823704719543,
+        0.9921568632125854
+      ],
+      "alpha": 1,
+      "hex": "#D6B4FD"
+    },
+    "$description": "Background or accent of selected, hovered, pressed, or in-progress UI. Pair with SystemColorHighlightTextColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4277",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorHighlightTextColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.16862745583057404,
+        0.16862745583057404,
+        0.16862745583057404
+      ],
+      "alpha": 1,
+      "hex": "#2B2B2B"
+    },
+    "$description": "Foreground of selected, hovered, pressed, or in-progress text/UI. Pair with SystemColorHighlightColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4278",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorButtonFaceColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        0,
+        0,
+        0
+      ],
+      "alpha": 1,
+      "hex": "#000000"
+    },
+    "$description": "Background of buttons and interactive UI. Pair with SystemColorButtonTextColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4279",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "SystemColorButtonTextColor": {
+    "$type": "color",
+    "$value": {
+      "colorSpace": "srgb",
+      "components": [
+        1,
+        0.9333333373069763,
+        0.19607843458652496
+      ],
+      "alpha": 1,
+      "hex": "#FFEE32"
+    },
+    "$description": "Foreground of buttons and interactive UI. Pair with SystemColorButtonFaceColor.",
+    "$extensions": {
+      "com.figma.variableId": "VariableID:7956:4280",
+      "com.figma.scopes": [
+        "ALL_SCOPES"
+      ]
+    }
+  },
+  "$extensions": {
+    "com.figma.modeName": "Night sky"
+  }
+}

@@ -1,0 +1,89 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import tokens from '../tokens/tokens.json';
+
+<Meta title="Foundations/Colors" />
+
+# Colors
+
+cake& colors are the **semantic** layer of the Figma variable system
+(`&color.<group>.<leaf>`), exported to
+[`src/cakeand/tokens/tokens.json`](../tokens/tokens.json) by
+`scripts/build-cakeand-tokens.mjs`. Each token has a `light.a`, `dark.a`, and
+`win hct` (Windows High-Contrast) value. Consume them in components via
+`props.theme.color.<group>.<leaf>`.
+
+export const groups = [...new Set(tokens.list.map((t) => t.group))];
+
+export const Chip = ({ color }) => (
+  <span
+    style={{
+      display: 'inline-block',
+      width: 28,
+      height: 28,
+      borderRadius: 6,
+      background: color,
+      border: '1px solid rgba(127,127,127,0.35)',
+      verticalAlign: 'middle',
+    }}
+  />
+);
+
+export const Group = ({ name }) => (
+  <div style={{ marginBottom: 32 }}>
+    <h3 style={{ marginBottom: 8 }}>
+      <code>{name}</code>
+    </h3>
+    <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+      <thead>
+        <tr style={{ textAlign: 'left', fontSize: 12, color: '#8a8a8a' }}>
+          <th style={{ padding: 6 }}>Token</th>
+          <th style={{ padding: 6 }}>Light A</th>
+          <th style={{ padding: 6 }}>Dark A</th>
+          <th style={{ padding: 6 }}>Win HCT</th>
+        </tr>
+      </thead>
+      <tbody>
+        {tokens.list
+          .filter((t) => t.group === name)
+          .map((t) => (
+            <tr key={t.figmaPath} style={{ borderTop: '1px solid rgba(127,127,127,0.2)' }}>
+              <td style={{ padding: 6 }}>
+                <code style={{ fontSize: 12 }}>
+                  color.{t.groupKey}.{t.leafKey}
+                </code>
+                <div style={{ fontSize: 11, color: '#8a8a8a' }}>{t.figmaPath}</div>
+              </td>
+              <td style={{ padding: 6 }}>
+                <Chip color={t.lightA} />{' '}
+                <code style={{ fontSize: 11 }}>{t.lightA}</code>
+              </td>
+              <td style={{ padding: 6, background: '#121318', borderRadius: 6 }}>
+                <Chip color={t.darkA} />{' '}
+                <code style={{ fontSize: 11, color: '#e4e4e7' }}>{t.darkA}</code>
+              </td>
+              <td style={{ padding: 6, background: '#202020', borderRadius: 6 }}>
+                <Chip color={t.winHct} />{' '}
+                <code style={{ fontSize: 11, color: '#e4e4e7' }}>{t.winHct}</code>
+              </td>
+            </tr>
+          ))}
+      </tbody>
+    </table>
+  </div>
+);
+
+## Usage
+
+```tsx
+import styled from 'styled-components';
+
+const Card = styled.div`
+  background: ${(p) => p.theme.color.surfaces.container};
+  color: ${(p) => p.theme.color.textIcon.primary};
+  border: 1px solid ${(p) => p.theme.color.stroke.border};
+`;
+```
+
+## Tokens
+
+{groups.map((name) => <Group key={name} name={name} />)}
