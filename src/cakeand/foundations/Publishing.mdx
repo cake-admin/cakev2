@@ -7,10 +7,34 @@ import { Meta } from '@storybook/addon-docs/blocks';
 Anyone on the cake& team can ship. There are **two separate destinations**, and
 they move on different clocks:
 
-| Destination | What it is | How it updates |
-| --- | --- | --- |
-| **Storybook** — [cake.lenovo.com/storybook](https://cake.lenovo.com/storybook/) | The docs everyone reads | Automatically, on merge to `main` |
-| **The package** — `@cake-admin/cakeand` | The code apps install | Only when someone publishes a version |
+<table>
+  <thead>
+    <tr>
+      <th>Destination</th>
+      <th>What it is</th>
+      <th>How it updates</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Storybook</strong> —{' '}
+        <a href="https://cake.lenovo.com/storybook/">cake.lenovo.com/storybook</a>
+      </td>
+      <td>The docs everyone reads</td>
+      <td>
+        Automatically, on merge to <code>main</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>The package</strong> — <code>@cake-admin/cakeand</code>
+      </td>
+      <td>The code apps install</td>
+      <td>Only when someone publishes a version</td>
+    </tr>
+  </tbody>
+</table>
 
 Merging to `main` updates the docs. It does **not** ship the code — apps stay on
 whatever version they installed until a new one is published. See
