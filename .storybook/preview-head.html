@@ -37,4 +37,61 @@
     max-width: 100%;
     overflow-x: auto;
   }
+
+  /* In-page anchors: offset fixed toolbars when scrolling into view. */
+  .sbdocs-content [id] {
+    scroll-margin-top: 24px;
+  }
 </style>
+
+<script>
+  (function () {
+    function scrollToId(id, behavior) {
+      if (!id) return false;
+      var target = document.getElementById(decodeURIComponent(id));
+      if (!target) return false;
+      target.scrollIntoView({ behavior: behavior || 'smooth', block: 'start' });
+      return true;
+    }
+
+    // Docs scroll inside .sbdocs-wrapper, not the window — native hash links
+    // do not move the viewport. Intercept same-document anchors and scroll
+    // programmatically instead.
+    document.addEventListener(
+      'click',
+      function (event) {
+        var link = event.target.closest('a[href^="#"]');
+        if (!link) return;
+
+        var href = link.getAttribute('href');
+        if (!href || href === '#') return;
+
+        var id = href.slice(1);
+        if (!scrollToId(id, 'smooth')) return;
+
+        event.preventDefault();
+        if (history.replaceState) {
+          history.replaceState(null, '', '#' + id);
+        }
+      },
+      true
+    );
+
+    function scrollToHashFromLocation(behavior) {
+      var id = (location.hash || '').slice(1);
+      return scrollToId(id, behavior);
+    }
+
+    window.addEventListener('load', function () {
+      if (!location.hash) return;
+
+      var attempts = 0;
+      var timer = setInterval(function () {
+        attempts += 1;
+        if (scrollToHashFromLocation('auto') || attempts >= 30) {
+          clearInterval(timer);
+        }
+      }, 100);
+    });
+  })();
+</script>
