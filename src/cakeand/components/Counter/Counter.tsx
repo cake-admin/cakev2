@@ -20,7 +20,11 @@ const Root = styled(Badge)<{ $popout: boolean }>`
       : ''}
 `;
 
-export interface CounterProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children'> {
+/* `color` is omitted alongside `children`: Counter drives the pill's color from
+   `status` and forwards it to Badge's `color` prop, so inheriting the DOM's
+   legacy `color?: string` attribute would clash with Badge's `BadgeColor`. */
+export interface CounterProps
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'children' | 'color'> {
   /** The count to display (Figma `counter`), e.g. `3` or `"9+"`. */
   count: string | number;
   /**

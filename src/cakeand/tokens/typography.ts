@@ -98,7 +98,9 @@ export const typographyTokenList = (['regular', 'medium', 'bold'] as const).flat
       weight,
       role,
       px: TYPOGRAPHY_SIZE_PX[role],
-      token: `${weight}.${TYPOGRAPHY_SIZE_PX[role]}.${role}`,
+      // `token` intentionally comes from the preset spread below — it builds the
+      // identical `${weight}.${px}.${role}` id, so declaring it here as well was
+      // redundant and silently overwritten.
       ...typographyPresets[weight][role],
     }))
 );

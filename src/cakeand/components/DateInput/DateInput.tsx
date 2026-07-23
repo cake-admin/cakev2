@@ -272,7 +272,11 @@ const DateField = ({
   const openNativePicker = () => {
     const picker = nativePickerRef.current;
     if (!picker) return;
-    if ('showPicker' in picker) {
+    // Feature-detect on the METHOD, not with `'showPicker' in picker`: the DOM
+    // lib types declare showPicker as always present on HTMLInputElement, so the
+    // `in` check narrowed the else branch to `never` and the fallback below was
+    // unreachable to the type checker. Browsers without showPicker still need it.
+    if (typeof picker.showPicker === 'function') {
       picker.showPicker();
     } else {
       picker.focus();

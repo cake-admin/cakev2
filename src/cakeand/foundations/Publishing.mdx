@@ -1,0 +1,104 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Guides/Shipping a Component" />
+
+# Shipping a cake& component
+
+Anyone on the cake& team can ship. There are **two separate destinations**, and
+they move on different clocks:
+
+| Destination | What it is | How it updates |
+| --- | --- | --- |
+| **Storybook** — [cake.lenovo.com/storybook](https://cake.lenovo.com/storybook/) | The docs everyone reads | Automatically, on merge to `main` |
+| **The package** — `@cake-admin/cakeand` | The code apps install | Only when someone publishes a version |
+
+Merging to `main` updates the docs. It does **not** ship the code — apps stay on
+whatever version they installed until a new one is published. See
+[Building a component](?path=/docs/guides-building-a-component--docs) for how to
+author one in the first place.
+
+## 1. Ship the component to Storybook
+
+1. Branch, add `<Component>.tsx` + `<Component>.stories.tsx` + `index.ts`, and
+   export it from `src/cakeand/index.ts` (the package's public barrel — a
+   component missing from it cannot be imported by consumers).
+2. Verify locally:
+
+   ```bash
+   npm run storybook          # eyeball it
+   npm run build-storybook    # must exit 0
+   ```
+
+3. Open a PR. On merge to `main`, `.github/workflows/deploy.yml` rebuilds the
+   site and Storybook goes live at `cake.lenovo.com/storybook`.
+
+> The repo path contains an `&`, which breaks npm's generated `.bin` shims on
+> Windows. The package scripts already invoke binaries through `node` for this
+> reason — if you add a script, do the same.
+
+## 2. Publish a package version
+
+Publishing is what actually delivers the component to apps.
+
+### Preferred: from the Actions tab (no tokens)
+
+Once `docs/publish-package.workflow.yml` has been enabled (see the comment at the
+top of that file — it's a one-time `git mv` into `.github/workflows/`), any
+maintainer can publish without credentials of their own:
+
+**Actions → “Publish design system package” → Run workflow →** enter the version,
+leave **dry run** checked the first time. The dry run builds the package and
+prints the manifest and exact file list without publishing. Re-run with dry run
+unchecked to publish for real.
+
+It authenticates with the automatic `GITHUB_TOKEN`, so nobody needs a personal
+access token.
+
+### Fallback: from your machine
+
+```bash
+npm run build:package -- --version 4.1.0
+cd dist-package
+npm publish
+```
+
+This path needs a token with `write:packages` in your `~/.npmrc`:
+
+```ini
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+### Choosing a version
+
+Standard semver, because apps pin what they install:
+
+- **patch** (`4.1.0 → 4.1.1`) — a fix, no API change
+- **minor** (`4.1.0 → 4.2.0`) — a new component or a new optional prop
+- **major** (`4.1.0 → 5.0.0`) — a renamed/removed prop, or changed default
+
+Consumers don't receive a new version automatically: they upgrade when they run
+`npm update`. That's deliberate — one CSS tweak shouldn't reshape twelve
+prototypes mid-flight.
+
+## 3. Resync the AI knowledge base
+
+Agents in [`cake-admin/ai-lab`](https://github.com/cake-admin/ai-lab) build UI
+from a machine-readable index of this design system. Regenerate it after adding
+or materially changing a component:
+
+```bash
+npm run build:knowledge -- --out ../ai-lab/knowledge/components
+```
+
+Each entry is derived from the `docs.description.component` prose in the story —
+the same text on the component's docs page — so the index cannot drift from the
+docs. The generator **fills gaps only** and never overwrites a hand-curated
+entry. Never hand-edit a generated file: fix the story's docs and regenerate.
+
+## What "done" looks like
+
+- [ ] Component, stories, and `index.ts` added, and exported from `src/cakeand/index.ts`
+- [ ] `npm run build-storybook` exits 0
+- [ ] Merged to `main` → live in Storybook
+- [ ] Version published (dry run first)
+- [ ] Knowledge base resynced and PR'd to `ai-lab`
