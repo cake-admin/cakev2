@@ -1,0 +1,93 @@
+# Ready-to-enable CI workflow for publishing @cake-admin/cakeand.
+#
+# This file lives in docs/ rather than .github/workflows/ only because pushing
+# to that directory requires a credential carrying GitHub's `workflow` OAuth
+# scope, which not every client has.
+#
+# ENABLE IT (one-time, any maintainer):
+#
+#   git mv docs/publish-package.workflow.yml .github/workflows/publish-package.yml
+#   git commit -m "Enable package publish workflow"
+#   git push
+#
+# ...or paste the contents below into GitHub → Actions → New workflow.
+#
+# Why bother: once enabled, ANY maintainer can publish from the Actions tab
+# without creating a personal access token, because the job authenticates with
+# the automatic GITHUB_TOKEN. That is what makes "anyone on the team can ship a
+# version" true without handing out credentials.
+
+name: Publish design system package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g. 4.1.0)'
+        required: true
+        type: string
+      dry_run:
+        description: 'Build and pack only — do not publish'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@cake-admin'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The published .d.ts files are emitted by an isolated TypeScript 5 in
+      # tools/dts — react-scripts pins the root install to TypeScript 4.x, which
+      # cannot parse this repo's "moduleResolution": "bundler" tsconfig.
+      - name: Install declaration toolchain
+        run: npm ci
+        working-directory: tools/dts
+
+      - name: Build package
+        run: node scripts/build-package.mjs --version "${{ inputs.version }}"
+
+      - name: Inspect package contents
+        working-directory: dist-package
+        run: |
+          echo "--- manifest ---"
+          cat package.json
+          echo "--- files npm would publish ---"
+          npm pack --dry-run
+
+      - name: Publish to GitHub Packages
+        # Accept both the boolean and the string form: workflow_dispatch inputs
+        # are not always delivered as real booleans, and a mismatch here silently
+        # skips the publish.
+        if: ${{ inputs.dry_run == false || inputs.dry_run == 'false' }}
+        working-directory: dist-package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        run: |
+          if [ "${{ inputs.dry_run }}" = "false" ]; then
+            echo "Published @cake-admin/cakeand@${{ inputs.version }}" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Dry run — built @cake-admin/cakeand@${{ inputs.version }} but did not publish." >> "$GITHUB_STEP_SUMMARY"
+            echo "Re-run with dry_run unchecked to publish." >> "$GITHUB_STEP_SUMMARY"
+          fi
