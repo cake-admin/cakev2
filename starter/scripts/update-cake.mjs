@@ -26,10 +26,11 @@
  * The GitHub API call is unauthenticated — cake-admin/cakev2 is public, and the
  * anonymous rate limit (60/hour) is far beyond what this needs.
  */
-import { execFileSync } from 'node:child_process';
+import { execSync } from 'node:child_process';
 
 const REPO = 'cake-admin/cakev2';
 const API = `https://api.github.com/repos/${REPO}/releases/latest`;
+const ASSET_HOST = 'github.com';
 
 /**
  * Fail with a readable message.
@@ -70,13 +71,20 @@ const main = async () => {
     );
   }
 
-  process.stdout.write(`\n→ ${release.tag_name}\n  ${asset.browser_download_url}\n\n`);
+  // Never hand the shell a URL we did not get from the expected host. The
+  // filename regex above constrains the asset; this constrains the origin.
+  const url = new URL(asset.browser_download_url);
+  if (url.protocol !== 'https:' || url.host !== ASSET_HOST) {
+    die(`Refusing to install from an unexpected host: ${url.origin}`);
+  }
 
-  // shell:true on Windows — npm is a .cmd there, which execFile cannot run directly.
-  execFileSync('npm', ['install', asset.browser_download_url], {
-    stdio: 'inherit',
-    shell: process.platform === 'win32',
-  });
+  process.stdout.write(`\n→ ${release.tag_name}\n  ${url.href}\n\n`);
+
+  // execSync with a command string rather than execFileSync(..., { shell: true }):
+  // npm is a .cmd on Windows so a shell is needed either way, but an args array
+  // alongside shell:true is deprecated (DEP0190) — the args are concatenated
+  // rather than escaped, and it prints a warning on every run.
+  execSync(`npm install "${url.href}"`, { stdio: 'inherit' });
 
   process.stdout.write(`\n✓ Now on cake& ${release.tag_name}\n`);
 };
