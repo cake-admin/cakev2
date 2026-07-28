@@ -38,22 +38,9 @@ with an integrity error that is hard to trace back.
 
 Upgrading later is the same command with the newer version's URL.
 
-### From GitHub Packages — requires a token
-
-Also published to `npm.pkg.github.com`, which suits CI that already holds
-credentials. That registry requires authentication for **every** install,
-including of public packages — a GitHub limitation, not a cake& one. Any token
-with `read:packages` works:
-
-```ini
-# .npmrc
-@cake-admin:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
-```
-
-```bash
-npm install @cake-admin/cakeand
-```
+Note that `npm outdated` will not report new versions of this package — it
+compares against a registry, and this installs from a URL. Watch
+<https://github.com/cake-admin/cakev2/releases>.
 
 ### Peer dependencies
 

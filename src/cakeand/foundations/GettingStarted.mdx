@@ -133,9 +133,3 @@ integrity error that has no obvious cause.
 | `npm error EINTEGRITY` | A lockfile pinned to a tarball whose bytes changed. Delete `package-lock.json` and reinstall. |
 | npm behaves strangely on Windows | An `&` in the folder path breaks npm's `.bin` shims. Rename the folder. |
 
-## Also available on GitHub Packages
-
-The package is published to GitHub Packages as well, which some CI setups prefer
-because they already hold credentials. That registry requires a token for
-**every** install, including of public packages — so for prototyping, use the
-Release URL above and skip the token entirely.

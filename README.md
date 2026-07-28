@@ -54,8 +54,7 @@ npm install react react-dom styled-components radix-ui lucide-react
 ```
 
 No token is needed: the repository is public and npm sends no credentials to a
-non-registry host. The package is also on GitHub Packages as
-`@cake-admin/cakeand`, but that registry requires a token for every install.
+non-registry host.
 
 Then wrap your app **once**:
 
