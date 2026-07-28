@@ -1,0 +1,122 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Guides/Getting Started" />
+
+# Getting Started
+
+Build a prototype with the real cake& components. **No GitHub token, no
+`.npmrc`, no registry setup.**
+
+## Start here
+
+```bash
+npx degit cake-admin/cakev2/starter my-prototype
+cd my-prototype
+npm install
+npm run dev
+```
+
+That is the whole setup. If `degit` gives you trouble, `npx giget@latest
+gh:cake-admin/cakev2/starter my-prototype` or a plain `git clone --depth 1` both
+work.
+
+## What you get
+
+- **`CakeProvider`** mounted once, with a working light/dark toggle
+- **~470 design tokens** live as CSS custom properties, theme-aware
+- **Rookery New** loaded from the package — no font wiring
+- **63 components** behind a single import path
+- **Agent context** in `context/`, so Claude Code and Cursor know the real
+  component APIs instead of inventing them
+
+## Working with a coding agent
+
+Open the folder in Claude Code or Cursor and ask for what you want — *"build a
+settings page with tabs, a table, and a save button"*.
+
+The starter ships an `AGENTS.md` and a generated `context/` directory:
+
+| File | Purpose |
+| --- | --- |
+| `context/cake-components.md` | The index — every component, one line each. Always read. |
+| `context/components/<name>.md` | Props, a real usage snippet, accessibility, do/don't. Read on demand. |
+| `context/cake-tokens.md` | Every CSS custom property, grouped, with light values. |
+
+These are generated from the same docs prose you are reading now, so they cannot
+drift from Storybook. The same content is served for agents that fetch over
+HTTP at [cake.lenovo.com/llms.txt](https://cake.lenovo.com/llms.txt).
+
+**Do not hand-edit anything in `context/`** — it is regenerated on every release.
+
+## Adding cake& to an app you already have
+
+```bash
+npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.0/cake-admin-cakeand-4.2.0.tgz
+npm install react react-dom styled-components radix-ui lucide-react
+```
+
+Those five are **peer dependencies** — deliberately not bundled, so your app owns
+one copy of each. `styled-components` in particular must resolve to a single
+instance; two copies means two stylesheets and two theme contexts, and components
+silently lose their theme. In Vite:
+
+```ts
+export default defineConfig({
+  resolve: { dedupe: ['styled-components', 'react', 'react-dom'] },
+});
+```
+
+Then wrap the app **once**:
+
+```tsx
+import { CakeProvider, Card, HeroCard, Button } from '@cake-admin/cakeand';
+
+<CakeProvider mode="light.a">
+  <Card>
+    <HeroCard title="Hello" actions={<Button size="lg">Get started</Button>} />
+  </Card>
+</CakeProvider>;
+```
+
+`CakeProvider` sets `data-theme` on `<html>`, supplies the styled-components
+theme, and loads tokens and fonts. Modes: `light.a` (default), `dark.a`,
+`win hct`.
+
+The attribute goes on `<html>` deliberately — Modal, Dropdown, both Tooltips,
+Breadcrumb, NumberDropdown and Pagination render through a Radix portal into
+`document.body`, outside your React tree. On a wrapper `<div>` those would escape
+the theme and render light inside a dark app.
+
+Because the attribute is applied in a layout effect, the **first paint uses the
+default (light) values**. If your app boots dark, set `data-theme` on `<html>` in
+your HTML shell too.
+
+## Updating
+
+```bash
+npm run cake:update
+```
+
+The dependency is pinned to a **version-specific** URL, and upgrading is
+deliberately explicit. A URL that always served "latest" would look convenient
+and behave badly: npm records a checksum of the exact tarball bytes, so a
+changing URL first fails to update at all, then breaks `npm ci` with an
+integrity error that has no obvious cause.
+
+## Troubleshooting
+
+| Symptom | Cause |
+| --- | --- |
+| Everything unstyled, every token an empty string | The cake& stylesheet did not load. Check the `@cake-admin/cakeand/cakeand.css` import. |
+| Components render but ignore the theme | Two copies of `styled-components`. Check `npm ls styled-components`. |
+| Flash of the wrong theme on load | `data-theme` on `<html>` disagrees with the `mode` passed to `CakeProvider`. |
+| Portalled menus and dialogs are unthemed | `scope="subtree"` was passed to `CakeProvider`. Portals escape a subtree. |
+| `npm error EINTEGRITY` | A lockfile pinned to a tarball whose bytes changed. Delete `package-lock.json` and reinstall. |
+| npm behaves strangely on Windows | An `&` in the folder path breaks npm's `.bin` shims. Rename the folder. |
+
+## Also available on GitHub Packages
+
+The package is published to GitHub Packages as well, which some CI setups prefer
+because they already hold credentials. That registry requires a token for
+**every** install, including of public packages — so for prototyping, use the
+Release URL above and skip the token entirely.

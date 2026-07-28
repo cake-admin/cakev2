@@ -35,9 +35,16 @@ export default defineConfig({
     sourcemap: true,
     // One stylesheet for the whole library rather than per-chunk fragments.
     cssCodeSplit: false,
-    // Library mode inlines referenced assets by default, which base64s all three
-    // woff2 into the CSS (~300 kB, and base64'd woff2 barely gzips). Emit them as
-    // real files instead so the fonts stay cacheable and the stylesheet stays small.
+    // NOTE: this currently has NO EFFECT. Vite ignores `assetsInlineLimit`
+    // whenever `build.lib` is set — assets referenced from CSS are always
+    // inlined, regardless of this value. The result is that all three woff2 are
+    // base64'd into cakeand.css: ~300 kB, gzipping to only ~215 kB because
+    // base64'd woff2 barely compresses, and no `assets/` directory is emitted.
+    //
+    // Kept because the intent is right and it costs nothing: if the font
+    // pipeline is moved out of the bundled CSS (the only way to get real files
+    // in lib mode), this is already correct. Until then, expect one large
+    // self-contained stylesheet and no assets/ directory.
     assetsInlineLimit: 0,
     lib: {
       entry: path.resolve(dirname, 'src/cakeand/index.ts'),

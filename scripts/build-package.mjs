@@ -95,6 +95,21 @@ if (cssEmitted) {
 }
 
 // 4. The published manifest.
+//
+// The licence needs a deliberate answer, not a silent default. Today the root
+// manifest has no `license` field, so the fallback below always fires and the
+// package ships "UNLICENSED" — while README.md claims MIT and links a LICENSE
+// file that does not exist. Those cannot both be right, and the package embeds
+// the proprietary Rookery New woff2, so this is a decision for a human rather
+// than something to guess at here. UNLICENSED stays the fallback because
+// asserting no rights is the safer error than falsely asserting MIT.
+if (!rootPkg.license) {
+  process.stdout.write(
+    '\n! No `license` in the root package.json — publishing as UNLICENSED.\n' +
+      '  README.md claims MIT. Resolve the contradiction and set `license` explicitly.\n',
+  );
+}
+
 const pkg = {
   name: PACKAGE_NAME,
   version,
@@ -111,6 +126,12 @@ const pkg = {
   exports: {
     '.': { types: './types/index.d.ts', import: './index.js' },
     [`./${CSS_FILE}`]: `./${CSS_FILE}`,
+    // Vite's lib mode ignores `assetsInlineLimit` and base64s the woff2 straight
+    // into cakeand.css, so today no assets/ directory is emitted and this entry
+    // matches nothing. It is here so that the day fonts become real files, they
+    // are reachable: without an `exports` entry, any tool that enforces the map
+    // 404s them and the browser silently falls back to system-ui.
+    './assets/*': './assets/*',
     './package.json': './package.json',
   },
   files: ['index.js', 'index.js.map', 'types', CSS_FILE, 'assets', 'README.md'],

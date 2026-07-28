@@ -7,15 +7,39 @@ Component documentation lives in the Storybook at
 <https://cake.lenovo.com/storybook/>, which is the canonical source of truth for
 every component's API, variants, states, and accessibility contract.
 
+## Quickest start: the template
+
+```bash
+npx degit cake-admin/cakev2/starter my-prototype
+cd my-prototype && npm install && npm run dev
+```
+
+A Vite + React + TypeScript app with the provider, tokens, fonts, theming and
+coding-agent context already wired up. Nothing to configure.
+
 ## Install
 
-The package is hosted on GitHub Packages, so the consuming repo needs a scoped
-registry entry. The scope must be `@cake-admin` (GitHub Packages requires the
-scope to match the repository owner).
+### From a GitHub Release — no token needed
 
-Note that GitHub's npm registry requires authentication for **every** install,
-including public packages — so a token is needed even though this package is
-public. Any GitHub token with `read:packages` works:
+The repository is public, so npm can fetch the tarball directly. No `.npmrc`, no
+personal access token, nothing to set up:
+
+```bash
+npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.0/cake-admin-cakeand-4.2.0.tgz
+```
+
+Pin the version-specific URL, never a "latest" one. npm records a checksum of the
+exact tarball bytes in your lockfile, so a URL whose contents change will first
+silently fail to update and then break `npm ci` with an integrity error.
+
+Newer versions: <https://github.com/cake-admin/cakev2/releases>
+
+### From GitHub Packages — requires a token
+
+Also published to `npm.pkg.github.com`, which suits CI that already holds
+credentials. That registry requires authentication for **every** install,
+including of public packages — a GitHub limitation, not a cake& one. Any token
+with `read:packages` works:
 
 ```ini
 # .npmrc
@@ -39,6 +63,14 @@ npm install react react-dom styled-components radix-ui lucide-react
 > `styled-components` **must** resolve to a single instance. Two copies in one
 > app means two separate stylesheets and theme contexts, and components silently
 > lose their theme.
+
+In Vite, make that explicit — it costs nothing and the failure is silent:
+
+```ts
+export default defineConfig({
+  resolve: { dedupe: ['styled-components', 'react', 'react-dom'] },
+});
+```
 
 Requires React 18 or 19 (verified against both).
 

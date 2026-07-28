@@ -89,8 +89,12 @@ const preview: Preview = {
         order: [
           'Introduction',
           'Foundations',
-          ['Colors', 'Typography', 'Spacing'],
+          ['Colors', 'Typography', 'Spacing', 'Elevation'],
           'Guides',
+          // Getting Started leads: it is the page a newcomer needs, and
+          // alphabetical order would otherwise bury it behind the two
+          // contributor guides.
+          ['Getting Started', 'Building a Component', 'Shipping a Component'],
           'Elements',
           'Components',
         ],

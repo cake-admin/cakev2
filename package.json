@@ -19,7 +19,8 @@
     "build-storybook": "node node_modules/storybook/dist/bin/dispatcher.js build",
     "build:cakeand-vars": "node scripts/build-cakeand-css-vars.mjs",
     "build:package": "node scripts/build-package.mjs",
-    "build:knowledge": "node scripts/build-knowledge.mjs"
+    "build:knowledge": "node scripts/build-knowledge.mjs",
+    "build:agent-context": "node scripts/build-agent-context.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
