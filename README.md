@@ -83,17 +83,32 @@ cake& for you.
 
 ---
 
-## Develop it
+## Updating
 
-This repo holds the design system, its Storybook, the site at cake.lenovo.com,
-and the data-viz tool at /dataviz.
+A new cake& version does **not** reach your project on its own. Each project
+pins one exact version, and you move it deliberately:
 
-```bash
-npm install
-npm run storybook        # component development, port 6006
-npm start                # the cake.lenovo.com site
-npm run build-storybook
-```
+| Your project | Command |
+|---|---|
+| Scaffolded from the starter | `npm run cake:update` |
+| A prototype inside ai-lab | `node scripts/install-cake.mjs prototypes/<name>` |
+| Your own app | Re-run `npm install` with the newer release's `.tgz` URL |
+
+The first two resolve the newest release for you; nothing to look up.
+
+**`npm outdated` will not tell you a new version exists.** It compares against a
+registry, and this package is installed from a URL, so npm has nothing to compare
+against. Watch [releases](https://github.com/cake-admin/cakev2/releases) — or
+just run the update command periodically, since it always resolves the latest.
+
+Pinning an exact version is deliberate rather than a limitation. npm records a
+checksum of the exact tarball bytes in your lockfile, so a URL that always served
+"latest" would first fail to update silently, then break `npm ci` with an
+integrity error that is very hard to trace back.
+
+---
+
+## What's in this repo
 
 | Path | What |
 |------|------|
@@ -103,13 +118,9 @@ npm run build-storybook
 | `scripts/` | Token generation, package build, agent-context generation |
 | `chart-tool-echarts/` | Separate Vite app deployed at /dataviz |
 
-Contributing a component, and publishing a version, are documented in Storybook
-under **Guides** — see *Building a Component* and *Shipping a Component*.
-Agent-specific conventions live in [AGENTS.md](AGENTS.md).
-
-> The repo path must not contain an `&` on Windows — it breaks npm's `.bin`
-> shims. Invoke binaries as `node node_modules/<pkg>/<bin>.js`, which the package
-> scripts already do.
+Building components and publishing versions is the design-system team's
+workflow, documented in Storybook under **Guides** — *Building a Component* and
+*Shipping a Component*. Agent conventions live in [AGENTS.md](AGENTS.md).
 
 ---
 
