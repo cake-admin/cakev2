@@ -1,21 +1,21 @@
-# Ready-to-enable CI workflow for publishing @cake-admin/cakeand.
+# Publishes @cake-admin/cakeand.
 #
-# This file lives in docs/ rather than .github/workflows/ only because pushing
-# to that directory requires a credential carrying GitHub's `workflow` OAuth
-# scope, which not every client has.
+# Run it from Actions → "Publish design system package". The job authenticates
+# with the automatic GITHUB_TOKEN, so no maintainer needs a personal access
+# token to ship a version.
 #
-# ENABLE IT (one-time, any maintainer):
+# TWO DESTINATIONS, from one build:
 #
-#   git mv docs/publish-package.workflow.yml .github/workflows/publish-package.yml
-#   git commit -m "Enable package publish workflow"
-#   git push
+#   1. A GitHub Release asset — the tarball designers install from. This repo is
+#      public, so `npm install <that URL>` needs no credentials at all: npm sends
+#      no auth to a non-registry host. This is the zero-friction path.
+#   2. GitHub Packages — unchanged, for repos that already have CI credentials
+#      and for existing consumers pinning `^4.1.0`.
 #
-# ...or paste the contents below into GitHub → Actions → New workflow.
-#
-# Why bother: once enabled, ANY maintainer can publish from the Actions tab
-# without creating a personal access token, because the job authenticates with
-# the automatic GITHUB_TOKEN. That is what makes "anyone on the team can ship a
-# version" true without handing out credentials.
+# THE RELEASE ASSET URL IS IMMUTABLE. Never delete a tag and re-upload under it:
+# every consumer's package-lock.json records a sha512 of those exact bytes, so
+# changing them turns `npm ci` into an unexplainable EINTEGRITY failure for
+# everyone who already installed. Publish a new version instead.
 
 name: Publish design system package
 
@@ -33,7 +33,7 @@ on:
         type: boolean
 
 permissions:
-  contents: read
+  contents: write # create the Release (and its tag) that carries the install tarball
   packages: write
 
 jobs:
@@ -43,6 +43,36 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Full history so the version guard below can see every existing tag.
+          fetch-depth: 0
+
+      # Catches the two mistakes that are expensive to undo: republishing a
+      # version that already exists, and going backwards. `gh release create`
+      # would also fail on a duplicate tag, but failing here costs seconds
+      # instead of a full build.
+      - name: Validate the version
+        run: |
+          version="${{ inputs.version }}"
+          case "$version" in
+            [0-9]*.[0-9]*.[0-9]*) ;;
+            *) echo "::error::'$version' is not a semver x.y.z"; exit 1 ;;
+          esac
+          if git rev-parse -q --verify "refs/tags/v$version" >/dev/null; then
+            echo "::error::Tag v$version already exists. The Release asset URL is immutable — publish a new version."
+            exit 1
+          fi
+          latest=$(git tag -l 'v*' | sed 's/^v//' | sort -V | tail -n1)
+          if [ -n "$latest" ]; then
+            newest=$(printf '%s\n%s\n' "$latest" "$version" | sort -V | tail -n1)
+            if [ "$newest" != "$version" ]; then
+              echo "::error::$version is not greater than the latest tag v$latest."
+              exit 1
+            fi
+            echo "v$latest → v$version"
+          else
+            echo "No existing tags. v$version will be the first."
+          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -73,6 +103,77 @@ jobs:
           echo "--- files npm would publish ---"
           npm pack --dry-run
 
+      # The tarball designers install from. npm derives the filename from the
+      # manifest: @scope/name → scope-name, so @cake-admin/cakeand becomes
+      # cake-admin-cakeand-<version>.tgz.
+      - name: Pack the install tarball
+        id: pack
+        run: |
+          file="cake-admin-cakeand-${{ inputs.version }}.tgz"
+          ( cd dist-package && npm pack --pack-destination .. )
+          if [ ! -f "$file" ]; then
+            echo "::error::expected $file"; ls -la; exit 1
+          fi
+          integrity="sha512-$(openssl dgst -sha512 -binary "$file" | openssl base64 -A)"
+          {
+            echo "file=$file"
+            echo "integrity=$integrity"
+          } >> "$GITHUB_OUTPUT"
+          echo "$file  $integrity"
+
+      # Creates the tag as well as the Release — which is why this repo had zero
+      # tags despite 4.1.0 being published, making the publish history invisible.
+      - name: Create the GitHub Release (the zero-auth install source)
+        if: ${{ inputs.dry_run == false || inputs.dry_run == 'false' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          url="https://github.com/${{ github.repository }}/releases/download/v${{ inputs.version }}/${{ steps.pack.outputs.file }}"
+
+          # What changed in the library since the last release. Without this the
+          # publish history is invisible: there is no changelog in the repo, and
+          # before tags existed there was no way to tell a shipped version from
+          # an unshipped one at all.
+          previous=$(git tag -l 'v*' | sed 's/^v//' | sort -V | tail -n1)
+          if [ -n "$previous" ]; then
+            changes=$(git log --oneline "v$previous..HEAD" -- src/cakeand/ | sed 's/^/- /')
+            [ -z "$changes" ] && changes="- No changes under src/cakeand since v$previous."
+            changelog=$(printf '## Changes since v%s\n\n%s\n' "$previous" "$changes")
+          else
+            changelog="## First tagged release"
+          fi
+
+          cat > notes.md <<EOF
+          Install with **no GitHub token and no \`.npmrc\`** — add to \`package.json\`:
+
+          \`\`\`json
+          "@cake-admin/cakeand": "$url"
+          \`\`\`
+
+          or from a terminal:
+
+          \`\`\`bash
+          npm install $url
+          \`\`\`
+
+          Peer dependencies: \`react\` \`react-dom\` \`styled-components\` \`radix-ui\` \`lucide-react\`
+
+          New to cake&? Start from the template instead — it wires all of this up:
+
+          \`\`\`bash
+          npx degit cake-admin/cakev2/starter my-prototype
+          \`\`\`
+
+          Also published to GitHub Packages as \`@cake-admin/cakeand@${{ inputs.version }}\`
+          (that registry requires a token; the URL above does not).
+
+          Tarball integrity: \`${{ steps.pack.outputs.integrity }}\`
+
+          $changelog
+          EOF
+          gh release create "v${{ inputs.version }}" "${{ steps.pack.outputs.file }}" \
+            --title "cake& ${{ inputs.version }}" --notes-file notes.md
+
       - name: Publish to GitHub Packages
         # Accept both the boolean and the string form: workflow_dispatch inputs
         # are not always delivered as real booleans, and a mismatch here silently
@@ -83,11 +184,114 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Opens a PR rather than pushing to main. Pushes made with GITHUB_TOKEN do
+      # not trigger other workflows, so a direct push here would silently skip
+      # the Pages deploy; a human merge triggers it normally.
+      - name: Open a PR pointing the starter at this version
+        if: ${{ inputs.dry_run == false || inputs.dry_run == 'false' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v="${{ inputs.version }}"
+          branch="chore/starter-cakeand-$v"
+
+          node scripts/bump-starter.mjs --version "$v"
+
+          if git diff --quiet -- starter; then
+            echo "Starter already current — no PR needed."
+            exit 0
+          fi
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add starter
+          git commit -m "Point the starter at @cake-admin/cakeand $v"
+          git push -u origin "$branch"
+
+          gh pr create --title "Point the starter at @cake-admin/cakeand $v" --body "$(cat <<EOF
+          Opened automatically by the publish workflow for \`v$v\`.
+
+          - pins \`starter/package.json\` to the new Release tarball
+          - regenerates \`starter/context/\` stamped \`$v\`
+
+          Both move together on purpose: the context that ships beside a pinned
+          dependency must describe that exact dependency, or a designer's coding
+          agent will be told about components their build does not contain.
+
+          Merging makes \`npx degit cake-admin/cakev2/starter\` scaffold against $v.
+          EOF
+          )"
+
       - name: Summary
         run: |
+          v="${{ inputs.version }}"
+          url="https://github.com/${{ github.repository }}/releases/download/v$v/${{ steps.pack.outputs.file }}"
           if [ "${{ inputs.dry_run }}" = "false" ]; then
-            echo "Published @cake-admin/cakeand@${{ inputs.version }}" >> "$GITHUB_STEP_SUMMARY"
+            {
+              echo "## Published @cake-admin/cakeand@$v"
+              echo
+              echo "Install with no token:"
+              echo
+              echo '```bash'
+              echo "npm install $url"
+              echo '```'
+              echo
+              echo "- GitHub Release \`v$v\` (tag created)"
+              echo "- GitHub Packages \`@cake-admin/cakeand@$v\`"
+              echo "- Integrity: \`${{ steps.pack.outputs.integrity }}\`"
+            } >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "Dry run — built @cake-admin/cakeand@${{ inputs.version }} but did not publish." >> "$GITHUB_STEP_SUMMARY"
-            echo "Re-run with dry_run unchecked to publish." >> "$GITHUB_STEP_SUMMARY"
+            {
+              echo "## Dry run — built $v, published nothing"
+              echo
+              echo "Packed \`${{ steps.pack.outputs.file }}\` and verified the manifest."
+              echo "Re-run with **dry_run** unchecked to publish."
+            } >> "$GITHUB_STEP_SUMMARY"
           fi
+
+  # Proves the premise of the whole zero-auth path: a machine with no .npmrc and
+  # no credentials of any kind can install the package.
+  #
+  # This MUST be a separate job. The publish job's setup-node writes an .npmrc
+  # for npm.pkg.github.com, so running the check there would prove nothing.
+  # `npm_config_userconfig=/dev/null` additionally ignores any runner-level
+  # config, leaving genuinely nothing to authenticate with.
+  verify-zero-auth:
+    needs: publish
+    if: ${{ inputs.dry_run == false || inputs.dry_run == 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Set up Node.js (deliberately no registry-url, no scope)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install from the Release URL with no credentials
+        env:
+          npm_config_userconfig: /dev/null
+        run: |
+          url="https://github.com/${{ github.repository }}/releases/download/v${{ inputs.version }}/cake-admin-cakeand-${{ inputs.version }}.tgz"
+          mkdir -p /tmp/zeroauth && cd /tmp/zeroauth
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund "$url" \
+            react react-dom styled-components radix-ui lucide-react
+          node -e "
+            const p = require('./node_modules/@cake-admin/cakeand/package.json');
+            if (p.version !== '${{ inputs.version }}') {
+              throw new Error('version mismatch: got ' + p.version);
+            }
+            console.log('ok', p.name, p.version);
+          "
+          echo '--- lockfile entry a designer will see ---'
+          node -e "console.log(JSON.stringify(require('./package-lock.json').packages['node_modules/@cake-admin/cakeand'], null, 2))"
+
+      - name: Summary
+        run: |
+          {
+            echo "## Zero-auth install verified"
+            echo
+            echo "Installed \`@cake-admin/cakeand@${{ inputs.version }}\` on a runner with"
+            echo "no \`.npmrc\`, no \`registry-url\`, and no token."
+          } >> "$GITHUB_STEP_SUMMARY"
