@@ -100,15 +100,10 @@ import { Card } from '@/cakeand/components/Card';
 | --- | --- |
 | surface | \`--color-surfaces-container\` |
 | corner radius | \`--radius-400\` (24px) |
-| elevation · low | \`--elevation-low\` (Figma \`elevation/0\`, resting) |
-| elevation · high | \`--elevation-high\` (raised / floating) |
+| elevation · low | \`--elevation-0\` (Figma \`elevation/0\`, resting) |
+| elevation · high | \`--elevation-3\` (Figma \`elevation/3\`, overlay) |
 | clipping | \`overflow: hidden\` (media bleeds to the rounded corners) |
 | slot padding | none — content owns its insets |
-
-> **Token gap:** Figma's \`elevation/0\` layers a \`0 0 4px\` ambient shadow over the
-> \`0 1px 2px\` key; \`--elevation-low\` only carries the key layer (same gap the
-> Data Row hover hits). Fixing \`--elevation-low\` at the token source would
-> correct both. Raised, not hardcoded.
 
 ## Accessibility
 
@@ -162,9 +157,9 @@ export const Playground: Story = {
 };
 
 /**
- * The two elevation depths side by side: `low` is the resting card (Figma
- * `elevation/0`, `--elevation-low`); `high` (`--elevation-high`) lifts it for
- * raised or floating contexts.
+ * The two elevation depths side by side: `low` is the resting card
+ * (`--elevation-0`); `high` (`--elevation-3`) lifts it for raised or floating
+ * contexts.
  */
 export const Elevation: Story = {
   parameters: { controls: { disable: true } },

@@ -59,11 +59,8 @@ const Content = styled(Dialog.Content)`
   transform: translate(-50%, -50%);
   border-radius: var(--radius-400);
   background: var(--color-surfaces-container);
-  /* Figma elevation/5: two stacked drop shadows whose colors are the cake&
-     elevation tokens; the blur/offset geometry is intrinsic to the effect. */
-  box-shadow:
-    0 8px 24px 0 var(--color-elevation-drop-shadow-light),
-    0 4px 48px 0 var(--color-elevation-drop-shadow-heavy);
+  /* Figma elevation/5 — the top of the scale, for surfaces with a scrim. */
+  box-shadow: var(--elevation-5);
   animation: ${contentIn} 180ms ease;
 
   &:focus {

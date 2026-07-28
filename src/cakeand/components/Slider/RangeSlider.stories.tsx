@@ -52,7 +52,7 @@ Hover, keyboard focus, and dragging expose each thumb's current-value marker.
 | inactive track | \`--color-stroke-border\`; disabled \`--color-disabled-disabled\` |
 | selected range + thumbs | \`--color-primary-primary\`; disabled \`--color-disabled-disabled-inverse\` |
 | hover / focus / press state layer | \`--color-primary-primary-overlay-hover\`, \`--color-primary-primary-overlay-press\` |
-| thumb elevation | \`--elevation-low\` |
+| thumb elevation | \`--elevation-0\` |
 | markers | \`--color-primary-primary\`, \`--color-text-icon-on-primary\`, \`--radius-1000\`, \`--space-050\`, \`--space-100\` |
 | endpoint labels | \`--font-family\`, \`--type-size-body\`, \`--color-text-icon-primary\` |
 | track / tick shape | \`--radius-50\`, \`--radius-1000\`, \`--space-025\` |

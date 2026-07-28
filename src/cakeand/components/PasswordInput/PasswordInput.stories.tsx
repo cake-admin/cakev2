@@ -54,7 +54,7 @@ input/eye group. \`status\` overlays validation chrome and suppresses the menu.
 | text / placeholder / eye | \`--color-text-icon-primary\`, \`--color-text-icon-placeholder\`, \`--color-text-icon-secondary\`, \`--type-size-body\` |
 | layout / shape | \`--space-050\`, \`--space-100\`, \`--space-200\`, \`--radius-200\`, \`--radius-1000\` |
 | focusable eye action | \`--stroke-200\`, \`--color-primary-primary\`, \`--radius-1000\` |
-| policy overlay | Password Menu's token recipe: \`--color-surfaces-container\`, \`--elevation-high\`, semantic progress and requirement tokens |
+| policy overlay | Password Menu's token recipe: \`--color-surfaces-container\`, \`--elevation-3\`, semantic progress and requirement tokens |
 
 Figma intrinsic geometry is a 320px-wide field, 40px input, and 24px visibility
 slot. Password Menu is placed one \`--stroke-100\` below the field group, which

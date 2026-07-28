@@ -57,9 +57,7 @@ const Root = styled.div<{
           cursor: pointer;
           &:hover {
             background: var(--color-surfaces-on-container);
-            /* Figma elevation/0 also layers a 0 0 4px ambient shadow; the token
-               only carries the 0 1px 2px key layer — see docs note. */
-            box-shadow: var(--elevation-low);
+            box-shadow: var(--elevation-0);
           }
         `
       : ''}

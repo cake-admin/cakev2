@@ -23,7 +23,7 @@ const Surface = styled.div`
   overflow: hidden;
   background: var(--color-surfaces-container);
   border-radius: var(--radius-300);
-  box-shadow: var(--elevation-high);
+  box-shadow: var(--elevation-3);
 `;
 
 const Slot = styled.div`

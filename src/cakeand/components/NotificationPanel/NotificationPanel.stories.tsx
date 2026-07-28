@@ -100,7 +100,7 @@ controls.
 | Part | Tokens |
 | --- | --- |
 | panel surface | \`--color-surfaces-container-blur\` + 45px backdrop blur, \`--radius-400\` (24px) |
-| panel elevation | \`0 4px 12px --color-elevation-drop-shadow-light\` + \`0 3px 24px --color-elevation-drop-shadow-heavy\` |
+| panel elevation | \`--elevation-3\` (Figma \`elevation/3\`) |
 | panel edge (forced-colors) | \`--stroke-100\` \`--color-stroke-border-container\` (transparent in light/dark) |
 | header title | \`--type-size-subject\` (16px), \`--font-weight-medium\`, \`--color-text-icon-primary\` |
 | list container | \`--radius-400\` (24px), \`--stroke-100\` \`--color-stroke-border-low\` border + item dividers |

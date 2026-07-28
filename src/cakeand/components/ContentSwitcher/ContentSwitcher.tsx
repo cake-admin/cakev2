@@ -21,11 +21,8 @@ import { IconButton } from '../Button/IconButton';
  * variants.
  */
 
-/** Figma "elevation/0": the selected segment lifts off the track. */
-const SELECTED_SHADOW = `
-  0 1px 2px 0 var(--color-elevation-drop-shadow-light),
-  0 0 4px 0 var(--color-elevation-drop-shadow-heavy)
-`;
+/** Figma `elevation/0`: the selected segment lifts off the track. */
+const SELECTED_SHADOW = 'var(--elevation-0)';
 
 export type ContentSwitcherSize = 'sm' | 'md';
 export type ContentSwitcherIntent = 'primary' | 'secondary';

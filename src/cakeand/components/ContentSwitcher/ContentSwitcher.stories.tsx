@@ -88,7 +88,7 @@ const [view, setView] = useState('grid');
 | selected (primary) | **Button** \`fill\`/\`primary\` → \`--color-primary-primary\` + \`--color-text-icon-on-primary\` |
 | selected (secondary) | **Button** \`fill\`/\`secondary\` → \`--color-secondary-secondary\` + \`--color-text-icon-inverse\` |
 | unselected | **Button** \`ghost\` — transparent, label in the intent's color |
-| selected elevation | Figma \`elevation/0\`: \`0 1px 2px --color-elevation-drop-shadow-light\` + \`0 0 4px --color-elevation-drop-shadow-heavy\` |
+| selected elevation | \`--elevation-0\` (Figma \`elevation/0\`) |
 | segment sizing | Button/IconButton \`sm\` (32px) and \`md\` (40px) |
 
 Two notes on the reuse:

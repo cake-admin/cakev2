@@ -55,14 +55,12 @@ are actual menu items.
 | --- | --- |
 | surface | \`--color-surfaces-container\` |
 | corner | \`--radius-300\` |
-| shadow | \`--elevation-high\` |
+| shadow | \`--elevation-3\` (Figma \`elevation/3\`) |
 | content slot | \`--space-100\` (padding), \`--space-050\` (row gap) |
 | scrollbar track inset | \`--space-050\` |
 | scrollbar thumb | \`--color-stroke-border-high\`, \`--radius-50\` |
 
-The Figma "elevation/3" shadow has no 1:1 cake& token, so it maps to the
-nearest system elevation, \`--elevation-high\`. The 4px scrollbar thumb is
-intrinsic Figma geometry.
+The 4px scrollbar thumb is intrinsic Figma geometry.
 
 ## Accessibility
 

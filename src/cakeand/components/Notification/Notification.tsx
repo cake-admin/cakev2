@@ -40,9 +40,7 @@ const Card = styled.article<{ $flush: boolean }>`
       : `
     border-radius: var(--radius-400);
     overflow: hidden;
-    box-shadow:
-      0 1px 2px 0 var(--color-elevation-drop-shadow-light),
-      0 0 4px 0 var(--color-elevation-drop-shadow-heavy);
+    box-shadow: var(--elevation-0);
   `}
 `;
 

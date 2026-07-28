@@ -28,8 +28,6 @@ import { nativeScrollbarStyles } from '../Elements/Scrollbar';
  *  - disabled: flat `--color-disabled-disabled` fill, no border.
  *
  * Deviations from Figma (design corrections, verified against tokens.json):
- *  - Figma's `elevation/3` popover shadow has no 1:1 token; the menu uses
- *    `--elevation-high`, the design system's designated popover elevation.
  *  - Figma's "finish selecting" rendered the chosen value in placeholder grey;
  *    the value here uses `--color-text-icon-primary` (correct semantic, and it
  *    matches the open-state trigger text).
@@ -163,7 +161,7 @@ const Content = styled(RadixSelect.Content)`
   max-height: var(--radix-select-content-available-height);
   background: var(--color-surfaces-container);
   border-radius: var(--radius-300);
-  box-shadow: var(--elevation-high);
+  box-shadow: var(--elevation-3);
   overflow: hidden;
 `;
 

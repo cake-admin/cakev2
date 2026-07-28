@@ -29,11 +29,8 @@ const Content = styled(RadixTooltip.Content)`
   letter-spacing: 0.2px;
   overflow-wrap: anywhere;
 
-  /* Figma elevation/2 (node 128:8606): two independent shadows. Figma's
-     effect radii map directly to CSS box-shadow blur radii. */
-  box-shadow:
-    0 2px 8px 0 var(--color-elevation-drop-shadow-light),
-    0 2px 16px 0 var(--color-elevation-drop-shadow-heavy);
+  /* Figma elevation/2 (node 128:8606). */
+  box-shadow: var(--elevation-2);
 
   &[data-state='delayed-open'],
   &[data-state='instant-open'] {

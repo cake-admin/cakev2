@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 export type CardElevation = 'low' | 'high';
 
-/** elevation → cake& shadow token (see cake-vars.css `--elevation-*`). */
+/** elevation → Figma `elevation/<n>` token (see Foundations/Elevation). */
 const ELEVATION: Record<CardElevation, string> = {
-  low: 'var(--elevation-low)',
-  high: 'var(--elevation-high)',
+  low: 'var(--elevation-0)',
+  high: 'var(--elevation-3)',
 };
 
 /**
@@ -42,9 +42,8 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The card's content — plain nodes, or a card template that slots in. */
   children?: React.ReactNode;
   /**
-   * Drop-shadow depth (Figma `elevation`). `low` is the resting card (Figma
-   * `elevation/0`); `high` lifts it further for raised/floating contexts. Both
-   * resolve from the cake& `--elevation-*` tokens.
+   * Drop-shadow depth. `low` is the resting card (`--elevation-0`); `high`
+   * (`--elevation-3`) lifts it for raised or floating contexts.
    * @default 'low'
    */
   elevation?: CardElevation;

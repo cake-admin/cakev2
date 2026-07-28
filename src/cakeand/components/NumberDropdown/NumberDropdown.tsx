@@ -37,8 +37,6 @@ import { nativeScrollbarStyles } from '../Elements/Scrollbar';
  *    extrapolated — no disabled row was exported for this component).
  *
  * Deviations from Figma (design corrections, verified against tokens.json):
- *  - Figma's menu shadow has no 1:1 token; the menu uses `--elevation-high`,
- *    same substitution as `Dropdown`.
  *  - Menu item text is spec'd as raw "Segoe UI" in Figma (a legacy asset not
  *    migrated to Rookery) — corrected to `--font-family` per the devkit's
  *    "Rookery New only" rule.
@@ -176,7 +174,7 @@ const Content = styled(RadixSelect.Content)`
   max-height: var(--radix-select-content-available-height);
   background: var(--color-surfaces-container);
   border-radius: var(--radius-200);
-  box-shadow: var(--elevation-high);
+  box-shadow: var(--elevation-3);
   overflow: hidden;
 `;
 

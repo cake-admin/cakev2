@@ -35,10 +35,8 @@ const Panel = styled.section`
   /* Figma "win.htc.border": transparent in light/dark, repainted by
      forced-colors so the blurred surface keeps an edge. */
   border: var(--stroke-100) solid var(--color-stroke-border-container);
-  /* pop-out elevation (same two-layer shadow as Toast pop-out). */
-  box-shadow:
-    0 4px 12px 0 var(--color-elevation-drop-shadow-light),
-    0 3px 24px 0 var(--color-elevation-drop-shadow-heavy);
+  /* pop-out elevation (Figma elevation/3, same as Toast pop-out). */
+  box-shadow: var(--elevation-3);
 `;
 
 /** Padded content region (header + list). Its own padding is the panel inset,

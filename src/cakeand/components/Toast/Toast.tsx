@@ -63,9 +63,7 @@ const Root = styled(RadixToast.Root)<{ $variant: ToastVariant; $layout: ToastLay
           background: var(--color-surfaces-container-blur);
           backdrop-filter: blur(45px);
           -webkit-backdrop-filter: blur(45px);
-          box-shadow:
-            0 4px 12px 0 var(--color-elevation-drop-shadow-light),
-            0 3px 24px 0 var(--color-elevation-drop-shadow-heavy);
+          box-shadow: var(--elevation-3);
         `
       : css`
           background: var(--color-surfaces-on-container-high);

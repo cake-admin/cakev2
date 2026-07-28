@@ -120,7 +120,7 @@ import { DataRow, DataCell } from '@/cakeand/components/Table';
 | --- | --- |
 | row · default stripe | \`--color-surfaces-container\` |
 | row · inverse stripe | \`--color-surfaces-on-container-high\` |
-| row · hover (interactive) | \`--color-surfaces-on-container\` + \`--elevation-low\` |
+| row · hover (interactive) | \`--color-surfaces-on-container\` + \`--elevation-0\` |
 | row · selected | \`--color-tonal-tonal-lightest\` |
 | row · disabled | \`--color-disabled-disabled\` bg, \`--color-disabled-disabled-inverse\` text |
 | cell rule | \`--stroke-100\` top/bottom, \`--color-stroke-border-low\` |
@@ -128,10 +128,6 @@ import { DataRow, DataCell } from '@/cakeand/components/Table';
 | cell text | \`--type-size-body\` (14px), \`--font-weight-regular\`, \`--color-text-icon-primary\` |
 | selection control | **Checkbox** (Radix, own tokens) |
 | rail width / row height | 48px (intrinsic geometry, Figma 171:9843) |
-
-> **Token gap:** Figma's \`elevation/0\` hover shadow layers a \`0 0 4px\` ambient
-> pass over the \`0 1px 2px\` key; \`--elevation-low\` only carries the key layer.
-> Raised as an open finding rather than hardcoded.
 
 ## Accessibility
 

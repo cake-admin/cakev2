@@ -50,7 +50,7 @@ visuals.
 | trigger · open | \`--color-surfaces-container\` | \`--stroke-150\` \`--color-primary-primary\` | \`--color-text-icon-primary\` |
 | trigger · has value | \`--color-surfaces-on-container-high\` | \`--color-stroke-border-high\` | \`--color-text-icon-primary\` |
 | trigger · disabled | \`--color-disabled-disabled\` | none | \`--color-disabled-disabled-inverse\` |
-| menu · container | \`--color-surfaces-container\` | \`--radius-200\`, \`--elevation-high\` | – |
+| menu · container | \`--color-surfaces-container\` | \`--radius-200\`, \`--elevation-3\` | – |
 | menu item · resting | transparent | \`--radius-50\` | \`--color-text-icon-secondary\` |
 | menu item · highlighted | \`--color-tonal-tonal-secondary-overlay-hover\` | – | \`--color-text-icon-on-tonal-secondary\` |
 | menu item · selected | \`--color-tonal-tonal-overlay\` | – | \`--color-text-icon-on-tonal\` |
@@ -61,8 +61,7 @@ Trigger shape is \`--radius-200\` (12px); fixed widths are 80px (\`md\`) /
 arrow). Menu items are 36px tall, \`--space-100\` padding, \`--space-025\`
 gap, \`--space-050\` viewport padding.
 
-**Deviations from Figma** (design corrections): the menu uses
-\`--elevation-high\` (Figma's shadow has no 1:1 token); menu item text is
+**Deviations from Figma** (design corrections): menu item text is
 corrected from Figma's raw "Segoe UI" to \`--font-family\`; the selected item's
 "Semibold" weight has no matching token, so it uses \`--font-weight-medium\`.
 

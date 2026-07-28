@@ -132,7 +132,7 @@ import { Toast } from '<cakeand>/components/Toast';
 | --- | --- |
 | corner radius | \`--radius-400\` (24px) |
 | pop-out surface | \`--color-surfaces-container-blur\`, 45px backdrop blur |
-| pop-out elevation | \`--color-elevation-drop-shadow-light\`, \`--color-elevation-drop-shadow-heavy\` |
+| pop-out elevation | \`--elevation-3\` (Figma \`elevation/3\`) |
 | inline surface | \`--color-surfaces-on-container-high\` (no elevation) |
 | accessibility outline | \`--stroke-100\` \`--color-stroke-border-container\` border — genuinely transparent in light/dark; forced-colors (Windows High Contrast) repaints it to give the surface an edge |
 | status icon | \`--color-info-info\`, \`--color-success-success\`, \`--color-warning-warn\`, \`--color-error-error\`, \`--color-text-icon-primary\` (neutral) |

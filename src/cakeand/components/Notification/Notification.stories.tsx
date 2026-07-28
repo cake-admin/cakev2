@@ -66,7 +66,7 @@ control is **IconButton**.
 | Part | Tokens |
 | --- | --- |
 | surface | \`--color-surfaces-on-container-high\`, \`--radius-400\` (24px) |
-| drop shadow (Figma elevation/0) | \`0 1px 2px --color-elevation-drop-shadow-light\` + \`0 0 4px --color-elevation-drop-shadow-heavy\` |
+| drop shadow | \`--elevation-0\` (Figma \`elevation/0\`) |
 | status icon | \`--color-info-info\`, \`--color-success-success\`, \`--color-warning-warn\`, \`--color-error-error\`, \`--color-text-icon-primary\` (neutral) |
 | title | \`--type-size-subject\` (16px), \`--font-weight-medium\`, \`--color-text-icon-primary\` |
 | description | \`--type-size-body\` (14px), \`--font-weight-regular\`, \`--color-text-icon-secondary\` |

@@ -58,9 +58,33 @@ const structure = `${valueLines(value.spacing, 'Spacing — Figma Spacing/<bucke
   --type-size-data: 4.25rem;
 `;
 
-/** Shadows composed from the mode-scoped elevation color vars. */
+/** Shadows composed from the mode-scoped elevation color vars.
+ *  `--elevation-<n>` mirrors the Figma `elevation/<n>` effect styles 1:1 (each
+ *  is a key + ambient layer). `--elevation-low` / `--elevation-high` predate
+ *  the numbered scale and are kept for existing call sites — see
+ *  Foundations/Elevation. */
 const elevation = `
-  /* Elevation — theme.elevation (colors resolve per data-theme) */
+  /* Elevation — Figma elevation/<n> (colors resolve per data-theme) */
+  --elevation-0:
+    0 1px 2px 0 var(--color-elevation-drop-shadow-light),
+    0 0 4px 0 var(--color-elevation-drop-shadow-heavy);
+  --elevation-1:
+    0 1px 4px 0 var(--color-elevation-drop-shadow-light),
+    0 1px 8px 0 var(--color-elevation-drop-shadow-heavy);
+  --elevation-2:
+    0 2px 8px 0 var(--color-elevation-drop-shadow-light),
+    0 2px 16px 0 var(--color-elevation-drop-shadow-heavy);
+  --elevation-3:
+    0 4px 12px 0 var(--color-elevation-drop-shadow-light),
+    0 3px 24px 0 var(--color-elevation-drop-shadow-heavy);
+  --elevation-4:
+    0 6px 18px 0 var(--color-elevation-drop-shadow-light),
+    0 4px 36px 0 var(--color-elevation-drop-shadow-heavy);
+  --elevation-5:
+    0 8px 24px 0 var(--color-elevation-drop-shadow-light),
+    0 4px 48px 0 var(--color-elevation-drop-shadow-heavy);
+
+  /* Legacy, pre-scale aliases. */
   --elevation-low: 0 1px 2px 0 var(--color-elevation-drop-shadow-light);
   --elevation-high: 0 12px 32px -4px var(--color-elevation-drop-shadow-heavy);
 `;

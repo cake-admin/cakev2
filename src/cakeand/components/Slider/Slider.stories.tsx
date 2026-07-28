@@ -56,7 +56,7 @@ current-value marker.
 | inactive track | \`--color-stroke-border\`; disabled \`--color-disabled-disabled\` |
 | active track + thumb | \`--color-primary-primary\`; disabled \`--color-disabled-disabled-inverse\` |
 | hover / focus / press state layer | \`--color-primary-primary-overlay-hover\`, \`--color-primary-primary-overlay-press\` |
-| thumb elevation | \`--elevation-low\` |
+| thumb elevation | \`--elevation-0\` |
 | marker | \`--color-primary-primary\`, \`--color-text-icon-on-primary\`, \`--radius-1000\`, \`--space-050\`, \`--space-100\` |
 | endpoint labels | \`--font-family\`, \`--type-size-body\`, \`--color-text-icon-primary\` |
 | track / tick shape | \`--radius-50\`, \`--radius-1000\`, \`--space-025\` |

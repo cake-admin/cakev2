@@ -63,7 +63,10 @@ src/cakeand/components/<Component>/
    - stroke widths: `var(--stroke-100 … --stroke-600)` (1–6px — borders,
      outlines; focus rings use `--stroke-300`, Switch's ring `--stroke-200`)
    - type: `var(--font-family)`, `var(--font-weight-*)`, `var(--type-size-<role>)`
-   - shadows: `var(--elevation-low|high)`
+   - shadows: `var(--elevation-0 … --elevation-5)` (Figma `elevation/<n>`; see
+     Foundations/Elevation for which level a surface takes). `--elevation-low`
+     and `--elevation-high` are legacy single-layer approximations — never
+     adopt them in new work.
    Never hardcode hex, px spacing, border widths, or font sizes. Style Radix
    state via data attributes (`[data-state='checked']`, `[data-disabled]`).
    `Button`, `IconButton`, and `Switch` are fully migrated exemplars.

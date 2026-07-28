@@ -31,11 +31,9 @@ const Content = styled(RadixPopover.Content)`
   color: var(--color-text-icon-primary);
   backdrop-filter: blur(45px);
 
-  /* Figma surfaces/container blur high (node 128:8611): preserve both shadow
-     layers independently; these are intentionally stronger than elevation/2. */
-  box-shadow:
-    0 8px 24px 0 var(--color-elevation-drop-shadow-light),
-    0 4px 48px 0 var(--color-elevation-drop-shadow-heavy);
+  /* Figma node 128:8611 — deliberately stronger than Simple Tooltip's
+     elevation/2; the exported values are exactly elevation/5. */
+  box-shadow: var(--elevation-5);
 
   &[data-state='open'] {
     animation: rich-tooltip-in 160ms ease-out;

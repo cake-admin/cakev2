@@ -63,7 +63,7 @@ surface reuses cake& **IconButton** for close and **Button** for default actions
 | body | \`--font-family\`, \`--type-size-subject\`, \`--font-weight-regular\`, \`--color-text-icon-primary\` |
 | step text | \`--type-size-body\`, \`--font-weight-medium\`, \`--color-text-icon-primary\` |
 | padding / gaps / shape | \`--space-500\`, \`--space-300\`, \`--space-200\`, \`--space-100\`, \`--radius-400\` |
-| high-blur shadow colors | \`--color-elevation-drop-shadow-light\`, \`--color-elevation-drop-shadow-heavy\` |
+| elevation | \`--elevation-5\` (Figma \`elevation/5\`) |
 | trigger focus ring | \`--stroke-200\`, \`--color-primary-primary\`, \`--space-025\` offset |
 | actions | delegated to reusable \`Button\` and \`IconButton\` tokens |
 

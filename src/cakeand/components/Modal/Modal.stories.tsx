@@ -23,8 +23,7 @@ content that should not trap focus.
 
 Every color, spacing, radius, and shadow value resolves from cake& CSS custom
 properties that mirror Figma variables. The **Theme** toolbar re-themes every
-example live; nothing is hardcoded — including the two-layer elevation/5 drop
-shadow, whose colors are the \`--color-elevation-drop-shadow-*\` tokens.
+example live; nothing is hardcoded — including the \`--elevation-5\` drop shadow.
 
 Modal wraps Radix \`Dialog\`, so it owns focus trapping, scroll locking, escape
 and overlay dismissal, and the \`dialog\` role. The header is built from the
@@ -63,7 +62,7 @@ const [open, setOpen] = useState(false);
 | --- | --- |
 | surface | \`--color-surfaces-container\` |
 | corner radius | \`--radius-400\` (24px) |
-| elevation (elevation/5) | \`--color-elevation-drop-shadow-light\`, \`--color-elevation-drop-shadow-heavy\` |
+| elevation | \`--elevation-5\` (Figma \`elevation/5\`) |
 | scrim | \`--color-overlay-scrim\` |
 | body gap | \`--space-100\` (8px) |
 | max height inset | \`--space-800\` (48px) |

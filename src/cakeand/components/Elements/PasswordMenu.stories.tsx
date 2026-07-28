@@ -47,7 +47,7 @@ to a static status panel.
 
 | Part · state | Tokens |
 | --- | --- |
-| card | \`--color-surfaces-container\`, \`--radius-200\`, \`--elevation-high\` |
+| card | \`--color-surfaces-container\`, \`--radius-200\`, \`--elevation-3\` |
 | header / list | \`--space-300\` padding, \`--space-100\` stack gap |
 | card title | \`--font-family\`, \`--font-weight-medium\`, \`--type-size-body\`, \`--color-text-icon-primary\` |
 | progress track | \`--color-stroke-border\`, \`--radius-1000\` |
@@ -59,8 +59,8 @@ to a static status panel.
 | optional external label | reused \`InputLabel\` token recipe |
 
 Figma intrinsic geometry is a 320px card, 12px progress track, and
-\`--space-050\` outer gap. Its two-layer un-tokenized shadow maps to
-\`--elevation-high\`, the system popover-elevation token.
+\`--space-050\` outer gap. The card floats over the field it annotates, so it
+takes \`--elevation-3\` — the same overlay level as Dropdown and Menu.
 
 ## Accessibility
 

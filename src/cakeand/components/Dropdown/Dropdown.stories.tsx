@@ -61,7 +61,7 @@ close, \`data-state\`); cake& owns the visuals. The label is wired via
 | trigger · open | \`--color-surfaces-container\` | \`--stroke-150\` \`--color-primary-primary\` | \`--color-text-icon-primary\` |
 | trigger · has value | \`--color-surfaces-on-container-high\` | \`--color-stroke-border-high\` | \`--color-text-icon-primary\` |
 | trigger · disabled | \`--color-disabled-disabled\` | none | \`--color-disabled-disabled-inverse\` |
-| menu · container | \`--color-surfaces-container\` | \`--radius-300\`, \`--elevation-high\` | – |
+| menu · container | \`--color-surfaces-container\` | \`--radius-300\`, \`--elevation-3\` | – |
 | menu item · resting | transparent | \`--radius-200\` | \`--color-secondary-secondary\` |
 | menu item · highlighted | \`--color-tonal-tonal-secondary-overlay-hover\` | – | \`--color-text-icon-on-tonal-secondary\` |
 | menu item · press | \`--color-tonal-tonal-secondary-overlay-press\` | – | – |
@@ -71,8 +71,7 @@ Trigger shape is \`--radius-200\` (12px); height is 40px with a 24px arrow;
 paddings are \`--space-200\` trigger + \`--space-100\` inner text inset. Menu
 items are 36px tall with \`--space-100\` padding; text is \`--type-size-body\`.
 
-**Deviations from Figma** (design corrections): the menu uses \`--elevation-high\`
-(Figma's \`elevation/3\` has no 1:1 token), and the chosen value renders in
+**Deviations from Figma** (design corrections): the chosen value renders in
 \`--color-text-icon-primary\` rather than Figma's placeholder grey.
 
 ## Accessibility

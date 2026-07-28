@@ -127,7 +127,7 @@ const Thumb = styled(RadixSlider.Thumb)`
   height: ${THUMB_SIZE}px;
   border-radius: var(--radius-1000);
   background: var(--color-primary-primary);
-  box-shadow: var(--elevation-low);
+  box-shadow: var(--elevation-0);
   cursor: grab;
 
   &::before {

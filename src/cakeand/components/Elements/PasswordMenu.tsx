@@ -40,8 +40,8 @@ export interface PasswordRequirement {
  * - medium: lowercase + uppercase met; warning strength progress.
  * - strong: all rules met; success progress.
  *
- * The Figma drop-shadow is a two-layer recipe with no 1:1 generated token;
- * `--elevation-high` is the design system popover-elevation substitute.
+ * The card floats over the field it annotates, so it takes `--elevation-3`
+ * (Figma `elevation/3`) — the same overlay level as Dropdown and Menu.
  */
 
 const STRENGTH_ORDER: Record<PasswordStrength, number> = {
@@ -74,7 +74,7 @@ const Card = styled.section`
   overflow: hidden;
   border-radius: var(--radius-200);
   background: var(--color-surfaces-container);
-  box-shadow: var(--elevation-high);
+  box-shadow: var(--elevation-3);
   /*
    * Figma's "surfaces/container blur" effect has a 90-radius blur. CSS's
    * 45px blur is the equivalent visual radius; this is intrinsic geometry

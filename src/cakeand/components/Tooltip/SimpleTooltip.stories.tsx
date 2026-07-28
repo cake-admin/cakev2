@@ -30,10 +30,9 @@ Simple Tooltip provides a short, supplemental text description (Figma node
 brief and non-interactive; use **Rich Tooltip** when the surface needs a title,
 actions, or structured guidance.
 
-Every color, radius, spacing, type, and shadow color resolves from cake& CSS
-custom properties that mirror Figma variables. The **Theme** toolbar re-themes
-every example live; nothing is hardcoded. Its elevation/2 geometry is preserved
-as two shadows rather than approximated with a generic elevation preset.
+Every color, radius, spacing, type, and shadow resolves from cake& CSS custom
+properties that mirror Figma variables. The **Theme** toolbar re-themes every
+example live; nothing is hardcoded.
 
 Simple Tooltip wraps Radix \`Tooltip\`. Radix owns hover/focus timing,
 \`aria-describedby\`, portal positioning, collision avoidance, and Escape
@@ -57,7 +56,7 @@ content; do not nest another button inside it.
 | inverse surface | \`--color-surfaces-inverse-container\` |
 | text | \`--color-text-icon-inverse\`, \`--font-family\`, \`--type-size-caption\`, \`--font-weight-regular\` |
 | padding / shape | \`--space-100\` vertical, \`--space-200\` horizontal, \`--radius-200\` |
-| elevation/2 colors | \`--color-elevation-drop-shadow-light\`, \`--color-elevation-drop-shadow-heavy\` |
+| elevation | \`--elevation-2\` (Figma \`elevation/2\`) |
 | trigger focus ring | \`--stroke-200\`, \`--color-primary-primary\`, \`--space-025\` offset |
 
 ## Accessibility

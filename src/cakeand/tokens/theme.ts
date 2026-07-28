@@ -43,7 +43,25 @@ const makeTheme = (mode: ThemeMode) => {
     radius,
     font,
     typography: font.presets,
+    /**
+     * Figma `elevation/<n>` — each level is a key layer (drop-shadow-light)
+     * over an ambient layer (drop-shadow-heavy). Prefer `var(--elevation-<n>)`
+     * in CSS; these exist for JS consumers under CakeThemeProvider.
+     */
     elevation: {
+      /** Resting — a surface sitting on the page. */
+      0: `0 1px 2px 0 ${color.elevation.dropShadowLight}, 0 0 4px 0 ${color.elevation.dropShadowHeavy}`,
+      /** Raised — a surface lifting off the page. */
+      1: `0 1px 4px 0 ${color.elevation.dropShadowLight}, 0 1px 8px 0 ${color.elevation.dropShadowHeavy}`,
+      /** Floating — anchored transients (tooltips). */
+      2: `0 2px 8px 0 ${color.elevation.dropShadowLight}, 0 2px 16px 0 ${color.elevation.dropShadowHeavy}`,
+      /** Overlay — detached surfaces (menus, toasts, panels). */
+      3: `0 4px 12px 0 ${color.elevation.dropShadowLight}, 0 3px 24px 0 ${color.elevation.dropShadowHeavy}`,
+      /** Prominent — large detached surfaces (drawers, sheets). */
+      4: `0 6px 18px 0 ${color.elevation.dropShadowLight}, 0 4px 36px 0 ${color.elevation.dropShadowHeavy}`,
+      /** Dialog — the top of the scale; surfaces that take over the screen. */
+      5: `0 8px 24px 0 ${color.elevation.dropShadowLight}, 0 4px 48px 0 ${color.elevation.dropShadowHeavy}`,
+      /** Legacy aliases, predating the numbered Figma scale. */
       low: `0 1px 2px 0 ${color.elevation.dropShadowLight}`,
       high: `0 12px 32px -4px ${color.elevation.dropShadowHeavy}`,
     },
