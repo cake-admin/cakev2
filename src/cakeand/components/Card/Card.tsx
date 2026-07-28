@@ -6,7 +6,7 @@ export type CardElevation = 'low' | 'high';
 /** elevation → Figma `elevation/<n>` token (see Foundations/Elevation). */
 const ELEVATION: Record<CardElevation, string> = {
   low: 'var(--elevation-0)',
-  high: 'var(--elevation-3)',
+  high: 'var(--elevation-0)',
 };
 
 /**
@@ -42,8 +42,9 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** The card's content — plain nodes, or a card template that slots in. */
   children?: React.ReactNode;
   /**
-   * Drop-shadow depth. `low` is the resting card (`--elevation-0`); `high`
-   * (`--elevation-3`) lifts it for raised or floating contexts.
+   * Drop-shadow depth. Both currently resolve to the Figma `elevation/0`
+   * resting shadow (`--elevation-0`) — `high` is reserved for a raised/
+   * floating treatment once that spec is confirmed against Figma.
    * @default 'low'
    */
   elevation?: CardElevation;

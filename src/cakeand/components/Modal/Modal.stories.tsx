@@ -63,7 +63,8 @@ const [open, setOpen] = useState(false);
 | surface | \`--color-surfaces-container\` |
 | corner radius | \`--radius-400\` (24px) |
 | elevation | \`--elevation-5\` (Figma \`elevation/5\`) |
-| scrim | \`--color-overlay-scrim\` |
+| scrim · color | \`--color-overlay-scrim\` — a white-tinted veil in light (\`rgba(255, 255, 255, 0.6)\`), black-tinted in dark (\`rgba(0, 0, 0, 0.3)\`) |
+| scrim · blur | \`backdrop-filter: blur(12px)\` — fixed in both themes, not tokenized |
 | body gap | \`--space-100\` (8px) |
 | max height inset | \`--space-800\` (48px) |
 | header / content / footer | composed \`ModalTitle\`, \`ModalContent\`, \`ModalFooter\` tokens |
@@ -81,6 +82,8 @@ Width is intrinsic modal geometry.
   \`descriptionAsDialogDescription={false}\` when the header already provides it.
 - The close control reuses the shared IconButton and its focus ring; set
   \`showClose={false}\` only when dismissal is handled elsewhere.
+- In Win HCT, \`--color-overlay-scrim\` resolves to opaque white — the blur
+  has nothing translucent left to soften, which is expected in that mode.
 
 ## Do / Don't
 

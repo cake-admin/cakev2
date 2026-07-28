@@ -84,7 +84,7 @@ import { Card } from '@/cakeand/components/Card';
   <div style={{ padding: 'var(--space-500)' }}>…</div>
 </Card>
 
-// raised / floating context
+// reserved for a future raised/floating treatment (currently == low)
 <Card elevation="high">…</Card>
 
 // edge-to-edge media (the flush slot + overflow:hidden clip it to the corners)
@@ -100,8 +100,7 @@ import { Card } from '@/cakeand/components/Card';
 | --- | --- |
 | surface | \`--color-surfaces-container\` |
 | corner radius | \`--radius-400\` (24px) |
-| elevation · low | \`--elevation-0\` (Figma \`elevation/0\`, resting) |
-| elevation · high | \`--elevation-3\` (Figma \`elevation/3\`, overlay) |
+| elevation · low, high | \`--elevation-0\` (Figma \`elevation/0\`, resting) |
 | clipping | \`overflow: hidden\` (media bleeds to the rounded corners) |
 | slot padding | none — content owns its insets |
 
@@ -124,7 +123,7 @@ import { Card } from '@/cakeand/components/Card';
 | --- | --- |
 | Let content bring its own padding | Assume Card pads its slot for you |
 | Use \`overflow: hidden\` to bleed media to the corners | Add a nested rounded wrapper to re-clip what Card already clips |
-| Reach for \`elevation="high"\` only when a card floats | Raise every card — if everything lifts, nothing reads as raised |
+| Use the default \`elevation="low"\` | Reach for \`elevation="high"\` expecting a stronger shadow — it currently renders identically, pending a confirmed raised spec |
 | Use **Modal** for focus-trapping overlays | Build a dialog out of a Card |
 `,
       },
@@ -157,9 +156,9 @@ export const Playground: Story = {
 };
 
 /**
- * The two elevation depths side by side: `low` is the resting card
- * (`--elevation-0`); `high` (`--elevation-3`) lifts it for raised or floating
- * contexts.
+ * `low` and `high` side by side. Both currently render the Figma
+ * `elevation/0` resting shadow (`--elevation-0`) — `high` is reserved for a
+ * raised/floating treatment once that spec is confirmed against Figma.
  */
 export const Elevation: Story = {
   parameters: { controls: { disable: true } },
