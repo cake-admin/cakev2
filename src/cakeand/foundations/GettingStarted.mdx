@@ -16,9 +16,19 @@ npm install
 npm run dev
 ```
 
-That is the whole setup. If `degit` gives you trouble, `npx giget@latest
-gh:cake-admin/cakev2/starter my-prototype` or a plain `git clone --depth 1` both
-work.
+That is the whole setup.
+
+**What that first command does:** `npx` runs a package without installing it
+globally, and `degit` copies one folder out of a git repository as plain files —
+no `.git` directory, no history. So it means *"download just the `starter/`
+folder from the cake& repo into `my-prototype`, as a clean project."* Unlike
+`git clone`, you do not get the whole design system, and the result is your
+project from the first commit, not a fork of ours.
+
+`degit` is unmaintained but still works. If it gives you trouble,
+`npx giget@latest gh:cake-admin/cakev2/starter my-prototype` does the same thing,
+and `git clone --depth 1 https://github.com/cake-admin/cakev2` followed by
+copying the `starter/` folder always works.
 
 ## What you get
 

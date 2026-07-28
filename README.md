@@ -1,59 +1,120 @@
-# Cake Design System v4.0.1
+# cake&
 
-A modern, responsive design system built with React, providing a collection of reusable components and patterns for building consistent user interfaces.
+Lenovo's design system: 63 React components, ~470 design tokens, and three
+themes. Every interactive component wraps a [Radix](https://www.radix-ui.com/primitives)
+primitive, so behaviour and accessibility come from Radix and cake& owns the
+visuals. Every value resolves from a design token — nothing is hardcoded.
 
-## Features
+**Documentation:** <https://cake.lenovo.com/storybook/> — the source of truth for
+every component's API, variants, states, and accessibility contract.
 
-- 🎨 Modern and clean design
-- 📱 Fully responsive components
-- 🔍 Built-in search functionality
-- 🎯 Accessible components
-- 🚀 Easy to use and integrate
+---
 
-## Components
+## Use it
 
-- Navigation
-- Button
-- Card
-- Input
-- Modal
-- SearchBar
-- And more...
+### Starting something new
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v14 or higher)
-- npm or yarn
-
-### Installation
-
-1. Clone the repository:
 ```bash
-git clone <your-repository-url>
+npx degit cake-admin/cakev2/starter my-prototype
+cd my-prototype
+npm install
+npm run dev
 ```
 
-2. Install dependencies:
+You get a Vite + React + TypeScript app with the provider, theming, fonts, and
+coding-agent context already wired up. **No GitHub token and no `.npmrc`** — see
+[Getting Started](https://cake.lenovo.com/storybook/?path=/docs/guides-getting-started--docs)
+for the full walkthrough.
+
+<details>
+<summary>What is <code>npx degit</code>?</summary>
+
+`npx` runs a package without installing it globally. `degit` copies a git
+repository — or one folder inside it — as plain files, with no `.git` directory
+and no history.
+
+So that command means *"download just the `starter/` folder from this repo into
+`my-prototype`, as a clean project."* Unlike `git clone`, you do not get the
+whole design system or its history, and you are not connected to this repo — it
+is your project from the first commit.
+
+`degit` is unmaintained but still works. Equivalents:
+`npx giget@latest gh:cake-admin/cakev2/starter my-prototype`, or
+`git clone --depth 1 https://github.com/cake-admin/cakev2 && cp -r cakev2/starter my-prototype`.
+
+</details>
+
+### Adding cake& to an existing app
+
+Take the `.tgz` URL from the [newest release](https://github.com/cake-admin/cakev2/releases/latest):
+
+```bash
+npm install https://github.com/cake-admin/cakev2/releases/download/vX.Y.Z/cake-admin-cakeand-X.Y.Z.tgz
+npm install react react-dom styled-components radix-ui lucide-react
+```
+
+No token is needed: the repository is public and npm sends no credentials to a
+non-registry host. The package is also on GitHub Packages as
+`@cake-admin/cakeand`, but that registry requires a token for every install.
+
+Then wrap your app **once**:
+
+```tsx
+import { CakeProvider, Card, HeroCard, Button } from '@cake-admin/cakeand';
+
+<CakeProvider mode="light.a">
+  <Card>
+    <HeroCard title="Hello" actions={<Button size="lg">Get started</Button>} />
+  </Card>
+</CakeProvider>;
+```
+
+Three details matter and are easy to miss — `resolve.dedupe` for
+`styled-components`, the stylesheet import, and `data-theme` on `<html>`. All
+three are covered in [Getting Started](https://cake.lenovo.com/storybook/?path=/docs/guides-getting-started--docs),
+and all three are already done in the starter.
+
+### Prototyping with AI agents
+
+[`cake-admin/ai-lab`](https://github.com/cake-admin/ai-lab) is the workspace for
+building prototypes with Cursor or Claude Code — skills, agents, and a
+machine-readable component index. Clone it and ask for a prototype; it installs
+cake& for you.
+
+---
+
+## Develop it
+
+This repo holds the design system, its Storybook, the site at cake.lenovo.com,
+and the data-viz tool at /dataviz.
+
 ```bash
 npm install
+npm run storybook        # component development, port 6006
+npm start                # the cake.lenovo.com site
+npm run build-storybook
 ```
 
-3. Start the development server:
-```bash
-npm start
-```
+| Path | What |
+|------|------|
+| `src/cakeand/` | The design system — the only thing that ships in the package |
+| `src/cakeand/foundations/` | Storybook docs pages (Colors, Typography, Spacing, Elevation, guides) |
+| `starter/` | The template designers scaffold from |
+| `scripts/` | Token generation, package build, agent-context generation |
+| `chart-tool-echarts/` | Separate Vite app deployed at /dataviz |
 
-The application will be available at `http://localhost:3000`.
+Contributing a component, and publishing a version, are documented in Storybook
+under **Guides** — see *Building a Component* and *Shipping a Component*.
+Agent-specific conventions live in [AGENTS.md](AGENTS.md).
 
-## Contributing
+> The repo path must not contain an `&` on Windows — it breaks npm's `.bin`
+> shims. Invoke binaries as `node node_modules/<pkg>/<bin>.js`, which the package
+> scripts already do.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+---
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+Internal Lenovo design system. The published package declares `UNLICENSED`, and
+the bundled Rookery New typeface is proprietary — it is not licensed for
+redistribution outside Lenovo.
