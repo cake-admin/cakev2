@@ -62,6 +62,6 @@ import {
 ---
 
 - Behaviour comes from a Radix primitive; cake& owns the visuals.
-- Related: VerticalTabs, VerticalTabSubItem.
+- Related: VerticalTabSubItem, VerticalTabs.
 - Source: `src/cakeand/components/VerticalTabs/`
 - Storybook: <https://cake.lenovo.com/storybook/?path=/docs/components-vertical-tabs-vertical-tab-item--docs>
