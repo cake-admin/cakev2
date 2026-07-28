@@ -22,17 +22,21 @@ coding-agent context already wired up. Nothing to configure.
 ### From a GitHub Release — no token needed
 
 The repository is public, so npm can fetch the tarball directly. No `.npmrc`, no
-personal access token, nothing to set up:
+personal access token, nothing to set up.
+
+Take the `.tgz` URL from the newest release —
+<https://github.com/cake-admin/cakev2/releases/latest> — and install it:
 
 ```bash
-npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.0/cake-admin-cakeand-4.2.0.tgz
+npm install https://github.com/cake-admin/cakev2/releases/download/vX.Y.Z/cake-admin-cakeand-X.Y.Z.tgz
 ```
 
-Pin the version-specific URL, never a "latest" one. npm records a checksum of the
-exact tarball bytes in your lockfile, so a URL whose contents change will first
-silently fail to update and then break `npm ci` with an integrity error.
+Always install a **version-specific** URL, never one that resolves to "latest".
+npm records a checksum of the exact tarball bytes in your lockfile, so a URL
+whose contents change will first silently fail to update, then break `npm ci`
+with an integrity error that is hard to trace back.
 
-Newer versions: <https://github.com/cake-admin/cakev2/releases>
+Upgrading later is the same command with the newer version's URL.
 
 ### From GitHub Packages — requires a token
 

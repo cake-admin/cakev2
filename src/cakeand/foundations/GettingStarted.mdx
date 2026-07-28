@@ -50,8 +50,12 @@ release.
 
 ## Adding cake& to an app you already have
 
+Take the `.tgz` URL from the newest release —
+[github.com/cake-admin/cakev2/releases/latest](https://github.com/cake-admin/cakev2/releases/latest)
+— and install it alongside the peer dependencies:
+
 ```bash
-npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.0/cake-admin-cakeand-4.2.0.tgz
+npm install https://github.com/cake-admin/cakev2/releases/download/vX.Y.Z/cake-admin-cakeand-X.Y.Z.tgz
 npm install react react-dom styled-components radix-ui lucide-react
 ```
 
@@ -93,14 +97,19 @@ your HTML shell too.
 
 ## Updating
 
+If you started from the template:
+
 ```bash
 npm run cake:update
 ```
 
-The dependency is pinned to a **version-specific** URL, and upgrading is
-deliberately explicit. A URL that always served "latest" would look convenient
-and behave badly: npm records a checksum of the exact tarball bytes, so a
-changing URL first fails to update at all, then breaks `npm ci` with an
+If you added cake& to your own app, re-run the install with the newer release's
+URL — there is no `cake:update` script outside the template.
+
+Either way the dependency ends up pinned to a **version-specific** URL, and
+upgrading is deliberately explicit. A URL that always served "latest" would look
+convenient and behave badly: npm records a checksum of the exact tarball bytes,
+so a changing URL first fails to update at all, then breaks `npm ci` with an
 integrity error that has no obvious cause.
 
 ## Troubleshooting

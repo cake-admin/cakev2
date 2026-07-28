@@ -54,7 +54,7 @@ npm install react react-dom styled-components radix-ui lucide-react
 
 Then copy three things from this starter, all of which matter:
 
-1. `resolve.dedupe` and `optimizeDeps.exclude` from `vite.config.ts`
+1. `resolve.dedupe` from `vite.config.ts`
 2. the explicit `import '@cake-admin/cakeand/cakeand.css'` in `src/main.tsx`
 3. `data-theme` on `<html>` in `index.html`
 
