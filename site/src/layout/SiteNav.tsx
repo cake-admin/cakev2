@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { ChevronDown, Menu, Search, X } from 'lucide-react';
+import { ChevronDown, Menu, Moon, Search, Sun, X } from 'lucide-react';
 
 import { IconButton } from '@/cakeand/components/Button';
 import { TextInput } from '@/cakeand/components/TextInput';
+import type { ThemeMode } from '@/cakeand/tokens/theme';
 
 import { getNavSections, getSearchResults, STORYBOOK_HOME } from '../data/routes';
 import { NAV_RAIL_WIDTH, media } from '../styles/breakpoints';
@@ -222,6 +223,12 @@ const ExternalLink = styled.a`
   }
 `;
 
+const ThemeRow = styled.div`
+  padding: var(--space-300) var(--space-500) 0;
+  border-top: var(--stroke-100) solid var(--color-stroke-border);
+  margin-top: var(--space-200);
+`;
+
 const SearchResults = styled.ul`
   list-style: none;
   margin: var(--space-100) 0 0;
@@ -248,9 +255,12 @@ export interface SiteNavProps {
   open: boolean;
   onClose: () => void;
   onToggle: () => void;
+  themeMode: ThemeMode;
+  onToggleTheme: () => void;
 }
 
-export function SiteNav({ open, onClose, onToggle }: SiteNavProps) {
+export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: SiteNavProps) {
+  const isDark = themeMode === 'dark.a';
   const location = useLocation();
   const sections = getNavSections();
   const [query, setQuery] = useState('');
@@ -398,6 +408,17 @@ export function SiteNav({ open, onClose, onToggle }: SiteNavProps) {
             </NavItem>
           </NavList>
         </ScrollArea>
+
+        <ThemeRow>
+          <IconButton
+            label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+            icon={isDark ? <Sun /> : <Moon />}
+            intent="secondary"
+            variant="ghost"
+            size="md"
+            onClick={onToggleTheme}
+          />
+        </ThemeRow>
       </Rail>
     </>
   );

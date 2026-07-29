@@ -1,29 +1,62 @@
-# cake& website IA
+# cake& website — information architecture
 
-Source: [Cake--Website](https://www.figma.com/design/7ukvj6PrxjZ3E9nTp5Sfo1/Cake--Website) (file `7ukvj6PrxjZ3E9nTp5Sfo1`).
+**Figma source:** [Cake--Website](https://www.figma.com/design/7ukvj6PrxjZ3E9nTp5Sfo1/Cake--Website) (`7ukvj6PrxjZ3E9nTp5Sfo1`)
 
-| Node | Role | Implementation |
-|------|------|----------------|
-| `66:7534` | Home (first target) | `site/src/pages/HomePage.tsx` |
+## Figma audit status
 
-## Shell
+| Item | Status |
+|------|--------|
+| MCP `get_design_context` / `get_screenshot` | Not available in Cloud Agent environment |
+| First implementation frame | Node **`66:7534`** — implemented as `site/src/pages/HomePage.tsx` |
+| Pixel-perfect pass | Pending Figma MCP or exported breakpoint frames |
 
-- **Desktop (≥1024px):** fixed 250px nav rail + scrollable content
-- **Mobile (<1024px):** overlay nav drawer + top bar with menu control
-- **Tokens:** all layout/colors via cake& CSS custom properties
+## Site shell (all pages)
 
-## Component mapping
+| Breakpoint | Nav behavior |
+|------------|--------------|
+| ≥1024px | Fixed 250px left rail |
+| <1024px | Overlay drawer + mobile top bar |
+| Theme | Light A / Dark A toggle in nav footer |
 
-| UI | cake& component |
-|----|-----------------|
-| Nav links | Semantic `<nav>` + styled `NavLink` (not Sidebar tabs — URL navigation) |
-| Search | `TextInput` + route metadata filter |
-| Mobile menu | `IconButton` + drawer rail |
-| Home hero | Token-styled typography |
-| Promo cards | `Card` + `SimpleCard` |
-| Feature cards | `Card` + `SimpleCard` + lucide icons |
-| Component docs | Redirect to Storybook (`/storybook/`) |
+## Page inventory
 
-## Routes
+| Route | Type | Implementation |
+|-------|------|----------------|
+| `/` | Home | `HomePage.tsx` — Figma node `66:7534` |
+| `/resources` | Guide | `guides/GuidePages.tsx` |
+| `/whats-new` | Guide | `guides/WhatsNewPage.tsx` |
+| `/get-started/about-cake` | Guide | `guides/WhatsNewPage.tsx` |
+| `/get-started/figma-libraries` | Guide | `guides/GuidePages.tsx` |
+| `/version-control` | Guide | `guides/WhatsNewPage.tsx` |
+| `/foundations/colors` | Foundation | Redirect → Storybook `Foundations/Colors` |
+| `/foundations/iconography` | Foundation | `foundations/FoundationPages.tsx` |
+| `/foundations/language-grammar` | Foundation | `foundations/FoundationPages.tsx` |
+| `/foundations/ai/overview` | Foundation | `foundations/FoundationPages.tsx` |
+| `/foundations/ai/gradient` | Foundation | `foundations/FoundationPages.tsx` |
+| `/foundations/ai/logo-icon` | Foundation | `foundations/FoundationPages.tsx` |
+| `/components/*` | Component index | Redirect → Storybook docs (see below) |
 
-See `site/src/data/routes.ts`. Component pages deep-link to Storybook docs rather than duplicating API reference.
+## Component reuse map (site chrome)
+
+| UI | cake& component | Notes |
+|----|-----------------|-------|
+| Primary navigation | Semantic `<nav>` + `NavLink` | Not `Sidebar` tabs — URL routing |
+| Search | `TextInput` + route filter | |
+| Mobile menu | `IconButton` + drawer rail | |
+| Theme toggle | `IconButton` + `CakeProvider` mode | |
+| Doc pages | `DocPage` + `Card` / `SimpleCard` | |
+| Home hero | Token typography + `Card` / `SimpleCard` | |
+| Badges (changelog) | `Badge` | |
+| Component API docs | Storybook redirect | Source of truth |
+
+## Legacy → Storybook doc mapping
+
+Component routes under `/components/` redirect to `cake.lenovo.com/storybook` docs URLs generated from CSF titles in `site/src/data/routes.ts` and `site/src/utils/storybook.ts`.
+
+Legacy paths without a cake& equivalent (e.g. `/components/canvas`) redirect to Storybook home.
+
+## Deploy
+
+- **Site:** `site/` Vite build → `build/` via `scripts/assemble-pages.mjs`
+- **Storybook:** nested at `/storybook/`
+- **Dataviz:** unchanged at `/dataviz/`

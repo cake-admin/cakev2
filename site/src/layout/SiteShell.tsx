@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Moon, Sun } from 'lucide-react';
+
 import { CakeProvider } from '@/cakeand/theme/CakeProvider';
+import type { ThemeMode } from '@/cakeand/tokens/theme';
 
 import { SiteNav } from './SiteNav';
 import { NAV_RAIL_WIDTH, media } from '../styles/breakpoints';
@@ -94,9 +97,14 @@ export interface SiteShellProps {
 
 export function SiteShell({ children }: SiteShellProps) {
   const [navOpen, setNavOpen] = useState(false);
+  const [mode, setMode] = useState<ThemeMode>('light.a');
 
   const closeNav = useCallback(() => setNavOpen(false), []);
   const toggleNav = useCallback(() => setNavOpen((v) => !v), []);
+  const toggleTheme = useCallback(
+    () => setMode((current) => (current === 'light.a' ? 'dark.a' : 'light.a')),
+    [],
+  );
 
   useEffect(() => {
     if (!navOpen) return undefined;
@@ -108,7 +116,7 @@ export function SiteShell({ children }: SiteShellProps) {
   }, [navOpen]);
 
   return (
-    <CakeProvider mode="light.a">
+    <CakeProvider mode={mode}>
       <Shell>
         <SkipLink href="#main-content">Skip to content</SkipLink>
         <Overlay
@@ -118,7 +126,13 @@ export function SiteShell({ children }: SiteShellProps) {
           onClick={closeNav}
         />
         <Body>
-          <SiteNav open={navOpen} onClose={closeNav} onToggle={toggleNav} />
+          <SiteNav
+            open={navOpen}
+            onClose={closeNav}
+            onToggle={toggleNav}
+            themeMode={mode}
+            onToggleTheme={toggleTheme}
+          />
           <Main id="main-content">{children}</Main>
         </Body>
         <Footer>© Lenovo {new Date().getFullYear()}</Footer>
