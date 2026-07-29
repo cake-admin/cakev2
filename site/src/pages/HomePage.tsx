@@ -24,10 +24,6 @@ const Page = styled.div`
   background: var(--color-surfaces-canvas);
 `;
 
-const HeroSection = styled.div`
-  width: 100%;
-`;
-
 const Hero = styled.header`
   --hero-progress: 0;
   position: sticky;
@@ -42,7 +38,6 @@ const Hero = styled.header`
       transparent
     );
 
-  /* Frosted glass — on the sticky element itself (Chrome samples scroll content here). */
   &::before {
     content: '';
     position: absolute;
@@ -54,7 +49,7 @@ const Hero = styled.header`
       color-mix(in srgb, var(--color-badge-indigo-light) 15%, transparent) 17%,
       color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 83%
     );
-    opacity: calc(1 - var(--hero-progress) * 0.92);
+    opacity: calc(1 - var(--hero-progress) * 0.85);
   }
 
   &::after {
@@ -100,15 +95,6 @@ const HeroInner = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  transform: translate3d(0, calc(var(--hero-progress) * -16px), 0)
-    scale(calc(1 - var(--hero-progress) * 0.18));
-  transform-origin: top left;
-  backface-visibility: hidden;
-
-  @media (prefers-reduced-motion: reduce) {
-    transform: none;
-    will-change: auto;
-  }
 `;
 
 const HeroRow = styled.div`
@@ -141,7 +127,6 @@ const HeroSubtitle = styled.p`
   letter-spacing: 0.2px;
   color: var(--color-text-icon-secondary);
   opacity: calc(1 - var(--hero-progress));
-  transform: translateY(calc(var(--hero-progress) * -6px));
 
   ${media.sm} {
     font-size: var(--type-size-subtitle);
@@ -149,10 +134,6 @@ const HeroSubtitle = styled.p`
 
   ${media.md} {
     font-size: var(--type-size-page);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transform: none;
   }
 `;
 
@@ -402,40 +383,38 @@ export function HomePage() {
   const { themeMode, onToggleTheme, locale, onToggleLocale } = useSiteChrome();
   const t = useSiteTranslation();
   const isDark = themeMode === 'dark.a';
-  const { sectionRef, heroRef } = useHeroCollapse();
+  const heroRef = useHeroCollapse();
 
   return (
     <Page>
-      <HeroSection ref={sectionRef}>
-        <Hero ref={heroRef}>
-          <HeroInner>
-            <HeroWordmark />
-            <HeroRow>
-              <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
-              <HeroTools>
-                <ToolCluster>
-                  <IconButton
-                    label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
-                    icon={isDark ? <Sun /> : <Moon />}
-                    intent="secondary"
-                    variant="ghost"
-                    size="lg"
-                    onClick={onToggleTheme}
-                  />
-                  <IconButton
-                    label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
-                    icon={<Languages />}
-                    intent="secondary"
-                    variant="ghost"
-                    size="lg"
-                    onClick={onToggleLocale}
-                  />
-                </ToolCluster>
-              </HeroTools>
-            </HeroRow>
-          </HeroInner>
-        </Hero>
-      </HeroSection>
+      <Hero ref={heroRef}>
+        <HeroInner>
+          <HeroWordmark />
+          <HeroRow>
+            <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
+            <HeroTools>
+              <ToolCluster>
+                <IconButton
+                  label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
+                  icon={isDark ? <Sun /> : <Moon />}
+                  intent="secondary"
+                  variant="ghost"
+                  size="lg"
+                  onClick={onToggleTheme}
+                />
+                <IconButton
+                  label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
+                  icon={<Languages />}
+                  intent="secondary"
+                  variant="ghost"
+                  size="lg"
+                  onClick={onToggleLocale}
+                />
+              </ToolCluster>
+            </HeroTools>
+          </HeroRow>
+        </HeroInner>
+      </Hero>
 
       <Content>
         <Section>
