@@ -37,11 +37,7 @@ const Hero = styled.header`
   }
 
   ${media.md} {
-    padding: var(--space-900) var(--space-800) var(--space-800);
-  }
-
-  ${media.lg} {
-    padding: calc(var(--space-1000) + var(--space-800)) var(--space-800) var(--space-900);
+    padding: var(--space-1000) var(--space-800) var(--space-900);
   }
 
   ${media.xl} {
@@ -67,44 +63,39 @@ const HeroInner = styled.div`
     row-gap: var(--space-400);
   }
 
-  ${media.lg} {
+  ${media.md} {
     display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-500);
   }
 `;
 
-const HeroCopy = styled.div`
+const HeroRow = styled.div`
   display: contents;
 
-  ${media.lg} {
+  ${media.md} {
     display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     gap: var(--space-500);
-    min-width: 0;
+    width: 100%;
   }
 `;
 
 const HeroWordmark = styled(CakeWordmark)`
   grid-area: wordmark;
   align-self: center;
-  height: clamp(2.5rem, 11vw, 7.67rem);
+  height: clamp(2.5rem, 11vw, 5.5rem);
   max-width: 100%;
 
   ${media.sm} {
-    height: clamp(3rem, 10vw, 7.67rem);
+    height: clamp(3rem, 10vw, 5.5rem);
   }
 
   ${media.md} {
-    height: clamp(3.5rem, 9vw, 7.67rem);
-  }
-
-  ${media.lg} {
     align-self: auto;
-    height: clamp(4rem, 10vw, 7.67rem);
+    height: 5.5rem;
   }
 `;
 
@@ -123,6 +114,8 @@ const HeroSubtitle = styled.p`
   }
 
   ${media.md} {
+    flex: 1 1 auto;
+    min-width: 0;
     font-size: var(--type-size-page);
   }
 `;
@@ -131,13 +124,8 @@ const HeroTools = styled.div`
   grid-area: tools;
   align-self: start;
   justify-self: end;
+  flex-shrink: 0;
   width: auto;
-
-  ${media.lg} {
-    align-self: auto;
-    justify-self: auto;
-    flex-shrink: 0;
-  }
 `;
 
 const ToolCluster = styled.div`
@@ -382,31 +370,30 @@ export function HomePage() {
     <Page>
       <Hero>
         <HeroInner>
-          <HeroCopy>
-            <HeroWordmark />
+          <HeroWordmark />
+          <HeroRow>
             <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
-          </HeroCopy>
-
-          <HeroTools>
-            <ToolCluster>
-              <IconButton
-                label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
-                icon={isDark ? <Sun /> : <Moon />}
-                intent="secondary"
-                variant="ghost"
-                size="lg"
-                onClick={onToggleTheme}
-              />
-              <IconButton
-                label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
-                icon={<Languages />}
-                intent="secondary"
-                variant="ghost"
-                size="lg"
-                onClick={onToggleLocale}
-              />
-            </ToolCluster>
-          </HeroTools>
+            <HeroTools>
+              <ToolCluster>
+                <IconButton
+                  label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
+                  icon={isDark ? <Sun /> : <Moon />}
+                  intent="secondary"
+                  variant="ghost"
+                  size="lg"
+                  onClick={onToggleTheme}
+                />
+                <IconButton
+                  label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
+                  icon={<Languages />}
+                  intent="secondary"
+                  variant="ghost"
+                  size="lg"
+                  onClick={onToggleLocale}
+                />
+              </ToolCluster>
+            </HeroTools>
+          </HeroRow>
         </HeroInner>
       </Hero>
 
