@@ -8,7 +8,7 @@
 |------|--------|
 | MCP `get_design_context` / `get_screenshot` | Not available in Cloud Agent environment |
 | First implementation frame | Node **`66:7534`** — implemented as `site/src/pages/HomePage.tsx` |
-| Pixel-perfect pass | Pending Figma MCP or exported breakpoint frames |
+| Pixel-perfect pass | Home matches production layout + legacy copy; Figma MCP still unavailable for node-level audit |
 
 ## Site shell (all pages)
 
