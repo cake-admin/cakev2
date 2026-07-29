@@ -229,18 +229,33 @@ const PromoCard = styled(Card)`
 `;
 
 const MediaStrip = styled.div`
+  position: relative;
   width: 100%;
   height: 152px;
+  flex-shrink: 0;
   overflow: hidden;
   background: var(--color-surfaces-on-container);
+`;
 
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
+const MediaFrame = styled.div`
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+`;
+
+const MediaImage = styled.img<{
+  $width: string;
+  $height: string;
+  $left: string;
+  $top: string;
+}>`
+  position: absolute;
+  max-width: none;
+  width: ${({ $width }) => $width};
+  height: ${({ $height }) => $height};
+  left: ${({ $left }) => $left};
+  top: ${({ $top }) => $top};
 `;
 
 const KitButton = styled(Button)`
@@ -325,16 +340,19 @@ const STARTER_CARD_META = {
   designers: {
     href: '/get-started/figma-libraries',
     media: '/home/card-designers.png',
+    mediaFrame: { width: '105.64%', height: '205.21%', left: '-2.75%', top: '-11.02%' },
     external: false,
   },
   developers: {
     href: STORYBOOK_HOME,
     media: '/home/card-developers.png',
+    mediaFrame: { width: '103.54%', height: '208.3%', left: '-1.87%', top: '-16.71%' },
     external: true,
   },
   resources: {
     href: '/resources',
     media: '/home/card-resources.png',
+    mediaFrame: { width: '100%', height: '201.17%', left: '-0.01%', top: '-40.37%' },
     external: false,
   },
 } as const;
@@ -347,22 +365,35 @@ const FOUNDATION_CARD_ICONS = {
   modularity: '/home/icon-modularity.svg',
 } as const;
 
+type MediaFrameSpec = (typeof STARTER_CARD_META)[keyof typeof STARTER_CARD_META]['mediaFrame'];
+
 function PromoCardContent({
   title,
   body,
   cta,
   media,
+  mediaFrame,
 }: {
   title: string;
   body: string;
   cta: string;
   media: string;
+  mediaFrame: MediaFrameSpec;
 }) {
   return (
     <SimpleCard
       media={
         <MediaStrip>
-          <img src={media} alt="" />
+          <MediaFrame>
+            <MediaImage
+              src={media}
+              alt=""
+              $width={mediaFrame.width}
+              $height={mediaFrame.height}
+              $left={mediaFrame.left}
+              $top={mediaFrame.top}
+            />
+          </MediaFrame>
         </MediaStrip>
       }
       title={title}
@@ -439,6 +470,7 @@ export function HomePage() {
                       body={card.body}
                       cta={card.cta}
                       media={meta.media}
+                      mediaFrame={meta.mediaFrame}
                     />
                   </a>
                 </PromoCard>
@@ -450,6 +482,7 @@ export function HomePage() {
                       body={card.body}
                       cta={card.cta}
                       media={meta.media}
+                      mediaFrame={meta.mediaFrame}
                     />
                   </PromoCard>
                 </CardLink>

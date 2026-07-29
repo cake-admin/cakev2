@@ -12,9 +12,35 @@ import cardDevelopers from './assets/card-developers.png';
 const BODY =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
-/** Figma full-bleed illustration cropped to the simple-card media strip (Cake--Website). */
-const CardMedia = ({ src }: { src: string }) => (
-  <img src={src} alt="" style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }} />
+/** Figma full-bleed frame — matches Cake--Website simple-card media strip positioning. */
+const CARD_MEDIA_FRAMES = {
+  designers: { width: '105.64%', height: '205.21%', left: '-2.75%', top: '-11.02%' },
+  developers: { width: '103.54%', height: '208.3%', left: '-1.87%', top: '-16.71%' },
+} as const;
+
+const CardMedia = ({
+  src,
+  frame,
+}: {
+  src: string;
+  frame: (typeof CARD_MEDIA_FRAMES)[keyof typeof CARD_MEDIA_FRAMES];
+}) => (
+  <div style={{ position: 'relative', width: '100%', height: 152, overflow: 'hidden' }}>
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+      <img
+        src={src}
+        alt=""
+        style={{
+          position: 'absolute',
+          maxWidth: 'none',
+          width: frame.width,
+          height: frame.height,
+          left: frame.left,
+          top: frame.top,
+        }}
+      />
+    </div>
+  </div>
 );
 
 const MenuButton = (
@@ -124,7 +150,7 @@ export const Playground: Story = {
       <Card>
         <SimpleCard
           {...args}
-          media={<CardMedia src={cardDesigners} />}
+          media={<CardMedia src={cardDesigners} frame={CARD_MEDIA_FRAMES.designers} />}
           menu={MenuButton}
           actions={Actions}
         />
@@ -140,7 +166,7 @@ export const Default: Story = {
     <div style={{ width: 320 }}>
       <Card>
         <SimpleCard
-          media={<CardMedia src={cardDesigners} />}
+          media={<CardMedia src={cardDesigners} frame={CARD_MEDIA_FRAMES.designers} />}
           title="Simple card title"
           menu={MenuButton}
           body={BODY}
@@ -171,7 +197,7 @@ export const AllVariants: Story = {
       <div style={{ width: 300 }}>
         <Card>
           <SimpleCard
-          media={<CardMedia src={cardDesigners} />}
+          media={<CardMedia src={cardDesigners} frame={CARD_MEDIA_FRAMES.designers} />}
           title="Simple card title"
           menu={MenuButton}
           body={BODY}
@@ -182,7 +208,7 @@ export const AllVariants: Story = {
       <div style={{ width: 300 }}>
         <Card elevation="high">
           <SimpleCard
-            media={<CardMedia src={cardDevelopers} />}
+            media={<CardMedia src={cardDevelopers} frame={CARD_MEDIA_FRAMES.developers} />}
             title="Simple card title"
             menu={MenuButton}
             body={BODY}
