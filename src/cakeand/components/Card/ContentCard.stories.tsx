@@ -5,18 +5,17 @@ import { BadgeCheck } from 'lucide-react';
 import { ContentCard } from './ContentCard';
 import { Card } from './Card';
 import { Button } from '../Button/Button';
+import contentCardMedia from './assets/content-card-media.png';
 
 const BODY =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
-/** A placeholder media fill for the square slot. */
-const MediaFill = (
-  <div
-    style={{
-      width: '100%',
-      height: '100%',
-      background: 'linear-gradient(135deg, var(--color-tonal-tonal), var(--color-surfaces-on-container))',
-    }}
+/** Square crop of the Cake--Website card illustration for the 200px media slot. */
+const CardMedia = (
+  <img
+    src={contentCardMedia}
+    alt=""
+    style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
   />
 );
 
@@ -128,7 +127,7 @@ export const Playground: Story = {
   render: (args) => (
     <div style={{ width: 560 }}>
       <Card>
-        <ContentCard {...args} leadingIcon={<BadgeCheck />} actions={ButtonGroup} media={MediaFill} />
+        <ContentCard {...args} leadingIcon={<BadgeCheck />} actions={ButtonGroup} media={CardMedia} />
       </Card>
     </div>
   ),
@@ -146,7 +145,7 @@ export const Default: Story = {
           title="Content card title"
           body={BODY}
           actions={ButtonGroup}
-          media={MediaFill}
+          media={CardMedia}
         />
       </Card>
     </div>
@@ -183,7 +182,7 @@ export const AllVariants: Story = {
           title="Content card title"
           body={BODY}
           actions={ButtonGroup}
-          media={MediaFill}
+          media={CardMedia}
         />
       </Card>
     </div>

@@ -4,6 +4,7 @@ import React from 'react';
 import { Card } from './Card';
 import { Button } from '../Button/Button';
 import { Badge } from '../Badge/Badge';
+import cardResources from './assets/card-resources.png';
 
 /** A padded content block — cards add no padding of their own, so content brings it. */
 const Body = ({ children }: { children: React.ReactNode }) => (
@@ -187,10 +188,15 @@ export const FlushMedia: Story = {
         <div
           style={{
             height: 140,
-            background:
-              'linear-gradient(135deg, var(--color-primary-primary), var(--color-tonal-tonal))',
+            overflow: 'hidden',
           }}
-        />
+        >
+          <img
+            src={cardResources}
+            alt=""
+            style={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </div>
         {SampleContent}
       </Card>
     </div>

@@ -11,6 +11,7 @@ export default defineConfig({
   base: '/',
   server: {
     open: false,
+    host: true,
     port: 3000,
     fs: {
       allow: [path.resolve(dirname, '..')],

@@ -6,18 +6,41 @@ import { SimpleCard } from './SimpleCard';
 import { Card } from './Card';
 import { Button } from '../Button/Button';
 import { IconButton } from '../Button/IconButton';
+import cardDesigners from './assets/card-designers.png';
+import cardDevelopers from './assets/card-developers.png';
 
 const BODY =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
-/** A placeholder media fill for the full-bleed top slot. */
-const MediaFill = (
-  <div
-    style={{
-      height: 180,
-      background: 'linear-gradient(135deg, var(--color-tonal-tonal), var(--color-surfaces-on-container))',
-    }}
-  />
+/** Figma full-bleed frame — matches Cake--Website simple-card media strip positioning. */
+const CARD_MEDIA_FRAMES = {
+  designers: { width: '105.64%', height: '205.21%', left: '-2.75%', top: '-11.02%' },
+  developers: { width: '103.54%', height: '208.3%', left: '-1.87%', top: '-16.71%' },
+} as const;
+
+const CardMedia = ({
+  src,
+  frame,
+}: {
+  src: string;
+  frame: (typeof CARD_MEDIA_FRAMES)[keyof typeof CARD_MEDIA_FRAMES];
+}) => (
+  <div style={{ position: 'relative', width: '100%', height: 152, overflow: 'hidden' }}>
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+      <img
+        src={src}
+        alt=""
+        style={{
+          position: 'absolute',
+          maxWidth: 'none',
+          width: frame.width,
+          height: frame.height,
+          left: frame.left,
+          top: frame.top,
+        }}
+      />
+    </div>
+  </div>
 );
 
 const MenuButton = (
@@ -125,7 +148,12 @@ export const Playground: Story = {
   render: (args) => (
     <div style={{ width: 320 }}>
       <Card>
-        <SimpleCard {...args} media={MediaFill} menu={MenuButton} actions={Actions} />
+        <SimpleCard
+          {...args}
+          media={<CardMedia src={cardDesigners} frame={CARD_MEDIA_FRAMES.designers} />}
+          menu={MenuButton}
+          actions={Actions}
+        />
       </Card>
     </div>
   ),
@@ -137,7 +165,13 @@ export const Default: Story = {
   render: () => (
     <div style={{ width: 320 }}>
       <Card>
-        <SimpleCard media={MediaFill} title="Simple card title" menu={MenuButton} body={BODY} actions={Actions} />
+        <SimpleCard
+          media={<CardMedia src={cardDesigners} frame={CARD_MEDIA_FRAMES.designers} />}
+          title="Simple card title"
+          menu={MenuButton}
+          body={BODY}
+          actions={Actions}
+        />
       </Card>
     </div>
   ),
@@ -162,12 +196,24 @@ export const AllVariants: Story = {
     <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
       <div style={{ width: 300 }}>
         <Card>
-          <SimpleCard media={MediaFill} title="Simple card title" menu={MenuButton} body={BODY} actions={Actions} />
+          <SimpleCard
+          media={<CardMedia src={cardDesigners} frame={CARD_MEDIA_FRAMES.designers} />}
+          title="Simple card title"
+          menu={MenuButton}
+          body={BODY}
+          actions={Actions}
+        />
         </Card>
       </div>
       <div style={{ width: 300 }}>
         <Card elevation="high">
-          <SimpleCard title="Simple card title" menu={MenuButton} body={BODY} actions={Actions} />
+          <SimpleCard
+            media={<CardMedia src={cardDevelopers} frame={CARD_MEDIA_FRAMES.developers} />}
+            title="Simple card title"
+            menu={MenuButton}
+            body={BODY}
+            actions={Actions}
+          />
         </Card>
       </div>
     </div>
