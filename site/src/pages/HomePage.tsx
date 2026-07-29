@@ -8,6 +8,7 @@ import { Card } from '@/cakeand/components/Card';
 import { SimpleCard } from '@/cakeand/components/Card/SimpleCard';
 
 import { useSiteChrome } from '../layout/SiteChromeContext';
+import { useSiteTranslation } from '../i18n/useSiteTranslation';
 import { CakeWordmark } from '../components/CakeWordmark';
 import { STORYBOOK_HOME } from '../data/routes';
 import { media } from '../styles/breakpoints';
@@ -265,65 +266,33 @@ const PageFooter = styled.footer`
   color: var(--color-text-icon-placeholder);
 `;
 
-const STARTER_CARDS = [
-  {
-    key: 'designers',
-    title: 'Designers',
-    body: 'Access our Figma libraries, iconography, and patterns guidelines to create consistent Lenovo experiences.',
-    cta: 'Get Figma kit',
+const STARTER_CARD_KEYS = ['designers', 'developers', 'resources'] as const;
+
+const STARTER_CARD_META = {
+  designers: {
     href: '/get-started/figma-libraries',
     media: '/home/card-designers.png',
     external: false,
   },
-  {
-    key: 'developers',
-    title: 'Developers',
-    body: 'Explore our full component library in Storybook to see interactive examples, usage guidelines, and available props for every component.',
-    cta: 'View Storybook',
+  developers: {
     href: STORYBOOK_HOME,
     media: '/home/card-developers.png',
     external: true,
   },
-  {
-    key: 'resources',
-    title: 'Resources',
-    body: 'Visit our Resources page for downloadable brand assets, approved fonts, logos, color palettes, and links to our full brand guidelines.',
-    cta: 'View resources',
+  resources: {
     href: '/resources',
     media: '/home/card-resources.png',
     external: false,
   },
-] as const;
+} as const;
 
-const FOUNDATION_CARDS = [
-  {
-    key: 'accessibility',
-    title: 'Accessibility',
-    icon: '/home/icon-accessibility.png',
-    body: (
-      <>
-        Every Cake& component is built to meet{' '}
-        <BodyLink href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener noreferrer">
-          WCAG 2.2 AA standards
-        </BodyLink>
-        , ensuring your experiences are accessible, inclusive, and usable by everyone, regardless of
-        ability or device.
-      </>
-    ),
-  },
-  {
-    key: 'brand',
-    title: 'Brand',
-    icon: '/home/icon-brand.png',
-    body: "Maintain brand consistency across all your applications. Cake& provides the building blocks that reflect Lenovo's design language and values.",
-  },
-  {
-    key: 'modularity',
-    title: 'Modularity',
-    icon: '/home/icon-modularity.png',
-    body: 'Build with confidence using our modular component system. Mix and match components to create consistent, scalable interfaces that adapt to your needs.',
-  },
-] as const;
+const FOUNDATION_CARD_KEYS = ['accessibility', 'brand', 'modularity'] as const;
+
+const FOUNDATION_CARD_ICONS = {
+  accessibility: '/home/icon-accessibility.png',
+  brand: '/home/icon-brand.png',
+  modularity: '/home/icon-modularity.png',
+} as const;
 
 function PromoCardContent({
   title,
@@ -358,7 +327,8 @@ function PromoCardContent({
  * Home page — Figma Cake--Website node 66:7534.
  */
 export function HomePage() {
-  const { themeMode, onToggleTheme } = useSiteChrome();
+  const { themeMode, onToggleTheme, locale, onToggleLocale } = useSiteChrome();
+  const t = useSiteTranslation();
   const isDark = themeMode === 'dark.a';
 
   return (
@@ -367,13 +337,13 @@ export function HomePage() {
         <HeroInner>
           <HeroCopy>
             <HeroWordmark />
-            <HeroSubtitle>Lenovo design system for Web &amp; Windows OS.</HeroSubtitle>
+            <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
           </HeroCopy>
 
           <HeroTools>
             <ToolCluster>
               <IconButton
-                label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+                label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
                 icon={isDark ? <Sun /> : <Moon />}
                 intent="primary"
                 variant="fill"
@@ -381,11 +351,12 @@ export function HomePage() {
                 onClick={onToggleTheme}
               />
               <IconButton
-                label="Language"
+                label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
                 icon={<Languages />}
                 intent="secondary"
                 variant="ghost"
                 size="lg"
+                onClick={onToggleLocale}
               />
             </ToolCluster>
           </HeroTools>
@@ -395,63 +366,92 @@ export function HomePage() {
       <Content>
         <Section>
           <SectionIntro>
-            <SectionTitle>Get started</SectionTitle>
-            <SectionLead>Everything you need to start building consistent experiences.</SectionLead>
+            <SectionTitle>{t.home.getStartedTitle}</SectionTitle>
+            <SectionLead>{t.home.getStartedLead}</SectionLead>
           </SectionIntro>
 
           <CardGrid>
-            {STARTER_CARDS.map((card) =>
-              card.external ? (
-                <PromoCard key={card.key} elevation="low">
+            {STARTER_CARD_KEYS.map((key) => {
+              const card = t.home.starterCards[key];
+              const meta = STARTER_CARD_META[key];
+
+              return meta.external ? (
+                <PromoCard key={key} elevation="low">
                   <a
-                    href={card.href}
+                    href={meta.href}
                     style={{ display: 'block', height: '100%', textDecoration: 'none', color: 'inherit' }}
                   >
                     <PromoCardContent
                       title={card.title}
                       body={card.body}
                       cta={card.cta}
-                      media={card.media}
+                      media={meta.media}
                     />
                   </a>
                 </PromoCard>
               ) : (
-                <CardLink key={card.key} to={card.href}>
+                <CardLink key={key} to={meta.href}>
                   <PromoCard elevation="low">
                     <PromoCardContent
                       title={card.title}
                       body={card.body}
                       cta={card.cta}
-                      media={card.media}
+                      media={meta.media}
                     />
                   </PromoCard>
                 </CardLink>
-              ),
-            )}
+              );
+            })}
           </CardGrid>
         </Section>
 
         <Section>
           <SectionIntro>
-            <SectionTitle>Shared foundations</SectionTitle>
+            <SectionTitle>{t.home.sharedFoundationsTitle}</SectionTitle>
           </SectionIntro>
 
           <CardGrid>
-            {FOUNDATION_CARDS.map((card) => (
-              <FoundationCard key={card.key} elevation="low">
-                <FoundationInner>
-                  <FoundationIcon aria-hidden>
-                    <img src={card.icon} alt="" />
-                  </FoundationIcon>
-                  <FoundationTitle>{card.title}</FoundationTitle>
-                  <FoundationBody>{card.body}</FoundationBody>
-                </FoundationInner>
-              </FoundationCard>
-            ))}
+            {FOUNDATION_CARD_KEYS.map((key) => {
+              const icon = FOUNDATION_CARD_ICONS[key];
+
+              if (key === 'accessibility') {
+                const card = t.home.foundationCards.accessibility;
+                return (
+                  <FoundationCard key={key} elevation="low">
+                    <FoundationInner>
+                      <FoundationIcon aria-hidden>
+                        <img src={icon} alt="" />
+                      </FoundationIcon>
+                      <FoundationTitle>{card.title}</FoundationTitle>
+                      <FoundationBody>
+                        {card.body}
+                        <BodyLink href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener noreferrer">
+                          {card.wcagLinkLabel}
+                        </BodyLink>
+                        {card.bodyAfterLink}
+                      </FoundationBody>
+                    </FoundationInner>
+                  </FoundationCard>
+                );
+              }
+
+              const card = t.home.foundationCards[key];
+              return (
+                <FoundationCard key={key} elevation="low">
+                  <FoundationInner>
+                    <FoundationIcon aria-hidden>
+                      <img src={icon} alt="" />
+                    </FoundationIcon>
+                    <FoundationTitle>{card.title}</FoundationTitle>
+                    <FoundationBody>{card.body}</FoundationBody>
+                  </FoundationInner>
+                </FoundationCard>
+              );
+            })}
           </CardGrid>
         </Section>
 
-        <PageFooter>© 2026 Cake& Design System. All rights reserved.</PageFooter>
+        <PageFooter>{t.home.footer}</PageFooter>
       </Content>
     </Page>
   );

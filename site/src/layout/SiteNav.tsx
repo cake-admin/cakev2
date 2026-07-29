@@ -8,6 +8,9 @@ import { TextInput } from '@/cakeand/components/TextInput';
 import type { ThemeMode } from '@/cakeand/tokens/theme';
 
 import { CakeWordmark } from '../components/CakeWordmark';
+import { getRouteTitle } from '../i18n/messages';
+import { useSiteTranslation } from '../i18n/useSiteTranslation';
+import { useSiteChrome } from './SiteChromeContext';
 import { getNavSections, getSearchResults, STORYBOOK_HOME } from '../data/routes';
 import { NAV_RAIL_WIDTH, media } from '../styles/breakpoints';
 
@@ -252,6 +255,8 @@ export interface SiteNavProps {
 
 export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: SiteNavProps) {
   const isDark = themeMode === 'dark.a';
+  const { locale } = useSiteChrome();
+  const t = useSiteTranslation();
   const location = useLocation();
   const sections = getNavSections();
   const [query, setQuery] = useState('');
@@ -271,7 +276,7 @@ export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: S
     <>
       <MobileBar>
         <IconButton
-          label={open ? 'Close menu' : 'Open menu'}
+          label={open ? t.chrome.closeMenu : t.chrome.openMenu}
           icon={open ? <X /> : <Menu />}
           intent="secondary"
           variant="ghost"
@@ -280,7 +285,7 @@ export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: S
         />
         <NavWordmark aria-hidden />
         <IconButton
-          label="Search"
+          label={t.chrome.search}
           icon={<Search />}
           intent="secondary"
           variant="ghost"
@@ -294,15 +299,15 @@ export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: S
           <BrandLink to="/" onClick={onClose}>
             <NavWordmark aria-hidden />
             <BrandText>
-              <BrandVersion>Design system</BrandVersion>
+              <BrandVersion>{t.chrome.designSystem}</BrandVersion>
             </BrandText>
           </BrandLink>
         </BrandRow>
 
         <SearchWrap>
           <TextInput
-            label="Search"
-            placeholder="Search docs…"
+            label={t.chrome.search}
+            placeholder={t.chrome.searchPlaceholder}
             value={query}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
             startIcon={<Search size={18} />}
@@ -313,7 +318,7 @@ export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: S
               {results.map((route) => (
                 <li key={route.path}>
                   <SearchResultLink to={route.path} onClick={onClose}>
-                    {route.title}
+                    {getRouteTitle(locale, route.path, route.title)}
                   </SearchResultLink>
                 </li>
               ))}
@@ -325,13 +330,13 @@ export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: S
           <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
             <NavItem>
               <StyledNavLink to="/" end onClick={onClose}>
-                Home
+                {t.chrome.home}
               </StyledNavLink>
             </NavItem>
             {sections.guides.map((route) => (
               <NavItem key={route.path}>
                 <StyledNavLink to={route.path} onClick={onClose}>
-                  {route.title}
+                  {getRouteTitle(locale, route.path, route.title)}
                 </StyledNavLink>
               </NavItem>
             ))}
@@ -342,14 +347,14 @@ export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: S
             aria-expanded={expanded.foundations}
             onClick={() => toggleSection('foundations')}
           >
-            Foundations
+            {t.chrome.foundations}
             <Chevron $expanded={expanded.foundations} aria-hidden />
           </SectionLabel>
           <NavList $expanded={expanded.foundations}>
             {sections.foundations.map((route) => (
               <NavItem key={route.path}>
                 <StyledNavLink to={route.path} onClick={onClose}>
-                  {route.title}
+                  {getRouteTitle(locale, route.path, route.title)}
                 </StyledNavLink>
               </NavItem>
             ))}
@@ -367,7 +372,7 @@ export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: S
                 {sections.aiChildren.map((route) => (
                   <NavItem key={route.path}>
                     <StyledNavLink to={route.path} $nested onClick={onClose}>
-                      {route.title}
+                      {getRouteTitle(locale, route.path, route.title)}
                     </StyledNavLink>
                   </NavItem>
                 ))}
@@ -380,20 +385,20 @@ export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: S
             aria-expanded={expanded.components}
             onClick={() => toggleSection('components')}
           >
-            Components
+            {t.chrome.components}
             <Chevron $expanded={expanded.components} aria-hidden />
           </SectionLabel>
           <NavList $expanded={expanded.components}>
             {sections.components.map((route) => (
               <NavItem key={route.path}>
                 <StyledNavLink to={route.path} onClick={onClose}>
-                  {route.title}
+                  {getRouteTitle(locale, route.path, route.title)}
                 </StyledNavLink>
               </NavItem>
             ))}
             <NavItem>
               <ExternalLink href={STORYBOOK_HOME} target="_blank" rel="noopener noreferrer">
-                All components →
+                {t.chrome.allComponents}
               </ExternalLink>
             </NavItem>
           </NavList>
@@ -401,7 +406,7 @@ export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: S
 
         <ThemeRow>
           <IconButton
-            label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+            label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
             icon={isDark ? <Sun /> : <Moon />}
             intent="secondary"
             variant="ghost"

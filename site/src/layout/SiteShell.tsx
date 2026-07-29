@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { CakeProvider } from '@/cakeand/theme/CakeProvider';
 import type { ThemeMode } from '@/cakeand/tokens/theme';
 
+import { messages } from '../i18n/messages';
+import { LOCALE_STORAGE_KEY, readStoredLocale, type SiteLocale } from '../i18n/types';
 import { SiteNav } from './SiteNav';
 import { LenovoLogo } from './LenovoLogo';
 import { SiteChromeContext } from './SiteChromeContext';
@@ -102,6 +104,7 @@ export function SiteShell({ children }: SiteShellProps) {
   const isHome = location.pathname === '/';
   const [navOpen, setNavOpen] = useState(false);
   const [mode, setMode] = useState<ThemeMode>('light.a');
+  const [locale, setLocale] = useState<SiteLocale>(() => readStoredLocale());
 
   const closeNav = useCallback(() => setNavOpen(false), []);
   const toggleNav = useCallback(() => setNavOpen((v) => !v), []);
@@ -109,11 +112,17 @@ export function SiteShell({ children }: SiteShellProps) {
     () => setMode((current) => (current === 'light.a' ? 'dark.a' : 'light.a')),
     [],
   );
+  const toggleLocale = useCallback(
+    () => setLocale((current) => (current === 'en' ? 'zh' : 'en')),
+    [],
+  );
 
   const chrome = useMemo(
-    () => ({ themeMode: mode, onToggleTheme: toggleTheme }),
-    [mode, toggleTheme],
+    () => ({ themeMode: mode, onToggleTheme: toggleTheme, locale, onToggleLocale: toggleLocale }),
+    [locale, mode, toggleLocale, toggleTheme],
   );
+
+  const copy = messages[locale].chrome;
 
   useEffect(() => {
     if (!navOpen) return undefined;
@@ -124,17 +133,22 @@ export function SiteShell({ children }: SiteShellProps) {
     };
   }, [navOpen]);
 
+  useEffect(() => {
+    document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';
+    window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+  }, [locale]);
+
   return (
     <CakeProvider mode={mode}>
       <SiteChromeContext.Provider value={chrome}>
         <Shell>
-          <SkipLink href="#main-content">Skip to content</SkipLink>
+          <SkipLink href="#main-content">{copy.skipToContent}</SkipLink>
           {!isHome && (
             <>
               <Overlay
                 type="button"
                 $open={navOpen}
-                aria-label="Close navigation"
+                aria-label={copy.closeNavigation}
                 onClick={closeNav}
               />
               <Body>
@@ -149,7 +163,7 @@ export function SiteShell({ children }: SiteShellProps) {
                   {children}
                 </Main>
               </Body>
-              <Footer>© {new Date().getFullYear()} Cake Design System. All rights reserved.</Footer>
+              <Footer>{copy.shellFooter(new Date().getFullYear())}</Footer>
               <LenovoLogo />
             </>
           )}
