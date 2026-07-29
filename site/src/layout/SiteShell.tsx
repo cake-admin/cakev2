@@ -1,12 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { Moon, Sun } from 'lucide-react';
 
 import { CakeProvider } from '@/cakeand/theme/CakeProvider';
 import type { ThemeMode } from '@/cakeand/tokens/theme';
 
 import { SiteNav } from './SiteNav';
 import { LenovoLogo } from './LenovoLogo';
+import { SiteChromeContext } from './SiteChromeContext';
 import { NAV_RAIL_WIDTH, media } from '../styles/breakpoints';
 
 const SkipLink = styled.a`
@@ -40,14 +41,14 @@ const Body = styled.div`
   min-height: 100vh;
 `;
 
-const Main = styled.main`
+const Main = styled.main<{ $home: boolean }>`
   flex: 1 1 auto;
   min-width: 0;
-  padding: var(--space-300);
+  padding: ${(p) => (p.$home ? '0' : 'var(--space-300)')};
 
   ${media.lg} {
-    margin-left: ${NAV_RAIL_WIDTH}px;
-    padding: var(--space-500);
+    margin-left: ${(p) => (p.$home ? '0' : `${NAV_RAIL_WIDTH}px`)};
+    padding: ${(p) => (p.$home ? '0' : 'var(--space-500)')};
   }
 `;
 
@@ -97,6 +98,8 @@ export interface SiteShellProps {
 }
 
 export function SiteShell({ children }: SiteShellProps) {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
   const [navOpen, setNavOpen] = useState(false);
   const [mode, setMode] = useState<ThemeMode>('light.a');
 
@@ -105,6 +108,11 @@ export function SiteShell({ children }: SiteShellProps) {
   const toggleTheme = useCallback(
     () => setMode((current) => (current === 'light.a' ? 'dark.a' : 'light.a')),
     [],
+  );
+
+  const chrome = useMemo(
+    () => ({ themeMode: mode, onToggleTheme: toggleTheme }),
+    [mode, toggleTheme],
   );
 
   useEffect(() => {
@@ -118,27 +126,40 @@ export function SiteShell({ children }: SiteShellProps) {
 
   return (
     <CakeProvider mode={mode}>
-      <Shell>
-        <SkipLink href="#main-content">Skip to content</SkipLink>
-        <Overlay
-          type="button"
-          $open={navOpen}
-          aria-label="Close navigation"
-          onClick={closeNav}
-        />
-        <Body>
-          <SiteNav
-            open={navOpen}
-            onClose={closeNav}
-            onToggle={toggleNav}
-            themeMode={mode}
-            onToggleTheme={toggleTheme}
-          />
-          <Main id="main-content">{children}</Main>
-        </Body>
-        <Footer>© {new Date().getFullYear()} Cake Design System. All rights reserved.</Footer>
-        <LenovoLogo />
-      </Shell>
+      <SiteChromeContext.Provider value={chrome}>
+        <Shell>
+          <SkipLink href="#main-content">Skip to content</SkipLink>
+          {!isHome && (
+            <>
+              <Overlay
+                type="button"
+                $open={navOpen}
+                aria-label="Close navigation"
+                onClick={closeNav}
+              />
+              <Body>
+                <SiteNav
+                  open={navOpen}
+                  onClose={closeNav}
+                  onToggle={toggleNav}
+                  themeMode={mode}
+                  onToggleTheme={toggleTheme}
+                />
+                <Main id="main-content" $home={false}>
+                  {children}
+                </Main>
+              </Body>
+              <Footer>© {new Date().getFullYear()} Cake Design System. All rights reserved.</Footer>
+              <LenovoLogo />
+            </>
+          )}
+          {isHome && (
+            <Main id="main-content" $home>
+              {children}
+            </Main>
+          )}
+        </Shell>
+      </SiteChromeContext.Provider>
     </CakeProvider>
   );
 }

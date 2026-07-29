@@ -1,93 +1,184 @@
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import {
-  Accessibility,
-  ArrowRight,
-  PenTool,
-  Puzzle,
-} from 'lucide-react';
+import { ArrowRight, Languages, Moon, Search, Sun } from 'lucide-react';
 
+import { Button } from '@/cakeand/components/Button';
+import { IconButton } from '@/cakeand/components/Button/IconButton';
 import { Card } from '@/cakeand/components/Card';
 import { SimpleCard } from '@/cakeand/components/Card/SimpleCard';
+import { TextInput } from '@/cakeand/components/TextInput';
 
-import { AuroraBackground } from '../components/AuroraBackground';
+import { useSiteChrome } from '../layout/SiteChromeContext';
+import { getSearchResults, STORYBOOK_HOME } from '../data/routes';
 import { media } from '../styles/breakpoints';
 
-const PageWrap = styled.div`
-  position: relative;
-  isolation: isolate;
-`;
-
 const Page = styled.div`
-  position: relative;
-  z-index: 1;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: var(--space-800) var(--space-300) calc(var(--space-1000) + var(--space-500));
-
-  ${media.md} {
-    padding-inline: var(--space-500);
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-900);
+  width: 100%;
+  padding-bottom: calc(var(--space-1000) + var(--space-500));
+  background: var(--color-surfaces-canvas);
 `;
 
 const Hero = styled.header`
-  margin-bottom: var(--space-500);
+  width: 100%;
+  padding: calc(var(--space-1000) + var(--space-800)) var(--space-300)
+    var(--space-900);
+  background: linear-gradient(
+    178deg,
+    color-mix(in srgb, var(--color-badge-indigo-light) 15%, transparent) 17%,
+    color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 83%
+  );
+
+  ${media.md} {
+    padding-inline: var(--space-800);
+  }
+
+  ${media.xl} {
+    padding-inline: calc(var(--space-1000) + var(--space-800));
+  }
+`;
+
+const HeroInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-500);
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+
+  ${media.lg} {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-500);
+  }
+`;
+
+const HeroCopy = styled.div`
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-500);
+  min-width: 0;
+`;
+
+const TitleRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-400);
 `;
 
 const HeroTitle = styled.h1`
-  margin: 0 0 var(--space-200);
-  font-size: clamp(4rem, 12vw, 8rem);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: var(--color-text-icon-primary);
+  margin: 0;
+  font-size: clamp(4rem, 10vw, 7.67rem);
+  font-weight: var(--font-weight-regular);
+  line-height: 0.72;
+  letter-spacing: 0.004em;
+  color: var(--color-primary-primary);
+`;
 
-  ${media.maxSm} {
-    line-height: 1.2;
-  }
+const HeroMark = styled.img`
+  width: clamp(3rem, 8vw, 4.9rem);
+  height: auto;
+  flex-shrink: 0;
 `;
 
 const HeroSubtitle = styled.p`
   margin: 0;
-  max-width: 42.5rem;
-  font-size: clamp(var(--type-size-title), 4vw, 2.25rem);
+  max-width: 40rem;
+  font-size: var(--type-size-page);
   font-weight: var(--font-weight-regular);
-  line-height: 1.4;
+  line-height: 1.35;
+  letter-spacing: 0.2px;
   color: var(--color-text-icon-secondary);
 `;
 
-const PromoGrid = styled.div`
-  display: grid;
+const HeroTools = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-500);
-  grid-template-columns: 1fr;
-  align-items: stretch;
+  width: 100%;
 
-  ${media.md} {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  ${media.lg} {
+    width: auto;
+    flex-shrink: 0;
   }
 `;
 
-const FeatureGrid = styled.div`
-  display: grid;
-  gap: var(--space-500);
-  grid-template-columns: 1fr;
-  align-items: stretch;
+const SearchWrap = styled.div`
+  flex: 1 1 16rem;
+  max-width: 320px;
+  min-width: min(100%, 240px);
+`;
+
+const ToolCluster = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space-650) + var(--space-200));
+  width: 100%;
+  max-width: 1440px;
+  padding-inline: var(--space-300);
 
   ${media.md} {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    padding-inline: var(--space-800);
+  }
+
+  ${media.xl} {
+    padding-inline: calc(var(--space-1000) + var(--space-800));
   }
 `;
 
 const Section = styled.section`
-  margin-top: var(--space-600);
-  padding-block: var(--space-300);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-800);
+  width: 100%;
+`;
+
+const SectionIntro = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
 `;
 
 const SectionTitle = styled.h2`
-  margin: 0 0 var(--space-400);
-  font-size: var(--type-size-title);
+  margin: 0;
+  font-size: var(--type-size-page);
   font-weight: var(--font-weight-bold);
+  line-height: 1.35;
+  letter-spacing: -0.4px;
   color: var(--color-text-icon-primary);
+`;
+
+const SectionLead = styled.p`
+  margin: 0;
+  font-size: var(--type-size-subtitle);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.35;
+  letter-spacing: 0.3px;
+  color: var(--color-text-icon-secondary);
+`;
+
+const CardGrid = styled.div`
+  display: grid;
+  gap: var(--space-600);
+  grid-template-columns: 1fr;
+
+  ${media.md} {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 `;
 
 const CardLink = styled(Link)`
@@ -96,215 +187,340 @@ const CardLink = styled(Link)`
   text-decoration: none;
   color: inherit;
   border-radius: var(--radius-400);
-  transition: transform 160ms ease, box-shadow 160ms ease;
-
-  &:hover {
-    transform: translateY(-2px);
-  }
 
   &:focus-visible {
     outline: var(--stroke-200) solid var(--color-primary-primary);
     outline-offset: var(--space-050);
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-
-    &:hover {
-      transform: none;
-    }
-  }
 `;
 
 const PromoCard = styled(Card)`
   height: 100%;
-  transition: box-shadow 160ms ease;
+  box-shadow: var(--elevation-0);
+`;
 
-  ${CardLink}:hover & {
-    box-shadow: var(--elevation-1, var(--elevation-0));
+const MediaStrip = styled.div`
+  width: 100%;
+  height: 152px;
+  overflow: hidden;
+  background: var(--color-surfaces-on-container);
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 `;
 
-const FeatureCard = styled(Card)`
-  height: 100%;
+const KitButton = styled(Button)`
+  && {
+    color: var(--color-surfaces-inverse-container);
+    box-shadow: inset 0 0 0 var(--stroke-200) var(--color-surfaces-inverse-container);
+
+    &:hover:not(:disabled) {
+      background: var(--color-surfaces-on-container);
+    }
+  }
 `;
 
-const FeatureCardInner = styled.div`
+const FoundationCard = styled(Card)`
+  height: 100%;
+  box-shadow: var(--elevation-0);
+`;
+
+const FoundationInner = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--space-300);
-  padding: var(--space-500);
-  height: 100%;
+  gap: var(--space-400);
+  padding: var(--space-600);
 `;
 
-const IconBadge = styled.span`
-  display: inline-flex;
+const FoundationIcon = styled.div`
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: var(--space-100);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-1000);
+  background: var(--color-tonal-tonal-overlay);
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+const FoundationTitle = styled.h3`
+  margin: 0;
+  font-size: var(--type-size-title);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.35;
   color: var(--color-text-icon-primary);
-
-  & > svg {
-    width: 2rem;
-    height: 2rem;
-  }
 `;
 
-const BodyLink = styled.a`
-  color: var(--color-primary-primary);
-  text-decoration: none;
-
-  &:hover {
-    color: var(--color-primary-primary-hover);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-`;
-
-const ReleaseBox = styled.div`
-  padding: var(--space-400);
-  border: var(--stroke-100) solid var(--color-stroke-border);
-  border-radius: var(--radius-300);
-  background: var(--color-surfaces-container);
-`;
-
-const ReleaseDate = styled.p`
-  margin: 0 0 var(--space-200);
-  font-size: var(--type-size-caption);
+const FoundationBody = styled.p`
+  margin: 0;
+  font-size: var(--type-size-subject);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.35;
+  letter-spacing: 0.2px;
   color: var(--color-text-icon-secondary);
 `;
 
-const ReleaseHeadline = styled.p`
-  margin: 0;
-  font-size: var(--type-size-subject);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-icon-primary);
+const BodyLink = styled.a`
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: var(--color-primary-primary);
+  }
 `;
 
-const CardAction = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-100);
+const PageFooter = styled.footer`
+  width: 100%;
+  padding-inline: var(--space-300);
   font-size: var(--type-size-body);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-primary-primary);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.35;
+  letter-spacing: 0.2px;
+  text-align: center;
+  color: var(--color-text-icon-placeholder);
 `;
 
-const FeatureBody = styled.div`
-  flex: 1 1 auto;
-`;
+const STARTER_CARDS = [
+  {
+    key: 'designers',
+    title: 'Designers',
+    body: 'Access our Figma libraries, iconography, and patterns guidelines to create consistent Lenovo experiences.',
+    cta: 'Get Figma kit',
+    href: '/get-started/figma-libraries',
+    media: '/home/card-designers.png',
+    external: false,
+  },
+  {
+    key: 'developers',
+    title: 'Developers',
+    body: 'Explore our full component library in Storybook to see interactive examples, usage guidelines, and available props for every component.',
+    cta: 'View Storybook',
+    href: STORYBOOK_HOME,
+    media: '/home/card-developers.png',
+    external: true,
+  },
+  {
+    key: 'resources',
+    title: 'Resources',
+    body: 'Visit our Resources page for downloadable brand assets, approved fonts, logos, color palettes, and links to our full brand guidelines.',
+    cta: 'View resources',
+    href: '/resources',
+    media: '/home/card-resources.png',
+    external: false,
+  },
+] as const;
+
+const FOUNDATION_CARDS = [
+  {
+    key: 'accessibility',
+    title: 'Accessibility',
+    icon: '/home/icon-accessibility.png',
+    body: (
+      <>
+        Every Cake& component is built to meet{' '}
+        <BodyLink href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener noreferrer">
+          WCAG 2.2 AA standards
+        </BodyLink>
+        , ensuring your experiences are accessible, inclusive, and usable by everyone, regardless of
+        ability or device.
+      </>
+    ),
+  },
+  {
+    key: 'brand',
+    title: 'Brand',
+    icon: '/home/icon-brand.png',
+    body: "Maintain brand consistency across all your applications. Cake& provides the building blocks that reflect Lenovo's design language and values.",
+  },
+  {
+    key: 'modularity',
+    title: 'Modularity',
+    icon: '/home/icon-modularity.png',
+    body: 'Build with confidence using our modular component system. Mix and match components to create consistent, scalable interfaces that adapt to your needs.',
+  },
+] as const;
+
+function PromoCardContent({
+  title,
+  body,
+  cta,
+  media,
+}: {
+  title: string;
+  body: string;
+  cta: string;
+  media: string;
+}) {
+  return (
+    <SimpleCard
+      media={
+        <MediaStrip>
+          <img src={media} alt="" />
+        </MediaStrip>
+      }
+      title={title}
+      body={body}
+      actions={
+        <KitButton size="md" variant="outline" intent="secondary" endIcon={<ArrowRight size={16} />}>
+          {cta}
+        </KitButton>
+      }
+    />
+  );
+}
 
 /**
  * Home page — Figma Cake--Website node 66:7534.
- * Layout and copy match the production cake.lenovo.com home, styled with cake& tokens.
  */
 export function HomePage() {
+  const { themeMode, onToggleTheme } = useSiteChrome();
+  const isDark = themeMode === 'dark.a';
+  const [query, setQuery] = useState('');
+  const results = useMemo(() => getSearchResults(query), [query]);
+
   return (
-    <PageWrap>
-      <AuroraBackground />
-      <Page>
-        <Hero>
-          <HeroTitle>Cake</HeroTitle>
-          <HeroSubtitle>Ingredients for great design.</HeroSubtitle>
-        </Hero>
+    <Page>
+      <Hero>
+        <HeroInner>
+          <HeroCopy>
+            <TitleRow>
+              <HeroTitle>Cake</HeroTitle>
+              <HeroMark src="/home/cake-mark.png" alt="" aria-hidden />
+            </TitleRow>
+            <HeroSubtitle>Lenovo design system for Web &amp; Windows OS.</HeroSubtitle>
+          </HeroCopy>
 
-        <PromoGrid>
-          <CardLink to="/resources">
-            <PromoCard elevation="high">
-              <SimpleCard
-                title="Get started"
-                body="Start building modular, accessible, and brand-aligned features using our core components. Explore foundations, patterns, and reusable components to design faster and more consistently across Lenovo products."
-                actions={
-                  <CardAction>
-                    Access Figma Libraries
-                    <ArrowRight size={16} aria-hidden />
-                  </CardAction>
-                }
+          <HeroTools>
+            <SearchWrap>
+              <TextInput
+                aria-label="Search documentation"
+                placeholder="Search documentation..."
+                value={query}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
+                startIcon={<Search size={18} />}
+                autoComplete="off"
               />
-            </PromoCard>
-          </CardLink>
+              {query.trim() && results.length > 0 && (
+                <div
+                  style={{
+                    marginTop: 'var(--space-100)',
+                    border: 'var(--stroke-100) solid var(--color-stroke-border)',
+                    borderRadius: 'var(--radius-200)',
+                    background: 'var(--color-surfaces-container)',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {results.slice(0, 6).map((route) => (
+                    <Link
+                      key={route.path}
+                      to={route.path}
+                      style={{
+                        display: 'block',
+                        padding: 'var(--space-200) var(--space-300)',
+                        textDecoration: 'none',
+                        color: 'var(--color-text-icon-primary)',
+                        fontSize: 'var(--type-size-body)',
+                      }}
+                    >
+                      {route.title}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </SearchWrap>
 
-          <CardLink to="/whats-new">
-            <PromoCard elevation="high">
-              <SimpleCard
-                title="What's new"
-                body={
-                  <ReleaseBox>
-                    <ReleaseDate>May 12, 2026</ReleaseDate>
-                    <ReleaseHeadline>🎉 New AI guidelines added</ReleaseHeadline>
-                  </ReleaseBox>
-                }
-                actions={
-                  <CardAction>
-                    Find out what&apos;s new
-                    <ArrowRight size={16} aria-hidden />
-                  </CardAction>
-                }
+            <ToolCluster>
+              <IconButton
+                label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+                icon={isDark ? <Sun /> : <Moon />}
+                intent="primary"
+                variant="fill"
+                size="lg"
+                onClick={onToggleTheme}
               />
-            </PromoCard>
-          </CardLink>
-        </PromoGrid>
+              <IconButton
+                label="Language"
+                icon={<Languages />}
+                intent="secondary"
+                variant="ghost"
+                size="lg"
+              />
+            </ToolCluster>
+          </HeroTools>
+        </HeroInner>
+      </Hero>
+
+      <Content>
+        <Section>
+          <SectionIntro>
+            <SectionTitle>Get started</SectionTitle>
+            <SectionLead>Everything you need to start building consistent experiences.</SectionLead>
+          </SectionIntro>
+
+          <CardGrid>
+            {STARTER_CARDS.map((card) =>
+              card.external ? (
+                <PromoCard key={card.key} elevation="low">
+                  <a
+                    href={card.href}
+                    style={{ display: 'block', height: '100%', textDecoration: 'none', color: 'inherit' }}
+                  >
+                    <PromoCardContent
+                      title={card.title}
+                      body={card.body}
+                      cta={card.cta}
+                      media={card.media}
+                    />
+                  </a>
+                </PromoCard>
+              ) : (
+                <CardLink key={card.key} to={card.href}>
+                  <PromoCard elevation="low">
+                    <PromoCardContent
+                      title={card.title}
+                      body={card.body}
+                      cta={card.cta}
+                      media={card.media}
+                    />
+                  </PromoCard>
+                </CardLink>
+              ),
+            )}
+          </CardGrid>
+        </Section>
 
         <Section>
-          <SectionTitle>Why build with Cake?</SectionTitle>
-          <FeatureGrid>
-            <FeatureCard elevation="high">
-              <FeatureCardInner>
-                <IconBadge aria-hidden>
-                  <Accessibility />
-                </IconBadge>
-                <FeatureBody>
-                  <SimpleCard
-                    title="Accessibility"
-                    body={
-                      <>
-                        Every Cake component is built to meet{' '}
-                        <BodyLink
-                          href="https://www.w3.org/TR/WCAG22/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          WCAG 2.2 AA standards
-                        </BodyLink>
-                        , ensuring your experiences are accessible, inclusive, and usable by everyone,
-                        regardless of ability or device.
-                      </>
-                    }
-                  />
-                </FeatureBody>
-              </FeatureCardInner>
-            </FeatureCard>
+          <SectionIntro>
+            <SectionTitle>Shared foundations</SectionTitle>
+          </SectionIntro>
 
-            <FeatureCard elevation="high">
-              <FeatureCardInner>
-                <IconBadge aria-hidden>
-                  <PenTool />
-                </IconBadge>
-                <FeatureBody>
-                  <SimpleCard
-                    title="Brand"
-                    body="Maintain brand consistency across all your applications. Cake provides the building blocks that reflect Lenovo's design language and values."
-                  />
-                </FeatureBody>
-              </FeatureCardInner>
-            </FeatureCard>
-
-            <FeatureCard elevation="high">
-              <FeatureCardInner>
-                <IconBadge aria-hidden>
-                  <Puzzle />
-                </IconBadge>
-                <FeatureBody>
-                  <SimpleCard
-                    title="Modularity"
-                    body="Build with confidence using our modular component system. Mix and match components to create consistent, scalable interfaces that adapt to your needs."
-                  />
-                </FeatureBody>
-              </FeatureCardInner>
-            </FeatureCard>
-          </FeatureGrid>
+          <CardGrid>
+            {FOUNDATION_CARDS.map((card) => (
+              <FoundationCard key={card.key} elevation="low">
+                <FoundationInner>
+                  <FoundationIcon aria-hidden>
+                    <img src={card.icon} alt="" />
+                  </FoundationIcon>
+                  <FoundationTitle>{card.title}</FoundationTitle>
+                  <FoundationBody>{card.body}</FoundationBody>
+                </FoundationInner>
+              </FoundationCard>
+            ))}
+          </CardGrid>
         </Section>
-      </Page>
-    </PageWrap>
+
+        <PageFooter>© 2026 Cake& Design System. All rights reserved.</PageFooter>
+      </Content>
+    </Page>
   );
 }
