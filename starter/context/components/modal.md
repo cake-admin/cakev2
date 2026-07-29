@@ -56,6 +56,7 @@ const [open, setOpen] = useState(false);
 - ModalTitle supplies the required Dialog.Title; the header subtitle becomes the Dialog.Description when present.
 - Keep exactly one Dialog.Description per modal — opt body content out with descriptionAsDialogDescription={false} when the header already provides it.
 - The close control reuses the shared IconButton and its focus ring; set showClose={false} only when dismissal is handled elsewhere.
+- In Win HCT, --color-overlay-scrim resolves to opaque white — the blur has nothing translucent left to soften, which is expected in that mode.
 
 ## Do / Don't
 

@@ -12,7 +12,7 @@ An elevated surface that frames a slot of content (Figma &Card, node 182:11794).
 | Prop | Type | Default | Notes |
 | --- | --- | --- | --- |
 | `children` | `React.ReactNode` | — | The card's content — plain nodes, or a card template that slots in. |
-| `elevation` | `'low' \| 'high'` | `'low'` | Drop-shadow depth. low is the resting card (--elevation-0); high (--elevation-3) lifts it for raised or floating contexts. |
+| `elevation` | `'low' \| 'high'` | `'low'` | Drop-shadow depth. Both currently resolve to the Figma elevation/0 resting shadow (--elevation-0) — high is reserved for a raised/ floating treatment once that spec is confirmed against Figma. |
 
 Also accepts all `React.HTMLAttributes<HTMLDivElement>` props.
 
@@ -26,7 +26,7 @@ import { Card } from '@/cakeand/components/Card';
   <div style={{ padding: 'var(--space-500)' }}>…</div>
 </Card>
 
-// raised / floating context
+// reserved for a future raised/floating treatment (currently == low)
 <Card elevation="high">…</Card>
 
 // edge-to-edge media (the flush slot + overflow:hidden clip it to the corners)
@@ -38,7 +38,7 @@ import { Card } from '@/cakeand/components/Card';
 
 ## Design tokens used
 
-`--color-surfaces-container`, `--radius-400`, `--elevation-0`, `--elevation-3`
+`--color-surfaces-container`, `--radius-400`, `--elevation-0`
 
 ## Accessibility
 
@@ -53,7 +53,7 @@ import { Card } from '@/cakeand/components/Card';
 | --- | --- |
 | Let content bring its own padding | Assume Card pads its slot for you |
 | Use overflow: hidden to bleed media to the corners | Add a nested rounded wrapper to re-clip what Card already clips |
-| Reach for elevation="high" only when a card floats | Raise every card — if everything lifts, nothing reads as raised |
+| Use the default elevation="low" | Reach for elevation="high" expecting a stronger shadow — it currently renders identically, pending a confirmed raised spec |
 | Use Modal for focus-trapping overlays | Build a dialog out of a Card |
 
 ---
