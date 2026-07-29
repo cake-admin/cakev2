@@ -34,7 +34,6 @@ const Hero = styled.header`
   top: 0;
   z-index: 100;
   width: 100%;
-  isolation: isolate;
   padding: var(--space-800) var(--space-300) var(--space-600);
   border-bottom: var(--stroke-100) solid
     color-mix(
@@ -42,6 +41,36 @@ const Hero = styled.header`
       var(--color-stroke-border) calc(var(--hero-progress) * 70%),
       transparent
     );
+
+  /* Frosted glass — on the sticky element itself (Chrome samples scroll content here). */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      178deg,
+      color-mix(in srgb, var(--color-badge-indigo-light) 15%, transparent) 17%,
+      color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 83%
+    );
+    opacity: calc(1 - var(--hero-progress) * 0.92);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-color: color-mix(
+      in srgb,
+      var(--color-surfaces-canvas) calc(var(--hero-progress) * 78%),
+      transparent
+    );
+    -webkit-backdrop-filter: blur(calc(12px * var(--hero-progress))) saturate(1.25);
+    backdrop-filter: blur(calc(12px * var(--hero-progress))) saturate(1.25);
+  }
 
   ${media.sm} {
     padding: var(--space-900) var(--space-400) var(--space-700);
@@ -53,32 +82,6 @@ const Hero = styled.header`
 
   ${media.xl} {
     padding-inline: calc(var(--space-1000) + var(--space-800));
-  }
-`;
-
-const HeroBackdrop = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-color: color-mix(
-    in srgb,
-    var(--color-surfaces-canvas) calc(var(--hero-progress) * 72%),
-    transparent
-  );
-  -webkit-backdrop-filter: blur(calc(var(--hero-progress) * 24px)) saturate(calc(1 + var(--hero-progress) * 0.35));
-  backdrop-filter: blur(calc(var(--hero-progress) * 24px)) saturate(calc(1 + var(--hero-progress) * 0.35));
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      178deg,
-      color-mix(in srgb, var(--color-badge-indigo-light) 15%, transparent) 17%,
-      color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 83%
-    );
-    opacity: calc(1 - var(--hero-progress) * 0.95);
   }
 `;
 
@@ -97,10 +100,10 @@ const HeroInner = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  transform: translateY(calc(var(--hero-progress) * -16px))
+  transform: translate3d(0, calc(var(--hero-progress) * -16px), 0)
     scale(calc(1 - var(--hero-progress) * 0.18));
   transform-origin: top left;
-  will-change: transform;
+  backface-visibility: hidden;
 
   @media (prefers-reduced-motion: reduce) {
     transform: none;
@@ -405,7 +408,6 @@ export function HomePage() {
     <Page>
       <HeroSection ref={sectionRef}>
         <Hero ref={heroRef}>
-          <HeroBackdrop aria-hidden />
           <HeroInner>
             <HeroWordmark />
             <HeroRow>
