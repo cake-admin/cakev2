@@ -1,33 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
-/** Scroll progress from 0 (top) to 1 (fully collapsed) over `range` pixels. */
-export function useHeroCollapse(range = 160) {
-  const [progress, setProgress] = useState(0);
+const DEFAULT_RANGE = 160;
+
+/** Attach to the sticky hero and drive `--hero-progress` (0–1) from scroll. */
+export function useHeroCollapse(range = DEFAULT_RANGE) {
+  const heroRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    const node = heroRef.current;
+    if (!node) return undefined;
+
     let raf = 0;
 
     const update = () => {
-      const next = Math.min(1, Math.max(0, window.scrollY / range));
-      setProgress((prev) => (Math.abs(prev - next) < 0.002 ? prev : next));
+      const progress = Math.min(1, Math.max(0, window.scrollY / range));
+      node.style.setProperty('--hero-progress', progress.toFixed(4));
     };
 
-    const onScroll = () => {
+    const schedule = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(update);
     };
 
     update();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
+
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
     };
   }, [range]);
 
-  return progress;
-}
-
-export function lerp(start: number, end: number, t: number) {
-  return start + (end - start) * t;
+  return heroRef;
 }

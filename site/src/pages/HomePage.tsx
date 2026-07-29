@@ -9,7 +9,7 @@ import { SimpleCard } from '@/cakeand/components/Card/SimpleCard';
 
 import { useSiteChrome } from '../layout/SiteChromeContext';
 import { useSiteTranslation } from '../i18n/useSiteTranslation';
-import { lerp, useHeroCollapse } from '../hooks/useHeroCollapse';
+import { useHeroCollapse } from '../hooks/useHeroCollapse';
 import { CakeWordmark } from '../components/CakeWordmark';
 import { STORYBOOK_HOME } from '../data/routes';
 import { media } from '../styles/breakpoints';
@@ -24,44 +24,32 @@ const Page = styled.div`
   background: var(--color-surfaces-canvas);
 `;
 
-const Hero = styled.header<{ $progress: number }>`
-  --hero-progress: ${(p) => p.$progress};
+const Hero = styled.header`
+  --hero-progress: 0;
   position: sticky;
   top: 0;
   z-index: 100;
   width: 100%;
-  padding-top: ${(p) => lerp(64, 16, p.$progress)}px;
-  padding-bottom: ${(p) => lerp(48, 12, p.$progress)}px;
+  isolation: isolate;
+  padding-top: calc(64px - var(--hero-progress) * 40px);
+  padding-bottom: calc(48px - var(--hero-progress) * 28px);
   padding-inline: var(--space-300);
-  border-bottom: ${(p) =>
-    p.$progress > 0.05
-      ? 'var(--stroke-100) solid color-mix(in srgb, var(--color-stroke-border) 70%, transparent)'
-      : 'var(--stroke-100) solid transparent'};
-  background:
-    linear-gradient(
-      178deg,
-      color-mix(in srgb, var(--color-badge-indigo-light) calc(15% - var(--hero-progress) * 10%), transparent)
-        17%,
-      color-mix(in srgb, var(--color-badge-magenta-light) calc(15% - var(--hero-progress) * 10%), transparent)
-        83%
-    ),
+  border-bottom: var(--stroke-100) solid
     color-mix(
       in srgb,
-      var(--color-surfaces-canvas) calc(55% + var(--hero-progress) * 40%),
+      var(--color-stroke-border) calc(var(--hero-progress) * 70%),
       transparent
     );
-  -webkit-backdrop-filter: blur(calc(var(--hero-progress) * 14px));
-  backdrop-filter: blur(calc(var(--hero-progress) * 14px));
 
   ${media.sm} {
-    padding-top: ${(p) => lerp(72, 16, p.$progress)}px;
-    padding-bottom: ${(p) => lerp(56, 12, p.$progress)}px;
+    padding-top: calc(72px - var(--hero-progress) * 44px);
+    padding-bottom: calc(56px - var(--hero-progress) * 32px);
     padding-inline: var(--space-400);
   }
 
   ${media.md} {
-    padding-top: ${(p) => lerp(80, 20, p.$progress)}px;
-    padding-bottom: ${(p) => lerp(64, 16, p.$progress)}px;
+    padding-top: calc(80px - var(--hero-progress) * 48px);
+    padding-bottom: calc(64px - var(--hero-progress) * 36px);
     padding-inline: var(--space-800);
   }
 
@@ -70,79 +58,70 @@ const Hero = styled.header<{ $progress: number }>`
   }
 `;
 
-const HeroInner = styled.div<{ $progress: number }>`
+const HeroBackdrop = styled.div`
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: color-mix(
+    in srgb,
+    var(--color-surfaces-canvas) calc(var(--hero-progress) * 72%),
+    transparent
+  );
+  -webkit-backdrop-filter: blur(calc(var(--hero-progress) * 24px)) saturate(calc(1 + var(--hero-progress) * 0.35));
+  backdrop-filter: blur(calc(var(--hero-progress) * 24px)) saturate(calc(1 + var(--hero-progress) * 0.35));
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      178deg,
+      color-mix(in srgb, var(--color-badge-indigo-light) 15%, transparent) 17%,
+      color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 83%
+    );
+    opacity: calc(1 - var(--hero-progress) * 0.95);
+  }
+`;
+
+const HeroInner = styled.div`
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
   grid-template-areas:
     'wordmark tools'
-    'subtitle subtitle';
-  column-gap: var(--space-200);
-  row-gap: ${(p) => lerp(16, 0, p.$progress)}px;
-  align-items: center;
+    'subtitle tools';
+  column-gap: var(--space-300);
+  row-gap: calc(var(--space-300) * (1 - var(--hero-progress)));
+  align-items: end;
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-
-  ${media.sm} {
-    column-gap: var(--space-300);
-    row-gap: ${(p) => lerp(20, 0, p.$progress)}px;
-  }
-
-  ${media.md} {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: ${(p) => lerp(24, 0, p.$progress)}px;
-
-    ${(p) =>
-      p.$progress > 0.65 &&
-      `
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--space-300);
-    `}
-  }
 `;
 
-const HeroRow = styled.div<{ $progress: number }>`
+const HeroRow = styled.div`
   display: contents;
-
-  ${media.md} {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: ${(p) => lerp(24, 12, p.$progress)}px;
-    width: 100%;
-    min-height: ${(p) => (p.$progress > 0.85 ? 0 : 'auto')};
-    overflow: hidden;
-
-    ${(p) =>
-      p.$progress > 0.65 &&
-      `
-      width: auto;
-      flex: 0 0 auto;
-    `}
-  }
 `;
 
-const HeroWordmark = styled(CakeWordmark)<{ $progress: number }>`
+const HeroWordmark = styled(CakeWordmark)`
   grid-area: wordmark;
   align-self: center;
-  height: ${(p) => lerp(44, 28, p.$progress)}px;
+  height: calc(44px - var(--hero-progress) * 16px);
   max-width: 100%;
 
   ${media.sm} {
-    height: ${(p) => lerp(52, 32, p.$progress)}px;
+    height: calc(52px - var(--hero-progress) * 20px);
   }
 
   ${media.md} {
-    align-self: auto;
-    height: ${(p) => lerp(88, 40, p.$progress)}px;
+    align-self: end;
+    height: calc(88px - var(--hero-progress) * 48px);
   }
 `;
 
-const HeroSubtitle = styled.p<{ $progress: number }>`
+const HeroSubtitle = styled.p`
   grid-area: subtitle;
   margin: 0;
   max-width: 40rem;
@@ -152,26 +131,24 @@ const HeroSubtitle = styled.p<{ $progress: number }>`
   line-height: 1.35;
   letter-spacing: 0.2px;
   color: var(--color-text-icon-secondary);
-  opacity: ${(p) => lerp(1, 0, p.$progress)};
-  max-height: ${(p) => lerp(120, 0, p.$progress)}px;
-  transform: translateY(${(p) => lerp(0, -8, p.$progress)}px);
-  pointer-events: ${(p) => (p.$progress > 0.75 ? 'none' : 'auto')};
+  opacity: calc(1 - var(--hero-progress));
+  max-height: calc((1 - var(--hero-progress)) * 6rem);
 
   ${media.sm} {
     font-size: var(--type-size-subtitle);
+    max-height: calc((1 - var(--hero-progress)) * 5rem);
   }
 
   ${media.md} {
-    flex: 1 1 auto;
-    min-width: 0;
     font-size: var(--type-size-page);
-    max-height: ${(p) => lerp(80, 0, p.$progress)}px;
+    max-height: calc((1 - var(--hero-progress)) * 4.5rem);
   }
 `;
 
 const HeroTools = styled.div`
   grid-area: tools;
-  align-self: start;
+  grid-row: 1 / span 2;
+  align-self: end;
   justify-self: end;
   flex-shrink: 0;
   width: auto;
@@ -181,6 +158,8 @@ const ToolCluster = styled.div`
   display: flex;
   align-items: center;
   gap: 0;
+  transform: scale(calc(1 - var(--hero-progress) * 0.12));
+  transform-origin: center right;
 `;
 
 const Content = styled.div`
@@ -414,16 +393,16 @@ export function HomePage() {
   const { themeMode, onToggleTheme, locale, onToggleLocale } = useSiteChrome();
   const t = useSiteTranslation();
   const isDark = themeMode === 'dark.a';
-  const heroProgress = useHeroCollapse();
-  const compactTools = heroProgress > 0.45;
+  const heroRef = useHeroCollapse();
 
   return (
     <Page>
-      <Hero $progress={heroProgress}>
-        <HeroInner $progress={heroProgress}>
-          <HeroWordmark $progress={heroProgress} />
-          <HeroRow $progress={heroProgress}>
-            <HeroSubtitle $progress={heroProgress}>{t.home.heroSubtitle}</HeroSubtitle>
+      <Hero ref={heroRef}>
+        <HeroBackdrop aria-hidden />
+        <HeroInner>
+          <HeroWordmark />
+          <HeroRow>
+            <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
             <HeroTools>
               <ToolCluster>
                 <IconButton
@@ -431,7 +410,7 @@ export function HomePage() {
                   icon={isDark ? <Sun /> : <Moon />}
                   intent="secondary"
                   variant="ghost"
-                  size={compactTools ? 'md' : 'lg'}
+                  size="lg"
                   onClick={onToggleTheme}
                 />
                 <IconButton
@@ -439,7 +418,7 @@ export function HomePage() {
                   icon={<Languages />}
                   intent="secondary"
                   variant="ghost"
-                  size={compactTools ? 'md' : 'lg'}
+                  size="lg"
                   onClick={onToggleLocale}
                 />
               </ToolCluster>
