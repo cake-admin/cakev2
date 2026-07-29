@@ -25,16 +25,23 @@ const Page = styled.div`
 
 const Hero = styled.header`
   width: 100%;
-  padding: calc(var(--space-1000) + var(--space-800)) var(--space-300)
-    var(--space-900);
+  padding: var(--space-800) var(--space-300) var(--space-600);
   background: linear-gradient(
     178deg,
     color-mix(in srgb, var(--color-badge-indigo-light) 15%, transparent) 17%,
     color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 83%
   );
 
+  ${media.sm} {
+    padding: var(--space-900) var(--space-400) var(--space-700);
+  }
+
   ${media.md} {
-    padding-inline: var(--space-800);
+    padding: var(--space-900) var(--space-800) var(--space-800);
+  }
+
+  ${media.lg} {
+    padding: calc(var(--space-1000) + var(--space-800)) var(--space-800) var(--space-900);
   }
 
   ${media.xl} {
@@ -43,14 +50,25 @@ const Hero = styled.header`
 `;
 
 const HeroInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-500);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'wordmark tools'
+    'subtitle subtitle';
+  column-gap: var(--space-200);
+  row-gap: var(--space-300);
+  align-items: center;
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
 
+  ${media.sm} {
+    column-gap: var(--space-300);
+    row-gap: var(--space-400);
+  }
+
   ${media.lg} {
+    display: flex;
     flex-direction: row;
     align-items: flex-end;
     justify-content: space-between;
@@ -59,36 +77,65 @@ const HeroInner = styled.div`
 `;
 
 const HeroCopy = styled.div`
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  gap: var(--space-500);
-  min-width: 0;
+  display: contents;
+
+  ${media.lg} {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: var(--space-500);
+    min-width: 0;
+  }
 `;
 
 const HeroWordmark = styled(CakeWordmark)`
-  height: clamp(4rem, 10vw, 7.67rem);
+  grid-area: wordmark;
+  align-self: center;
+  height: clamp(2.5rem, 11vw, 7.67rem);
+  max-width: 100%;
+
+  ${media.sm} {
+    height: clamp(3rem, 10vw, 7.67rem);
+  }
+
+  ${media.md} {
+    height: clamp(3.5rem, 9vw, 7.67rem);
+  }
+
+  ${media.lg} {
+    align-self: auto;
+    height: clamp(4rem, 10vw, 7.67rem);
+  }
 `;
 
 const HeroSubtitle = styled.p`
+  grid-area: subtitle;
   margin: 0;
   max-width: 40rem;
-  font-size: var(--type-size-page);
+  font-size: var(--type-size-subject);
   font-weight: var(--font-weight-regular);
   line-height: 1.35;
   letter-spacing: 0.2px;
   color: var(--color-text-icon-secondary);
+
+  ${media.sm} {
+    font-size: var(--type-size-subtitle);
+  }
+
+  ${media.md} {
+    font-size: var(--type-size-page);
+  }
 `;
 
 const HeroTools = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-500);
-  width: 100%;
+  grid-area: tools;
+  align-self: start;
+  justify-self: end;
+  width: auto;
 
   ${media.lg} {
-    width: auto;
+    align-self: auto;
+    justify-self: auto;
     flex-shrink: 0;
   }
 `;
