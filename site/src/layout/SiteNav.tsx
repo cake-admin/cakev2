@@ -278,7 +278,7 @@ export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: S
           size="md"
           onClick={onToggle}
         />
-        <BrandTitle>cake&</BrandTitle>
+        <NavWordmark aria-hidden />
         <IconButton
           label="Search"
           icon={<Search />}

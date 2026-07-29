@@ -1,17 +1,15 @@
-import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { ArrowRight, Languages, Moon, Search, Sun } from 'lucide-react';
+import { ArrowRight, Languages, Moon, Sun } from 'lucide-react';
 
 import { Button } from '@/cakeand/components/Button';
 import { IconButton } from '@/cakeand/components/Button/IconButton';
 import { Card } from '@/cakeand/components/Card';
 import { SimpleCard } from '@/cakeand/components/Card/SimpleCard';
-import { TextInput } from '@/cakeand/components/TextInput';
 
 import { useSiteChrome } from '../layout/SiteChromeContext';
 import { CakeWordmark } from '../components/CakeWordmark';
-import { getSearchResults, STORYBOOK_HOME } from '../data/routes';
+import { STORYBOOK_HOME } from '../data/routes';
 import { media } from '../styles/breakpoints';
 
 const Page = styled.div`
@@ -92,12 +90,6 @@ const HeroTools = styled.div`
     width: auto;
     flex-shrink: 0;
   }
-`;
-
-const SearchWrap = styled.div`
-  flex: 1 1 16rem;
-  max-width: 320px;
-  min-width: min(100%, 240px);
 `;
 
 const ToolCluster = styled.div`
@@ -368,8 +360,6 @@ function PromoCardContent({
 export function HomePage() {
   const { themeMode, onToggleTheme } = useSiteChrome();
   const isDark = themeMode === 'dark.a';
-  const [query, setQuery] = useState('');
-  const results = useMemo(() => getSearchResults(query), [query]);
 
   return (
     <Page>
@@ -381,44 +371,6 @@ export function HomePage() {
           </HeroCopy>
 
           <HeroTools>
-            <SearchWrap>
-              <TextInput
-                aria-label="Search documentation"
-                placeholder="Search documentation..."
-                value={query}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
-                startIcon={<Search size={18} />}
-                autoComplete="off"
-              />
-              {query.trim() && results.length > 0 && (
-                <div
-                  style={{
-                    marginTop: 'var(--space-100)',
-                    border: 'var(--stroke-100) solid var(--color-stroke-border)',
-                    borderRadius: 'var(--radius-200)',
-                    background: 'var(--color-surfaces-container)',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {results.slice(0, 6).map((route) => (
-                    <Link
-                      key={route.path}
-                      to={route.path}
-                      style={{
-                        display: 'block',
-                        padding: 'var(--space-200) var(--space-300)',
-                        textDecoration: 'none',
-                        color: 'var(--color-text-icon-primary)',
-                        fontSize: 'var(--type-size-body)',
-                      }}
-                    >
-                      {route.title}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </SearchWrap>
-
             <ToolCluster>
               <IconButton
                 label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
