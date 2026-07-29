@@ -289,9 +289,9 @@ const STARTER_CARD_META = {
 const FOUNDATION_CARD_KEYS = ['accessibility', 'brand', 'modularity'] as const;
 
 const FOUNDATION_CARD_ICONS = {
-  accessibility: '/home/icon-accessibility.png',
-  brand: '/home/icon-brand.png',
-  modularity: '/home/icon-modularity.png',
+  accessibility: '/home/icon-accessibility.svg',
+  brand: '/home/icon-brand.svg',
+  modularity: '/home/icon-modularity.svg',
 } as const;
 
 function PromoCardContent({
