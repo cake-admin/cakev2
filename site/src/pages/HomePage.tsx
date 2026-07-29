@@ -24,6 +24,10 @@ const Page = styled.div`
   background: var(--color-surfaces-canvas);
 `;
 
+const HeroSection = styled.div`
+  width: 100%;
+`;
+
 const Hero = styled.header`
   --hero-progress: 0;
   position: sticky;
@@ -31,9 +35,7 @@ const Hero = styled.header`
   z-index: 100;
   width: 100%;
   isolation: isolate;
-  padding-top: calc(64px - var(--hero-progress) * 40px);
-  padding-bottom: calc(48px - var(--hero-progress) * 28px);
-  padding-inline: var(--space-300);
+  padding: var(--space-800) var(--space-300) var(--space-600);
   border-bottom: var(--stroke-100) solid
     color-mix(
       in srgb,
@@ -42,15 +44,11 @@ const Hero = styled.header`
     );
 
   ${media.sm} {
-    padding-top: calc(72px - var(--hero-progress) * 44px);
-    padding-bottom: calc(56px - var(--hero-progress) * 32px);
-    padding-inline: var(--space-400);
+    padding: var(--space-900) var(--space-400) var(--space-700);
   }
 
   ${media.md} {
-    padding-top: calc(80px - var(--hero-progress) * 48px);
-    padding-bottom: calc(64px - var(--hero-progress) * 36px);
-    padding-inline: var(--space-800);
+    padding: var(--space-1000) var(--space-800) var(--space-900);
   }
 
   ${media.xl} {
@@ -94,11 +92,20 @@ const HeroInner = styled.div`
     'wordmark tools'
     'subtitle tools';
   column-gap: var(--space-300);
-  row-gap: calc(var(--space-300) * (1 - var(--hero-progress)));
+  row-gap: var(--space-300);
   align-items: end;
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
+  transform: translateY(calc(var(--hero-progress) * -16px))
+    scale(calc(1 - var(--hero-progress) * 0.18));
+  transform-origin: top left;
+  will-change: transform;
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+    will-change: auto;
+  }
 `;
 
 const HeroRow = styled.div`
@@ -108,16 +115,16 @@ const HeroRow = styled.div`
 const HeroWordmark = styled(CakeWordmark)`
   grid-area: wordmark;
   align-self: center;
-  height: calc(44px - var(--hero-progress) * 16px);
+  height: clamp(2.75rem, 11vw, 5.5rem);
   max-width: 100%;
 
   ${media.sm} {
-    height: calc(52px - var(--hero-progress) * 20px);
+    height: clamp(3.25rem, 10vw, 5.5rem);
   }
 
   ${media.md} {
     align-self: end;
-    height: calc(88px - var(--hero-progress) * 48px);
+    height: 5.5rem;
   }
 `;
 
@@ -125,23 +132,24 @@ const HeroSubtitle = styled.p`
   grid-area: subtitle;
   margin: 0;
   max-width: 40rem;
-  overflow: hidden;
   font-size: var(--type-size-subject);
   font-weight: var(--font-weight-regular);
   line-height: 1.35;
   letter-spacing: 0.2px;
   color: var(--color-text-icon-secondary);
   opacity: calc(1 - var(--hero-progress));
-  max-height: calc((1 - var(--hero-progress)) * 6rem);
+  transform: translateY(calc(var(--hero-progress) * -6px));
 
   ${media.sm} {
     font-size: var(--type-size-subtitle);
-    max-height: calc((1 - var(--hero-progress)) * 5rem);
   }
 
   ${media.md} {
     font-size: var(--type-size-page);
-    max-height: calc((1 - var(--hero-progress)) * 4.5rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
   }
 `;
 
@@ -158,8 +166,6 @@ const ToolCluster = styled.div`
   display: flex;
   align-items: center;
   gap: 0;
-  transform: scale(calc(1 - var(--hero-progress) * 0.12));
-  transform-origin: center right;
 `;
 
 const Content = styled.div`
@@ -393,39 +399,41 @@ export function HomePage() {
   const { themeMode, onToggleTheme, locale, onToggleLocale } = useSiteChrome();
   const t = useSiteTranslation();
   const isDark = themeMode === 'dark.a';
-  const heroRef = useHeroCollapse();
+  const { sectionRef, heroRef } = useHeroCollapse();
 
   return (
     <Page>
-      <Hero ref={heroRef}>
-        <HeroBackdrop aria-hidden />
-        <HeroInner>
-          <HeroWordmark />
-          <HeroRow>
-            <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
-            <HeroTools>
-              <ToolCluster>
-                <IconButton
-                  label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
-                  icon={isDark ? <Sun /> : <Moon />}
-                  intent="secondary"
-                  variant="ghost"
-                  size="lg"
-                  onClick={onToggleTheme}
-                />
-                <IconButton
-                  label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
-                  icon={<Languages />}
-                  intent="secondary"
-                  variant="ghost"
-                  size="lg"
-                  onClick={onToggleLocale}
-                />
-              </ToolCluster>
-            </HeroTools>
-          </HeroRow>
-        </HeroInner>
-      </Hero>
+      <HeroSection ref={sectionRef}>
+        <Hero ref={heroRef}>
+          <HeroBackdrop aria-hidden />
+          <HeroInner>
+            <HeroWordmark />
+            <HeroRow>
+              <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
+              <HeroTools>
+                <ToolCluster>
+                  <IconButton
+                    label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
+                    icon={isDark ? <Sun /> : <Moon />}
+                    intent="secondary"
+                    variant="ghost"
+                    size="lg"
+                    onClick={onToggleTheme}
+                  />
+                  <IconButton
+                    label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
+                    icon={<Languages />}
+                    intent="secondary"
+                    variant="ghost"
+                    size="lg"
+                    onClick={onToggleLocale}
+                  />
+                </ToolCluster>
+              </HeroTools>
+            </HeroRow>
+          </HeroInner>
+        </Hero>
+      </HeroSection>
 
       <Content>
         <Section>
