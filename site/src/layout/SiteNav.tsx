@@ -7,7 +7,7 @@ import { IconButton } from '@/cakeand/components/Button';
 import { TextInput } from '@/cakeand/components/TextInput';
 import type { ThemeMode } from '@/cakeand/tokens/theme';
 
-import { CakeAndMark } from '../components/CakeAndMark';
+import { CakeWordmark } from '../components/CakeWordmark';
 import { getNavSections, getSearchResults, STORYBOOK_HOME } from '../data/routes';
 import { NAV_RAIL_WIDTH, media } from '../styles/breakpoints';
 
@@ -71,8 +71,8 @@ const BrandLink = styled(NavLink)`
   }
 `;
 
-const LogoMark = styled(CakeAndMark)`
-  height: 32px;
+const NavWordmark = styled(CakeWordmark)`
+  height: 24px;
 `;
 
 const BrandText = styled.div`
@@ -292,9 +292,8 @@ export function SiteNav({ open, onClose, onToggle, themeMode, onToggleTheme }: S
       <Rail aria-label="Primary" $open={open}>
         <BrandRow>
           <BrandLink to="/" onClick={onClose}>
-            <LogoMark aria-hidden />
+            <NavWordmark aria-hidden />
             <BrandText>
-              <BrandTitle>cake&</BrandTitle>
               <BrandVersion>Design system</BrandVersion>
             </BrandText>
           </BrandLink>

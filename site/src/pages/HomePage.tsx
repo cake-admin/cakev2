@@ -10,7 +10,7 @@ import { SimpleCard } from '@/cakeand/components/Card/SimpleCard';
 import { TextInput } from '@/cakeand/components/TextInput';
 
 import { useSiteChrome } from '../layout/SiteChromeContext';
-import { CakeAndMark } from '../components/CakeAndMark';
+import { CakeWordmark } from '../components/CakeWordmark';
 import { getSearchResults, STORYBOOK_HOME } from '../data/routes';
 import { media } from '../styles/breakpoints';
 
@@ -67,25 +67,8 @@ const HeroCopy = styled.div`
   min-width: 0;
 `;
 
-const TitleRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--space-400);
-  font-size: clamp(4rem, 10vw, 7.67rem);
-`;
-
-const HeroTitle = styled.h1`
-  margin: 0;
-  font-size: inherit;
-  font-weight: var(--font-weight-regular);
-  line-height: 0.714;
-  letter-spacing: 0.004em;
-  color: var(--color-primary-primary);
-`;
-
-const HeroMark = styled(CakeAndMark)`
-  height: 1em;
+const HeroWordmark = styled(CakeWordmark)`
+  height: clamp(4rem, 10vw, 7.67rem);
 `;
 
 const HeroSubtitle = styled.p`
@@ -393,10 +376,7 @@ export function HomePage() {
       <Hero>
         <HeroInner>
           <HeroCopy>
-            <TitleRow>
-              <HeroTitle>Cake</HeroTitle>
-              <HeroMark aria-hidden />
-            </TitleRow>
+            <HeroWordmark />
             <HeroSubtitle>Lenovo design system for Web &amp; Windows OS.</HeroSubtitle>
           </HeroCopy>
 
