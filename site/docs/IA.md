@@ -6,9 +6,16 @@
 
 | Item | Status |
 |------|--------|
-| MCP `get_design_context` / `get_screenshot` | Not available in Cloud Agent environment |
+| MCP `get_design_context` / `get_screenshot` | **Not registered** in Cloud Agent (only `cursor-cloud`, `Vercel`) |
+| REST API fallback | `scripts/figma-pull-website.mjs` — set `FIGMA_TOKEN` and run locally or in Cloud env |
 | First implementation frame | Node **`66:7534`** — implemented as `site/src/pages/HomePage.tsx` |
-| Pixel-perfect pass | Home matches production layout + legacy copy; Figma MCP still unavailable for node-level audit |
+| Pixel-perfect pass | Blocked until Figma MCP is added to Cloud environment **or** `FIGMA_TOKEN` is set |
+
+### Unblock Figma access
+
+1. **Cloud Agents:** Cursor Settings → Cloud → Environment → add Figma MCP server, re-run agent.
+2. **Token pull:** `FIGMA_TOKEN=figd_xxx node scripts/figma-pull-website.mjs` → writes `site/docs/figma/node-66-7534.json` + PNG.
+3. **Manual:** Export node `66:7534` at mobile/tablet/desktop and attach to the agent chat.
 
 ## Site shell (all pages)
 

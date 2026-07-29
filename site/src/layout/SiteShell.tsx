@@ -6,6 +6,7 @@ import { CakeProvider } from '@/cakeand/theme/CakeProvider';
 import type { ThemeMode } from '@/cakeand/tokens/theme';
 
 import { SiteNav } from './SiteNav';
+import { LenovoLogo } from './LenovoLogo';
 import { NAV_RAIL_WIDTH, media } from '../styles/breakpoints';
 
 const SkipLink = styled.a`
@@ -135,7 +136,8 @@ export function SiteShell({ children }: SiteShellProps) {
           />
           <Main id="main-content">{children}</Main>
         </Body>
-        <Footer>© Lenovo {new Date().getFullYear()}</Footer>
+        <Footer>© {new Date().getFullYear()} Cake Design System. All rights reserved.</Footer>
+        <LenovoLogo />
       </Shell>
     </CakeProvider>
   );
