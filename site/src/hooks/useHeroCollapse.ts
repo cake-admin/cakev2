@@ -10,17 +10,13 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
-/** JS fallback for browsers without scroll-driven animations (Chrome uses CSS instead). */
+/** Drives --hero-progress on the hero from scroll position (0 → 1 over COLLAPSE_RANGE px). */
 export function useHeroCollapse(): RefObject<HTMLElement | null> {
   const heroRef = useRef<HTMLElement | null>(null);
 
   useLayoutEffect(() => {
     const hero = heroRef.current;
     if (!hero) return undefined;
-
-    if (CSS.supports('animation-timeline: scroll(root block)')) {
-      return undefined;
-    }
 
     let raf = 0;
 

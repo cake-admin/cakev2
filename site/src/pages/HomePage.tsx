@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { ArrowRight, Languages, Moon, Sun } from 'lucide-react';
 
 import { Button } from '@/cakeand/components/Button';
@@ -24,125 +24,21 @@ const Page = styled.div`
   background: var(--color-surfaces-canvas);
 `;
 
-const HERO_SCROLL_RANGE = '180px';
-
-const heroPadCompact = keyframes`
-  from {
-    padding-top: 64px;
-    padding-bottom: 48px;
-  }
-  to {
-    padding-top: 12px;
-    padding-bottom: 12px;
-  }
-`;
-
-const heroPadCompactSm = keyframes`
-  from {
-    padding-top: 72px;
-    padding-bottom: 56px;
-  }
-  to {
-    padding-top: 12px;
-    padding-bottom: 12px;
-  }
-`;
-
-const heroPadCompactMd = keyframes`
-  from {
-    padding-top: 80px;
-    padding-bottom: 64px;
-  }
-  to {
-    padding-top: 16px;
-    padding-bottom: 12px;
-  }
-`;
-
-const heroWordmarkCompact = keyframes`
-  from {
-    height: 44px;
-  }
-  to {
-    height: 30px;
-  }
-`;
-
-const heroWordmarkCompactSm = keyframes`
-  from {
-    height: 52px;
-  }
-  to {
-    height: 34px;
-  }
-`;
-
-const heroWordmarkCompactMd = keyframes`
-  from {
-    height: 5.5rem;
-  }
-  to {
-    height: 2.75rem;
-  }
-`;
-
-const heroSubtitleCompact = keyframes`
-  from {
-    opacity: 1;
-    max-height: 6rem;
-  }
-  to {
-    opacity: 0;
-    max-height: 0;
-  }
-`;
-
-const heroGradientFade = keyframes`
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0.1;
-  }
-`;
-
-const heroFrostIn = keyframes`
-  from {
-    opacity: 0;
-    -webkit-backdrop-filter: blur(0);
-    backdrop-filter: blur(0);
-  }
-  to {
-    opacity: 1;
-    -webkit-backdrop-filter: blur(12px) saturate(1.25);
-    backdrop-filter: blur(12px) saturate(1.25);
-  }
-`;
-
-const heroBorderIn = keyframes`
-  from {
-    border-bottom-color: transparent;
-  }
-  to {
-    border-bottom-color: color-mix(in srgb, var(--color-stroke-border) 70%, transparent);
-  }
-`;
-
-const scrollTimeline = `
-  animation-timeline: scroll(root block);
-  animation-range: 0 ${HERO_SCROLL_RANGE};
-  animation-timing-function: linear;
-  animation-fill-mode: both;
-`;
-
 const Hero = styled.header`
   --hero-progress: 0;
   position: sticky;
   top: 0;
   z-index: 100;
   width: 100%;
-  padding: var(--space-800) var(--space-300) var(--space-600);
+  padding-inline: var(--space-300);
+  padding-top: calc(64px - var(--hero-progress) * 52px);
+  padding-bottom: calc(48px - var(--hero-progress) * 36px);
   border-bottom: var(--stroke-100) solid transparent;
+  border-bottom-color: color-mix(
+    in srgb,
+    var(--color-stroke-border) calc(var(--hero-progress) * 70%),
+    transparent
+  );
 
   &::before {
     content: '';
@@ -155,15 +51,7 @@ const Hero = styled.header`
       color-mix(in srgb, var(--color-badge-indigo-light) 15%, transparent) 17%,
       color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 83%
     );
-
-    @supports not (animation-timeline: scroll(root block)) {
-      opacity: calc(1 - var(--hero-progress) * 0.85);
-    }
-
-    @supports (animation-timeline: scroll(root block)) {
-      animation: ${heroGradientFade} linear both;
-      ${scrollTimeline}
-    }
+    opacity: calc(1 - var(--hero-progress) * 0.85);
   }
 
   &::after {
@@ -173,58 +61,21 @@ const Hero = styled.header`
     z-index: 0;
     pointer-events: none;
     background-color: color-mix(in srgb, var(--color-surfaces-canvas) 78%, transparent);
-
-    @supports not (animation-timeline: scroll(root block)) {
-      opacity: calc(var(--hero-progress) * 0.95);
-      -webkit-backdrop-filter: blur(calc(12px * var(--hero-progress))) saturate(1.25);
-      backdrop-filter: blur(calc(12px * var(--hero-progress))) saturate(1.25);
-    }
-
-    @supports (animation-timeline: scroll(root block)) {
-      animation: ${heroFrostIn} linear both;
-      ${scrollTimeline}
-    }
-  }
-
-  @supports not (animation-timeline: scroll(root block)) {
-    padding-top: calc(64px - var(--hero-progress) * 52px);
-    padding-bottom: calc(48px - var(--hero-progress) * 36px);
-    border-bottom-color: color-mix(
-      in srgb,
-      var(--color-stroke-border) calc(var(--hero-progress) * 70%),
-      transparent
-    );
-  }
-
-  @supports (animation-timeline: scroll(root block)) {
-    animation-name: ${heroPadCompact}, ${heroBorderIn};
-    ${scrollTimeline};
+    opacity: calc(var(--hero-progress) * 0.95);
+    -webkit-backdrop-filter: blur(calc(12px * var(--hero-progress))) saturate(1.25);
+    backdrop-filter: blur(calc(12px * var(--hero-progress))) saturate(1.25);
   }
 
   ${media.sm} {
-    padding: var(--space-900) var(--space-400) var(--space-700);
-
-    @supports not (animation-timeline: scroll(root block)) {
-      padding-top: calc(72px - var(--hero-progress) * 56px);
-      padding-bottom: calc(56px - var(--hero-progress) * 44px);
-    }
-
-    @supports (animation-timeline: scroll(root block)) {
-      animation-name: ${heroPadCompactSm}, ${heroBorderIn};
-    }
+    padding-inline: var(--space-400);
+    padding-top: calc(72px - var(--hero-progress) * 56px);
+    padding-bottom: calc(56px - var(--hero-progress) * 44px);
   }
 
   ${media.md} {
-    padding: var(--space-1000) var(--space-800) var(--space-900);
-
-    @supports not (animation-timeline: scroll(root block)) {
-      padding-top: calc(80px - var(--hero-progress) * 64px);
-      padding-bottom: calc(64px - var(--hero-progress) * 52px);
-    }
-
-    @supports (animation-timeline: scroll(root block)) {
-      animation-name: ${heroPadCompactMd}, ${heroBorderIn};
-    }
+    padding-inline: var(--space-800);
+    padding-top: calc(80px - var(--hero-progress) * 64px);
+    padding-bottom: calc(64px - var(--hero-progress) * 52px);
   }
 
   ${media.xl} {
@@ -256,41 +107,16 @@ const HeroRow = styled.div`
 const HeroWordmark = styled(CakeWordmark)`
   grid-area: wordmark;
   align-self: center;
-  height: clamp(2.75rem, 11vw, 5.5rem);
+  height: calc(44px - var(--hero-progress) * 14px);
   max-width: 100%;
 
-  @supports not (animation-timeline: scroll(root block)) {
-    height: calc(44px - var(--hero-progress) * 14px);
-  }
-
-  @supports (animation-timeline: scroll(root block)) {
-    animation: ${heroWordmarkCompact} linear both;
-    ${scrollTimeline}
-  }
-
   ${media.sm} {
-    height: clamp(3.25rem, 10vw, 5.5rem);
-
-    @supports not (animation-timeline: scroll(root block)) {
-      height: calc(52px - var(--hero-progress) * 18px);
-    }
-
-    @supports (animation-timeline: scroll(root block)) {
-      animation-name: ${heroWordmarkCompactSm};
-    }
+    height: calc(52px - var(--hero-progress) * 18px);
   }
 
   ${media.md} {
     align-self: end;
-    height: 5.5rem;
-
-    @supports not (animation-timeline: scroll(root block)) {
-      height: calc(5.5rem - var(--hero-progress) * 2.75rem);
-    }
-
-    @supports (animation-timeline: scroll(root block)) {
-      animation-name: ${heroWordmarkCompactMd};
-    }
+    height: calc(5.5rem - var(--hero-progress) * 2.75rem);
   }
 `;
 
@@ -305,16 +131,7 @@ const HeroSubtitle = styled.p`
   letter-spacing: 0.2px;
   color: var(--color-text-icon-secondary);
   opacity: calc(1 - var(--hero-progress));
-
-  @supports not (animation-timeline: scroll(root block)) {
-    max-height: calc((1 - var(--hero-progress)) * 6rem);
-  }
-
-  @supports (animation-timeline: scroll(root block)) {
-    animation: ${heroSubtitleCompact} linear both;
-    ${scrollTimeline}
-    opacity: 1;
-  }
+  max-height: calc((1 - var(--hero-progress)) * 6rem);
 
   ${media.sm} {
     font-size: var(--type-size-subtitle);
