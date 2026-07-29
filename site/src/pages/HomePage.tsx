@@ -233,21 +233,6 @@ const PromoCard = styled(Card)`
   box-shadow: var(--elevation-0);
 `;
 
-const MediaStrip = styled.div`
-  width: 100%;
-  height: 152px;
-  overflow: hidden;
-  background: var(--color-surfaces-on-container);
-
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-`;
-
 const KitButton = styled(Button)`
   && {
     color: var(--color-surfaces-inverse-container);
@@ -283,6 +268,7 @@ const FoundationIcon = styled.div`
   img {
     width: 24px;
     height: 24px;
+    object-fit: contain;
   }
 `;
 
@@ -365,11 +351,7 @@ function PromoCardContent({
 }) {
   return (
     <SimpleCard
-      media={
-        <MediaStrip>
-          <img src={media} alt="" />
-        </MediaStrip>
-      }
+      media={<img src={media} alt="" />}
       title={title}
       body={body}
       actions={
