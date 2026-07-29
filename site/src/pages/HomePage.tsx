@@ -392,8 +392,8 @@ export function HomePage() {
               <IconButton
                 label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
                 icon={isDark ? <Sun /> : <Moon />}
-                intent="primary"
-                variant="fill"
+                intent="secondary"
+                variant="ghost"
                 size="lg"
                 onClick={onToggleTheme}
               />
