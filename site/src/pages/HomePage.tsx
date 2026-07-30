@@ -27,9 +27,12 @@ const Page = styled.div`
 
 const Hero = styled.header`
   --hero-progress: 0;
+  --hero-pin-progress: 0;
   --hero-compact-h: 88px;
   --hero-expanded-h: 320px;
-  --hero-shift: 0px;
+  --hero-padding-top: 0px;
+  --hero-compact-top: 20px;
+  --hero-flow-h: 0px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -87,35 +90,57 @@ const HeroFrost = styled.div`
 `;
 
 const HeroSurface = styled.div.attrs({ 'data-hero-surface': true })`
-  position: relative;
-  z-index: 1;
+  height: var(--hero-flow-h);
   overflow: hidden;
   clip-path: inset(
     0 0 calc(var(--hero-progress) * max(0px, var(--hero-surface-h) - var(--hero-compact-h))) 0
   );
+  pointer-events: none;
 `;
 
-const HeroInner = styled.div`
-  position: relative;
+const HeroInner = styled.div.attrs({ 'data-hero-inner': true })`
+  position: absolute;
   z-index: 1;
+  top: calc(
+    var(--hero-padding-top) * (1 - var(--hero-pin-progress)) +
+      var(--hero-compact-top) * var(--hero-pin-progress)
+  );
+  left: var(--space-300);
+  right: var(--space-300);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-500);
-  width: 100%;
+  width: auto;
   max-width: 1440px;
   margin: 0 auto;
-  transform: translate3d(0, calc(var(--hero-progress) * var(--hero-shift) * -1), 0);
-  transform-origin: top center;
   backface-visibility: hidden;
 
-  @media (prefers-reduced-motion: reduce) {
-    transform: none;
+  ${media.sm} {
+    left: var(--space-400);
+    right: var(--space-400);
+  }
+
+  ${media.md} {
+    left: var(--space-800);
+    right: var(--space-800);
+  }
+
+  ${media.xl} {
+    left: calc(var(--space-1000) + var(--space-800));
+    right: calc(var(--space-1000) + var(--space-800));
   }
 
   ${media.maxSm} {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    top: calc(
+      var(--hero-padding-top) * (1 - var(--hero-progress)) +
+        var(--hero-compact-top) * var(--hero-progress)
+    );
   }
 `;
 
@@ -124,6 +149,8 @@ const HeroBrand = styled.div`
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   min-width: 0;
 `;
 
@@ -170,21 +197,24 @@ const HeroSubtitle = styled.p`
   }
 `;
 
-const HeroTools = styled.div`
+const HeroTools = styled.div.attrs({ 'data-hero-tools': true })`
   display: flex;
   flex-shrink: 0;
   align-items: center;
+  height: 48px;
   gap: var(--space-500);
 
   ${media.maxSm} {
     flex-wrap: wrap;
     justify-content: flex-end;
+    height: auto;
   }
 `;
 
 const ToolCluster = styled.div`
   display: flex;
   align-items: center;
+  height: 48px;
   gap: 0;
 `;
 
@@ -464,35 +494,34 @@ export function HomePage() {
     <Page>
       <Hero ref={heroRef}>
         <HeroFrost aria-hidden />
-        <HeroSurface>
-          <HeroInner>
-            <HeroBrand>
-              <HeroWordmark />
-              <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
-            </HeroBrand>
-            <HeroTools>
-              <HeroSearch progress={progress} />
-              <ToolCluster>
-                <IconButton
-                  label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
-                  icon={isDark ? <Sun /> : <Moon />}
-                  intent="secondary"
-                  variant="ghost"
-                  size="lg"
-                  onClick={onToggleTheme}
-                />
-                <IconButton
-                  label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
-                  icon={<Languages />}
-                  intent="secondary"
-                  variant="ghost"
-                  size="lg"
-                  onClick={onToggleLocale}
-                />
-              </ToolCluster>
-            </HeroTools>
-          </HeroInner>
-        </HeroSurface>
+        <HeroInner>
+          <HeroBrand>
+            <HeroWordmark />
+            <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
+          </HeroBrand>
+          <HeroTools>
+            <HeroSearch progress={progress} />
+            <ToolCluster>
+              <IconButton
+                label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
+                icon={isDark ? <Sun /> : <Moon />}
+                intent="secondary"
+                variant="ghost"
+                size="lg"
+                onClick={onToggleTheme}
+              />
+              <IconButton
+                label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
+                icon={<Languages />}
+                intent="secondary"
+                variant="ghost"
+                size="lg"
+                onClick={onToggleLocale}
+              />
+            </ToolCluster>
+          </HeroTools>
+        </HeroInner>
+        <HeroSurface aria-hidden />
       </Hero>
 
       <Content>
