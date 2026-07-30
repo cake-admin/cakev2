@@ -59,7 +59,7 @@ const en: SiteMessages = {
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
     search: 'Search',
-    searchPlaceholder: 'Search docs…',
+    searchPlaceholder: 'Search documentation...',
     designSystem: 'Design system',
     home: 'Home',
     foundations: 'Foundations',

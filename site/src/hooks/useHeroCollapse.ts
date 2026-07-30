@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, type RefObject } from 'react';
+import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
 
 /** Collapsed sticky bar height (px) — fits 48px icon buttons with vertical padding. */
 const COMPACT_HEIGHT = 88;
@@ -17,13 +17,19 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
+export interface HeroCollapseState {
+  heroRef: RefObject<HTMLElement | null>;
+  progress: number;
+}
+
 /**
  * Drives `--hero-progress` on the sticky hero from scroll position (0 → 1).
  * Visual collapse uses transform/opacity/clip-path only — never layout properties —
  * so shrinking the header cannot feed back into scroll position and cause jitter.
  */
-export function useHeroCollapse(): RefObject<HTMLElement | null> {
+export function useHeroCollapse(): HeroCollapseState {
   const heroRef = useRef<HTMLElement | null>(null);
+  const [progress, setProgress] = useState(0);
 
   useLayoutEffect(() => {
     const hero = heroRef.current;
@@ -46,7 +52,9 @@ export function useHeroCollapse(): RefObject<HTMLElement | null> {
     const updateProgress = () => {
       raf = 0;
       const raw = clamp(window.scrollY / COLLAPSE_RANGE, 0, 1);
-      hero.style.setProperty('--hero-progress', smoothstep(raw).toFixed(4));
+      const next = smoothstep(raw);
+      hero.style.setProperty('--hero-progress', next.toFixed(4));
+      setProgress(next);
     };
 
     const schedule = () => {
@@ -79,5 +87,5 @@ export function useHeroCollapse(): RefObject<HTMLElement | null> {
     };
   }, []);
 
-  return heroRef;
+  return { heroRef, progress };
 }

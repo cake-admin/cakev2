@@ -6,9 +6,9 @@
 
 | Item | Status |
 |------|--------|
-| MCP `get_design_context` / `get_screenshot` | **Available** — node `66:7534` audited and implemented |
-| First implementation frame | Node **`66:7534`** → `site/src/pages/HomePage.tsx` |
-| Assets | Exported to `site/public/home/` from Figma MCP |
+| MCP `get_design_context` / `get_screenshot` | **Available** — nodes `66:7534` (light) and `117:2578` (dark) implemented |
+| Home frames | **`66:7534`** light A · **`117:2578`** dark A → `site/src/pages/HomePage.tsx` |
+| Assets | Exported to `site/public/home/` from Figma MCP (incl. dark promo card art) |
 
 ## Site shell (all pages)
 

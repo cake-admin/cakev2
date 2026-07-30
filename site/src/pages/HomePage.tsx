@@ -5,8 +5,8 @@ import { ArrowRight, Languages, Moon, Sun } from 'lucide-react';
 import { Button } from '@/cakeand/components/Button';
 import { IconButton } from '@/cakeand/components/Button/IconButton';
 import { Card } from '@/cakeand/components/Card';
-import { SimpleCard } from '@/cakeand/components/Card/SimpleCard';
 
+import { HeroSearch } from '../components/HeroSearch';
 import { useSiteChrome } from '../layout/SiteChromeContext';
 import { useSiteTranslation } from '../i18n/useSiteTranslation';
 import { useHeroCollapse } from '../hooks/useHeroCollapse';
@@ -14,6 +14,7 @@ import { CakeWordmark } from '../components/CakeWordmark';
 import { STORYBOOK_HOME } from '../data/routes';
 import { media } from '../styles/breakpoints';
 
+/** Figma Cake--Website — node 66:7534 (light) / 117:2578 (dark). */
 const Page = styled.div`
   display: flex;
   flex-direction: column;
@@ -27,7 +28,7 @@ const Page = styled.div`
 const Hero = styled.header`
   --hero-progress: 0;
   --hero-compact-h: 88px;
-  --hero-expanded-h: 240px;
+  --hero-expanded-h: 320px;
   --hero-shift: 0px;
   position: sticky;
   top: 0;
@@ -37,7 +38,7 @@ const Hero = styled.header`
   clip-path: inset(
     0 0 calc(var(--hero-progress) * (var(--hero-expanded-h) - var(--hero-compact-h))) 0
   );
-  padding: var(--space-800) var(--space-300) var(--space-600);
+  padding: calc(var(--space-1000) + var(--space-500)) var(--space-300) var(--space-900);
   border-bottom: var(--stroke-100) solid
     color-mix(
       in srgb,
@@ -45,7 +46,7 @@ const Hero = styled.header`
       transparent
     );
 
-  /* Gradient wash — fades out as the frosted bar takes over. */
+  /* Figma 95:1365 — indigo/magenta gradient wash. */
   &::before {
     content: '';
     position: absolute;
@@ -53,14 +54,14 @@ const Hero = styled.header`
     z-index: 0;
     pointer-events: none;
     background: linear-gradient(
-      178deg,
-      color-mix(in srgb, var(--color-badge-indigo-light) 15%, transparent) 17%,
-      color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 83%
+      177.91deg,
+      color-mix(in srgb, var(--color-badge-indigo-light) 15%, transparent) 17.02%,
+      color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 82.98%
     );
     opacity: calc(1 - var(--hero-progress) * 0.92);
   }
 
-  /* Frosted glass — semi-transparent tint + heavy blur over scrolling content. */
+  /* Frosted glass when scrolled — semi-transparent + blur. */
   &::after {
     content: '';
     position: absolute;
@@ -79,11 +80,11 @@ const Hero = styled.header`
   }
 
   ${media.sm} {
-    padding: var(--space-900) var(--space-400) var(--space-700);
+    padding-inline: var(--space-400);
   }
 
   ${media.md} {
-    padding: var(--space-1000) var(--space-800) var(--space-900);
+    padding-inline: var(--space-800);
   }
 
   ${media.xl} {
@@ -94,36 +95,40 @@ const Hero = styled.header`
 const HeroInner = styled.div`
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas: 'wordmark tools';
-  align-items: center;
-  column-gap: var(--space-300);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-500);
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  /* Fixed slot for the absolutely-positioned subtitle — never animates layout. */
-  padding-bottom: 3.25rem;
   transform: translate3d(0, calc(var(--hero-progress) * var(--hero-shift) * -1), 0);
   transform-origin: top center;
   backface-visibility: hidden;
 
-  ${media.md} {
-    padding-bottom: 3.75rem;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     transform: none;
   }
+
+  ${media.maxSm} {
+    flex-direction: column;
+    align-items: stretch;
+  }
+`;
+
+const HeroBrand = styled.div`
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: var(--space-500);
+  min-width: 0;
 `;
 
 const HeroWordmark = styled(CakeWordmark)`
-  grid-area: wordmark;
-  align-self: center;
   height: clamp(2.75rem, 11vw, 5.5rem);
   max-width: 100%;
   transform: scale(calc(1 - var(--hero-progress) * 0.42));
-  transform-origin: left center;
+  transform-origin: left bottom;
 
   ${media.sm} {
     height: clamp(3.25rem, 10vw, 5.5rem);
@@ -139,10 +144,6 @@ const HeroWordmark = styled(CakeWordmark)`
 `;
 
 const HeroSubtitle = styled.p`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
   margin: 0;
   max-width: 40rem;
   font-size: var(--type-size-subject);
@@ -163,11 +164,15 @@ const HeroSubtitle = styled.p`
 `;
 
 const HeroTools = styled.div`
-  grid-area: tools;
-  align-self: center;
-  justify-self: end;
+  display: flex;
   flex-shrink: 0;
-  width: auto;
+  align-items: center;
+  gap: var(--space-500);
+
+  ${media.maxSm} {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
 `;
 
 const ToolCluster = styled.div`
@@ -252,6 +257,61 @@ const PromoCard = styled(Card)`
   box-shadow: var(--elevation-0);
 `;
 
+/** Figma card header illustration — 180px tall (nodes 66:7534 / 117:2578). */
+const PromoCardMedia = styled.div`
+  flex-shrink: 0;
+  height: 180px;
+  overflow: hidden;
+  background: var(--color-surfaces-on-container);
+
+  img {
+    display: block;
+    width: 100%;
+    height: 170%;
+    max-width: none;
+    object-fit: cover;
+    object-position: top center;
+  }
+`;
+
+const PromoCardBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  padding: var(--space-500);
+  flex: 1 1 auto;
+`;
+
+const PromoCardTitle = styled.h3`
+  margin: 0;
+  font-size: var(--type-size-title);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.35;
+  color: var(--color-text-icon-primary);
+`;
+
+const PromoCardText = styled.p`
+  margin: 0;
+  flex: 1 1 auto;
+  font-size: var(--type-size-subject);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.35;
+  letter-spacing: 0.2px;
+  color: var(--color-text-icon-secondary);
+`;
+
+const PromoCardActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: var(--space-300);
+`;
+
+const PromoCardInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
 const KitButton = styled(Button)`
   && {
     color: var(--color-surfaces-inverse-container);
@@ -265,6 +325,7 @@ const KitButton = styled(Button)`
 
 const FoundationCard = styled(Card)`
   height: 100%;
+  min-height: 275px;
   box-shadow: var(--elevation-0);
 `;
 
@@ -334,17 +395,17 @@ const STARTER_CARD_KEYS = ['designers', 'developers', 'resources'] as const;
 const STARTER_CARD_META = {
   designers: {
     href: '/get-started/figma-libraries',
-    media: '/home/card-designers.png',
+    media: { light: '/home/card-designers.png', dark: '/home/card-designers-dark.png' },
     external: false,
   },
   developers: {
     href: STORYBOOK_HOME,
-    media: '/home/card-developers.png',
+    media: { light: '/home/card-developers.png', dark: '/home/card-developers-dark.png' },
     external: true,
   },
   resources: {
     href: '/resources',
-    media: '/home/card-resources.png',
+    media: { light: '/home/card-resources.png', dark: '/home/card-resources-dark.png' },
     external: false,
   },
 } as const;
@@ -369,34 +430,39 @@ function PromoCardContent({
   media: string;
 }) {
   return (
-    <SimpleCard
-      media={<img src={media} alt="" />}
-      title={title}
-      body={body}
-      actions={
-        <KitButton size="md" variant="outline" intent="secondary" endIcon={<ArrowRight size={16} />}>
-          {cta}
-        </KitButton>
-      }
-    />
+    <PromoCardInner>
+      <PromoCardMedia>
+        <img src={media} alt="" />
+      </PromoCardMedia>
+      <PromoCardBody>
+        <PromoCardTitle>{title}</PromoCardTitle>
+        <PromoCardText>{body}</PromoCardText>
+        <PromoCardActions>
+          <KitButton size="md" variant="outline" intent="secondary" endIcon={<ArrowRight size={16} />}>
+            {cta}
+          </KitButton>
+        </PromoCardActions>
+      </PromoCardBody>
+    </PromoCardInner>
   );
 }
 
-/**
- * Home page — Figma Cake--Website node 66:7534.
- */
 export function HomePage() {
   const { themeMode, onToggleTheme, locale, onToggleLocale } = useSiteChrome();
   const t = useSiteTranslation();
   const isDark = themeMode === 'dark.a';
-  const heroRef = useHeroCollapse();
+  const { heroRef, progress } = useHeroCollapse();
 
   return (
     <Page>
       <Hero ref={heroRef}>
         <HeroInner>
-          <HeroWordmark />
+          <HeroBrand>
+            <HeroWordmark />
+            <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
+          </HeroBrand>
           <HeroTools>
+            <HeroSearch progress={progress} />
             <ToolCluster>
               <IconButton
                 label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
@@ -416,7 +482,6 @@ export function HomePage() {
               />
             </ToolCluster>
           </HeroTools>
-          <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
         </HeroInner>
       </Hero>
 
@@ -431,6 +496,7 @@ export function HomePage() {
             {STARTER_CARD_KEYS.map((key) => {
               const card = t.home.starterCards[key];
               const meta = STARTER_CARD_META[key];
+              const media = isDark ? meta.media.dark : meta.media.light;
 
               return meta.external ? (
                 <PromoCard key={key} elevation="low">
@@ -442,7 +508,7 @@ export function HomePage() {
                       title={card.title}
                       body={card.body}
                       cta={card.cta}
-                      media={meta.media}
+                      media={media}
                     />
                   </a>
                 </PromoCard>
@@ -453,7 +519,7 @@ export function HomePage() {
                       title={card.title}
                       body={card.body}
                       cta={card.cta}
-                      media={meta.media}
+                      media={media}
                     />
                   </PromoCard>
                 </CardLink>
