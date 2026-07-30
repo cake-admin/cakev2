@@ -1,7 +1,10 @@
 import { useLayoutEffect, useRef, type RefObject } from 'react';
 
-/** Collapsed sticky bar height (px). */
-const COMPACT_HEIGHT = 80;
+/** Collapsed sticky bar height (px) — fits 48px icon buttons with vertical padding. */
+const COMPACT_HEIGHT = 88;
+
+/** Vertical inset for the compact wordmark row within the sticky bar. */
+const COMPACT_INSET = 16;
 
 /** Scroll distance (px) over which the hero transitions from expanded to compact. */
 const COLLAPSE_RANGE = 200;
@@ -30,7 +33,14 @@ export function useHeroCollapse(): RefObject<HTMLElement | null> {
 
     const syncExpandedHeight = () => {
       hero.style.setProperty('--hero-compact-h', `${COMPACT_HEIGHT}px`);
-      hero.style.setProperty('--hero-expanded-h', `${hero.offsetHeight}px`);
+      const expandedH = hero.offsetHeight;
+      hero.style.setProperty('--hero-expanded-h', `${expandedH}px`);
+
+      const inner = hero.firstElementChild as HTMLElement | null;
+      const shift = inner
+        ? Math.max(inner.offsetTop - COMPACT_INSET, 0)
+        : Math.max(expandedH - COMPACT_HEIGHT, 0);
+      hero.style.setProperty('--hero-shift', `${shift}px`);
     };
 
     const updateProgress = () => {
@@ -56,6 +66,10 @@ export function useHeroCollapse(): RefObject<HTMLElement | null> {
 
     const ro = new ResizeObserver(onResize);
     ro.observe(hero);
+    const inner = hero.firstElementChild;
+    if (inner instanceof HTMLElement) {
+      ro.observe(inner);
+    }
 
     return () => {
       if (raf !== 0) cancelAnimationFrame(raf);

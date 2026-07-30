@@ -26,8 +26,9 @@ const Page = styled.div`
 
 const Hero = styled.header`
   --hero-progress: 0;
-  --hero-compact-h: 80px;
+  --hero-compact-h: 88px;
   --hero-expanded-h: 240px;
+  --hero-shift: 0px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -37,19 +38,6 @@ const Hero = styled.header`
     0 0 calc(var(--hero-progress) * (var(--hero-expanded-h) - var(--hero-compact-h))) 0
   );
   padding: var(--space-800) var(--space-300) var(--space-600);
-  background: color-mix(
-    in srgb,
-    var(--color-surfaces-container-blur-high) calc(var(--hero-progress) * 100%),
-    transparent
-  );
-  -webkit-backdrop-filter: blur(calc(var(--hero-progress) * 56px))
-    saturate(calc(1 + var(--hero-progress) * 1))
-    brightness(calc(1 + var(--hero-progress) * 0.08));
-  backdrop-filter: blur(calc(var(--hero-progress) * 56px))
-    saturate(calc(1 + var(--hero-progress) * 1))
-    brightness(calc(1 + var(--hero-progress) * 0.08));
-  box-shadow: inset 0 1px 0
-    color-mix(in srgb, var(--color-surfaces-inverse-container) calc(var(--hero-progress) * 35%), transparent);
   border-bottom: var(--stroke-100) solid
     color-mix(
       in srgb,
@@ -72,6 +60,24 @@ const Hero = styled.header`
     opacity: calc(1 - var(--hero-progress) * 0.92);
   }
 
+  /* Frosted glass — semi-transparent tint + heavy blur over scrolling content. */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: color-mix(
+      in srgb,
+      var(--color-surfaces-container-blur) calc(var(--hero-progress) * 72%),
+      transparent
+    );
+    -webkit-backdrop-filter: blur(calc(var(--hero-progress) * 48px)) saturate(1.8);
+    backdrop-filter: blur(calc(var(--hero-progress) * 48px)) saturate(1.8);
+    box-shadow: inset 0 1px 0
+      color-mix(in srgb, var(--color-surfaces-inverse-container) calc(var(--hero-progress) * 30%), transparent);
+  }
+
   ${media.sm} {
     padding: var(--space-900) var(--space-400) var(--space-700);
   }
@@ -90,28 +96,25 @@ const HeroInner = styled.div`
   z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: auto auto;
-  grid-template-areas:
-    'wordmark tools'
-    'subtitle tools';
+  grid-template-areas: 'wordmark tools';
+  align-items: center;
   column-gap: var(--space-300);
-  row-gap: var(--space-300);
-  align-items: end;
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  transform: translate3d(0, calc(var(--hero-progress) * -32px), 0)
-    scale(calc(1 - var(--hero-progress) * 0.26));
-  transform-origin: top left;
+  /* Fixed slot for the absolutely-positioned subtitle — never animates layout. */
+  padding-bottom: 3.25rem;
+  transform: translate3d(0, calc(var(--hero-progress) * var(--hero-shift) * -1), 0);
+  transform-origin: top center;
   backface-visibility: hidden;
+
+  ${media.md} {
+    padding-bottom: 3.75rem;
+  }
 
   @media (prefers-reduced-motion: reduce) {
     transform: none;
   }
-`;
-
-const HeroRow = styled.div`
-  display: contents;
 `;
 
 const HeroWordmark = styled(CakeWordmark)`
@@ -119,19 +122,27 @@ const HeroWordmark = styled(CakeWordmark)`
   align-self: center;
   height: clamp(2.75rem, 11vw, 5.5rem);
   max-width: 100%;
+  transform: scale(calc(1 - var(--hero-progress) * 0.42));
+  transform-origin: left center;
 
   ${media.sm} {
     height: clamp(3.25rem, 10vw, 5.5rem);
   }
 
   ${media.md} {
-    align-self: end;
     height: 5.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
   }
 `;
 
 const HeroSubtitle = styled.p`
-  grid-area: subtitle;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   margin: 0;
   max-width: 40rem;
   font-size: var(--type-size-subject);
@@ -140,7 +151,7 @@ const HeroSubtitle = styled.p`
   letter-spacing: 0.2px;
   color: var(--color-text-icon-secondary);
   opacity: calc(1 - var(--hero-progress));
-  transform: translate3d(0, calc(var(--hero-progress) * -8px), 0);
+  pointer-events: none;
 
   ${media.sm} {
     font-size: var(--type-size-subtitle);
@@ -149,16 +160,11 @@ const HeroSubtitle = styled.p`
   ${media.md} {
     font-size: var(--type-size-page);
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    transform: none;
-  }
 `;
 
 const HeroTools = styled.div`
   grid-area: tools;
-  grid-row: 1 / span 2;
-  align-self: end;
+  align-self: center;
   justify-self: end;
   flex-shrink: 0;
   width: auto;
@@ -390,29 +396,27 @@ export function HomePage() {
       <Hero ref={heroRef}>
         <HeroInner>
           <HeroWordmark />
-          <HeroRow>
-            <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
-            <HeroTools>
-              <ToolCluster>
-                <IconButton
-                  label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
-                  icon={isDark ? <Sun /> : <Moon />}
-                  intent="secondary"
-                  variant="ghost"
-                  size="lg"
-                  onClick={onToggleTheme}
-                />
-                <IconButton
-                  label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
-                  icon={<Languages />}
-                  intent="secondary"
-                  variant="ghost"
-                  size="lg"
-                  onClick={onToggleLocale}
-                />
-              </ToolCluster>
-            </HeroTools>
-          </HeroRow>
+          <HeroTools>
+            <ToolCluster>
+              <IconButton
+                label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
+                icon={isDark ? <Sun /> : <Moon />}
+                intent="secondary"
+                variant="ghost"
+                size="lg"
+                onClick={onToggleTheme}
+              />
+              <IconButton
+                label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
+                icon={<Languages />}
+                intent="secondary"
+                variant="ghost"
+                size="lg"
+                onClick={onToggleLocale}
+              />
+            </ToolCluster>
+          </HeroTools>
+          <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
         </HeroInner>
       </Hero>
 
