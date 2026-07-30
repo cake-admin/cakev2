@@ -6,5 +6,3 @@ export { ContentCard } from './ContentCard';
 export type { ContentCardProps } from './ContentCard';
 export { SimpleCard } from './SimpleCard';
 export type { SimpleCardProps } from './SimpleCard';
-export { CardHeaderIllustration } from './CardHeaderIllustration';
-export type { CardHeaderIllustrationProps, CardHeaderIllustrationType } from './CardHeaderIllustration';

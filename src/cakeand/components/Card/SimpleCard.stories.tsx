@@ -77,10 +77,10 @@ import { IconButton } from '@/cakeand/components/Button';
 | Part | Tokens |
 | --- | --- |
 | content padding | \`--space-500\` (24px) |
-| stack gaps | \`--space-300\` (16px) title → body block, \`--space-500\` (24px) body → actions, \`--space-200\` (12px) title row |
+| stack gaps | \`--space-500\` (24px), \`--space-300\` (16px), \`--space-200\` (12px) title row |
 | media | full-bleed (\`overflow: hidden\`), \`--color-surfaces-on-container\` placeholder |
-| title | \`--type-size-title\` (20px), \`--font-weight-bold\`, \`--color-text-icon-primary\` |
-| body | \`--type-size-subject\` (16px), \`--color-text-icon-secondary\` |
+| title | \`--type-size-subtitle\` (18px), \`--font-weight-bold\`, \`--color-text-icon-primary\` |
+| body | \`--type-size-body\` (14px), \`--color-text-icon-secondary\` |
 | menu | cake& **IconButton** (\`size="sm"\`, ghost) |
 | actions | cake& **Button** / button group |
 | surface + elevation | provided by the enclosing **Card** |

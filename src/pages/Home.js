@@ -1,27 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import Card from '../components/design-system/Card';
-import Chip from '../components/design-system/Chip';
-import Button, { BUTTON_VARIANTS, BUTTON_SIZES } from '../components/design-system/Button';
-import InfoIcon from '@mui/icons-material/Info';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import CampaignIcon from '@mui/icons-material/Campaign';
-import ExploreIcon from '@mui/icons-material/Explore';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AuroraBackground from '../components/AuroraBackground';
-
+import AudienceCard from '../components/website/AudienceCard';
 
 import { fontStack } from '../styles/globalStyles';
-import colorData from '../data/colors.json';
 
 
 
 
 
 const PageContainer = styled.div`
-  max-width: 1000px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 60px 20px 120px 20px;
   position: relative;
@@ -31,51 +22,6 @@ const PageContainer = styled.div`
 const PageHeader = styled.div`
   margin-bottom: 20px;
 `;
-
-const ReleaseCard = styled.div`
-  background: white;
-  border-radius: 1rem;
-  padding: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  min-width: 200px;
-`;
-
-const ReleaseDate = styled.div`
-  color: #64748B;
-  font-family: ${fontStack};
-  font-size: 0.875rem;
-  font-weight: 400;
-  margin-bottom: 0.5rem;
-`;
-
-const ReleaseVersion = styled.div`
-  color: #0F172A;
-  font-family: ${fontStack};
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.75rem;
-`;
-
-const ReleaseChips = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-`;
-
-const StyledSuccessIcon = styled(CheckCircleIcon)`
-  color: #047857;
-`;
-
-const EmeraldChip = styled(Chip)`
-  background-color: #D1FAE5 !important;
-  color: #065F46 !important;
-  
-  .icon-left svg {
-    color: #10B981 !important;
-  }
-`;
-
 
 const WelcomeTitle = styled.h1`
   color: #0F172A;
@@ -91,15 +37,6 @@ const WelcomeTitle = styled.h1`
   }
 `;
 
-const PageTitle = styled.h1`
-  color: #0F172A;
-  font-family: ${fontStack};
-  font-weight: 700;
-  font-size: 2.5rem;
-  line-height: 1.2;
-  margin: 0 0 1rem 0;
-`;
-
 const PageSubheader = styled.h2`
   color: #334155;
   font-family: ${fontStack};
@@ -108,17 +45,6 @@ const PageSubheader = styled.h2`
   font-size: 2.25rem;
   line-height: 1.4;
   margin: 0 0 0.5rem 0;
-  max-width: 680px;
-`;
-
-const PageDescription = styled.p`
-  color: #334155;
-  font-family: ${fontStack};
-  font-weight: 400;
-  font-stretch: 580;
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-  margin: 0 0 1.5rem 0;
   max-width: 680px;
 `;
 
@@ -134,21 +60,10 @@ const SectionTitle = styled.h2`
   margin: 0 0 0.5rem 0;
 `;
 
-const SectionDescription = styled.p`
-  color: #334155;
-  font-family: ${fontStack};
-  font-weight: 400;
-  font-stretch: 580;
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-  margin: 0 0 1rem 0;
-  max-width: 680px;
-`;
-
 const CardsRow = styled.div`
   padding-top: 0.5rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
   width: 100%;
   align-items: stretch;
@@ -194,34 +109,6 @@ const CardText = styled.p`
   }
 `;
 
-const LinkButton = styled.button`
-  background: none;
-  border: none;
-  color: #1D4ED8;
-  font-family: ${fontStack};
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  
-  &:hover {
-    color: #1E3A8A;
-  }
-  
-  &:focus {
-    outline: none;
-  }
-`;
-
-
-
 const Home = () => {
 
     return (
@@ -236,84 +123,28 @@ const Home = () => {
       </PageHeader>
 
       <CardsRow>
-        <Link to="/resources" style={{ textDecoration: 'none', color: 'inherit', display: 'block', height: '100%' }}>
-          <Card elevated hoverable style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <Card.Body style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-              <div>
-                <CardTitle style={{ fontSize: '1.125rem', marginBottom: '0.5rem' }}>Get started</CardTitle>
-                <CardText style={{ marginBottom: '1.25rem', fontSize: '1rem' }}>
-                Start building modular, accessible, and brand-aligned features using our core components. Explore foundations, patterns, and reusable components to design faster and more consistently across Lenovo products.
-                </CardText>
-              </div>
-              <div style={{ marginTop: 'auto' }}>
-                <button style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#1D4ED8',
-                  fontFamily: fontStack,
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  padding: '0',
-                  margin: '0',
-                  textAlign: 'left',
-                  textDecoration: 'none',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}>
-                  Access Figma Libraries
-                  <ArrowForwardIcon style={{ width: '16px', height: '16px' }} />
-                </button>
-              </div>
-            </Card.Body>
-          </Card>
-        </Link>
-
-                <Link to="/whats-new" style={{ textDecoration: 'none', color: 'inherit', display: 'block', height: '100%' }}>
-          <Card elevated hoverable style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <Card.Body style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-              <div>
-                <CardTitle style={{ fontSize: '1.125rem', marginBottom: '1rem' }}>What's new</CardTitle>
-                <div style={{ 
-                  padding: '1rem',
-                  border: '1px solid #E2E8F0',
-                  borderRadius: '0.75rem',
-                  background: 'white'
-                }}>
-                  <div>
-                    <ReleaseDate style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>May 12, 2026</ReleaseDate>
-                    <ReleaseVersion style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>🎉 New AI guidelines added</ReleaseVersion>
-                  </div>
-                </div>
-              </div>
-              <div style={{ marginTop: 'auto', paddingTop: '1rem' }}>
-                <button style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#1D4ED8',
-                  fontFamily: fontStack,
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  padding: '0',
-                  margin: '0',
-                  textAlign: 'left',
-                  textDecoration: 'none',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}>
-                  Find out what's new
-                  <ArrowForwardIcon style={{ width: '16px', height: '16px' }} />
-                </button>
-              </div>
-
-            </Card.Body>
-          </Card>
-        </Link>
-
-
+        <AudienceCard
+          type="designers"
+          title="Designers"
+          body="Access our Figma libraries, iconography, and patterns guidelines to create consistent Lenovo experiences."
+          actionLabel="Get Figma kit"
+          to="/get-started/figma-libraries"
+          stretchActions
+        />
+        <AudienceCard
+          type="developers"
+          title="Developers"
+          body="Explore our full component library in Storybook to see interactive examples, usage guidelines, and available props for every component."
+          actionLabel="View Storybook"
+          href="https://cake.lenovo.com/storybook/"
+        />
+        <AudienceCard
+          type="resources"
+          title="Resources"
+          body="Visit our Resources page for downloadable brand assets, approved fonts, logos, color palettes, and links to our full brand guidelines."
+          actionLabel="View resources"
+          to="/resources"
+        />
       </CardsRow>
 
       <Section style={{ marginTop: '2rem' }}>
