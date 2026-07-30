@@ -26,12 +26,16 @@ const Page = styled.div`
 
 const Hero = styled.header`
   --hero-progress: 0;
+  --hero-compact-h: 80px;
+  --hero-expanded-h: 240px;
   position: sticky;
   top: 0;
   z-index: 100;
   width: 100%;
   overflow: hidden;
-  clip-path: inset(0 0 calc(var(--hero-progress) * 38%) 0);
+  clip-path: inset(
+    0 0 calc(var(--hero-progress) * (var(--hero-expanded-h) - var(--hero-compact-h))) 0
+  );
   padding: var(--space-800) var(--space-300) var(--space-600);
   border-bottom: var(--stroke-100) solid
     color-mix(
@@ -40,7 +44,7 @@ const Hero = styled.header`
       transparent
     );
 
-  /* Frosted glass on the sticky element (Chrome samples scroll content here). */
+  /* Gradient wash — fades out as the frosted bar takes over. */
   &::before {
     content: '';
     position: absolute;
@@ -52,19 +56,25 @@ const Hero = styled.header`
       color-mix(in srgb, var(--color-badge-indigo-light) 15%, transparent) 17%,
       color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 83%
     );
-    opacity: calc(1 - var(--hero-progress) * 0.85);
+    opacity: calc(1 - var(--hero-progress) * 0.92);
   }
 
+  /* Frosted glass on the sticky element (Chrome samples scroll content here). */
   &::after {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background-color: color-mix(in srgb, var(--color-surfaces-canvas) 78%, transparent);
-    opacity: calc(var(--hero-progress) * 0.95);
-    -webkit-backdrop-filter: blur(calc(12px * var(--hero-progress))) saturate(1.25);
-    backdrop-filter: blur(calc(12px * var(--hero-progress))) saturate(1.25);
+    background-color: color-mix(
+      in srgb,
+      var(--color-surfaces-canvas) calc(var(--hero-progress) * 78%),
+      transparent
+    );
+    -webkit-backdrop-filter: blur(calc(var(--hero-progress) * 24px))
+      saturate(calc(1 + var(--hero-progress) * 0.35));
+    backdrop-filter: blur(calc(var(--hero-progress) * 24px))
+      saturate(calc(1 + var(--hero-progress) * 0.35));
   }
 
   ${media.sm} {
@@ -95,8 +105,8 @@ const HeroInner = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  transform: translate3d(0, calc(var(--hero-progress) * -20px), 0)
-    scale(calc(1 - var(--hero-progress) * 0.2));
+  transform: translate3d(0, calc(var(--hero-progress) * -32px), 0)
+    scale(calc(1 - var(--hero-progress) * 0.26));
   transform-origin: top left;
   backface-visibility: hidden;
 

@@ -1,5 +1,8 @@
 import { useLayoutEffect, useRef, type RefObject } from 'react';
 
+/** Collapsed sticky bar height (px). */
+const COMPACT_HEIGHT = 80;
+
 /** Scroll distance (px) over which the hero transitions from expanded to compact. */
 const COLLAPSE_RANGE = 200;
 
@@ -25,6 +28,11 @@ export function useHeroCollapse(): RefObject<HTMLElement | null> {
 
     let raf = 0;
 
+    const syncExpandedHeight = () => {
+      hero.style.setProperty('--hero-compact-h', `${COMPACT_HEIGHT}px`);
+      hero.style.setProperty('--hero-expanded-h', `${hero.offsetHeight}px`);
+    };
+
     const updateProgress = () => {
       raf = 0;
       const raw = clamp(window.scrollY / COLLAPSE_RANGE, 0, 1);
@@ -36,14 +44,24 @@ export function useHeroCollapse(): RefObject<HTMLElement | null> {
       raf = requestAnimationFrame(updateProgress);
     };
 
+    const onResize = () => {
+      syncExpandedHeight();
+      schedule();
+    };
+
+    syncExpandedHeight();
     updateProgress();
     window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+
+    const ro = new ResizeObserver(onResize);
+    ro.observe(hero);
 
     return () => {
       if (raf !== 0) cancelAnimationFrame(raf);
       window.removeEventListener('scroll', schedule);
-      window.removeEventListener('resize', schedule);
+      window.removeEventListener('resize', onResize);
+      ro.disconnect();
     };
   }, []);
 
