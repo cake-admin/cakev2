@@ -37,6 +37,19 @@ const Hero = styled.header`
     0 0 calc(var(--hero-progress) * (var(--hero-expanded-h) - var(--hero-compact-h))) 0
   );
   padding: var(--space-800) var(--space-300) var(--space-600);
+  background: color-mix(
+    in srgb,
+    var(--color-surfaces-container-blur-high) calc(var(--hero-progress) * 100%),
+    transparent
+  );
+  -webkit-backdrop-filter: blur(calc(var(--hero-progress) * 56px))
+    saturate(calc(1 + var(--hero-progress) * 1))
+    brightness(calc(1 + var(--hero-progress) * 0.08));
+  backdrop-filter: blur(calc(var(--hero-progress) * 56px))
+    saturate(calc(1 + var(--hero-progress) * 1))
+    brightness(calc(1 + var(--hero-progress) * 0.08));
+  box-shadow: inset 0 1px 0
+    color-mix(in srgb, var(--color-surfaces-inverse-container) calc(var(--hero-progress) * 35%), transparent);
   border-bottom: var(--stroke-100) solid
     color-mix(
       in srgb,
@@ -57,24 +70,6 @@ const Hero = styled.header`
       color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 83%
     );
     opacity: calc(1 - var(--hero-progress) * 0.92);
-  }
-
-  /* Frosted glass on the sticky element (Chrome samples scroll content here). */
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-color: color-mix(
-      in srgb,
-      var(--color-surfaces-canvas) calc(var(--hero-progress) * 78%),
-      transparent
-    );
-    -webkit-backdrop-filter: blur(calc(var(--hero-progress) * 24px))
-      saturate(calc(1 + var(--hero-progress) * 0.35));
-    backdrop-filter: blur(calc(var(--hero-progress) * 24px))
-      saturate(calc(1 + var(--hero-progress) * 0.35));
   }
 
   ${media.sm} {
