@@ -30,16 +30,17 @@ const Hero = styled.header`
   top: 0;
   z-index: 100;
   width: 100%;
-  padding-inline: var(--space-300);
-  padding-top: calc(64px - var(--hero-progress) * 52px);
-  padding-bottom: calc(48px - var(--hero-progress) * 36px);
-  border-bottom: var(--stroke-100) solid transparent;
-  border-bottom-color: color-mix(
-    in srgb,
-    var(--color-stroke-border) calc(var(--hero-progress) * 70%),
-    transparent
-  );
+  overflow: hidden;
+  clip-path: inset(0 0 calc(var(--hero-progress) * 38%) 0);
+  padding: var(--space-800) var(--space-300) var(--space-600);
+  border-bottom: var(--stroke-100) solid
+    color-mix(
+      in srgb,
+      var(--color-stroke-border) calc(var(--hero-progress) * 70%),
+      transparent
+    );
 
+  /* Frosted glass on the sticky element (Chrome samples scroll content here). */
   &::before {
     content: '';
     position: absolute;
@@ -67,15 +68,11 @@ const Hero = styled.header`
   }
 
   ${media.sm} {
-    padding-inline: var(--space-400);
-    padding-top: calc(72px - var(--hero-progress) * 56px);
-    padding-bottom: calc(56px - var(--hero-progress) * 44px);
+    padding: var(--space-900) var(--space-400) var(--space-700);
   }
 
   ${media.md} {
-    padding-inline: var(--space-800);
-    padding-top: calc(80px - var(--hero-progress) * 64px);
-    padding-bottom: calc(64px - var(--hero-progress) * 52px);
+    padding: var(--space-1000) var(--space-800) var(--space-900);
   }
 
   ${media.xl} {
@@ -98,6 +95,14 @@ const HeroInner = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
+  transform: translate3d(0, calc(var(--hero-progress) * -20px), 0)
+    scale(calc(1 - var(--hero-progress) * 0.2));
+  transform-origin: top left;
+  backface-visibility: hidden;
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
+  }
 `;
 
 const HeroRow = styled.div`
@@ -107,16 +112,16 @@ const HeroRow = styled.div`
 const HeroWordmark = styled(CakeWordmark)`
   grid-area: wordmark;
   align-self: center;
-  height: calc(44px - var(--hero-progress) * 14px);
+  height: clamp(2.75rem, 11vw, 5.5rem);
   max-width: 100%;
 
   ${media.sm} {
-    height: calc(52px - var(--hero-progress) * 18px);
+    height: clamp(3.25rem, 10vw, 5.5rem);
   }
 
   ${media.md} {
     align-self: end;
-    height: calc(5.5rem - var(--hero-progress) * 2.75rem);
+    height: 5.5rem;
   }
 `;
 
@@ -124,14 +129,13 @@ const HeroSubtitle = styled.p`
   grid-area: subtitle;
   margin: 0;
   max-width: 40rem;
-  overflow: hidden;
   font-size: var(--type-size-subject);
   font-weight: var(--font-weight-regular);
   line-height: 1.35;
   letter-spacing: 0.2px;
   color: var(--color-text-icon-secondary);
   opacity: calc(1 - var(--hero-progress));
-  max-height: calc((1 - var(--hero-progress)) * 6rem);
+  transform: translate3d(0, calc(var(--hero-progress) * -8px), 0);
 
   ${media.sm} {
     font-size: var(--type-size-subtitle);
@@ -139,6 +143,10 @@ const HeroSubtitle = styled.p`
 
   ${media.md} {
     font-size: var(--type-size-page);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transform: none;
   }
 `;
 
