@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Card from '../components/design-system/Card';
 import DesignServicesIcon from '@mui/icons-material/DesignServices';
 import AuroraBackground from '../components/AuroraBackground';
-import AudienceCard from '../components/website/AudienceCard';
+import AudienceCards from '../components/website/AudienceCards';
 
 import { fontStack } from '../styles/globalStyles';
 
@@ -122,30 +122,7 @@ const Home = () => {
         </PageSubheader>
       </PageHeader>
 
-      <CardsRow>
-        <AudienceCard
-          type="designers"
-          title="Designers"
-          body="Access our Figma libraries, iconography, and patterns guidelines to create consistent Lenovo experiences."
-          actionLabel="Get Figma kit"
-          to="/get-started/figma-libraries"
-          stretchActions
-        />
-        <AudienceCard
-          type="developers"
-          title="Developers"
-          body="Explore our full component library in Storybook to see interactive examples, usage guidelines, and available props for every component."
-          actionLabel="View Storybook"
-          href="https://cake.lenovo.com/storybook/"
-        />
-        <AudienceCard
-          type="resources"
-          title="Resources"
-          body="Visit our Resources page for downloadable brand assets, approved fonts, logos, color palettes, and links to our full brand guidelines."
-          actionLabel="View resources"
-          to="/resources"
-        />
-      </CardsRow>
+      <AudienceCards />
 
       <Section style={{ marginTop: '2rem' }}>
         <SectionTitle style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1rem', color: '#0F172A' }}>
