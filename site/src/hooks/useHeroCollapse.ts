@@ -3,8 +3,8 @@ import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
 /** Collapsed sticky bar height (px) — fits 48px icon buttons with vertical padding. */
 const COMPACT_HEIGHT = 88;
 
-/** Vertical inset for the compact wordmark row within the sticky bar. */
-const COMPACT_INSET = 16;
+/** Icon row height in the compact bar — matches IconButton `lg` (48px). */
+const COMPACT_ROW_HEIGHT = 48;
 
 /** Scroll distance (px) over which the hero transitions from expanded to compact. */
 const COLLAPSE_RANGE = 200;
@@ -48,7 +48,8 @@ export function useHeroCollapse(): HeroCollapseState {
       hero.style.setProperty('--hero-surface-h', `${surfaceH}px`);
 
       const paddingTop = Number.parseFloat(getComputedStyle(hero).paddingTop) || 0;
-      const shift = Math.max(paddingTop - COMPACT_INSET, 0);
+      const compactTop = (COMPACT_HEIGHT - COMPACT_ROW_HEIGHT) / 2;
+      const shift = Math.max(paddingTop - compactTop, 0);
       hero.style.setProperty('--hero-shift', `${shift}px`);
     };
 

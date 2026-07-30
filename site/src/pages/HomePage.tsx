@@ -128,21 +128,22 @@ const HeroBrand = styled.div`
 `;
 
 const HeroWordmark = styled(CakeWordmark)`
-  height: clamp(2.75rem, 11vw, 5.5rem);
+  --hero-wordmark-expanded: clamp(2.75rem, 11vw, 5.5rem);
+  --hero-wordmark-compact: 1.75rem;
   max-width: 100%;
-  transform: scale(calc(1 - var(--hero-progress) * 0.42));
-  transform-origin: left bottom;
+  height: calc(
+    var(--hero-wordmark-compact) * var(--hero-progress) +
+      var(--hero-wordmark-expanded) * (1 - var(--hero-progress))
+  );
 
   ${media.sm} {
-    height: clamp(3.25rem, 10vw, 5.5rem);
+    --hero-wordmark-expanded: clamp(3.25rem, 10vw, 5.5rem);
+    --hero-wordmark-compact: 2rem;
   }
 
   ${media.md} {
-    height: 5.5rem;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transform: none;
+    --hero-wordmark-expanded: 5.5rem;
+    --hero-wordmark-compact: 2rem;
   }
 `;
 
