@@ -4,6 +4,7 @@ import { MoreVertical, ArrowRight } from 'lucide-react';
 
 import { SimpleCard } from './SimpleCard';
 import { Card } from './Card';
+import { CardHeaderIllustration } from './CardHeaderIllustration';
 import { Button } from '../Button/Button';
 import { IconButton } from '../Button/IconButton';
 
@@ -29,6 +30,30 @@ const Actions = (
     Label
   </Button>
 );
+
+const AUDIENCE_CARDS = [
+  {
+    type: 'designers' as const,
+    title: 'Designers',
+    body: 'Access our Figma libraries, iconography, and patterns guidelines to create consistent Lenovo experiences.',
+    action: 'Get Figma kit',
+    stretchActions: true,
+  },
+  {
+    type: 'developers' as const,
+    title: 'Developers',
+    body: 'Explore our full component library in Storybook to see interactive examples, usage guidelines, and available props for every component.',
+    action: 'View Storybook',
+    stretchActions: false,
+  },
+  {
+    type: 'resources' as const,
+    title: 'Resources',
+    body: 'Visit our Resources page for downloadable brand assets, approved fonts, logos, color palettes, and links to our full brand guidelines.',
+    action: 'View resources',
+    stretchActions: false,
+  },
+] as const;
 
 const meta = {
   title: 'Components/Card/Simple Card',
@@ -77,10 +102,10 @@ import { IconButton } from '@/cakeand/components/Button';
 | Part | Tokens |
 | --- | --- |
 | content padding | \`--space-500\` (24px) |
-| stack gaps | \`--space-500\` (24px), \`--space-300\` (16px), \`--space-200\` (12px) title row |
+| stack gaps | \`--space-300\` (16px) title → body block, \`--space-500\` (24px) body → actions, \`--space-200\` (12px) title row |
 | media | full-bleed (\`overflow: hidden\`), \`--color-surfaces-on-container\` placeholder |
-| title | \`--type-size-subtitle\` (18px), \`--font-weight-bold\`, \`--color-text-icon-primary\` |
-| body | \`--type-size-body\` (14px), \`--color-text-icon-secondary\` |
+| title | \`--type-size-title\` (20px), \`--font-weight-bold\`, \`--color-text-icon-primary\` |
+| body | \`--type-size-subject\` (16px), \`--color-text-icon-secondary\` |
 | menu | cake& **IconButton** (\`size="sm"\`, ghost) |
 | actions | cake& **Button** / button group |
 | surface + elevation | provided by the enclosing **Card** |
@@ -151,6 +176,34 @@ export const NoMedia: Story = {
       <Card>
         <SimpleCard title="Simple card title" menu={MenuButton} body={BODY} actions={Actions} />
       </Card>
+    </div>
+  ),
+};
+
+/**
+ * Homepage audience cards from Figma \`&Card\` (node 117:2200) — Designers,
+ * Developers, and Resources with **CardHeaderIllustration** media and outline
+ * secondary actions.
+ */
+export const AudienceCards: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(280px, 1fr))', gap: 24, alignItems: 'stretch' }}>
+      {AUDIENCE_CARDS.map(({ type, title, body, action, stretchActions }) => (
+        <Card key={type} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <SimpleCard
+            stretchActions={stretchActions}
+            media={<CardHeaderIllustration type={type} />}
+            title={title}
+            body={body}
+            actions={
+              <Button size="md" variant="outline" intent="secondary" endIcon={<ArrowRight size={16} />}>
+                {action}
+              </Button>
+            }
+          />
+        </Card>
+      ))}
     </div>
   ),
 };
