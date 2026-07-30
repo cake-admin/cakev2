@@ -42,10 +42,13 @@ export function useHeroCollapse(): HeroCollapseState {
       const expandedH = hero.offsetHeight;
       hero.style.setProperty('--hero-expanded-h', `${expandedH}px`);
 
-      const inner = hero.firstElementChild as HTMLElement | null;
-      const shift = inner
-        ? Math.max(inner.offsetTop - COMPACT_INSET, 0)
-        : Math.max(expandedH - COMPACT_HEIGHT, 0);
+      const surface = hero.querySelector('[data-hero-surface]');
+      const surfaceH =
+        surface instanceof HTMLElement ? surface.offsetHeight : expandedH;
+      hero.style.setProperty('--hero-surface-h', `${surfaceH}px`);
+
+      const paddingTop = Number.parseFloat(getComputedStyle(hero).paddingTop) || 0;
+      const shift = Math.max(paddingTop - COMPACT_INSET, 0);
       hero.style.setProperty('--hero-shift', `${shift}px`);
     };
 
@@ -74,9 +77,9 @@ export function useHeroCollapse(): HeroCollapseState {
 
     const ro = new ResizeObserver(onResize);
     ro.observe(hero);
-    const inner = hero.firstElementChild;
-    if (inner instanceof HTMLElement) {
-      ro.observe(inner);
+    const surface = hero.querySelector('[data-hero-surface]');
+    if (surface instanceof HTMLElement) {
+      ro.observe(surface);
     }
 
     return () => {

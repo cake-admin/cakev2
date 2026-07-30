@@ -34,19 +34,13 @@ const Hero = styled.header`
   top: 0;
   z-index: 100;
   width: 100%;
-  overflow: hidden;
-  clip-path: inset(
-    0 0 calc(var(--hero-progress) * (var(--hero-expanded-h) - var(--hero-compact-h))) 0
+  /* Pull page content up as the hero visually collapses so cards scroll under the frosted bar. */
+  margin-bottom: calc(
+    var(--hero-progress) * (var(--hero-compact-h) - var(--hero-expanded-h))
   );
   padding: calc(var(--space-1000) + var(--space-500)) var(--space-300) var(--space-900);
-  border-bottom: var(--stroke-100) solid
-    color-mix(
-      in srgb,
-      var(--color-stroke-border) calc(var(--hero-progress) * 70%),
-      transparent
-    );
 
-  /* Figma 95:1365 — indigo/magenta gradient wash. */
+  /* Figma 95:1365 — indigo/magenta gradient wash (hidden once frosted bar takes over). */
   &::before {
     content: '';
     position: absolute;
@@ -58,25 +52,7 @@ const Hero = styled.header`
       color-mix(in srgb, var(--color-badge-indigo-light) 15%, transparent) 17.02%,
       color-mix(in srgb, var(--color-badge-magenta-light) 15%, transparent) 82.98%
     );
-    opacity: calc(1 - var(--hero-progress) * 0.92);
-  }
-
-  /* Frosted glass when scrolled — semi-transparent + blur. */
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background: color-mix(
-      in srgb,
-      var(--color-surfaces-container-blur) calc(var(--hero-progress) * 72%),
-      transparent
-    );
-    -webkit-backdrop-filter: blur(calc(var(--hero-progress) * 48px)) saturate(1.8);
-    backdrop-filter: blur(calc(var(--hero-progress) * 48px)) saturate(1.8);
-    box-shadow: inset 0 1px 0
-      color-mix(in srgb, var(--color-surfaces-inverse-container) calc(var(--hero-progress) * 30%), transparent);
+    opacity: calc(1 - var(--hero-progress));
   }
 
   ${media.sm} {
@@ -92,11 +68,38 @@ const Hero = styled.header`
   }
 `;
 
+/** Frosted sticky bar — sibling outside clip-path so backdrop-filter samples scroll content. */
+const HeroFrost = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--hero-compact-h);
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--hero-progress);
+  /* Foundations/Special Surfaces — container blur recipe (fill + blur + elevation). */
+  background: var(--color-surfaces-container-blur);
+  -webkit-backdrop-filter: blur(45px);
+  backdrop-filter: blur(45px);
+  border-bottom: var(--stroke-100) solid var(--color-stroke-border-container);
+  box-shadow: var(--elevation-3);
+`;
+
+const HeroSurface = styled.div.attrs({ 'data-hero-surface': true })`
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  clip-path: inset(
+    0 0 calc(var(--hero-progress) * max(0px, var(--hero-surface-h) - var(--hero-compact-h))) 0
+  );
+`;
+
 const HeroInner = styled.div`
   position: relative;
   z-index: 1;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-500);
   width: 100%;
@@ -117,10 +120,10 @@ const HeroInner = styled.div`
 `;
 
 const HeroBrand = styled.div`
+  position: relative;
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  gap: var(--space-500);
   min-width: 0;
 `;
 
@@ -144,6 +147,9 @@ const HeroWordmark = styled(CakeWordmark)`
 `;
 
 const HeroSubtitle = styled.p`
+  position: absolute;
+  top: calc(100% + var(--space-500));
+  left: 0;
   margin: 0;
   max-width: 40rem;
   font-size: var(--type-size-subject);
@@ -456,33 +462,36 @@ export function HomePage() {
   return (
     <Page>
       <Hero ref={heroRef}>
-        <HeroInner>
-          <HeroBrand>
-            <HeroWordmark />
-            <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
-          </HeroBrand>
-          <HeroTools>
-            <HeroSearch progress={progress} />
-            <ToolCluster>
-              <IconButton
-                label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
-                icon={isDark ? <Sun /> : <Moon />}
-                intent="secondary"
-                variant="ghost"
-                size="lg"
-                onClick={onToggleTheme}
-              />
-              <IconButton
-                label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
-                icon={<Languages />}
-                intent="secondary"
-                variant="ghost"
-                size="lg"
-                onClick={onToggleLocale}
-              />
-            </ToolCluster>
-          </HeroTools>
-        </HeroInner>
+        <HeroFrost aria-hidden />
+        <HeroSurface>
+          <HeroInner>
+            <HeroBrand>
+              <HeroWordmark />
+              <HeroSubtitle>{t.home.heroSubtitle}</HeroSubtitle>
+            </HeroBrand>
+            <HeroTools>
+              <HeroSearch progress={progress} />
+              <ToolCluster>
+                <IconButton
+                  label={isDark ? t.chrome.switchToLightTheme : t.chrome.switchToDarkTheme}
+                  icon={isDark ? <Sun /> : <Moon />}
+                  intent="secondary"
+                  variant="ghost"
+                  size="lg"
+                  onClick={onToggleTheme}
+                />
+                <IconButton
+                  label={locale === 'en' ? t.chrome.switchToChinese : t.chrome.switchToEnglish}
+                  icon={<Languages />}
+                  intent="secondary"
+                  variant="ghost"
+                  size="lg"
+                  onClick={onToggleLocale}
+                />
+              </ToolCluster>
+            </HeroTools>
+          </HeroInner>
+        </HeroSurface>
       </Hero>
 
       <Content>
