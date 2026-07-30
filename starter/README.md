@@ -48,7 +48,7 @@ explains the full reasoning.
 ## Adding cake& to an app you already have
 
 ```bash
-npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.1/cake-admin-cakeand-4.2.1.tgz
+npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.2/cake-admin-cakeand-4.2.2.tgz
 npm install react react-dom styled-components radix-ui lucide-react
 ```
 
