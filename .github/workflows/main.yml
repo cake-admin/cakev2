@@ -210,7 +210,7 @@ jobs:
           git commit -m "Point the starter at @cake-admin/cakeand $v"
           git push -u origin "$branch"
 
-          gh pr create --title "Point the starter at @cake-admin/cakeand $v" --body "$(cat <<EOF
+          body="$(cat <<EOF
           Opened automatically by the publish workflow for \`v$v\`.
 
           - pins \`starter/package.json\` to the new Release tarball
@@ -223,6 +223,32 @@ jobs:
           Merging makes \`npx degit cake-admin/cakev2/starter\` scaffold against $v.
           EOF
           )"
+
+          # Opening the PR needs "Allow GitHub Actions to create and approve pull
+          # requests" (Settings -> Actions -> General; an org policy can override
+          # the repo setting). By this point the package is published, the Release
+          # is tagged, and the branch is pushed — so a refusal here must not fail
+          # the job. Failing it also skips the Summary step and the
+          # verify-zero-auth job, turning a cosmetic permission gap into a
+          # publish with no install verification.
+          if gh pr create --title "Point the starter at @cake-admin/cakeand $v" --body "$body"; then
+            echo "Starter PR opened."
+          else
+            echo "::warning::Could not open the starter PR. Branch $branch is pushed — open it by hand; see the job summary."
+            {
+              echo "## One step left: open the starter PR"
+              echo
+              echo "Branch **$branch** is pushed and committed, but this workflow is not"
+              echo "permitted to open its pull request. Nothing else is outstanding."
+              echo
+              echo "Open it now: https://github.com/$GITHUB_REPOSITORY/compare/$branch?expand=1"
+              echo
+              echo "Permanent fix: **Settings -> Actions -> General -> Workflow permissions**,"
+              echo "tick \"Allow GitHub Actions to create and approve pull requests\"."
+              echo "If that box is greyed out, the organisation enforces it and it has to be"
+              echo "changed in the org's Actions settings instead."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Summary
         run: |
