@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { ChartTypePicker } from './controls/ChartTypePicker';
 import { DataEditor } from './controls/DataEditor';
+import { DataImport } from './controls/DataImport';
 import { ColorControls } from './controls/ColorControls';
 import { StyleControls } from './controls/StyleControls';
 import { HeaderControls } from './controls/HeaderControls';
@@ -28,6 +29,7 @@ export function CustomizationPanel() {
       </Section>
       <Section title="Data">
         <DataEditor />
+        <DataImport />
       </Section>
       <Section title="Color">
         <ColorControls />

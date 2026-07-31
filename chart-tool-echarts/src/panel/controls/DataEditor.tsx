@@ -1,4 +1,5 @@
 import { useChartStore } from '../../state/chartStore';
+import { usesSingleSeries } from '../../charts/registry';
 import { genId, type PartitionData, type SeriesData, type XYData, type XYPoint } from '../../data/dataModel';
 import { SortableRows } from './SortableRows';
 import { NumberInput } from './NumberInput';
@@ -354,9 +355,7 @@ export function DataEditor() {
   const style = useChartStore((s) => s.style);
   if (data.kind === 'series') {
     // These chart configs read only the first series — show a single Value column.
-    const singleSeries =
-      type === 'posNegBar' || type === 'waterfall' || (type === 'bar' && style.barMode === 'single');
-    return singleSeries ? <SingleSeriesEditor data={data} /> : <SeriesEditor data={data} />;
+    return usesSingleSeries(type, style) ? <SingleSeriesEditor data={data} /> : <SeriesEditor data={data} />;
   }
   if (data.kind === 'partition') return <PartitionEditor data={data} />;
   return <XYEditor data={data} />;

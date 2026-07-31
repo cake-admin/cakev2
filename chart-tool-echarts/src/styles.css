@@ -650,6 +650,113 @@ body {
   box-shadow: none;
 }
 
+/* ---- Data import (CSV / paste) ---- */
+/* Sits under the data rows, separated so it reads as "bring data in" rather
+   than another row of the editor. */
+.import {
+  margin-top: 18px;
+  padding-top: 18px; /* match the margin above so the rule sits centered */
+  border-top: 1px dashed var(--chrome-border);
+}
+/* The status line is a permanent aria-live region, so it can't be unmounted —
+   but while it's empty it must not pad the section's bottom either. Never
+   `display: none`: that can stop screen readers announcing later updates. */
+.import .export-status:empty {
+  min-height: 0;
+  margin-top: 0;
+}
+.dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 18px 12px;
+  text-align: center;
+  border: 1px dashed var(--chrome-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--chrome-bg-2);
+  cursor: pointer;
+  transition: border-color 0.15s var(--ease-out), background 0.15s var(--ease-out);
+}
+.dropzone:hover,
+.dropzone--over {
+  border-color: var(--accent);
+  background: var(--chrome-bg);
+}
+.dropzone:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
+}
+/* Children must not take pointer events: dragging across them would otherwise
+   fire dragleave on the dropzone and flicker the highlight off. */
+.dropzone > * {
+  pointer-events: none;
+}
+.dropzone__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--chrome-text);
+}
+.dropzone .field__hint {
+  margin: 0;
+}
+/* Hidden, but still reachable by Tab so Enter opens the picker. */
+.import-file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.import-paste-toggle {
+  margin-top: 10px;
+}
+.import-textarea {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 12px;
+  resize: vertical;
+}
+.import-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+.import-summary__name {
+  font-weight: 600;
+  color: var(--chrome-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.import-summary .field__hint {
+  margin: 0;
+  flex: none;
+}
+.import-map {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.import-map__label {
+  margin: 0;
+  min-width: 76px;
+}
+.import-map__select {
+  flex: 1;
+}
+.import-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
 /* ---- Toggle / slider ---- */
 .toggle {
   display: flex;
@@ -813,6 +920,9 @@ body {
   color: #047857;
   min-height: 16px;
   margin-top: 4px;
+}
+.export-status--error {
+  color: #b91c1c;
 }
 
 @media (max-width: 860px) {

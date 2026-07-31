@@ -69,6 +69,15 @@ export const CHART_REGISTRY: Record<ChartId, ChartDefinition> = {
   waterfall: { id: 'waterfall', label: 'Waterfall', description: 'Running total of semantic positive/negative deltas.', group: 'Semantic', dataKind: 'series', preset: waterfallPreset, defaultStyle: { showGrid: true, showLegend: false }, exportName: 'waterfall-chart', core: false },
 };
 
+/**
+ * Chart configs that read only the first series. The data editor collapses to a
+ * single Value column for these, and the CSV import warns that extra value
+ * columns won't be drawn — both must agree, hence one definition.
+ */
+export function usesSingleSeries(id: ChartId, style: Pick<StyleConfig, 'barMode'>): boolean {
+  return id === 'posNegBar' || id === 'waterfall' || (id === 'bar' && style.barMode === 'single');
+}
+
 /** Every chart id (used by the gallery + export coverage tests). */
 export const CHART_IDS: ChartId[] = [
   'bar',

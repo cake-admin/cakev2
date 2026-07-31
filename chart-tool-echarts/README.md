@@ -83,6 +83,15 @@ tokens.json ─► buildChartTheme(mode) ─► ChartTheme ─┐
 - **Data** (`src/data/*`) — one model, two shapes: `series` (cartesian) and
   `partition` (pie/treemap/funnel). The editor adapts to the chart type
   (single-series charts get a simple Category+Value editor).
+- **Import** (`src/data/csv.ts`) — CSV/TSV upload or paste. Text is parsed into a
+  neutral `Table` (RFC 4180 quoting, CRLF/BOM, sniffed `, ; tab |` delimiter,
+  `$1,234.00` / `45%` / `(12)` / `1.234,56` number coercion), and the **raw table
+  is what's stored** — `chartStore.dataFor()` projects it into whichever
+  `DataModel` shape the selected chart consumes. That's why imported data
+  survives a chart-type switch where presets are replaced, and why the
+  "first row is a header" toggle is free. Layout is auto-detected
+  (`inferMapping`) and adjustable in the panel. Zero dependencies: hand-rolled
+  so pasting from Excel (tab-separated) works without a parser library.
 - **Export** (`src/export/renderStaticSvg.tsx`) — ECharts' SSR SVG renderer at
   the requested pixel dimensions, animation off. Font sizes are pre-baked via
   `exportScale` and snapped to the type ladder (12/14/16/20/24/28…) because
