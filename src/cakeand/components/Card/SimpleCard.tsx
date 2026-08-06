@@ -24,15 +24,20 @@ const Root = styled.div`
 
 /** Full-bleed media strip — no padding, so it reaches the Card's corners. */
 const Media = styled.div`
+  flex-shrink: 0;
   width: 100%;
+  /* Figma simple-card full-bleed header (node 0:104). */
+  height: 152px;
   overflow: hidden;
   background: var(--color-surfaces-on-container);
-  & > img,
-  & > video {
+
+  img,
+  video {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
   }
 `;
 

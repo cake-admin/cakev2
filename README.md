@@ -5,7 +5,8 @@ themes. Every interactive component wraps a [Radix](https://www.radix-ui.com/pri
 primitive, so behaviour and accessibility come from Radix and cake& owns the
 visuals. Every value resolves from a design token — nothing is hardcoded.
 
-**Documentation:** <https://cake.lenovo.com/storybook/> — the source of truth for
+**Documentation:** <https://cake.lenovo.com/> — the redesigned documentation site.
+Component API reference: <https://cake.lenovo.com/storybook/> — the source of truth for
 every component's API, variants, states, and accessibility contract.
 
 ---
@@ -111,11 +112,22 @@ integrity error that is very hard to trace back.
 
 | Path | What |
 |------|------|
+| `site/` | Documentation website (Vite + React) deployed at cake.lenovo.com |
 | `src/cakeand/` | The design system — the only thing that ships in the package |
 | `src/cakeand/foundations/` | Storybook docs pages (Colors, Typography, Spacing, Elevation, guides) |
 | `starter/` | The template designers scaffold from |
 | `scripts/` | Token generation, package build, agent-context generation |
 | `chart-tool-echarts/` | Separate Vite app deployed at /dataviz |
+
+### Local development
+
+```bash
+# Documentation site
+cd site && npm install && npm run dev
+
+# Storybook (component reference)
+npm run storybook
+```
 
 Building components and publishing versions is the design-system team's
 workflow, documented in Storybook under **Guides** — *Building a Component* and
