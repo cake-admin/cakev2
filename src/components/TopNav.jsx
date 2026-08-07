@@ -163,6 +163,20 @@ const navPillBase = `
   white-space: nowrap;
 `;
 
+/**
+ * Windows HCT maps tonal-secondary-overlay-hover to solid white while nav ink
+ * stays primary (light cyan) — same collapsed wash as Dropdown/ContentSwitcher.
+ * Inverse surface + inverse ink + primary edge keeps hover readable.
+ */
+const navPillHctHover = `
+  :root[data-theme='win hct'] &:hover:not(.active),
+  [data-theme='win hct'] &:hover:not(.active) {
+    background: var(--color-surfaces-inverse-container);
+    color: var(--color-text-icon-inverse);
+    box-shadow: inset 0 0 0 var(--stroke-100) var(--color-primary-primary);
+  }
+`;
+
 const NavLinkButton = styled(NavLink)`
   ${navPillBase}
   background: transparent;
@@ -178,6 +192,8 @@ const NavLinkButton = styled(NavLink)`
     background: var(--color-primary-primary);
     color: var(--color-text-icon-on-primary);
   }
+
+  ${navPillHctHover}
 `;
 
 /** Same pill styles for absolute `<a>` links (e.g. datavis → main site). */
@@ -191,6 +207,8 @@ const NavAnchorButton = styled.a`
     text-decoration: none;
     color: var(--color-primary-primary);
   }
+
+  ${navPillHctHover}
 `;
 
 const MobileToggle = styled.button`
@@ -298,7 +316,7 @@ const normalizeOrigin = (origin) => {
  *   (used on surfaces outside the main site IA, e.g. /datavis).
  * @param {string} [props.siteOrigin] Absolute origin for main-site links
  *   (e.g. https://cake.lenovo.com). When set, nav uses `<a href>` instead of
- *   react-router so the chart tool (base /datavis/) does not treat site paths
+ *   react-router so the datavis playground (base /datavis/) does not treat site paths
  *   as in-app routes.
  */
 const TopNav = ({ forceNoActive = false, siteOrigin } = {}) => {

@@ -612,8 +612,8 @@ export const TablesPreview = () => (
 export const DataVizPreview = () => (
   <PreviewPanel>
     <PreviewNote>
-      Data visualization is not a cake&amp; React component. Use the dedicated
-      Cake&amp; data visualization tool for themed ECharts and Figma-ready SVGs,
+      Data visualization is not a cake&amp; React component. Use the
+      Cake&amp; data visualization playground for themed ECharts and Figma-ready SVGs,
       or browse Resources for more.
     </PreviewNote>
   </PreviewPanel>

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 /** Semantic color families (Figma `Property 1`: primary/secondary/destructive/disabled). */
 export const BADGE_SEMANTICS = ['primary', 'secondary', 'destructive', 'disabled'] as const;
@@ -69,7 +69,7 @@ const COLOR_STYLES: Record<BadgeColor, Record<BadgeTone, ToneStyle>> = {
   >),
 };
 
-const Root = styled.span<{ $bg: string; $fg: string }>`
+const Root = styled.span<{ $bg: string; $fg: string; $solidBg: string; $solidFg: string; $tone: BadgeTone }>`
   display: inline-flex;
   box-sizing: border-box;
   align-items: center;
@@ -87,6 +87,22 @@ const Root = styled.span<{ $bg: string; $fg: string }>`
   letter-spacing: 0.2px;
   line-height: 1.35;
   white-space: nowrap;
+
+  /*
+   * Windows HCT flattens subtle washes: primary/secondary overlays become solid
+   * white while label tokens stay light (white-on-white or cyan-on-white). Use
+   * the solid fill + ink pair so date / release chips stay readable.
+   */
+  ${(p) =>
+    p.$tone === 'subtle'
+      ? css`
+          :root[data-theme='win hct'] &,
+          [data-theme='win hct'] & {
+            background: ${p.$solidBg};
+            color: ${p.$solidFg};
+          }
+        `
+      : null}
 `;
 
 const Dot = styled.span`
@@ -140,9 +156,18 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ children, color = 'primary', tone = 'solid', dot = true, ...props }, ref) => {
     const { bg, fg } = COLOR_STYLES[color][tone];
+    const solid = COLOR_STYLES[color].solid;
 
     return (
-      <Root ref={ref} $bg={bg} $fg={fg} {...props}>
+      <Root
+        ref={ref}
+        $bg={bg}
+        $fg={fg}
+        $solidBg={solid.bg}
+        $solidFg={solid.fg}
+        $tone={tone}
+        {...props}
+      >
         {dot ? <Dot aria-hidden /> : null}
         {children}
       </Root>

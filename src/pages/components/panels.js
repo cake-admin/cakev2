@@ -242,13 +242,13 @@ export const PANELS = [
     id: 'data-visualization',
     title: 'Data Visualization',
     paragraphs: [
-      'Charts and data viz live outside the core cake& component package. The dedicated dataviz tool generates themed ECharts code and Figma-ready SVGs so charts stay on-brand.',
-      'Start with the interactive tool for production charts, or open Resources for how the Cake& data visualization tool fits beside Storybook components.',
+      'Charts and data viz live outside the core cake& component package. The Cake& data visualization playground generates themed ECharts code and Figma-ready SVGs so charts stay on-brand.',
+      'Start with the interactive playground for production charts, or open Resources for how the Cake& data visualization playground fits beside Storybook components.',
     ],
     ctas: [
       {
-        label: 'Try the dataviz tool',
-        href: 'https://cake.lenovo.com/datavis',
+        label: 'Try the playground',
+        href: 'https://cake.lenovo.com/datavis/',
         intent: 'secondary',
         external: true,
       },

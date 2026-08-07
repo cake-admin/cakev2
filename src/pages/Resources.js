@@ -130,42 +130,26 @@ const FeatureList = styled.ul`
 `;
 
 /**
- * Flex card row: 4 cols when wide, 3 at medium, then 2 / 1 as the
- * viewport narrows. Gap uses spacing tokens; cards share space evenly
- * without orphans stretching full-bleed.
+ * CSS grid — equal-height cards in each row (grid row tracks stretch
+ * items by default). 1 → 2 → 3 → 4 columns as the viewport widens.
+ * Direct children must be the cards (no wrappers) so stretch reaches them.
  */
 const Grid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-500);
   align-items: stretch;
 
-  & > * {
-    box-sizing: border-box;
-    flex: 1 1 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
-
   @media (min-width: 640px) {
-    & > * {
-      flex: 1 1 calc((100% - var(--space-500)) / 2);
-      max-width: calc((100% - var(--space-500)) / 2);
-    }
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   @media (min-width: 960px) {
-    & > * {
-      flex: 1 1 calc((100% - 2 * var(--space-500)) / 3);
-      max-width: calc((100% - 2 * var(--space-500)) / 3);
-    }
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   @media (min-width: 1280px) {
-    & > * {
-      flex: 1 1 calc((100% - 3 * var(--space-500)) / 4);
-      max-width: calc((100% - 3 * var(--space-500)) / 4);
-    }
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 `;
 
@@ -188,6 +172,7 @@ const MediaBand = styled.div`
   display: flex;
   align-items: center;
   height: 96px;
+  flex-shrink: 0;
   padding: var(--space-500);
   box-sizing: border-box;
   background: ${(p) => p.$gradient};
@@ -248,14 +233,23 @@ const Body = styled.div`
   flex-direction: column;
   gap: var(--space-500);
   padding: var(--space-500);
-  flex: 1;
+  /* Fill remaining card height below the media band. */
+  flex: 1 1 auto;
+  min-height: 0;
 `;
 
 const TextBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--space-300);
-  flex: 1;
+  /* Absorb extra height so CardActions stays at the bottom. */
+  flex: 1 1 auto;
+  min-height: 0;
+`;
+
+const CardActions = styled.div`
+  margin-top: auto;
+  flex-shrink: 0;
 `;
 
 const TitleStack = styled.div`
@@ -326,12 +320,12 @@ const RESOURCES = [
   },
   {
     id: 'dataviz',
-    title: 'Cake& data visualization tool',
-    subtitle: 'Design once. Build consistently.',
+    title: 'Cake& data visualization playground',
+    subtitle: 'Build charts in minutes.',
     body:
       'Copy editable SVG charts into Figma or generate themed ECharts code for production-ready data visualizations.',
-    action: 'Try the tool',
-    href: 'https://cake.lenovo.com/datavis',
+    action: 'Try the playground',
+    href: 'https://cake.lenovo.com/datavis/',
     icon: datavizIcon,
     iconKind: 'chart',
   },
@@ -354,8 +348,16 @@ const openExternal = (href) => {
   window.open(href, '_blank', 'noopener,noreferrer');
 };
 
+/**
+ * Fill the grid cell, then stack media → body as a column so Body/TextBlock
+ * can flex and pin the CTA. Card already is `display: flex; flex-direction:
+ * column`; height: 100% makes the percentage chain definite inside the cell.
+ */
 const StretchCard = styled(Card)`
   height: 100%;
+  min-height: 0;
+  min-width: 0;
+  align-self: stretch;
 `;
 
 const ResourceCard = ({ resource }) => (
@@ -391,7 +393,7 @@ const ResourceCard = ({ resource }) => (
           <AccessNote>{resource.accessNote}</AccessNote>
         ) : null}
       </TextBlock>
-      <div>
+      <CardActions>
         <Button
           intent="secondary"
           variant="outline"
@@ -401,7 +403,7 @@ const ResourceCard = ({ resource }) => (
         >
           {resource.action}
         </Button>
-      </div>
+      </CardActions>
     </Body>
   </StretchCard>
 );

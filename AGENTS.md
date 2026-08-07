@@ -73,6 +73,6 @@ Do not link to those URLs until that step exists.
   Windows. Invoke tool binaries via `node node_modules/<pkg>/<bin>.js` or the
   package scripts (which already do this). Storybook: `npm run storybook`
   (dev, port 6006) / `npm run build-storybook`.
-- The `chart-tool-echarts/` folder is a separate Vite app (the data-viz tool
-  deployed at cake.lenovo.com/datavis) with its own docs and scripts — its
-  token pipeline and tests live inside that folder.
+- The `chart-tool-echarts/` folder is a separate Vite app (the Cake& data
+  visualization playground deployed at cake.lenovo.com/datavis) with its own
+  docs and scripts — its token pipeline and tests live inside that folder.

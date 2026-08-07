@@ -51,12 +51,21 @@ const config: StorybookConfig = {
 
   async viteFinal(config, { configType }) {
     const { mergeConfig, transformWithEsbuild } = await import('vite');
+    const isProd = configType === 'PRODUCTION';
+    // Pages nests the static build at cake.lenovo.com/storybook/. Prefer
+    // STORYBOOK_BASE from deploy.yml so CI matches local PRODUCTION builds;
+    // never reuse CRA's PUBLIC_URL (that would prefix the main site too).
+    const storybookBase =
+      process.env.STORYBOOK_BASE || (isProd ? '/storybook/' : '/');
+    const normalizedBase = storybookBase.endsWith('/')
+      ? storybookBase
+      : `${storybookBase}/`;
 
     return mergeConfig(config, {
       // Nested under the design-system Pages site at cake.lenovo.com/storybook.
       // Dev (`npm run storybook`) stays at `/`; only the static build uses the
       // subpath so asset URLs resolve under GitHub Pages.
-      base: configType === 'PRODUCTION' ? '/storybook/' : '/',
+      base: isProd ? normalizedBase : '/',
       // Vite's default `publicDir: 'public'` would copy the CRA SPA shell
       // (index.html, 404.html, CNAME) over Storybook's manager output. Fonts
       // and the favicon are already served via `staticDirs` above.
@@ -88,8 +97,11 @@ const config: StorybookConfig = {
         // process.env.NODE_ENV. Vite does not expose `process` in the browser,
         // so define it to avoid a "process is not defined" runtime error.
         'process.env.NODE_ENV': JSON.stringify(
-          configType === 'PRODUCTION' ? 'production' : 'development'
+          isProd ? 'production' : 'development'
         ),
+        // Site roots at cake.lenovo.com — leave empty so nav helpers that build
+        // `${PUBLIC_URL}/storybook/` do not become `/storybook/storybook/`.
+        'process.env.PUBLIC_URL': JSON.stringify(''),
       },
       // Windows often locks binary assets under src/assets; Vite's native
       // watcher then crashes with EBUSY. cake& Storybook does not HMR those

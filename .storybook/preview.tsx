@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Preview, Decorator } from '@storybook/react-vite';
 import { DocsContainer, type DocsContainerProps } from '@storybook/addon-docs/blocks';
-import { addons, useGlobals } from 'storybook/preview-api';
+import { addons } from 'storybook/preview-api';
 import { GLOBALS_UPDATED } from 'storybook/internal/core-events';
 
 import { CakeProvider } from '../src/cakeand/theme/CakeProvider';
@@ -31,6 +31,8 @@ const TOOLBAR_TO_MODE: Record<string, ThemeMode> = {
   'win hct': 'win hct',
 };
 
+const DEFAULT_THEME_GLOBAL = 'light';
+
 const resolveMode = (raw: unknown): ThemeMode => {
   if (typeof raw === 'string' && TOOLBAR_TO_MODE[raw]) return TOOLBAR_TO_MODE[raw];
   return 'light.a';
@@ -51,11 +53,34 @@ addons.getChannel().on(GLOBALS_UPDATED, ({ globals }) => {
  * Docs (including pure MDX) — Storybook's TOC / prose chrome reads Emotion
  * colors from the docs ThemeProvider. Pass our cake manager themes so the
  * outline panel and docs chrome follow the Theme toolbar.
+ *
+ * Do NOT call `useGlobals()` here: Storybook preview hooks are only valid
+ * inside decorators and story functions. DocsContainer is neither — calling
+ * them throws "Storybook preview hooks can only be called inside decorators
+ * and story functions" on the deployed docs pages. Read theme from the
+ * channel instead.
  */
 const CakeDocsContainer = ({ children, context }: DocsContainerProps) => {
-  const [globals] = useGlobals();
-  const managerKey = resolveManagerThemeKey(globals.theme);
-  const mode = resolveMode(globals.theme);
+  const [themeGlobal, setThemeGlobal] = React.useState<unknown>(
+    () =>
+      (context.projectAnnotations?.initialGlobals as { theme?: unknown } | undefined)
+        ?.theme ?? DEFAULT_THEME_GLOBAL,
+  );
+
+  React.useEffect(() => {
+    const onGlobals = (payload: { globals?: Record<string, unknown> }) => {
+      if (payload?.globals && 'theme' in payload.globals) {
+        setThemeGlobal(payload.globals.theme);
+      }
+    };
+    context.channel.on(GLOBALS_UPDATED, onGlobals);
+    return () => {
+      context.channel.off(GLOBALS_UPDATED, onGlobals);
+    };
+  }, [context.channel]);
+
+  const managerKey = resolveManagerThemeKey(themeGlobal);
+  const mode = resolveMode(themeGlobal);
 
   React.useLayoutEffect(() => {
     applyHtmlDataTheme(mode);

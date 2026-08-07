@@ -498,7 +498,7 @@ const QUICK_LINKS = [
     href: 'https://www.figma.com/community/file/1397963315281891204/cake-one-lenovo-design-system',
     external: true,
   },
-  { label: 'Cake& datavis', href: 'https://cake.lenovo.com/datavis', external: true },
+  { label: 'Cake& data visualization playground', href: 'https://cake.lenovo.com/datavis/', external: true },
   { label: 'Cake& blog', href: '/resources/whats-new' },
 ];
 

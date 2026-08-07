@@ -115,7 +115,7 @@ integrity error that is very hard to trace back.
 | `src/cakeand/foundations/` | Storybook docs pages (Colors, Typography, Spacing, Elevation, guides) |
 | `starter/` | The template designers scaffold from |
 | `scripts/` | Token generation, package build, agent-context generation |
-| `chart-tool-echarts/` | Separate Vite app deployed at /datavis |
+| `chart-tool-echarts/` | Cake& data visualization playground (Vite app at /datavis) |
 
 Building components and publishing versions is the design-system team's
 workflow, documented in Storybook under **Guides** — *Building a Component* and
@@ -150,7 +150,7 @@ Pages URL and confirm `datavis/` is present. Live URLs:
 - Default Pages host: `https://<owner>.github.io/<repo>/datavis/` (only if
   that is how Pages is configured; this repo uses the custom domain)
 
-To nest datavis into a local `build/` after building the chart tool yourself:
+To nest datavis into a local `build/` after building the playground yourself:
 
 ```bash
 # from chart-tool-echarts: tsc + vite build (see that folder's README)

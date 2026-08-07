@@ -295,7 +295,7 @@ const CURRENT_RELEASE = {
     { type: 'Added', text: 'React component library on Radix with Storybook docs' },
     { type: 'Added', text: 'Design foundations — color, type, spacing, elevation, surfaces' },
     { type: 'Added', text: 'AI styling guidance for overview, gradient, and logo & icon' },
-    { type: 'Added', text: 'Developer resources, data viz tool, and AI Labs starter' },
+    { type: 'Added', text: 'Developer resources, data visualization playground, and AI Labs starter' },
   ],
 };
 

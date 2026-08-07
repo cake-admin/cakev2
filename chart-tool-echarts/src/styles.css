@@ -28,6 +28,15 @@ body,
   margin: 0;
 }
 
+/* Flex column so `.app-root` can fill the viewport even when nested providers
+   wrap `#root`'s only child. */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  min-height: 100dvh;
+}
+
 body {
   font-family: var(--font);
   color: var(--chrome-text);
@@ -35,14 +44,24 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Full viewport shell: TopNav spacer + chart stage share one column. */
+/* Full viewport shell: TopNav chrome + chart stage share one column. */
 .app-root {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  /* Prefer filling #root; fall back to the viewport if % height fails. */
   height: 100%;
   min-height: 100vh;
   min-height: 100dvh;
   overflow: hidden;
+}
+
+/* Single flex child for TopNav's fragment (Bar + spacer + drawer). */
+.app-root__chrome {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Chart chrome fills whatever remains under TopNav — never a second 100vh. */
