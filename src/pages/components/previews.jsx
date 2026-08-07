@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import styled from 'styled-components';
 import { Toast as RadixToast } from 'radix-ui';
 import {
@@ -66,6 +66,19 @@ import {
   PreviewStack,
   ROOKERY,
 } from './chrome';
+import { DATAVIZ_THEME_SWATCHES } from './datavisPalettes';
+
+const DatavisThemeCharts = lazy(() => import('./DatavisThemeCharts'));
+
+const ChartsSuspenseFallback = styled.div`
+  margin-top: var(--space-400);
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  font-family: ${ROOKERY};
+  font-size: var(--type-size-body);
+  color: var(--color-text-icon-secondary);
+`;
 
 const CardGrid = styled.div`
   display: grid;
@@ -609,14 +622,284 @@ export const TablesPreview = () => (
   </PreviewPanel>
 );
 
+const DocSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  width: 100%;
+`;
+
+const DocSubhead = styled.h3`
+  margin: 0;
+  font-family: ${ROOKERY};
+  font-size: var(--type-size-subject);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.35;
+  color: var(--color-text-icon-primary);
+`;
+
+const DocCardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-300);
+  width: 100%;
+`;
+
+const StretchCard = styled(Card)`
+  height: 100%;
+  min-height: 0;
+`;
+
+const DocCardInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding: var(--space-400);
+  box-sizing: border-box;
+  height: 100%;
+`;
+
+const DocCardTitle = styled.h4`
+  margin: 0;
+  font-family: ${ROOKERY};
+  font-size: var(--type-size-subject);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.35;
+  color: var(--color-text-icon-primary);
+`;
+
+const DocCardBody = styled.p`
+  margin: 0;
+  font-family: ${ROOKERY};
+  font-size: var(--type-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+  color: var(--color-text-icon-secondary);
+`;
+
+const DocLead = styled.p`
+  margin: 0;
+  font-family: ${ROOKERY};
+  font-size: var(--type-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.5;
+  letter-spacing: 0.2px;
+  color: var(--color-text-icon-secondary);
+  max-width: 40rem;
+`;
+
+const ThemeBlurb = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0 0 var(--space-300);
+  max-width: 40rem;
+`;
+
+const ThemeHint = styled.p`
+  margin: 0;
+  font-family: ${ROOKERY};
+  font-size: var(--type-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.45;
+  letter-spacing: 0.2px;
+  color: var(--color-text-icon-secondary);
+`;
+
+const ThemeMetaLine = styled.p`
+  margin: 0;
+  font-family: ${ROOKERY};
+  font-size: var(--type-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.45;
+  letter-spacing: 0.2px;
+  color: var(--color-text-icon-primary);
+`;
+
+const ThemeMetaStrong = styled.span`
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-icon-secondary);
+`;
+
+/** Foundations Color–style swatches (GroupLabel + grid + named cards). */
+const SwatchGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: var(--space-200);
+`;
+
+const SwatchCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  min-width: 0;
+`;
+
+const Swatch = styled.div`
+  width: 100%;
+  height: 48px;
+  border-radius: var(--radius-150);
+  background: ${(p) => p.$color};
+  border: var(--stroke-100) solid var(--color-stroke-border);
+  box-sizing: border-box;
+`;
+
+const SwatchName = styled.span`
+  font-family: ${ROOKERY};
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--color-text-icon-primary);
+  overflow-wrap: anywhere;
+`;
+
+const DATAVIZ_WORKFLOWS = [
+  {
+    title: 'Designers',
+    body:
+      'Pick a chart, tune data and Color theme, then export a clean SVG and paste it into Figma as editable vectors — light, dark, and HCT variants stay token-aligned.',
+  },
+  {
+    title: 'Developers',
+    body:
+      'Copy a themed ECharts option (and reusable theme object) from the playground so production charts match cake& tokens without hand-picking hex values.',
+  },
+  {
+    title: 'Presentations & deliverables',
+    body:
+      'Export presentation-ready SVGs for decks, docs, and reviews when you need on-brand charts outside the product UI — same playground, same themes.',
+  },
+];
+
+/**
+ * Color themes exposed in the playground Color theme dropdown
+ * (`chart-tool-echarts` ColorControls). Recommended / not-recommended charts
+ * invert `CHART_REGISTRY.recommendedThemes` plus the variation hints.
+ * Swatches come from `datavisPalettes.js` (playground token stops).
+ */
+const DATAVIZ_COLOR_THEMES = [
+  {
+    label: 'Categorical',
+    hint: 'Distinct cake& tones — identical in light and dark.',
+    recommended:
+      'Bar / Column, Line, Area, Pie / Donut, Scatter, Jitter / Strip, Radar, Treemap, Funnel, Radial bar',
+    notRecommended:
+      'Heatmap, Gauge, Positive / Negative, Waterfall — those need ordered ramps or semantic meaning, not unrelated hues',
+  },
+  {
+    label: 'Sequential',
+    hint: 'Single-hue indigo ramp (light→dark).',
+    recommended: 'Line, Area, Funnel, Gauge, Heatmap',
+    notRecommended:
+      'Pie / Donut, Scatter, Radar, Treemap, Positive / Negative, Waterfall — unrelated categories or sign meaning need other themes',
+  },
+  {
+    label: 'Semantic',
+    hint: 'Red→green ramp (bad→good) for KPI and meaning-coded charts.',
+    recommended: 'Gauge, Heatmap, Positive / Negative, Waterfall',
+    notRecommended:
+      'Pie / Donut, Bar / Column, Treemap, Radar — discrete categories read as ranked good/bad on this ramp',
+  },
+  {
+    label: 'Diverging',
+    hint: 'Jade↔violet two-ended ramp for values around a midpoint.',
+    recommended: 'Heatmap (and choropleth-style value matrices)',
+    notRecommended:
+      'Pie / Donut, Bar / Column, multi-series Line, Positive / Negative — not a midpoint scale or already use semantic tokens',
+  },
+  {
+    label: 'Wireframe',
+    hint: 'Multiple secondary greys; patterns kick in after six categories.',
+    recommended:
+      'Early comps and structure reviews for any chart — greyscale first, add hue later',
+    notRecommended:
+      'Production Heatmap, Gauge, Positive / Negative, Waterfall — greys and patterns hide value and sign encoding',
+  },
+];
+
+const DocCard = ({ title, children }) => (
+  <StretchCard elevation="low">
+    <DocCardInner>
+      <DocCardTitle>{title}</DocCardTitle>
+      {children}
+    </DocCardInner>
+  </StretchCard>
+);
+
 export const DataVizPreview = () => (
-  <PreviewPanel>
-    <PreviewNote>
-      Data visualization is not a cake&amp; React component. Use the
-      Cake&amp; data visualization playground for themed ECharts and Figma-ready SVGs,
-      or browse Resources for more.
-    </PreviewNote>
-  </PreviewPanel>
+  <>
+    <PreviewPanel>
+      <PreviewNote>
+        Data visualization is not a cake&amp; React component. Use the Cake&amp;
+        data visualization playground for themed ECharts and Figma-ready SVGs.
+      </PreviewNote>
+    </PreviewPanel>
+
+    <DocSection>
+      <DocSubhead>How to use the playground</DocSubhead>
+      <DocCardGrid>
+        {DATAVIZ_WORKFLOWS.map((workflow) => (
+          <DocCard key={workflow.title} title={workflow.title}>
+            <DocCardBody>{workflow.body}</DocCardBody>
+          </DocCard>
+        ))}
+      </DocCardGrid>
+    </DocSection>
+
+    <DocSection>
+      <DocSubhead>Color themes</DocSubhead>
+      <DocLead>
+        Names match the playground&apos;s Color theme control. Swatches are the
+        light-mode token stops charts use (fixed hero palettes are the same in
+        dark; Wireframe greys derive from secondary). Recommended lists follow
+        each chart&apos;s badges in the tool. Sample charts below each theme use
+        those same palette stops.
+      </DocLead>
+    </DocSection>
+
+    {DATAVIZ_COLOR_THEMES.map((theme) => {
+      const swatches = DATAVIZ_THEME_SWATCHES[theme.label] ?? [];
+      return (
+        <DocSection key={theme.label}>
+          <PreviewPanel>
+            <GroupBlock>
+              <GroupLabel>{theme.label}</GroupLabel>
+              <ThemeBlurb>
+                <ThemeHint>{theme.hint}</ThemeHint>
+                <ThemeMetaLine>
+                  <ThemeMetaStrong>Recommended — </ThemeMetaStrong>
+                  {theme.recommended}
+                </ThemeMetaLine>
+                <ThemeMetaLine>
+                  <ThemeMetaStrong>Not recommended — </ThemeMetaStrong>
+                  {theme.notRecommended}
+                </ThemeMetaLine>
+              </ThemeBlurb>
+              <SwatchGrid>
+                {swatches.map((stop) => (
+                  <SwatchCard key={stop.name}>
+                    <Swatch
+                      $color={stop.color}
+                      title={`${stop.name} · ${stop.color}`}
+                      aria-label={stop.name}
+                    />
+                    <SwatchName>{stop.name}</SwatchName>
+                  </SwatchCard>
+                ))}
+              </SwatchGrid>
+              <Suspense
+                fallback={
+                  <ChartsSuspenseFallback>Loading sample charts…</ChartsSuspenseFallback>
+                }
+              >
+                <DatavisThemeCharts themeLabel={theme.label} />
+              </Suspense>
+            </GroupBlock>
+          </PreviewPanel>
+        </DocSection>
+      );
+    })}
+  </>
 );
 
 export const AvatarsPreview = () => (

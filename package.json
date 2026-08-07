@@ -15,7 +15,6 @@
     "nest:datavis": "node scripts/nest-datavis.mjs",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-
     "build:cakeand-tokens": "node scripts/build-cakeand-tokens.mjs",
     "storybook": "node node_modules/storybook/dist/bin/dispatcher.js dev -p 6006",
     "build-storybook": "node node_modules/storybook/dist/bin/dispatcher.js build",
@@ -37,6 +36,7 @@
     "@visx/shape": "^4.0.0",
     "@visx/visx": "^4.0.0",
     "core-js": "^3.36.0",
+    "echarts": "^5.6.0",
     "highlight.js": "^11.9.0",
     "lowlight": "^3.1.0",
     "lucide-react": "^0.536.0",
