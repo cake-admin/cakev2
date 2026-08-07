@@ -1,12 +1,19 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import Navigation from './components/Navigation';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from 'react-router-dom';
+import styled, { createGlobalStyle } from 'styled-components';
+import TopNav from './components/TopNav';
+import SectionSubNav from './components/SectionSubNav';
 import LenovoLogo from './components/LenovoLogo';
-import GlobalStyles from './styles/globalStyles';
+import { SiteThemeProvider } from './theme/SiteThemeProvider';
 import { routes } from './data/routes';
+import HomePage from './pages/HomePage';
 
-// Component to scroll to top on route changes
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
@@ -17,72 +24,134 @@ const ScrollToTop = () => {
   return null;
 };
 
-const Wrapper = styled.div`
-  padding-left: 250px;
-  width: 100%;
-  max-width: 100vw;
-  overflow-x: hidden;
-  box-sizing: border-box;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-  
-  @media (max-width: 768px) {
-    padding-left: 0;
+/** Avoid horizontal scrollbar eating layout / clipping the document footer. */
+const GlobalScroll = createGlobalStyle`
+  html, body, #root {
+    max-width: 100%;
+    overflow-x: clip;
   }
 `;
 
-const PageContentWrapper = styled.div`
+const Shell = styled.div`
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: ${(p) =>
+    p.$home ? 'transparent' : 'var(--color-surfaces-canvas)'};
+  color: var(--color-text-icon-primary);
+  font-family: var(--font-family);
+`;
+
+const Main = styled.main`
   width: 100%;
   max-width: 100%;
   position: relative;
-  padding: 15px;
+  z-index: 1;
   box-sizing: border-box;
-  overflow-x: hidden;
-  
-  @media (min-width: 768px) {
-    padding: 20px;
-  }
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Footer = styled.footer`
+  position: relative;
+  z-index: 10;
+  isolation: isolate;
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: var(--space-200) var(--space-600);
+  box-sizing: border-box;
+  background: #000000;
+  color: #ffffff;
   text-align: center;
-  font-size: 10px;
-  color: #999;
-  padding: 40px 0px;
+  font-size: var(--type-size-caption);
+  font-family: var(--font-family);
+  letter-spacing: 0.02em;
 `;
 
+const AppShell = () => {
+  const { pathname } = useLocation();
+  const isHome = pathname === '/' || pathname === '';
+  /** Wallpaper pages: transparent shell, no secondary nav. */
+  const isWallpaperPage =
+    isHome ||
+    pathname === '/resources' ||
+    pathname === '/resources/whats-new' ||
+    pathname === '/foundations' ||
+    pathname.startsWith('/foundations/ai') ||
+    pathname === '/components' ||
+    pathname === '/version-control';
+
+  return (
+    <Shell $home={isWallpaperPage}>
+      <GlobalScroll />
+      <TopNav />
+      {!isWallpaperPage ? <SectionSubNav /> : null}
+      <LenovoLogo />
+      <ScrollToTop />
+      <Main data-content-container>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/whats-new" element={<Navigate to="/resources/whats-new" replace />} />
+          <Route path="/resources/about" element={<Navigate to="/resources" replace />} />
+          <Route
+            path="/get-started/about-cake"
+            element={<Navigate to="/resources" replace />}
+          />
+          <Route
+            path="/get-started/figma-libraries"
+            element={<Navigate to="/resources" replace />}
+          />
+          <Route
+            path="/foundations/colors"
+            element={<Navigate to="/foundations" replace />}
+          />
+          <Route
+            path="/foundations/iconography"
+            element={<Navigate to="/foundations" replace />}
+          />
+          <Route
+            path="/foundations/language-grammar"
+            element={<Navigate to="/foundations" replace state={{ foundationsTab: 'tone-of-voice' }} />}
+          />
+          {routes
+            .filter((route) => route.component && route.path !== '/')
+            .map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={<route.component />}
+              />
+            ))}
+          <Route
+            path="/components/:legacy/*"
+            element={<Navigate to="/components" replace />}
+          />
+        </Routes>
+      </Main>
+      <Footer>© 2026 Cake&amp; Design System. All rights reserved.</Footer>
+    </Shell>
+  );
+};
+
 function App() {
-  // Get the base URL from the homepage field in package.json
   const baseUrl = process.env.PUBLIC_URL || '';
 
   return (
-    <Router basename={baseUrl}>
-      <GlobalStyles />
-      <Navigation />
-      <LenovoLogo />
-      <ScrollToTop />
-      <Wrapper>
-        <PageContentWrapper data-content-container>
-          <Routes>
-            {/* Redirect parent-only group routes to their first child */}
-            <Route path="/foundations/ai" element={<Navigate to="/foundations/ai/overview" replace />} />
-            {routes
-              .filter(route => route.component)
-              .map(route => (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<route.component />}
-                />
-              ))}
-          </Routes>
-          <Footer>© {new Date().getFullYear()} Cake Design System. All rights reserved.</Footer>
-        </PageContentWrapper>
-      </Wrapper>
-    </Router>
+    <SiteThemeProvider>
+      <Router basename={baseUrl}>
+        <AppShell />
+      </Router>
+    </SiteThemeProvider>
   );
 }
 
-export default App; 
+export default App;

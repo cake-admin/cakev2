@@ -4,10 +4,10 @@ import { DataEditor } from './controls/DataEditor';
 import { DataImport } from './controls/DataImport';
 import { ColorControls } from './controls/ColorControls';
 import { StyleControls } from './controls/StyleControls';
+import { LayoutControls } from './controls/LayoutControls';
 import { HeaderControls } from './controls/HeaderControls';
 import { ExportControls } from './controls/ExportControls';
 import { CodeExport } from './controls/CodeExport';
-import { ModeToggle } from './controls/ModeToggle';
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -21,21 +21,21 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 export function CustomizationPanel() {
   return (
     <aside className="panel" aria-label="Chart customization">
-      <Section title="Appearance">
-        <ModeToggle />
-      </Section>
       <Section title="Chart type">
         <ChartTypePicker />
       </Section>
-      <Section title="Data">
-        <DataEditor />
-        <DataImport />
+      <Section title="Style">
+        <StyleControls />
+      </Section>
+      <Section title="Layout">
+        <LayoutControls />
       </Section>
       <Section title="Color">
         <ColorControls />
       </Section>
-      <Section title="Style">
-        <StyleControls />
+      <Section title="Data">
+        <DataEditor />
+        <DataImport />
       </Section>
       <Section title="Header">
         <HeaderControls />
@@ -43,7 +43,7 @@ export function CustomizationPanel() {
       <Section title="Code">
         <CodeExport />
       </Section>
-      <Section title="Export to Figma">
+      <Section title="Figma">
         <ExportControls />
       </Section>
     </aside>

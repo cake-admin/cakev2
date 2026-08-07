@@ -6,7 +6,7 @@ import { copySvg, downloadSvg } from '../../export/clipboard';
 import { NumberInput } from './NumberInput';
 import type { Mode } from '../../tokens/tokens.types';
 
-const MODES: Mode[] = ['light', 'dark'];
+const MODES: Mode[] = ['light', 'dark', 'hct'];
 const PRESETS: Array<[number, number]> = [
   [640, 420],
   [960, 600],

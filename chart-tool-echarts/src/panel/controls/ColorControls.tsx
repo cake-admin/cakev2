@@ -1,8 +1,10 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { CHART_REGISTRY } from '../../charts/registry';
 import { useChartStore } from '../../state/chartStore';
 import { useChartTheme } from '../../theme/ThemeProvider';
 import { SINGLE_TOKENS, paletteTokensFor } from '../../tokens/loadTokens';
 import type { Variation } from '../../theme/chartTheme.types';
+import { WIREFRAME_SHADE_LIMIT } from '../../theme/chartTheme.types';
 import type { SingleToken } from '../../tokens/tokens.types';
 
 const VARIATIONS: Array<{ id: Variation; label: string; hint: string; hidden?: boolean }> = [
@@ -11,7 +13,11 @@ const VARIATIONS: Array<{ id: Variation; label: string; hint: string; hidden?: b
   { id: 'semantic', label: 'Semantic', hint: 'Red→green ramp (bad→good) — gauge, KPI, heatmap' },
   { id: 'diverging', label: 'Diverging', hint: 'Jade↔violet two-ended ramp — heatmap, choropleth' },
   { id: 'primary', label: 'Primary', hint: 'Pick one primary-family token', hidden: true },
-  { id: 'secondary', label: 'Wireframe', hint: 'Pick one wireframe token from the secondary family' },
+  {
+    id: 'secondary',
+    label: 'Wireframe',
+    hint: `Multiple secondary greys; patterns after ${WIREFRAME_SHADE_LIMIT} categories`,
+  },
 ];
 
 const VISIBLE_VARIATIONS = VARIATIONS.filter((v) => !v.hidden);
@@ -49,9 +55,46 @@ const DEFAULT_TOKEN: Record<'primary' | 'secondary', string> = {
 export function ColorControls() {
   const color = useChartStore((s) => s.color);
   const setColor = useChartStore((s) => s.setColor);
+  const chartType = useChartStore((s) => s.type);
   const theme = useChartTheme();
-  const isDark = theme.mode === 'dark';
+  const isDark = theme.mode !== 'light';
   const swatchOf = (t: SingleToken): string => (isDark ? t.darkA : t.lightA);
+
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  const recommended = useMemo(() => {
+    const list = CHART_REGISTRY[chartType]?.recommendedThemes ?? [];
+    return new Set(list);
+  }, [chartType]);
+
+  const orderedThemes = useMemo(() => {
+    const rec: typeof VISIBLE_VARIATIONS = [];
+    const rest: typeof VISIBLE_VARIATIONS = [];
+    for (const v of VISIBLE_VARIATIONS) {
+      (recommended.has(v.id) ? rec : rest).push(v);
+    }
+    // Keep registry order within the recommended group.
+    const order = CHART_REGISTRY[chartType]?.recommendedThemes ?? [];
+    rec.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+    return [...rec, ...rest];
+  }, [chartType, recommended]);
 
   const subgroups = useMemo(() => {
     if (!TOKEN_VARIATIONS.has(color.variation)) return [];
@@ -63,14 +106,23 @@ export function ColorControls() {
   }, [color.variation]);
 
   // Ramp variations preview their actual token stops (not interpolated samples),
-  // so the swatch count matches what was specified.
+  // so the swatch count matches what was specified. Wireframe previews its
+  // multi-shade greys (up to the pattern threshold).
   const rampOf: Partial<Record<Variation, string[]>> = {
     sequential: theme.color.sequentialRamp,
     semantic: theme.color.semanticRamp,
     diverging: theme.color.divergingRamp,
   };
   const preview =
-    rampOf[color.variation] ?? theme.color.resolve(color, color.variation === 'categorical' ? 12 : 1);
+    rampOf[color.variation] ??
+    theme.color.resolve(
+      color,
+      color.variation === 'categorical'
+        ? 12
+        : color.variation === 'secondary'
+          ? WIREFRAME_SHADE_LIMIT
+          : 1,
+    );
   const activeVariation = VARIATIONS.find((v) => v.id === color.variation);
 
   // Fixed palettes list their token stops read-only — same anatomy as the
@@ -80,6 +132,7 @@ export function ColorControls() {
   const selectVariation = (id: Variation) => {
     if (!TOKEN_VARIATIONS.has(id)) {
       setColor({ variation: id });
+      setOpen(false);
       return;
     }
     // Keep the current token if it belongs to this family, else use the default.
@@ -87,22 +140,53 @@ export function ColorControls() {
     const current = SINGLE_TOKENS.find((t) => t.id === color.token);
     const keep = current && baseOf(current.label) === family ? color.token : DEFAULT_TOKEN[family];
     setColor({ variation: family, token: keep });
+    setOpen(false);
   };
 
   return (
     <>
-      <div className="field__label">Variation</div>
-      <div className="seg seg--wrap">
-        {VISIBLE_VARIATIONS.map((v) => (
-          <button
-            key={v.id}
-            type="button"
-            className={`seg__btn ${color.variation === v.id ? 'seg__btn--active' : ''}`}
-            onClick={() => selectVariation(v.id)}
-          >
-            {v.label}
-          </button>
-        ))}
+      <div className="field__label" id="color-theme-label">
+        Color theme
+      </div>
+      <div className="theme-select" ref={rootRef}>
+        <button
+          type="button"
+          className={`theme-select__trigger ${open ? 'theme-select__trigger--open' : ''}`}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-labelledby="color-theme-label"
+          onClick={() => setOpen((o) => !o)}
+        >
+          <span className="theme-select__value">
+            {activeVariation?.label ?? color.variation}
+            {recommended.has(color.variation) ? (
+              <span className="theme-badge">Recommended</span>
+            ) : null}
+          </span>
+          <span className="theme-select__chevron" aria-hidden="true">
+            ▾
+          </span>
+        </button>
+        {open ? (
+          <ul className="theme-select__menu" role="listbox" aria-labelledby="color-theme-label">
+            {orderedThemes.map((v) => {
+              const isRec = recommended.has(v.id);
+              const selected = color.variation === v.id;
+              return (
+                <li key={v.id} role="option" aria-selected={selected}>
+                  <button
+                    type="button"
+                    className={`theme-select__option ${selected ? 'theme-select__option--active' : ''}`}
+                    onClick={() => selectVariation(v.id)}
+                  >
+                    <span className="theme-select__option-label">{v.label}</span>
+                    {isRec ? <span className="theme-badge">Recommended</span> : null}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        ) : null}
       </div>
       {activeVariation ? (
         <p className="field__hint" style={{ margin: '8px 0 0' }}>
@@ -112,6 +196,11 @@ export function ColorControls() {
 
       {TOKEN_VARIATIONS.has(color.variation) ? (
         <div className="token-list token-list--scroll" style={{ marginTop: 12 }}>
+          {color.variation === 'secondary' ? (
+            <p className="field__hint" style={{ margin: '0 0 8px' }}>
+              Optional base grey for the wireframe shade ramp
+            </p>
+          ) : null}
           {subgroups.map(({ kind, tokens }) => (
             <div key={kind} className="token-group">
               <div className="token-group__title">{kind}</div>

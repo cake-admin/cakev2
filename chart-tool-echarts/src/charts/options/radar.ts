@@ -13,6 +13,7 @@ import {
   tooltipFor,
   type ChartContext,
 } from './common';
+import { fillStyle } from './wireframe';
 
 /** Radar / spider — one indicator per category, one polygon per series. */
 export function buildRadar(ctx: ChartContext): EChartsOption {
@@ -50,12 +51,13 @@ export function buildRadar(ctx: ChartContext): EChartsOption {
         data: series.map((s, si) => {
           const c = colors[si % colors.length];
           const st = theme.color.states(ctx.color, c);
+          const area = fillStyle(ctx, c, si, { opacity: 0.18 });
           return {
             name: s.name,
             value: axes.map((a) => s.points.find((p) => p.x === a)?.y ?? 0),
-            itemStyle: { color: c },
+            itemStyle: fillStyle(ctx, c, si),
             lineStyle: { color: c, width: px(ctx, 2) },
-            areaStyle: { color: c, opacity: 0.18 },
+            areaStyle: area,
             emphasis: {
               itemStyle: { color: st.hover },
               lineStyle: { color: st.hover, width: px(ctx, 3) },

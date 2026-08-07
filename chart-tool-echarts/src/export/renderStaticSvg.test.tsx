@@ -7,10 +7,10 @@ import { CHART_IDS, CHART_REGISTRY } from '../charts/registry';
 import { DEFAULT_STYLE } from '../charts/types';
 
 describe('ECharts SVG export', () => {
-  it.each(CHART_IDS)('renders %s as a clean, text-bearing SVG (light + dark)', (id) => {
+  it.each(CHART_IDS)('renders %s as a clean, text-bearing SVG (light + dark + hct)', (id) => {
     const def = CHART_REGISTRY[id];
     const style = { ...DEFAULT_STYLE, ...def.defaultStyle };
-    (['light', 'dark'] as const).forEach((mode) => {
+    (['light', 'dark', 'hct'] as const).forEach((mode) => {
       const svg = renderChartSvg({
         type: id,
         data: def.preset(),
@@ -38,6 +38,8 @@ describe('ECharts SVG export', () => {
     const style = { ...DEFAULT_STYLE, ...def.defaultStyle };
     const light = renderChartSvg({ type: 'bar', data: def.preset(), color: { variation: 'categorical' }, style, mode: 'light' });
     const dark = renderChartSvg({ type: 'bar', data: def.preset(), color: { variation: 'categorical' }, style, mode: 'dark' });
+    const hct = renderChartSvg({ type: 'bar', data: def.preset(), color: { variation: 'categorical' }, style, mode: 'hct' });
     expect(light).not.toEqual(dark); // light/dark are distinct token-driven renders
+    expect(hct).not.toEqual(dark); // HCT uses win-hct surfaces, distinct from darkA
   });
 });

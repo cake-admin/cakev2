@@ -1,36 +1,99 @@
 import React from 'react';
 import type { Preview, Decorator } from '@storybook/react-vite';
+import { DocsContainer, type DocsContainerProps } from '@storybook/addon-docs/blocks';
+import { addons, useGlobals } from 'storybook/preview-api';
+import { GLOBALS_UPDATED } from 'storybook/internal/core-events';
 
 import { CakeProvider } from '../src/cakeand/theme/CakeProvider';
 import { themes, type ThemeMode } from '../src/cakeand/tokens/theme';
+import {
+  cakeManagerThemes,
+  resolveManagerThemeKey,
+} from './cake-manager-themes';
+
+// Always load tokens + fonts in the preview iframe — pure MDX docs pages do
+// not run story decorators, so CakeProvider never mounts for Introduction /
+// Foundations / Guides unless we import these here.
+import '../src/cakeand/tokens/cake-vars.css';
+import '../src/cakeand/theme/fonts.css';
 
 /**
- * The global "Theme" toolbar toggle is the single source of truth for the mode.
- * Every story is wrapped in CakeProvider — the same wrapper consuming apps use —
- * so components get their tokens from both the CSS custom properties and
- * `props.theme`. Stories never set the theme themselves.
- *
- * CakeProvider puts `data-theme` on `<html>`, which is what keeps Radix
- * portals themed: Modal, Dropdown, both Tooltips, Breadcrumb, NumberDropdown,
- * and Pagination render into `document.body`, outside this decorator's subtree,
- * so an attribute on the wrapper div alone would leave them on `:root`
- * (light.a) in dark mode. The div keeps its own `data-theme` too, so the canvas
- * is themed on the very first paint.
+ * Toolbar values are URL-safe (`light` / `dark` / `hct`). Map them onto the
+ * real cake& ThemeMode strings used by tokens + `data-theme`.
  */
-const withTheme: Decorator = (Story, context) => {
-  const mode = (context.globals.theme as ThemeMode) || 'light.a';
-  const canvas = themes[mode].color.surfaces.canvas;
-  // In Docs, each story renders in its own preview block — a full-viewport min
-  // height would make every example a 100vh-tall box. Only fill the viewport in
-  // the single-story (canvas) view, where the themed background should bleed.
-  const isDocs = context.viewMode === 'docs';
+const TOOLBAR_TO_MODE: Record<string, ThemeMode> = {
+  light: 'light.a',
+  dark: 'dark.a',
+  hct: 'win hct',
+  // tolerate legacy / direct values
+  'light.a': 'light.a',
+  'dark.a': 'dark.a',
+  'win hct': 'win hct',
+};
+
+const resolveMode = (raw: unknown): ThemeMode => {
+  if (typeof raw === 'string' && TOOLBAR_TO_MODE[raw]) return TOOLBAR_TO_MODE[raw];
+  return 'light.a';
+};
+
+const applyHtmlDataTheme = (raw: unknown) => {
+  if (typeof document === 'undefined') return;
+  document.documentElement.setAttribute('data-theme', resolveMode(raw));
+};
+
+// Keep <html data-theme> in sync even when no decorator / DocsContainer mounts
+// (story canvas ↔ docs navigations, first paint on MDX-only entries).
+addons.getChannel().on(GLOBALS_UPDATED, ({ globals }) => {
+  applyHtmlDataTheme(globals?.theme);
+});
+
+/**
+ * Docs (including pure MDX) — Storybook's TOC / prose chrome reads Emotion
+ * colors from the docs ThemeProvider. Pass our cake manager themes so the
+ * outline panel and docs chrome follow the Theme toolbar.
+ */
+const CakeDocsContainer = ({ children, context }: DocsContainerProps) => {
+  const [globals] = useGlobals();
+  const managerKey = resolveManagerThemeKey(globals.theme);
+  const mode = resolveMode(globals.theme);
+
+  React.useLayoutEffect(() => {
+    applyHtmlDataTheme(mode);
+  }, [mode]);
 
   return (
-    <CakeProvider mode={mode}>
+    <DocsContainer context={context} theme={cakeManagerThemes[managerKey]}>
+      {children}
+    </DocsContainer>
+  );
+};
+
+/**
+ * Theme CSF stories without letting every story's CakeProvider fight over
+ * `<html data-theme>` (docs pages mount many decorated blocks; their
+ * cleanups were restoring a stale attribute and breaking the toolbar).
+ *
+ * - One layout-effect writes `data-theme` on `<html>` (no restore-on-unmount).
+ * - CakeProvider uses `scope="subtree"` + `globalStyles={false}` so it only
+ *   supplies the styled-components theme / a local data-theme wrapper, and
+ *   does not paint `body` (which was fighting Storybook's docs chrome).
+ */
+const withTheme: Decorator = (Story, context) => {
+  const mode = resolveMode(context.globals.theme);
+  const canvas = themes[mode].color.surfaces.canvas;
+  const isDocs = context.viewMode === 'docs';
+
+  React.useLayoutEffect(() => {
+    applyHtmlDataTheme(mode);
+  }, [mode]);
+
+  return (
+    <CakeProvider mode={mode} scope="subtree" globalStyles={false}>
       <div
         data-theme={mode}
         style={{
           background: canvas,
+          color: themes[mode].color.textIcon.primary,
           width: '100%',
           alignSelf: 'stretch',
           minHeight: isDocs ? 'auto' : '100vh',
@@ -49,14 +112,16 @@ const preview: Preview = {
 
   globalTypes: {
     theme: {
-      description: 'cake& theme mode',
+      description:
+        'cake& theme mode — sets data-theme on the preview <html> and the ' +
+        'styled-components theme (light.a / dark.a / win hct).',
       toolbar: {
         title: 'Theme',
         icon: 'contrast',
         items: [
-          { value: 'light.a', title: 'Light A', icon: 'sun' },
-          { value: 'dark.a', title: 'Dark A', icon: 'moon' },
-          { value: 'win hct', title: 'Win HCT', icon: 'accessibility' },
+          { value: 'light', title: 'Light A', icon: 'sun' },
+          { value: 'dark', title: 'Dark A', icon: 'moon' },
+          { value: 'hct', title: 'Windows HCT', icon: 'accessibility' },
         ],
         dynamicTitle: true,
       },
@@ -64,14 +129,13 @@ const preview: Preview = {
   },
 
   initialGlobals: {
-    theme: 'light.a',
+    theme: 'light',
   },
 
   parameters: {
     layout: 'centered',
     docs: {
-      // Right-rail table of contents on docs pages: picks up the ## sections
-      // from `docs.description.component` plus each story's title.
+      container: CakeDocsContainer,
       toc: { headingSelector: 'h2, h3' },
     },
     controls: {
@@ -81,7 +145,6 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
-    // The decorator paints the canvas from the theme, so disable the addon bg.
     backgrounds: { disable: true },
     a11y: { test: 'todo' },
     options: {
@@ -91,9 +154,6 @@ const preview: Preview = {
           'Foundations',
           ['Colors', 'Typography', 'Spacing', 'Elevation', 'Special Surfaces'],
           'Guides',
-          // Getting Started leads: it is the page a newcomer needs, and
-          // alphabetical order would otherwise bury it behind the two
-          // contributor guides.
           ['Getting Started', 'Building a Component', 'Shipping a Component'],
           'Elements',
           'Components',

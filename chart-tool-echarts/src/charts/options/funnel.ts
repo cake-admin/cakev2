@@ -1,5 +1,6 @@
 import type { EChartsOption } from 'echarts';
 import { isPartition } from '../../data/dataModel';
+import { CORNER_RADIUS, SEGMENT_GAP } from '../types';
 import {
   animationOpts,
   FONT,
@@ -15,6 +16,7 @@ import {
   tooltipFor,
   type ChartContext,
 } from './common';
+import { fillStyle } from './wireframe';
 
 /** Funnel — partition slices as descending stages. */
 export function buildFunnel(ctx: ChartContext): EChartsOption {
@@ -24,13 +26,15 @@ export function buildFunnel(ctx: ChartContext): EChartsOption {
   const colors = seriesColors(ctx, slices.length);
   const legendShown = style.showLegend && slices.length > 0;
   const maxV = Math.max(1, ...slices.map((s) => s.value));
+  const gap = px(ctx, SEGMENT_GAP);
+  const corner = px(ctx, CORNER_RADIUS);
 
   const items = slices.map((s, i) => {
     const color = colors[i % colors.length];
     return {
       name: s.label,
       value: s.value,
-      itemStyle: { color },
+      itemStyle: fillStyle(ctx, color, i),
       label: { color: readableText(color) },
       ...markStates(ctx, color),
     };
@@ -52,11 +56,15 @@ export function buildFunnel(ctx: ChartContext): EChartsOption {
         min: 0,
         max: maxV,
         sort: 'descending',
-        gap: px(ctx, 2),
+        gap,
         selectedMode: SELECTED_MODE,
         label: { show: true, position: 'inside', fontFamily: FONT, fontSize: fs(ctx, 12), formatter: '{b}' },
         labelLine: { show: false },
-        itemStyle: { borderColor: theme.surface.card, borderWidth: px(ctx, 1) },
+        itemStyle: {
+          borderColor: theme.surface.card,
+          borderWidth: px(ctx, 1),
+          borderRadius: corner,
+        },
         emphasis: { label: { fontSize: fs(ctx, 13) } },
         data: items,
       },

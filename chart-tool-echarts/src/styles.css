@@ -1,30 +1,10 @@
-/* Rookery New — the design system typeface (served from public/fonts). */
-@font-face {
-  font-family: 'Rookery New';
-  src: url('/fonts/RookeryNew-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Rookery New';
-  src: url('/fonts/RookeryNew-Medium.woff2') format('woff2');
-  font-weight: 500 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Rookery New';
-  src: url('/fonts/RookeryNew-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
+/* Typeface: Rookery New arrives via cake& `fonts.css` (SiteThemeProvider →
+   CakeProvider). Chart chrome just references the family name. */
 :root {
   --font: 'Rookery New', 'Rookery', 'Noto Sans', system-ui, -apple-system, sans-serif;
   --chrome-bg: #ffffff;
   --chrome-bg-2: #f8fafc;
+  --chrome-hover: #f1f5f9;
   --chrome-border: #e2e8f0;
   --chrome-border-strong: #cbd5e1;
   --chrome-text: #0f172a;
@@ -55,10 +35,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-.app {
+/* Full viewport shell: TopNav spacer + chart stage share one column. */
+.app-root {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+/* Chart chrome fills whatever remains under TopNav — never a second 100vh. */
+.app {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   background: var(--chrome-bg-2);
   color: var(--chrome-text);
@@ -131,7 +123,8 @@ body {
 }
 /* A bright white top edge reads as plastic on a dark surface. Dim the highlight
    and let a deeper drop shadow carry the lift instead. */
-[data-theme='dark'] .app__brand-float {
+[data-theme='dark'] .app__brand-float,
+[data-theme='hct'] .app__brand-float {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
@@ -251,6 +244,19 @@ body {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
+/* Dark + HCT: inverse hover / selected so labels stay readable on collapsed chrome. */
+[data-theme='dark'] .seg__btn:hover:not(.seg__btn--active),
+[data-theme='hct'] .seg__btn:hover:not(.seg__btn--active) {
+  background: var(--chrome-text);
+  color: var(--chrome-bg);
+}
+[data-theme='dark'] .seg__btn--active,
+[data-theme='hct'] .seg__btn--active {
+  background: var(--chrome-text);
+  color: var(--chrome-bg);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
 /* Chip = chart-type button + optional remove (×) for catalog-added charts. */
 .seg__chip {
   display: inline-flex;
@@ -282,6 +288,20 @@ body {
 }
 .seg__chip--active .seg__chip-btn {
   color: var(--accent);
+}
+[data-theme='dark'] .seg__chip-btn:hover,
+[data-theme='hct'] .seg__chip-btn:hover {
+  background: var(--chrome-text);
+  color: var(--chrome-bg);
+}
+[data-theme='dark'] .seg__chip--active,
+[data-theme='hct'] .seg__chip--active {
+  background: var(--chrome-text);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+[data-theme='dark'] .seg__chip--active .seg__chip-btn,
+[data-theme='hct'] .seg__chip--active .seg__chip-btn {
+  color: var(--chrome-bg);
 }
 .seg__chip-x {
   appearance: none;
@@ -755,6 +775,156 @@ body {
   display: flex;
   gap: 8px;
   margin-top: 12px;
+}
+
+/* ---- Color theme dropdown ---- */
+.theme-select {
+  position: relative;
+}
+.theme-select__trigger {
+  appearance: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--chrome-text);
+  background: var(--chrome-bg);
+  border: 1px solid var(--chrome-border-strong);
+  border-radius: 5px;
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out);
+}
+.theme-select__trigger:hover {
+  border-color: var(--chrome-text-3);
+}
+.theme-select__trigger:focus,
+.theme-select__trigger--open {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+/* HCT: border-only hover is invisible (stroke tokens collapse). */
+[data-theme='hct'] .theme-select__trigger:hover {
+  background: var(--chrome-hover);
+  border-color: var(--accent);
+  color: var(--chrome-bg);
+}
+[data-theme='hct'] .theme-select__trigger:hover .theme-select__chevron {
+  color: var(--chrome-bg);
+}
+[data-theme='hct'] .theme-select__trigger:focus,
+[data-theme='hct'] .theme-select__trigger--open {
+  background: var(--chrome-hover);
+  color: var(--chrome-bg);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+[data-theme='hct'] .theme-select__trigger:focus .theme-select__chevron,
+[data-theme='hct'] .theme-select__trigger--open .theme-select__chevron {
+  color: var(--chrome-bg);
+}
+.theme-select__value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex-wrap: wrap;
+}
+.theme-select__chevron {
+  color: var(--chrome-text-3);
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.theme-select__menu {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--chrome-bg);
+  border: 1px solid var(--chrome-border-strong);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.06);
+  max-height: 280px;
+  overflow-y: auto;
+}
+[data-theme='hct'] .theme-select__menu {
+  box-shadow: none;
+}
+.theme-select__option {
+  appearance: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--chrome-text);
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 10px;
+  cursor: pointer;
+  text-align: left;
+}
+.theme-select__option:hover {
+  background: var(--chrome-bg-2);
+}
+.theme-select__option--active {
+  background: var(--accent-weak);
+  color: var(--accent-on-weak, var(--accent));
+}
+
+/* HCT: gray hover wash + cyan selected fill with dark label (token pair). */
+[data-theme='hct'] .theme-select__option:hover {
+  background: var(--chrome-hover);
+  color: var(--chrome-bg);
+}
+[data-theme='hct'] .theme-select__option--active {
+  background: var(--accent);
+  color: var(--chrome-bg);
+}
+[data-theme='hct'] .theme-select__option--active:hover {
+  background: var(--accent);
+  color: var(--chrome-bg);
+}
+
+[data-theme='hct'] .token-row:hover {
+  border-color: var(--accent);
+  background: var(--chrome-hover);
+  color: var(--chrome-bg);
+}
+[data-theme='hct'] .token-row:hover .token-row__label,
+[data-theme='hct'] .token-row:hover .token-row__id {
+  color: inherit;
+}
+.theme-select__option-label {
+  min-width: 0;
+}
+/* Success fill + inverse ink (cake Badge solid) — readable in light, dark, and HCT
+   (dark/HCT success is a light green or white; inverse text stays dark on that fill). */
+.theme-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  background: var(--color-success-success);
+  color: var(--color-text-icon-inverse);
+  border-radius: 999px;
+  padding: 2px 7px;
+  line-height: 1.4;
 }
 
 /* ---- Toggle / slider ---- */

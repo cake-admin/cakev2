@@ -114,22 +114,22 @@ export function paletteTokensFor(variation: string): SingleToken[] {
 
 /** The design system's categorical chart palette for a mode. */
 export function categoricalFor(mode: Mode): string[] {
-  return mode === 'dark' ? CATEGORICAL.darkA : CATEGORICAL.lightA;
+  return mode === 'light' ? CATEGORICAL.lightA : CATEGORICAL.darkA;
 }
 
 /** The sequential single-hue ramp (light → dark) for a mode. */
 export function sequentialFor(mode: Mode): string[] {
-  return mode === 'dark' ? SEQUENTIAL.darkA : SEQUENTIAL.lightA;
+  return mode === 'light' ? SEQUENTIAL.lightA : SEQUENTIAL.darkA;
 }
 
 /** The semantic red→green ramp (low → high / bad → good) for a mode. */
 export function semanticScaleFor(mode: Mode): string[] {
-  return mode === 'dark' ? SEMANTIC_SCALE.darkA : SEMANTIC_SCALE.lightA;
+  return mode === 'light' ? SEMANTIC_SCALE.lightA : SEMANTIC_SCALE.darkA;
 }
 
 /** The diverging cyan↔violet ramp (low → high) for a mode. */
 export function divergingFor(mode: Mode): string[] {
-  return mode === 'dark' ? DIVERGING.darkA : DIVERGING.lightA;
+  return mode === 'light' ? DIVERGING.lightA : DIVERGING.darkA;
 }
 
 /** Semantic role → color for a mode (positive/negative/warning/info/neutral). */
@@ -146,7 +146,7 @@ export function semanticFor(mode: Mode): Record<SemanticRole, string> {
 
 /** Map of single-token id → color string for a mode. */
 export function singleColorsFor(mode: Mode): Record<string, string> {
-  const key = mode === 'dark' ? 'darkA' : 'lightA';
+  const key = MODE_TO_TOKEN_KEY[mode];
   const map: Record<string, string> = {};
   for (const token of SINGLE_TOKENS) map[token.id] = token[key];
   return map;
@@ -161,9 +161,9 @@ export function resolveToken(tokens: RawTokens, name: string, mode: Mode): strin
   const token = tokens[name];
   if (!token) {
     console.warn(`[tokens] missing token "${name}" — using fallback`);
-    return mode === 'dark' ? '#a1a1aa' : '#334155';
+    return mode === 'light' ? '#334155' : '#a1a1aa';
   }
-  return token[MODE_TO_TOKEN_KEY[mode]] ?? (mode === 'dark' ? '#a1a1aa' : '#334155');
+  return token[MODE_TO_TOKEN_KEY[mode]] ?? (mode === 'light' ? '#334155' : '#a1a1aa');
 }
 
 /** A bound resolver for ergonomics inside theme builders. */

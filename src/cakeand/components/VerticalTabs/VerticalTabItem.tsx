@@ -56,10 +56,11 @@ const Trigger = styled(RadixTabs.Trigger)`
     background: var(--color-tonal-tonal-secondary-overlay-press);
   }
 
-  /* Selected — Radix drives data-state, so selection is never tracked here. */
+  /* Selected — Radix drives data-state, so selection is never tracked here.
+     Text uses on-tonal so HCT stays readable (primary === tonal fill there). */
   &[data-state='active'] {
     background: var(--color-tonal-tonal-overlay);
-    color: var(--color-primary-primary);
+    color: var(--color-text-icon-on-tonal);
     font-weight: var(--font-weight-bold);
   }
   &[data-state='active']:hover:not(:disabled) {
@@ -80,7 +81,7 @@ const Trigger = styled(RadixTabs.Trigger)`
     width: ${INDICATOR_WIDTH}px;
     height: ${INDICATOR_HEIGHT}px;
     border-radius: var(--radius-1000);
-    background: var(--color-primary-primary);
+    background: var(--color-text-icon-on-tonal);
   }
 
   /* Disabled wins over the selected treatment (matching Figma: no fill, no

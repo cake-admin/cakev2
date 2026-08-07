@@ -55,16 +55,18 @@ const Trigger = styled(RadixTabs.Trigger)`
     background: var(--color-tonal-tonal-secondary-overlay-press);
   }
 
-  /* Selected: bold accent label, and — unlike the parent row — no fill at rest. */
+  /* Selected: bold label; on-tonal when a tonal fill appears (HCT-safe). */
   &[data-state='active'] {
     color: var(--color-primary-primary);
     font-weight: var(--font-weight-bold);
   }
   &[data-state='active']:hover:not(:disabled) {
     background: var(--color-tonal-tonal-overlay-hover);
+    color: var(--color-text-icon-on-tonal);
   }
   &[data-state='active']:active:not(:disabled) {
     background: var(--color-tonal-tonal-overlay-press);
+    color: var(--color-text-icon-on-tonal);
   }
 
   /* Figma gives the sub-item a solid disabled fill, where the parent row stays

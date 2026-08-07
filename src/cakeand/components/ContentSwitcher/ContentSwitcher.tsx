@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ToggleGroup as RadixToggleGroup } from 'radix-ui';
 
 import { Button } from '../Button/Button';
@@ -41,6 +41,61 @@ const Track = styled(RadixToggleGroup.Root)<{
       : 'var(--color-secondary-secondary-overlay)'};
   /* Figma insets the medium track by 2px; the small track sits flush. */
   padding: ${(p) => (p.$size === 'md' ? 'var(--space-025)' : '0')};
+
+  /*
+   * Dark + Windows HCT: overlay washes collapse or sit too close to the canvas,
+   * so the track edge disappears. Keep a real stroke from existing tokens.
+   * HCT also maps primary/secondary overlays to solid white — swap the track to
+   * the container surface so ghost labels (often white) stay readable.
+   */
+  :root[data-theme='dark.a'] &,
+  [data-theme='dark.a'] & {
+    box-shadow: inset 0 0 0 var(--stroke-100) var(--color-stroke-border);
+  }
+
+  :root[data-theme='win hct'] &,
+  [data-theme='win hct'] & {
+    background: var(--color-surfaces-container);
+    box-shadow: inset 0 0 0 var(--stroke-100) var(--color-stroke-border);
+  }
+`;
+
+/**
+ * Shared dark / HCT segment treatments (Dropdown-style inverse hover + primary
+ * edge). Button fill/ghost tokens alone lose contrast when overlays flatten.
+ */
+const segmentContrastFixes = css`
+  /*
+   * Unselected hover: inverse surface + inverse ink + primary border so the
+   * wash is never light-on-light (dark) or white-on-white (HCT).
+   */
+  :root[data-theme='dark.a'] &:not([data-state='on']):hover:not(:disabled),
+  [data-theme='dark.a'] &:not([data-state='on']):hover:not(:disabled),
+  :root[data-theme='win hct'] &:not([data-state='on']):hover:not(:disabled),
+  [data-theme='win hct'] &:not([data-state='on']):hover:not(:disabled) {
+    background: var(--color-surfaces-inverse-container);
+    color: var(--color-text-icon-inverse);
+    box-shadow: inset 0 0 0 var(--stroke-100) var(--color-primary-primary);
+  }
+
+  /*
+   * Selected: elevation-0 collapses under HCT; keep fill tokens from Button but
+   * add a primary edge. Dark keeps the same edge so the pill reads against the
+   * track when shadows are soft.
+   */
+  :root[data-theme='dark.a'] &[data-state='on'],
+  [data-theme='dark.a'] &[data-state='on'],
+  :root[data-theme='win hct'] &[data-state='on'],
+  [data-theme='win hct'] &[data-state='on'] {
+    box-shadow: inset 0 0 0 var(--stroke-100) var(--color-primary-primary);
+  }
+
+  :root[data-theme='dark.a'] &[data-state='on']:hover:not(:disabled),
+  [data-theme='dark.a'] &[data-state='on']:hover:not(:disabled),
+  :root[data-theme='win hct'] &[data-state='on']:hover:not(:disabled),
+  [data-theme='win hct'] &[data-state='on']:hover:not(:disabled) {
+    box-shadow: inset 0 0 0 var(--stroke-100) var(--color-primary-primary);
+  }
 `;
 
 /** Radix puts `data-state="on"` on the selected item; that's the only hook the
@@ -49,12 +104,16 @@ const SegmentButton = styled(Button)`
   &[data-state='on'] {
     box-shadow: ${SELECTED_SHADOW};
   }
+
+  ${segmentContrastFixes}
 `;
 
 const SegmentIconButton = styled(IconButton)`
   &[data-state='on'] {
     box-shadow: ${SELECTED_SHADOW};
   }
+
+  ${segmentContrastFixes}
 `;
 
 export interface ContentSwitcherOption {

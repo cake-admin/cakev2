@@ -11,6 +11,11 @@ function reindent(src: string, indent: string): string {
 }
 
 /** Serialize a value to a JS literal. Functions emit their `__src` tag or source. */
+export function serializeJs(value: any, indent = ''): string {
+  return ser(value, indent);
+}
+
+/** Serialize a value to a JS literal. Functions emit their `__src` tag or source. */
 function ser(value: any, indent: string): string {
   if (value === null) return 'null';
   const t = typeof value;

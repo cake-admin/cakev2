@@ -10,8 +10,11 @@ export type CircularStyle = 'donut' | 'pie' | 'half' | 'nested' | 'polar';
 export type LegendPosition = 'bottom' | 'right';
 export type HeaderPlacement = 'top' | 'left';
 
-/** Fixed bar corner radius (px @ 1×) — consistent across all charts. */
+/** Fixed corner radius (px @ 1×) — bars, pie slices, heatmap cells, treemap tiles. */
 export const CORNER_RADIUS = 12;
+
+/** Gap between touching segments (px @ 1×) — stacked bars, pie slices, treemap, etc. */
+export const SEGMENT_GAP = 2;
 
 /** Visual tweaks exposed by the style controls. Clamped to design-system ranges. */
 export interface StyleConfig {

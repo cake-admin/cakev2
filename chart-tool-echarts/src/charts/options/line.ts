@@ -14,6 +14,7 @@ import {
   tooltipFor,
   type ChartContext,
 } from './common';
+import { fillStyle } from './wireframe';
 
 function lineOption(ctx: ChartContext, area: boolean): EChartsOption {
   const data = isSeries(ctx.data) ? ctx.data : { kind: 'series' as const, series: [] };
@@ -28,6 +29,13 @@ function lineOption(ctx: ChartContext, area: boolean): EChartsOption {
   const echSeries = series.map((s, si) => {
     const color = colors[si % colors.length];
     const st = theme.color.states(ctx.color, color);
+    const mark = fillStyle(ctx, color, si, {
+      borderColor: theme.surface.card,
+      borderWidth: px(ctx, 1.5),
+    });
+    const areaFill = area
+      ? fillStyle(ctx, color, si, { opacity: 0.18 })
+      : undefined;
     return {
       type: 'line' as const,
       name: s.name,
@@ -39,8 +47,8 @@ function lineOption(ctx: ChartContext, area: boolean): EChartsOption {
       showSymbol: true,
       selectedMode: SELECTED_MODE,
       lineStyle: { width: px(ctx, style.strokeWidth), color },
-      itemStyle: { color, borderColor: theme.surface.card, borderWidth: px(ctx, 1.5) },
-      areaStyle: area ? { color, opacity: 0.18 } : undefined,
+      itemStyle: mark,
+      areaStyle: areaFill,
       emphasis: {
         focus: 'series' as const,
         lineStyle: { color: st.hover, width: px(ctx, style.strokeWidth + 1) },
@@ -63,7 +71,7 @@ function lineOption(ctx: ChartContext, area: boolean): EChartsOption {
     ...animationOpts(ctx),
     grid: gridFor(ctx, legendShown),
     tooltip: { ...tooltipFor(theme), trigger: 'axis' },
-    legend: legendFor(ctx, legendShown),
+    legend: legendFor(ctx, legendShown, legendShown ? series.map((s) => s.name) : undefined),
     graphic: headerGraphic(ctx),
     xAxis: {
       type: 'category',

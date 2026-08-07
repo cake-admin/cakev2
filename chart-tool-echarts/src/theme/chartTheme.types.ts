@@ -4,9 +4,11 @@ import type { Mode } from '../tokens/tokens.types';
 export type BaseKey = 'primary' | 'secondary';
 
 /**
- * Color mode for a chart:
- *  - `categorical` — mixed primary + secondary palette (distinct series colors)
- *  - `primary` / `secondary` — one solid token from that family (see `token`)
+ * Color theme for a chart:
+ *  - `categorical` — fixed multi-hue cake& palette
+ *  - `sequential` / `semantic` / `diverging` — value ramps
+ *  - `primary` — one solid primary-family token (see `token`)
+ *  - `secondary` — wireframe: multiple secondary greys (+ patterns after 6)
  */
 export type Variation =
   | 'categorical'
@@ -15,6 +17,9 @@ export type Variation =
   | 'diverging'
   | 'primary'
   | 'secondary';
+
+/** Wireframe (secondary) uses this many distinct gray shades before patterns. */
+export const WIREFRAME_SHADE_LIMIT = 6;
 
 export interface ColorConfig {
   variation: Variation;

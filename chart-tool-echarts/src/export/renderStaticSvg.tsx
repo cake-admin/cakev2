@@ -92,10 +92,15 @@ export function renderChartSvg(args: ExportArgs): string {
   return bakeBaselines(svg);
 }
 
-/** Build both light and dark variants (the handoff always offers both). */
-export function renderBothModes(args: Omit<ExportArgs, 'mode'>): { light: string; dark: string } {
+/** Build light, dark, and HCT variants (the Figma handoff offers all three). */
+export function renderBothModes(args: Omit<ExportArgs, 'mode'>): {
+  light: string;
+  dark: string;
+  hct: string;
+} {
   return {
     light: renderChartSvg({ ...args, mode: 'light' }),
     dark: renderChartSvg({ ...args, mode: 'dark' }),
+    hct: renderChartSvg({ ...args, mode: 'hct' }),
   };
 }

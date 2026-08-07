@@ -42,6 +42,208 @@
   .sbdocs-content [id] {
     scroll-margin-top: 24px;
   }
+
+  /*
+   * Preview iframe follows cake& data-theme end-to-end (canvas + docs chrome),
+   * so Dark / HCT is a full-page recolor — not just the component examples.
+   */
+  html,
+  body {
+    background: var(--color-surfaces-canvas) !important;
+    color: var(--color-text-icon-primary);
+  }
+
+  .sbdocs-wrapper,
+  .sbdocs-content,
+  .sbdocs-preview,
+  .docs-story,
+  .innerZoomElementWrapper {
+    background: var(--color-surfaces-canvas) !important;
+    color: var(--color-text-icon-primary);
+  }
+
+  .sbdocs-content h1,
+  .sbdocs-content h2,
+  .sbdocs-content h3,
+  .sbdocs-content h4,
+  .sbdocs-content p,
+  .sbdocs-content li,
+  .sbdocs-content td,
+  .sbdocs-content th {
+    color: var(--color-text-icon-primary);
+  }
+
+  .sbdocs-content a {
+    color: var(--color-primary-primary);
+  }
+
+  .sbdocs-content hr {
+    border-color: var(--color-stroke-border);
+  }
+
+  .docblock-argstable,
+  .docblock-argstable-body,
+  .docblock-argstable th,
+  .docblock-argstable td {
+    background: var(--color-surfaces-container) !important;
+    color: var(--color-text-icon-primary) !important;
+    border-color: var(--color-stroke-border) !important;
+  }
+
+  /* Full-iframe canvas so docs/story chrome never leaves a light strip. */
+  html,
+  body,
+  #storybook-root,
+  #storybook-docs {
+    background: var(--color-surfaces-canvas) !important;
+    color: var(--color-text-icon-primary);
+  }
+
+  .sbdocs .sbdocs-title,
+  .sbdocs .sbdocs-preview,
+  .docs-story {
+    background: var(--color-surfaces-canvas) !important;
+    color: var(--color-text-icon-primary);
+  }
+
+  .sbdocs-preview {
+    border-color: var(--color-stroke-border) !important;
+  }
+
+  /*
+   * Panel surfaces — Usage code fences, markdown tables, props tables.
+   * Storybook defaults these to white / zebra-gray; force cake& container
+   * tokens so Dark / HCT don't leave bright islands on the canvas.
+   */
+  .sbdocs-content pre,
+  .sbdocs-content pre.prismjs,
+  .sbdocs-content .docblock-source,
+  .docblock-source,
+  .sbdocs-content [class*='prismjs'] {
+    background: var(--color-surfaces-container) !important;
+    background-color: var(--color-surfaces-container) !important;
+    border: 1px solid var(--color-stroke-border) !important;
+    border-radius: 8px;
+    color: var(--color-text-icon-primary) !important;
+    box-shadow: none !important;
+  }
+
+  .sbdocs-content pre code,
+  .sbdocs-content pre.prismjs code,
+  .sbdocs-content code:not([class*='language-']) {
+    background: transparent !important;
+    color: var(--color-text-icon-primary) !important;
+  }
+
+  /* Inline code chips in prose / table cells. */
+  .sbdocs-content :not(pre) > code {
+    background: var(--color-surfaces-on-container) !important;
+    color: var(--color-text-icon-primary) !important;
+    border: 1px solid var(--color-stroke-border);
+    border-radius: 4px;
+    padding: 0.1em 0.35em;
+  }
+
+  /* Prism token colors — readable on dark container (and fine on light). */
+  .sbdocs-content pre.prismjs .token.comment,
+  .sbdocs-content pre.prismjs .token.prolog,
+  .sbdocs-content pre.prismjs .token.doctype {
+    color: var(--color-text-icon-secondary) !important;
+  }
+  .sbdocs-content pre.prismjs .token.punctuation,
+  .sbdocs-content pre.prismjs .token.operator {
+    color: var(--color-text-icon-primary) !important;
+  }
+  .sbdocs-content pre.prismjs .token.tag,
+  .sbdocs-content pre.prismjs .token.keyword,
+  .sbdocs-content pre.prismjs .token.boolean,
+  .sbdocs-content pre.prismjs .token.number {
+    color: var(--color-primary-primary) !important;
+  }
+  .sbdocs-content pre.prismjs .token.attr-name,
+  .sbdocs-content pre.prismjs .token.property,
+  .sbdocs-content pre.prismjs .token.class-name {
+    color: var(--color-info-info) !important;
+  }
+  .sbdocs-content pre.prismjs .token.string,
+  .sbdocs-content pre.prismjs .token.attr-value,
+  .sbdocs-content pre.prismjs .token.char {
+    color: var(--color-success-success) !important;
+  }
+  .sbdocs-content pre.prismjs .token.function {
+    color: var(--color-warning-warn) !important;
+  }
+
+  /* Markdown + props tables: kill zebra white rows. */
+  .sbdocs-content table,
+  .sbdocs-content table thead,
+  .sbdocs-content table tbody,
+  .sbdocs-content table tr,
+  .sbdocs-content table th,
+  .sbdocs-content table td,
+  .sbdocs-content table tr:nth-child(even),
+  .sbdocs-content table tr:nth-child(odd),
+  .sbdocs-content table tr:nth-of-type(2n),
+  .docblock-argstable,
+  .docblock-argstable-body,
+  .docblock-argstable tr,
+  .docblock-argstable th,
+  .docblock-argstable td,
+  .docblock-argstable tr:nth-of-type(2n),
+  .docblock-argstable tr:nth-of-type(2n-1) {
+    background: var(--color-surfaces-container) !important;
+    background-color: var(--color-surfaces-container) !important;
+    color: var(--color-text-icon-primary) !important;
+    border-color: var(--color-stroke-border) !important;
+  }
+
+  .sbdocs-content table th,
+  .docblock-argstable th {
+    background: var(--color-surfaces-on-container) !important;
+    color: var(--color-text-icon-primary) !important;
+  }
+
+  /* Copy button on source panels. */
+  .docblock-source button,
+  .sbdocs-content pre button {
+    background: var(--color-surfaces-on-container) !important;
+    color: var(--color-text-icon-primary) !important;
+    border: 1px solid var(--color-stroke-border) !important;
+  }
+
+  /*
+   * Docs outline (TOC) — Emotion styles from Storybook's ThemeProvider.
+   * Force cake& text / primary / stroke tokens so Dark / HCT never leave
+   * near-black links on a dark canvas when themes briefly desync.
+   */
+  .sbdocs-toc--custom,
+  .sbdocs-toc--custom .toc-wrapper {
+    color: var(--color-text-icon-primary);
+  }
+
+  .sbdocs-toc--custom > .toc-wrapper > .toc-list,
+  .sbdocs-toc--custom .toc-list .toc-list {
+    border-left-color: var(--color-stroke-border) !important;
+  }
+
+  .sbdocs-toc--custom .toc-list-item > a.toc-link,
+  .sbdocs-toc--custom .toc-list-item > a {
+    color: var(--color-text-icon-secondary) !important;
+  }
+
+  .sbdocs-toc--custom .toc-list-item.is-active-li > a.toc-link,
+  .sbdocs-toc--custom .toc-list-item.is-active-li > a {
+    color: var(--color-primary-primary) !important;
+  }
+
+  .sbdocs-toc--custom .toc-list-item::before {
+    border-left-color: var(--color-primary-primary) !important;
+  }
+
+  .sbdocs-toc--custom p,
+  .sbdocs-toc--custom [class*='Heading'] {
+    color: var(--color-text-icon-secondary) !important;
+  }
 </style>
 
 <script>

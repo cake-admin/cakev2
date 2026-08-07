@@ -1,71 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontStack } from '../../../styles/globalStyles';
 import MyAiLogo from '../../../assets/ai/my_ai.svg';
 import DbConsumer from '../../../assets/ai/db_consumer.svg';
 import imgThinkingLoadingPng from '../../../assets/ai/ai_thinking_loading.png';
 import imgButtonsPng from '../../../assets/ai/ai_buttons.png';
 import imgAiInputPng from '../../../assets/ai/ai_input.png';
 
-import swatchConsumerPrimary   from '../../../assets/ai/swatchConsumerPrimary.svg';
+import swatchConsumerPrimary from '../../../assets/ai/swatchConsumerPrimary.svg';
 import swatchCommercialPrimary from '../../../assets/ai/swatchCommercialPrimary.svg';
-import swatchInternalPrimary   from '../../../assets/ai/swatchInternalPrimary.svg';
-import swatchConsumerSurface   from '../../../assets/ai/swatchConsumerSurface.svg';
+import swatchInternalPrimary from '../../../assets/ai/swatchInternalPrimary.svg';
+import swatchConsumerSurface from '../../../assets/ai/swatchConsumerSurface.svg';
 import swatchCommercialSurface from '../../../assets/ai/swatchCommercialSurface.svg';
-import swatchInternalSurface   from '../../../assets/ai/swatchInternalSurface.svg';
-import swatchConsumerCanvas    from '../../../assets/ai/swatchConsumerCanvas.svg';
-import swatchCommercialCanvas  from '../../../assets/ai/swatchCommercialCanvas.svg';
-import swatchInternalCanvas    from '../../../assets/ai/swatchInternalCanvas.svg';
+import swatchInternalSurface from '../../../assets/ai/swatchInternalSurface.svg';
+import swatchConsumerCanvas from '../../../assets/ai/swatchConsumerCanvas.svg';
+import swatchCommercialCanvas from '../../../assets/ai/swatchCommercialCanvas.svg';
+import swatchInternalCanvas from '../../../assets/ai/swatchInternalCanvas.svg';
 
-
-// ─── Layout ──────────────────────────────────────────────────────────────────
-
-const PageContainer = styled.div`
-  padding: 40px;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: #f8fafc;
-  box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    padding: 24px 16px;
-  }
-`;
+// Layout chrome for embedding inside Foundations panels (no page shell).
 
 const ContentStack = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 64px;
-`;
-
-const PageTitle = styled.h1`
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 40px;
-  color: #0f172a;
-  margin: 0 0 16px 0;
-  font-family: ${fontStack};
-
-  @media (max-width: 768px) {
-    font-size: 24px;
-    line-height: 32px;
-  }
-`;
-
-const PageDescription = styled.div`
-  font-size: 16px;
-  line-height: 22px;
-  color: #1e1e1e;
-  max-width: 680px;
-  font-family: ${fontStack};
-
-  p {
-    margin: 0 0 22px 0;
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
+  gap: var(--space-800);
 `;
 
 // ─── Dotted annotation line ───────────────────────────────────────────────────
@@ -75,7 +31,7 @@ const AnnotationLine = styled.div`
   flex: 1;
   min-width: 16px;
   height: 0;
-  border-top: 1.5px dashed #cbd5e1;
+  border-top: var(--stroke-100) dashed var(--color-stroke-border);
   align-self: center;
 
   @media (max-width: 1060px) {
@@ -88,8 +44,7 @@ const AnnotationLine = styled.div`
 const GradientSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  margin-top: 32px;
+  gap: var(--space-500);
 `;
 
 /*
@@ -156,20 +111,20 @@ const SwatchImage = styled.img`
 const SwatchLabel = styled.p`
   font-size: 10px;
   line-height: 12px;
-  color: #475569;
+  color: var(--color-text-icon-secondary);
   margin: 0;
   text-align: center;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 `;
 
 const GradientDescription = styled.div`
   font-size: 14px;
-  color: #334155;
-  font-family: ${fontStack};
+  color: var(--color-text-icon-secondary);
+  font-family: var(--font-family);
   min-width: 0;
 
   @media (max-width: 1060px) {
-    border-top: 1.5px dashed #cbd5e1;
+    border-top: var(--stroke-100) dashed var(--color-stroke-border);
     padding-top: 16px;
   }
 `;
@@ -178,27 +133,27 @@ const GradientDescTitle = styled.p`
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
-  color: #334155;
+  color: var(--color-text-icon-secondary);
   margin: 0 0 4px 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 `;
 
 const GradientDescText = styled.p`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  color: #334155;
+  color: var(--color-text-icon-secondary);
   margin: 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 `;
 
 const GradientDescMeta = styled.p`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  color: #334155;
+  color: var(--color-text-icon-secondary);
   margin: 12px 0 0 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 `;
 
 // ─── Usage Examples ───────────────────────────────────────────────────────────
@@ -218,9 +173,9 @@ const UsageSectionTitle = styled.h2`
   font-size: 28px;
   font-weight: 600;
   line-height: 36px;
-  color: #0f172a;
+  color: var(--color-text-icon-primary);
   margin: 0 0 4px 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 
   @media (max-width: 768px) {
     font-size: 22px;
@@ -232,18 +187,18 @@ const UsageSectionSubtitle = styled.p`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  color: #0f172a;
+  color: var(--color-text-icon-primary);
   margin: 0 0 16px 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 `;
 
 const UsageSectionDesc = styled.p`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  color: #0f172a;
+  color: var(--color-text-icon-primary);
   margin: 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 
   & + & {
     margin-top: 16px;
@@ -292,7 +247,7 @@ const UsageAnnotationLine = styled.div`
   flex: 1;
   min-width: 16px;
   height: 0;
-  border-top: 1.5px dashed #cbd5e1;
+  border-top: var(--stroke-100) dashed var(--color-stroke-border);
   align-self: center;
 
   @media (max-width: 1060px) {
@@ -302,11 +257,11 @@ const UsageAnnotationLine = styled.div`
 
 const UsageDescription = styled.div`
   font-size: 14px;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
   min-width: 0;
 
   @media (max-width: 1060px) {
-    border-top: 1.5px dashed #cbd5e1;
+    border-top: var(--stroke-100) dashed var(--color-stroke-border);
     padding-top: 16px;
   }
 `;
@@ -315,18 +270,18 @@ const UsageDescTitle = styled.span`
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
-  color: #334155;
+  color: var(--color-text-icon-secondary);
   display: block;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 `;
 
 const UsageDescText = styled.span`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  color: #334155;
+  color: var(--color-text-icon-secondary);
   display: block;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 `;
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -407,106 +362,84 @@ const usageExamples = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-const AiGradientPage = () => {
+// Body for the Foundations AI gradient panel (no page chrome).
+
+export const AiGradientContent = () => {
   return (
-    <PageContainer>
-      <ContentStack>
-        {/* Header + Gradient Categories */}
-        <div>
-          <PageTitle>AI Gradient</PageTitle>
-          <PageDescription>
-            <p>
-              AI gradients are used to signal that a product, feature, or surface is AI-powered
-              without introducing a new icon.
-            </p>
-            <p>
-              This approach uses visual treatment, such as color, surface, container styling, and
-              hierarchy, to create a recognizable AI experience across Lenovo products. Gradients
-              help maintain consistency while reducing icon overload and allowing each product
-              context to use the appropriate level of emphasis.
-            </p>
-          </PageDescription>
+    <ContentStack>
+      <GradientSection>
+        {gradientCategories.map((cat) => (
+          <GradientRow key={cat.title}>
+            <SwatchSide>
+              <SwatchGroup>
+                {cat.swatches.map((swatch) => (
+                  <SwatchItem key={swatch.label}>
+                    <SwatchImage src={swatch.src} alt={`${cat.title} — ${swatch.label}`} />
+                    <SwatchLabel>{swatch.label}</SwatchLabel>
+                  </SwatchItem>
+                ))}
+              </SwatchGroup>
+              <AnnotationLine aria-hidden="true" />
+            </SwatchSide>
 
-          <GradientSection>
-            {gradientCategories.map((cat) => (
-              <GradientRow key={cat.title}>
-                {/* Left: swatches + dotted annotation line */}
-                <SwatchSide>
-                  <SwatchGroup>
-                    {cat.swatches.map((swatch) => (
-                      <SwatchItem key={swatch.label}>
-                        <SwatchImage src={swatch.src} alt={`${cat.title} — ${swatch.label}`} />
-                        <SwatchLabel>{swatch.label}</SwatchLabel>
-                      </SwatchItem>
-                    ))}
-                  </SwatchGroup>
-                  <AnnotationLine aria-hidden="true" />
-                </SwatchSide>
+            <GradientDescription>
+              <GradientDescTitle>{cat.title}</GradientDescTitle>
+              <GradientDescText>{cat.description}</GradientDescText>
+              <GradientDescMeta>
+                <strong>Applies to:</strong> {cat.applies}
+                <br />
+                <strong>Usage:</strong> {cat.usage}
+              </GradientDescMeta>
+            </GradientDescription>
+          </GradientRow>
+        ))}
+      </GradientSection>
 
-                {/* Right: description */}
-                <GradientDescription>
-                  <GradientDescTitle>{cat.title}</GradientDescTitle>
-                  <GradientDescText>{cat.description}</GradientDescText>
-                  <GradientDescMeta>
-                    <strong>Applies to:</strong> {cat.applies}
-                    <br />
-                    <strong>Usage:</strong> {cat.usage}
-                  </GradientDescMeta>
-                </GradientDescription>
-              </GradientRow>
-            ))}
-          </GradientSection>
-        </div>
+      <UsageSection>
+        <UsageSectionHeader>
+          <UsageSectionTitle>AI Gradient Usage Examples</UsageSectionTitle>
+          <UsageSectionSubtitle>Consumer examples shown</UsageSectionSubtitle>
+          <UsageSectionDesc>
+            AI gradients can be applied across a range of UI elements to indicate AI-powered
+            experiences. Usage should be based on the level of emphasis needed in the interface,
+            from high-visibility brand moments to subtle interaction cues.
+          </UsageSectionDesc>
+          <UsageSectionDesc>
+            Use AI gradients intentionally. Not every AI-powered feature needs a gradient
+            treatment. Apply gradients when they help users recognize an AI capability, understand
+            system status, or distinguish an AI interaction from a standard product interaction.
+          </UsageSectionDesc>
+        </UsageSectionHeader>
 
-        {/* Usage Examples */}
-        <UsageSection>
-          <UsageSectionHeader>
-            <UsageSectionTitle>AI Gradient Usage Examples</UsageSectionTitle>
-            <UsageSectionSubtitle>Consumer examples shown</UsageSectionSubtitle>
-            <UsageSectionDesc>
-              AI gradients can be applied across a range of UI elements to indicate AI-powered
-              experiences. Usage should be based on the level of emphasis needed in the interface,
-              from high-visibility brand moments to subtle interaction cues.
-            </UsageSectionDesc>
-            <UsageSectionDesc>
-              Use AI gradients intentionally. Not every AI-powered feature needs a gradient
-              treatment. Apply gradients when they help users recognize an AI capability, understand
-              system status, or distinguish an AI interaction from a standard product interaction.
-            </UsageSectionDesc>
-          </UsageSectionHeader>
+        <UsageExamples>
+          {usageExamples.map((example) => (
+            <UsageRow key={example.title}>
+              <UsageVisualSide>
+                {example.visualSrcs.map((src, i) => (
+                  <UsageVisualImg
+                    key={i}
+                    src={src}
+                    alt={i === 0 ? example.title : ''}
+                    style={
+                      example.naturalSize
+                        ? { maxHeight: example.maxHeight, width: 'auto', maxWidth: '100%' }
+                        : { width: example.visualWidth, height: example.visualHeight }
+                    }
+                  />
+                ))}
+                <UsageAnnotationLine aria-hidden="true" />
+              </UsageVisualSide>
 
-          <UsageExamples>
-            {usageExamples.map((example) => (
-              <UsageRow key={example.title}>
-                {/* Left: visual element(s) + neutral spacer (annotation line only in gradient rows) */}
-                <UsageVisualSide>
-                  {example.visualSrcs.map((src, i) => (
-                    <UsageVisualImg
-                      key={i}
-                      src={src}
-                      alt={i === 0 ? example.title : ''}
-                      style={
-                        example.naturalSize
-                          ? { maxHeight: example.maxHeight, width: 'auto', maxWidth: '100%' }
-                          : { width: example.visualWidth, height: example.visualHeight }
-                      }
-                    />
-                  ))}
-                  <UsageAnnotationLine aria-hidden="true" />
-                </UsageVisualSide>
-
-                {/* Right: description */}
-                <UsageDescription>
-                  <UsageDescTitle>{example.title}</UsageDescTitle>
-                  <UsageDescText>{example.description}</UsageDescText>
-                </UsageDescription>
-              </UsageRow>
-            ))}
-          </UsageExamples>
-        </UsageSection>
-      </ContentStack>
-    </PageContainer>
+              <UsageDescription>
+                <UsageDescTitle>{example.title}</UsageDescTitle>
+                <UsageDescText>{example.description}</UsageDescText>
+              </UsageDescription>
+            </UsageRow>
+          ))}
+        </UsageExamples>
+      </UsageSection>
+    </ContentStack>
   );
 };
 
-export default AiGradientPage;
+export default AiGradientContent;

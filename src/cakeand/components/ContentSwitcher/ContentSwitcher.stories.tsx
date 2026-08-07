@@ -91,6 +91,14 @@ const [view, setView] = useState('grid');
 | selected elevation | \`--elevation-0\` (Figma \`elevation/0\`) |
 | segment sizing | Button/IconButton \`sm\` (32px) and \`md\` (40px) |
 
+On dark (\`data-theme="dark.a"\`) and Windows HCT (\`data-theme="win hct"\`),
+overlay washes collapse or sit too close to the canvas. The track keeps a
+\`--color-stroke-border\` inset edge; HCT swaps the track fill to
+\`--color-surfaces-container\` so ghost labels stay readable. Unselected hover
+uses \`--color-surfaces-inverse-container\` + \`--color-text-icon-inverse\` with a
+\`--color-primary-primary\` edge (same spirit as Dropdown), and selected segments
+keep a primary edge when elevation shadows flatten.
+
 Two notes on the reuse:
 
 - This is the second component (after **Pagination**) to need a ghost/secondary

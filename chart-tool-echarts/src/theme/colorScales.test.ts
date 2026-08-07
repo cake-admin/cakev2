@@ -33,11 +33,23 @@ describe('color system', () => {
     expect(light.resolve({ variation: 'categorical' }, 4)).toHaveLength(4);
   });
 
-  it('resolve(primary|secondary) returns N copies of a single color', () => {
+  it('resolve(primary) returns N copies of a single color', () => {
     const prim = light.resolve({ variation: 'primary' }, 3);
     expect(prim).toEqual(['#1d4ed8', '#1d4ed8', '#1d4ed8']);
-    const sec = light.resolve({ variation: 'secondary' }, 2);
-    expect(sec).toEqual(['#c2410c', '#c2410c']);
+  });
+
+  it('resolve(secondary/wireframe) returns multiple distinct greys', () => {
+    const sec = light.resolve({ variation: 'secondary' }, 6);
+    expect(sec).toHaveLength(6);
+    sec.forEach((c) => expect(c).toMatch(HEX));
+    expect(new Set(sec).size).toBeGreaterThan(1);
+  });
+
+  it('resolve(secondary) cycles the 6-shade wireframe ramp beyond the limit', () => {
+    const sec = light.resolve({ variation: 'secondary' }, 8);
+    expect(sec).toHaveLength(8);
+    expect(sec[6]).toBe(sec[0]);
+    expect(sec[7]).toBe(sec[1]);
   });
 
   it('states() uses the real token Hover/Press variants when available', () => {

@@ -67,6 +67,11 @@ close, \`data-state\`); cake& owns the visuals. The label is wired via
 | menu item · press | \`--color-tonal-tonal-secondary-overlay-press\` | – | – |
 | menu item · disabled | transparent | – | \`--color-disabled-disabled-inverse\` |
 
+On Windows HCT (\`data-theme="win hct"\`), stroke/surface tokens collapse, so the
+trigger hover/open states use \`--color-surfaces-inverse-container\` +
+\`--color-primary-primary\`, highlighted items use the inverse surface, and a
+checked (non-highlighted) item keeps \`--color-text-icon-primary\` so it stays
+readable on the dark menu.
 Trigger shape is \`--radius-200\` (12px); height is 40px with a 24px arrow;
 paddings are \`--space-200\` trigger + \`--space-100\` inner text inset. Menu
 items are 36px tall with \`--space-100\` padding; text is \`--type-size-body\`.

@@ -159,7 +159,16 @@ export function tooltipFor(theme: ChartTheme): EChartsOption['tooltip'] {
   };
 }
 
-export function legendFor(ctx: ChartContext, show: boolean): EChartsOption['legend'] {
+/**
+ * Shared legend chrome. Pass `names` (in display order) when the chart owns an
+ * explicit series list — locks order and avoids ECharts inventing extras from
+ * nameless / duplicate auto-discovery.
+ */
+export function legendFor(
+  ctx: ChartContext,
+  show: boolean,
+  names?: string[],
+): EChartsOption['legend'] {
   if (!show) return { show: false };
   const right = ctx.style.legendPosition === 'right';
   return {
@@ -170,6 +179,7 @@ export function legendFor(ctx: ChartContext, show: boolean): EChartsOption['lege
     itemHeight: px(ctx, 12),
     itemGap: px(ctx, 16),
     textStyle: { color: ctx.theme.text.secondary, fontFamily: FONT, fontSize: fs(ctx, 12) },
+    ...(names && names.length > 0 ? { data: names } : {}),
     ...(right
       ? { orient: 'vertical', right: px(ctx, 16), top: 'middle' }
       : { bottom: px(ctx, 14), left: 'center' }),

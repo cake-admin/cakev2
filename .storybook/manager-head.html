@@ -20,4 +20,168 @@
     font-style: normal;
     font-display: swap;
   }
+
+  /* ── Brand ─────────────────────────────────────────────────────────── */
+  .cake-brand-amp {
+    color: #394edb;
+    font-weight: 600;
+  }
+  html[data-cake-manager='dark'] .cake-brand-amp {
+    color: #bcc3ff;
+  }
+  html[data-cake-manager='hct'] .cake-brand-amp {
+    color: #8ee3f0;
+  }
+
+  .sidebar-container,
+  nav.sidebar-container {
+    font-family: 'Rookery New', system-ui, sans-serif;
+  }
+
+  .sidebar-header a {
+    font-family: 'Rookery New', system-ui, sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #25262d;
+  }
+  html[data-cake-manager='dark'] .sidebar-header a,
+  html[data-cake-manager='hct'] .sidebar-header a {
+    color: #ffffff;
+  }
+
+  /* ── Kill Storybook hover gradient / translucent wash ──────────────── */
+  .sidebar-item,
+  .sidebar-item > a,
+  .sidebar-item > button {
+    background-image: none !important;
+    --tree-node-background-hover: transparent;
+  }
+
+  .sidebar-item:not([data-selected='true']):hover,
+  .sidebar-item:not([data-selected='true']):focus {
+    background: #e8eafc !important; /* solid light tonal */
+    background-image: none !important;
+    box-shadow: none !important;
+    --tree-node-background-hover: #e8eafc;
+  }
+  html[data-cake-manager='dark'] .sidebar-item:not([data-selected='true']):hover,
+  html[data-cake-manager='dark'] .sidebar-item:not([data-selected='true']):focus {
+    background: #2a2d4a !important;
+    --tree-node-background-hover: #2a2d4a;
+  }
+  html[data-cake-manager='hct'] .sidebar-item:not([data-selected='true']):hover,
+  html[data-cake-manager='hct'] .sidebar-item:not([data-selected='true']):focus {
+    background: #2a2a2a !important;
+    outline: 1px solid #ffffff;
+    outline-offset: -1px;
+    --tree-node-background-hover: #2a2a2a;
+  }
+
+  /* ── Selected: solid tonal + readable ink (mode-aware) ─────────────── */
+  .sidebar-item[data-selected='true'],
+  .sidebar-item[data-selected='true']:hover,
+  .sidebar-item[data-selected='true']:focus,
+  .sidebar-item[data-selected='true'] > a,
+  .sidebar-item[data-selected='true'] > button {
+    background: #f0efff !important;
+    background-image: none !important;
+    color: #132384 !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+  }
+  .sidebar-item[data-selected='true'] svg,
+  .sidebar-item[data-selected='true'] svg use {
+    color: #132384 !important;
+    fill: currentColor !important;
+  }
+  .sidebar-item[data-selected='true'] button {
+    background: transparent !important;
+    box-shadow: none !important;
+    color: #132384 !important;
+  }
+
+  html[data-cake-manager='dark'] .sidebar-item[data-selected='true'],
+  html[data-cake-manager='dark'] .sidebar-item[data-selected='true']:hover,
+  html[data-cake-manager='dark'] .sidebar-item[data-selected='true']:focus,
+  html[data-cake-manager='dark'] .sidebar-item[data-selected='true'] > a,
+  html[data-cake-manager='dark'] .sidebar-item[data-selected='true'] > button {
+    background: #2a2d4a !important;
+    color: #cdd1ff !important;
+  }
+  html[data-cake-manager='dark'] .sidebar-item[data-selected='true'] svg,
+  html[data-cake-manager='dark'] .sidebar-item[data-selected='true'] svg use,
+  html[data-cake-manager='dark'] .sidebar-item[data-selected='true'] button {
+    color: #cdd1ff !important;
+  }
+
+  html[data-cake-manager='hct'] .sidebar-item[data-selected='true'],
+  html[data-cake-manager='hct'] .sidebar-item[data-selected='true']:hover,
+  html[data-cake-manager='hct'] .sidebar-item[data-selected='true']:focus,
+  html[data-cake-manager='hct'] .sidebar-item[data-selected='true'] > a,
+  html[data-cake-manager='hct'] .sidebar-item[data-selected='true'] > button {
+    background: #202020 !important;
+    color: #8ee3f0 !important;
+    outline: 2px solid #8ee3f0;
+    outline-offset: -2px;
+  }
+  html[data-cake-manager='hct'] .sidebar-item[data-selected='true'] svg,
+  html[data-cake-manager='hct'] .sidebar-item[data-selected='true'] svg use,
+  html[data-cake-manager='hct'] .sidebar-item[data-selected='true'] button {
+    color: #8ee3f0 !important;
+  }
+
+  .sidebar-subheading button {
+    font-family: 'Rookery New', system-ui, sans-serif;
+    letter-spacing: 0.04em;
+    color: #44464e;
+  }
+  html[data-cake-manager='dark'] .sidebar-subheading button {
+    color: #c6c6cf;
+  }
+  html[data-cake-manager='hct'] .sidebar-subheading button {
+    color: #ffffff;
+  }
+
+  /* ── Search ────────────────────────────────────────────────────────── */
+  .search-field {
+    border-radius: 8px !important;
+  }
+  html[data-cake-manager='light'] .search-field {
+    border-color: #e3e3e3 !important;
+    background: #ffffff !important;
+    color: #25262d !important;
+  }
+  html[data-cake-manager='dark'] .search-field {
+    border-color: #5e5e5e !important;
+    background: #25262d !important;
+    color: #ffffff !important;
+  }
+  html[data-cake-manager='hct'] .search-field {
+    border-color: #ffffff !important;
+    background: #202020 !important;
+    color: #ffffff !important;
+  }
+  .search-field:focus-within {
+    box-shadow: none !important;
+  }
+  html[data-cake-manager='light'] .search-field:focus-within {
+    border-color: #394edb !important;
+  }
+  html[data-cake-manager='dark'] .search-field:focus-within {
+    border-color: #bcc3ff !important;
+  }
+  html[data-cake-manager='hct'] .search-field:focus-within {
+    border-color: #8ee3f0 !important;
+  }
+
+  /* Preview iframe outline / panel edges track manager border. */
+  #storybook-preview-wrapper,
+  .os-content {
+    background: transparent;
+  }
+
+  #storybook-checklist-widget {
+    display: none !important;
+  }
 </style>
