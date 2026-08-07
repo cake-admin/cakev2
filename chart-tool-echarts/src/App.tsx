@@ -48,11 +48,16 @@ function AppShell() {
     // TopNav (fixed bar + BarSpacer) must sit *outside* the chart viewport box.
     // Nesting the spacer inside `.app { height: 100vh; overflow: hidden }` eats
     // the flex budget and can clip `.app__main` to zero visible height.
+    // Wrap TopNav in one chrome flex child so Bar/BarSpacer/MobileDrawer are not
+    // three siblings competing with `.app` for the viewport (fixed flex items
+    // still mis-size the row in some engines and collapse the stage).
     <div className="app-root">
-      <TopNav forceNoActive siteOrigin={SITE_ORIGIN} />
+      <div className="app-root__chrome">
+        <TopNav forceNoActive siteOrigin={SITE_ORIGIN} />
+      </div>
       <div className="app" data-theme={mode} style={chromeVars}>
         <main className="app__main">
-          <span className="app__brand-float">cake&amp; data visualization</span>
+          <span className="app__brand-float">Cake&amp; data visualization playground</span>
           <PreviewStage />
           <CustomizationPanel />
         </main>

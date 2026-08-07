@@ -1,13 +1,14 @@
 /**
  * Copy the chart-tool-echarts Vite build into the CRA Pages output at
- * /datavis/, and add a /dataviz/ redirect for old bookmarks.
+ * /datavis/, add a directory-index-friendly trailing-slash landing, and add a
+ * /dataviz/ redirect for old bookmarks.
  *
  * Invoked from `.github/workflows/deploy.yml` after the Vite build.
  * Root `npm run build` / `npm run deploy` do NOT run this — only the
  * Actions workflow (or a manual nest after building chart-tool) ships
  * cake.lenovo.com/datavis.
  */
-import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const src = join('chart-tool-echarts', 'dist');
@@ -30,6 +31,16 @@ rmSync(dest, { recursive: true, force: true });
 mkdirSync(dest, { recursive: true });
 cpSync(src, dest, { recursive: true });
 console.log(`nest-datavis: copied ${src} → ${dest}`);
+
+// Sanity-check production asset URLs use the /datavis/ base (blank app if not).
+const indexHtml = readFileSync(join(dest, 'index.html'), 'utf8');
+if (!indexHtml.includes('/datavis/assets/') && !indexHtml.includes('./assets/')) {
+  console.error(
+    'nest-datavis: datavis index.html asset URLs do not look base-prefixed — ' +
+      'check chart-tool-echarts vite `base: \'/datavis/\'`',
+  );
+  process.exit(1);
+}
 
 mkdirSync(redirectDir, { recursive: true });
 writeFileSync(

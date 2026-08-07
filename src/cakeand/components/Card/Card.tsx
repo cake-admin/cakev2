@@ -36,6 +36,16 @@ const Root = styled.div<{ $elevation: CardElevation }>`
   border-radius: var(--radius-400);
   background: var(--color-surfaces-container);
   box-shadow: ${(p) => ELEVATION[p.$elevation]};
+
+  /*
+   * Windows HCT collapses elevation + container surfaces onto the canvas, so
+   * cards lose their edge. Match Dropdown: a real stroke token border.
+   */
+  :root[data-theme='win hct'] &,
+  [data-theme='win hct'] & {
+    border: var(--stroke-100) solid var(--color-stroke-border);
+    box-shadow: none;
+  }
 `;
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {

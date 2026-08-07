@@ -45,14 +45,18 @@ jobs:
         env:
           CI: true
 
+      # CRA site + Storybook (postbuild → build-storybook + nest-storybook).
+      # Storybook nests at cake.lenovo.com/storybook/. Pass STORYBOOK_BASE only —
+      # do NOT set PUBLIC_URL here or the CRA asset paths break under /storybook/.
       - name: Build
         run: npm run build
         env:
           CI: false
+          STORYBOOK_BASE: /storybook/
 
-      # Data-visualization tool (ECharts edition) — built at base /datavis/ and
+      # Cake& data visualization playground — built at base /datavis/ and
       # nested under the main site so it goes live at cake.lenovo.com/datavis.
-      - name: Install datavis tool dependencies
+      - name: Install datavis playground dependencies
         working-directory: chart-tool-echarts
         run: npm ci
 
@@ -60,7 +64,7 @@ jobs:
       # `prebuild` token-regen step: it reads design-token exports from repo-root
       # "& *" folders that aren't part of the deploy. The committed
       # src/tokens/tokens.json is the source of truth for the build.
-      - name: Build datavis tool
+      - name: Build datavis playground
         working-directory: chart-tool-echarts
         run: |
           node node_modules/typescript/bin/tsc --noEmit
@@ -68,7 +72,7 @@ jobs:
 
       # Nest into build/datavis (+ /dataviz redirect). Root `npm run build`
       # does NOT include this — only this workflow ships /datavis on Pages.
-      - name: Add datavis tool to Pages output
+      - name: Add datavis playground to Pages output
         run: node scripts/nest-datavis.mjs
 
       - name: Setup Pages

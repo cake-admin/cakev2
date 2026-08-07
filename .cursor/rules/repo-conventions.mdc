@@ -11,5 +11,6 @@ Read [AGENTS.md](../../AGENTS.md) before working in this repo. Key points:
 - Agent skills live in `.claude/skills/` — they are plain markdown and are
   the source of truth for component and docs work (see the other rules in
   this folder for when each applies).
-- `chart-tool-echarts/` is a separate Vite app (the data-viz tool deployed at
-  cake.lenovo.com/datavis) with its own docs, scripts, and tests.
+- `chart-tool-echarts/` is a separate Vite app (the Cake& data visualization
+  playground deployed at cake.lenovo.com/datavis) with its own docs, scripts,
+  and tests.
