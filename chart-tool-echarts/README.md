@@ -128,7 +128,17 @@ real text) — or **Download** and drag the `.svg` in.
 ## Deployment
 
 Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds this
-app at base `/datavis/` and nests it into the main site's Pages artifact →
-**cake.lenovo.com/datavis**. A static redirect keeps `/dataviz` working for
-old links. If you change the workflow, keep the datavis steps (and the
-redirect) — they're what put the tool on the live site.
+app at base `/datavis/` and nests it into the main site's Pages artifact via
+`scripts/nest-datavis.mjs` → **cake.lenovo.com/datavis**. A static redirect
+keeps `/dataviz` working for old links. If you change the workflow, keep the
+datavis install/build/nest steps — they're what put the tool on the live site.
+
+**If `/datavis` is missing after a deploy:**
+
+1. Confirm GitHub Pages **Source** is **GitHub Actions** (not “Deploy from a
+   branch”). Branch / `gh-pages` deploys from root `npm run build` never
+   include this app.
+2. Open the latest **Deploy to GitHub Pages** workflow run on `main` and
+   verify the “Build datavis tool” + “Add datavis tool to Pages output”
+   steps succeeded.
+3. Live URL on the custom domain: https://cake.lenovo.com/datavis/

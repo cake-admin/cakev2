@@ -10,8 +10,8 @@ import heroBg from '../assets/home/hero-bg.png';
 import cakeSlice from '../assets/home/cake-slice.png';
 import iconCake from '../assets/home/icon-cake.svg';
 import iconOpenInNew from '../assets/home/icon-open-in-new.svg';
-import winCanvasLight from '../assets/home/win-canvas-light.png';
-import winCanvasDark from '../assets/home/win-canvas-dark.png';
+import winCanvasLight from '../assets/home/win-canvas-light.svg';
+import winCanvasDark from '../assets/home/win-canvas-dark.svg';
 
 /**
  * Ink on the hero wallpaper + quicklinks tint.

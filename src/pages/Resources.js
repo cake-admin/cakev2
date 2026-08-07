@@ -129,13 +129,43 @@ const FeatureList = styled.ul`
   }
 `;
 
+/**
+ * Flex card row: 4 cols when wide, 3 at medium, then 2 / 1 as the
+ * viewport narrows. Gap uses spacing tokens; cards share space evenly
+ * without orphans stretching full-bleed.
+ */
 const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--space-500);
+  align-items: stretch;
 
-  @media (max-width: 960px) {
-    grid-template-columns: 1fr;
+  & > * {
+    box-sizing: border-box;
+    flex: 1 1 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    & > * {
+      flex: 1 1 calc((100% - var(--space-500)) / 2);
+      max-width: calc((100% - var(--space-500)) / 2);
+    }
+  }
+
+  @media (min-width: 960px) {
+    & > * {
+      flex: 1 1 calc((100% - 2 * var(--space-500)) / 3);
+      max-width: calc((100% - 2 * var(--space-500)) / 3);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    & > * {
+      flex: 1 1 calc((100% - 3 * var(--space-500)) / 4);
+      max-width: calc((100% - 3 * var(--space-500)) / 4);
+    }
   }
 `;
 
@@ -391,7 +421,7 @@ const Resources = () => (
         <Intro>
           <IntroBlock>
             <IntroText>
-              cake&amp; is One Lenovo&apos;s unified design system that helps teams
+              Cake&amp; is One Lenovo&apos;s unified design system that helps teams
               build consistent, high-quality experiences across all Lenovo digital
               products. It provides a comprehensive set of tools, components, and
               guidelines to create cohesive, user-centered experiences efficiently

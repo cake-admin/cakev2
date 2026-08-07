@@ -123,6 +123,42 @@ workflow, documented in Storybook under **Guides** — *Building a Component* an
 
 ---
 
+## Deploying the site (GitHub Pages)
+
+The live site (and Storybook + datavis) is published by
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) on every push
+to `main` (or via **Actions → Deploy to GitHub Pages → Run workflow**).
+
+**Pages source must be GitHub Actions**, not “Deploy from a branch”. In the
+repo: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+
+| What ships | How |
+|------------|-----|
+| Main CRA site | `npm run build` |
+| Storybook at `/storybook/` | `postbuild` → `nest-storybook.mjs` |
+| Datavis at `/datavis/` | Separate CI steps: install + Vite build in `chart-tool-echarts/`, then `node scripts/nest-datavis.mjs` |
+
+Root `npm run build` / `npm run deploy` (`gh-pages`) build **only** the CRA
+site + Storybook. They do **not** build or nest `chart-tool-echarts`. If you
+deploy that way (or from a branch without the workflow), `/datavis` will be
+missing.
+
+After a successful Actions run, open the workflow summary → artifact /
+Pages URL and confirm `datavis/` is present. Live URLs:
+
+- Custom domain: https://cake.lenovo.com/datavis/
+- Default Pages host: `https://<owner>.github.io/<repo>/datavis/` (only if
+  that is how Pages is configured; this repo uses the custom domain)
+
+To nest datavis into a local `build/` after building the chart tool yourself:
+
+```bash
+# from chart-tool-echarts: tsc + vite build (see that folder's README)
+npm run nest:datavis
+```
+
+---
+
 ## License
 
 Internal Lenovo design system. The published package declares `UNLICENSED`, and

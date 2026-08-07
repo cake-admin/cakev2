@@ -66,27 +66,10 @@ jobs:
           node node_modules/typescript/bin/tsc --noEmit
           node node_modules/vite/bin/vite.js build
 
+      # Nest into build/datavis (+ /dataviz redirect). Root `npm run build`
+      # does NOT include this — only this workflow ships /datavis on Pages.
       - name: Add datavis tool to Pages output
-        run: |
-          mkdir -p build/datavis
-          cp -r chart-tool-echarts/dist/. build/datavis/
-          # Keep /dataviz working for old bookmarks → redirect to canonical /datavis.
-          mkdir -p build/dataviz
-          cat > build/dataviz/index.html <<'EOF'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="utf-8">
-            <meta http-equiv="refresh" content="0;url=/datavis/">
-            <link rel="canonical" href="https://cake.lenovo.com/datavis/">
-            <title>Redirecting…</title>
-            <script>location.replace('/datavis/' + location.search + location.hash);</script>
-          </head>
-          <body>
-            <p>Moved to <a href="/datavis/">/datavis/</a>.</p>
-          </body>
-          </html>
-          EOF
+        run: node scripts/nest-datavis.mjs
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
