@@ -1,6 +1,21 @@
 import type { EChartsOption } from 'echarts';
 import { isPartition } from '../../data/dataModel';
-import { animationOpts, EDGE_PAD, FONT, fs, headerGraphic, headerLeftReserve, headerTopReserve, px, readableText, seriesColors, tooltipFor, type ChartContext } from './common';
+import { CORNER_RADIUS, SEGMENT_GAP } from '../types';
+import {
+  animationOpts,
+  EDGE_PAD,
+  FONT,
+  fs,
+  headerGraphic,
+  headerLeftReserve,
+  headerTopReserve,
+  px,
+  readableText,
+  seriesColors,
+  tooltipFor,
+  type ChartContext,
+} from './common';
+import { fillStyle } from './wireframe';
 
 /** Treemap — flat slices sized by value (squarified). */
 export function buildTreemap(ctx: ChartContext): EChartsOption {
@@ -8,6 +23,8 @@ export function buildTreemap(ctx: ChartContext): EChartsOption {
   const slices = data.slices;
   const { style, theme } = ctx;
   const colors = seriesColors(ctx, slices.length);
+  const gap = px(ctx, SEGMENT_GAP);
+  const corner = px(ctx, CORNER_RADIUS);
 
   return {
     textStyle: { fontFamily: FONT },
@@ -24,7 +41,12 @@ export function buildTreemap(ctx: ChartContext): EChartsOption {
         left: headerLeftReserve(ctx) || px(ctx, EDGE_PAD),
         right: px(ctx, EDGE_PAD),
         bottom: px(ctx, EDGE_PAD),
-        itemStyle: { borderColor: theme.surface.card, borderWidth: px(ctx, 2), gapWidth: px(ctx, 2) },
+        itemStyle: {
+          borderColor: theme.surface.card,
+          borderWidth: gap,
+          gapWidth: gap,
+          borderRadius: corner,
+        },
         label: {
           show: true,
           fontFamily: FONT,
@@ -37,7 +59,7 @@ export function buildTreemap(ctx: ChartContext): EChartsOption {
           return {
             name: s.label,
             value: s.value,
-            itemStyle: { color },
+            itemStyle: fillStyle(ctx, color, i),
             label: { color: readableText(color) },
             emphasis: { itemStyle: { color: st.hover } },
           };

@@ -115,7 +115,7 @@ integrity error that is very hard to trace back.
 | `src/cakeand/foundations/` | Storybook docs pages (Colors, Typography, Spacing, Elevation, guides) |
 | `starter/` | The template designers scaffold from |
 | `scripts/` | Token generation, package build, agent-context generation |
-| `chart-tool-echarts/` | Separate Vite app deployed at /dataviz |
+| `chart-tool-echarts/` | Separate Vite app deployed at /datavis |
 
 Building components and publishing versions is the design-system team's
 workflow, documented in Storybook under **Guides** — *Building a Component* and

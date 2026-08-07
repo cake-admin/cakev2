@@ -1,14 +1,17 @@
 import { z } from 'zod';
 
 /**
- * Theme modes the chart system supports. The token JSON encodes these as the
- * `lightA` / `darkA` keys on each token (mirroring the existing design system).
+ * Theme modes the chart system supports.
+ * - `light` / `dark` map to token JSON `lightA` / `darkA`
+ * - `hct` is Windows High-Contrast (cake& `win hct`) — structural tokens fall
+ *   back to darkA, then `buildChartTheme` overlays HCT surfaces + series colors
  */
-export type Mode = 'light' | 'dark';
+export type Mode = 'light' | 'dark' | 'hct';
 
 export const MODE_TO_TOKEN_KEY: Record<Mode, 'lightA' | 'darkA'> = {
   light: 'lightA',
   dark: 'darkA',
+  hct: 'darkA',
 };
 
 /** A single token carries (at least) a light and dark value, plus optional extras. */

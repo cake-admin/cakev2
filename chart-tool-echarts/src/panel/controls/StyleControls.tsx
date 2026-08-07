@@ -1,5 +1,5 @@
 import { useChartStore } from '../../state/chartStore';
-import type { BarMode, BarOrientation, CircularStyle, LegendPosition, LineStyle, ScatterStyle } from '../../charts/types';
+import type { CircularStyle, LegendPosition, LineStyle, ScatterStyle } from '../../charts/types';
 
 function Toggle({
   label,
@@ -86,6 +86,7 @@ function Segmented<T extends string>({
   );
 }
 
+/** Visual chrome: curve style, marks, axes, legend, labels (not bar layout). */
 export function StyleControls() {
   const type = useChartStore((s) => s.type);
   const style = useChartStore((s) => s.style);
@@ -98,29 +99,6 @@ export function StyleControls() {
 
   return (
     <>
-      {isBar ? (
-        <Segmented<BarOrientation>
-          label="Orientation"
-          value={style.orientation}
-          options={[
-            { id: 'vertical', label: 'Vertical' },
-            { id: 'horizontal', label: 'Horizontal' },
-          ]}
-          onChange={(v) => patch({ orientation: v })}
-        />
-      ) : null}
-      {isBar ? (
-        <Segmented<BarMode>
-          label="Layout"
-          value={style.barMode}
-          options={[
-            { id: 'single', label: 'Single' },
-            { id: 'grouped', label: 'Grouped' },
-            { id: 'stacked', label: 'Stacked' },
-          ]}
-          onChange={(v) => patch({ barMode: v })}
-        />
-      ) : null}
       {isLineArea ? (
         <Segmented<LineStyle>
           label="Line style"

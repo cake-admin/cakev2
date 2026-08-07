@@ -6,15 +6,15 @@ live, and hand them off to **Figma as clean, editable SVG**. Built on
 color traces to a cake& design token, and light/dark both come from the same
 token export.
 
-**Live:** https://cake.lenovo.com/dataviz (deployed from `main` by the Pages
-workflow, nested under the main design-system site).
+**Live:** https://cake.lenovo.com/datavis (deployed from `main` by the Pages
+workflow, nested under the main design-system site). `/dataviz` redirects here.
 
 ## Quick start
 
 ```bash
 cd chart-tool-echarts
 npm install
-npm run dev        # http://localhost:5173
+npm run dev        # http://localhost:5173/datavis/
 ```
 
 | Script | What |
@@ -128,6 +128,7 @@ real text) — or **Download** and drag the `.svg` in.
 ## Deployment
 
 Pushing to `main` triggers `.github/workflows/deploy.yml`, which builds this
-app at base `/dataviz/` and nests it into the main site's Pages artifact →
-**cake.lenovo.com/dataviz**. If you change the workflow, keep the dataviz
-steps (they're what put the tool on the live site).
+app at base `/datavis/` and nests it into the main site's Pages artifact →
+**cake.lenovo.com/datavis**. A static redirect keeps `/dataviz` working for
+old links. If you change the workflow, keep the datavis steps (and the
+redirect) — they're what put the tool on the live site.

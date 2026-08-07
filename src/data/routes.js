@@ -1,314 +1,113 @@
-import CanvasPage from '../pages/CanvasPage';
-import CheckboxPage from '../pages/CheckboxPage';
 import VersionControl from '../pages/VersionControl';
-import ColorsPage from '../pages/foundations/ColorsPage';
 import WhatsNew from '../pages/WhatsNew';
-import FigmaLibraries from '../pages/get-started/FigmaLibraries';
-import AboutCake from '../pages/get-started/AboutCake';
-
 import Resources from '../pages/Resources';
-import Home from '../pages/Home';
-import ChipPage from '../pages/ChipPage';
-import ButtonPage from '../pages/ButtonPage';
-import AccordionPage from '../pages/AccordionPage.js';
-import AvatarPage from '../pages/AvatarPage';
-import BadgePage from '../pages/BadgePage';
-import BreadcrumbPage from '../pages/BreadcrumbPage';
-import RadioPage from '../pages/RadioPage';
-import SegmentedControlPage from '../pages/SegmentedControlPage';
-import TextInputsPage from '../pages/TextInputsPage';
-import TogglePage from '../pages/TogglePage.js';
-import TabPage from '../pages/TabPage';
-import SliderPage from '../pages/SliderPage.js';
-import SpinnerPage from '../pages/SpinnerPage.js';
-import LinkPage from '../pages/LinkPage.js';
-import AlertPage from '../pages/AlertPage';
-import MenuPage from '../pages/MenuPage';
-import DropdownPage from '../pages/DropdownPage';
-import ModalPage from '../pages/ModalPage';
-import TooltipPage from '../pages/TooltipPage';
-import IconographyPage from '../pages/IconographyPage';
-import LanguageGrammarPage from '../pages/foundations/LanguageGrammarPage.js';
+import FoundationsPage from '../pages/foundations/FoundationsPage';
+import ComponentsPage from '../pages/ComponentsPage';
+import HomePage from '../pages/HomePage';
 
-// Foundations > AI
-import AiOverviewPage from '../pages/foundations/ai/AiOverviewPage';
-import AiGradientPage from '../pages/foundations/ai/AiGradientPage';
-import AiLogoIconPage from '../pages/foundations/ai/AiLogoIconPage';
-
-
+/**
+ * Site routes after the cake& retheme.
+ * Component docs live in Storybook — see `/components`.
+ * AI styling and tone of voice live inside Foundations (rail tabs).
+ */
 export const routes = [
   {
     path: '/',
-    component: Home,
+    component: HomePage,
     title: 'Home',
-    description: 'Welcome to Cake Design System',
-    category: 'guides'
+    description: 'cake& design system home',
+    category: 'resources',
   },
   {
-    path: '/components/alert',
-    component: AlertPage,
-    title: 'Alert',
-    description: 'Alert components provide feedback to users about important information, success states, warnings, or errors',
-    category: 'components'
+    path: '/resources',
+    component: Resources,
+    title: 'Resources',
+    description: 'Figma libraries and design resources',
+    category: 'resources',
   },
   {
-    path: '/components/accordion',
-    component: AccordionPage,
-    title: 'Accordion',
-    description: 'Expandable and collapsible content sections for organizing information',
-    category: 'components'
+    path: '/resources/whats-new',
+    component: WhatsNew,
+    title: "What's new",
+    description: 'Latest updates and changes',
+    category: 'resources',
   },
   {
-    path: '/components/avatar',
-    component: AvatarPage,
-    title: 'Avatar',
-    description: 'Component for displaying user profile images, initials, or icons',
-    category: 'components'
+    path: '/foundations',
+    component: FoundationsPage,
+    title: 'Foundations',
+    description: 'Core design foundations',
+    category: 'foundations',
   },
   {
-    path: '/components/badge',
-    component: BadgePage,
-    title: 'Badge',
-    description: 'Compact UI element for displaying notification counts, status indicators, or numerical labels',
-    category: 'components'
+    path: '/foundations/ai',
+    component: FoundationsPage,
+    title: 'AI styling',
+    description: 'Lenovo AI visual language',
+    category: 'foundations',
   },
   {
-    path: '/components/breadcrumb',
-    component: BreadcrumbPage,
-    title: 'Breadcrumb',
-    description: 'Hierarchical navigation component for displaying page location and navigation context',
-    category: 'components'
+    path: '/foundations/ai/overview',
+    component: FoundationsPage,
+    title: 'AI Overview',
+    description: 'Overview of Lenovo\'s hybrid, tiered AI visual system and design principles',
+    category: 'foundations',
   },
   {
-    path: '/components/button',
-    component: ButtonPage,
-    title: 'Button',
-    description: 'Interactive button component with various styles and states',
-    category: 'components'
+    path: '/foundations/ai/gradient',
+    component: FoundationsPage,
+    title: 'AI Gradient',
+    description: 'AI gradient visual treatments and usage guidelines',
+    category: 'foundations',
   },
   {
-    path: '/components/canvas',
-    component: CanvasPage,
-    title: 'Canvas',
-    description: 'Drawing and illustration component',
-    category: 'components'
+    path: '/foundations/ai/logo-icon',
+    component: FoundationsPage,
+    title: 'AI Logo & Icon',
+    description: 'AI logo and icon system guidance for Lenovo products',
+    category: 'foundations',
   },
   {
-    path: '/components/checkbox',
-    component: CheckboxPage,
-    title: 'Checkbox',
-    description: 'Interactive checkbox component for form inputs, selections, and toggles with support for checked, unchecked, indeterminate, and disabled states',
-    category: 'components'
-  },
-  {
-    path: '/components/chip',
-    component: ChipPage,
-    title: 'Chip',
-    description: 'Compact and versatile UI element for displaying discrete information',
-    category: 'components'
-  },
-  {
-    path: '/components/menu',
-    component: MenuPage,
-    title: 'Menu',
-    description: 'Menu component for displaying selectable options with search and scroll support',
-    category: 'components'
-  },
-  {
-    path: '/components/dropdown',
-    component: DropdownPage,
-    title: 'Dropdown',
-    description: 'Dropdown component for selecting options from a list with optional search functionality and scrolling support',
-    category: 'components'
-  },
-  {
-    path: '/components/modal',
-    component: ModalPage,
-    title: 'Modal',
-    description: 'Modal components for displaying content, gathering user input, or confirming actions with Basic and Confirmation variants',
-    category: 'components'
-  },
-  {
-    path: '/components/radio',
-    component: RadioPage,
-    title: 'Radio',
-    description: 'Interactive radio component for single-choice selections from multiple options with support for various states and themes',
-    category: 'components'
-  },
-  {
-    path: '/components/segmented-control',
-    component: SegmentedControlPage,
-    title: 'Segmented Control',
-    description: 'A segmented control component that displays Radio or Checkbox components in a segmented layout with support for single and multiple selection modes',
-    category: 'components'
-  },
-  {
-    path: '/components/text-inputs',
-    component: TextInputsPage,
-    title: 'Text Inputs',
-    description: 'Text field and text area components for form inputs with support for labels, helper text, error states, and validation',
-    category: 'components'
-  },
-  {
-    path: '/components/toggle',
-    component: TogglePage,
-    title: 'Toggle',
-    description: 'Interactive toggle switch component for binary choices and settings with support for all interaction states and themes',
-    category: 'components'
-  },
-  {
-    path: '/components/slider',
-    component: SliderPage,
-    title: 'Slider',
-    description: 'Interactive slider component for selecting values within a range with support for all interaction states and themes',
-    category: 'components'
-  },
-  {
-    path: '/components/spinner',
-    component: SpinnerPage,
-    title: 'Loading',
-    description: 'Loading indicator component for displaying progress and loading states',
-    category: 'components'
-  },
-  {
-    path: '/components/link',
-    component: LinkPage,
-    title: 'Link',
-    description: 'Interactive link component for navigation with optional icon support',
-    category: 'components'
-  },
-  {
-    path: '/components/tab',
-    component: TabPage,
-    title: 'Tab',
-    description: 'Tab component for organizing content into multiple panels',
-    category: 'components'
-  },
-  {
-    path: '/components/tooltip',
-    component: TooltipPage,
-    title: 'Tooltip',
-    description: 'Tooltip component for displaying contextual information when hovering over or focusing on elements',
-    category: 'components'
+    path: '/components',
+    component: ComponentsPage,
+    title: 'Components',
+    description: 'cake& component catalog and live previews',
+    category: 'components',
   },
   {
     path: '/version-control',
     component: VersionControl,
     title: 'Version Control',
     description: 'Version history and changelog',
-    category: 'guides'
+    category: 'resources',
   },
-
-  // Foundations > AI
-  {
-    path: '/foundations/ai',
-    title: 'AI',
-    description: 'Lenovo AI visual language — gradients, logos, icons, and system-wide treatments',
-    category: 'foundations',
-    hasChildren: true
-  },
-  {
-    path: '/foundations/ai/overview',
-    component: AiOverviewPage,
-    title: 'AI Overview',
-    description: 'Overview of Lenovo\'s hybrid, tiered AI visual system and design principles',
-    category: 'foundations',
-    parentPath: '/foundations/ai'
-  },
-  {
-    path: '/foundations/ai/gradient',
-    component: AiGradientPage,
-    title: 'AI Gradient',
-    description: 'AI gradient visual treatments and usage guidelines',
-    category: 'foundations',
-    parentPath: '/foundations/ai'
-  },
-  {
-    path: '/foundations/ai/logo-icon',
-    component: AiLogoIconPage,
-    title: 'AI Logo & Icon',
-    description: 'AI logo and icon system guidance for Lenovo products',
-    category: 'foundations',
-    parentPath: '/foundations/ai'
-  },
-
-  {
-    path: '/foundations/colors',
-    component: ColorsPage,
-    title: 'Colors',
-    description: 'Color system and design tokens',
-    category: 'foundations'
-  },
-  {
-    path: '/whats-new',
-    component: WhatsNew,
-    title: "What's New",
-    description: 'Latest updates and changes',
-    category: 'guides'
-  },
-
-  {
-    path: '/resources',
-    component: Resources,
-    title: 'Resources',
-    description: 'Figma libraries and design resources',
-    category: 'guides'
-  },
-  {
-    path: '/get-started/figma-libraries',
-    component: FigmaLibraries,
-    title: 'Figma Libraries',
-    description: 'Design resources and Figma components',
-    category: 'guides'
-  },
-  {
-    path: '/get-started/about-cake',
-    component: AboutCake,
-    title: 'About Cake',
-    description: 'Introduction to Cake Design System',
-    category: 'guides'
-  },
-  {
-    path: '/foundations/iconography',
-    component: IconographyPage,
-    title: 'Iconography',
-    description: 'Material Design icon library usage, guidelines, and implementation patterns',
-    category: 'foundations'
-  },
-  {
-    path: '/foundations/language-grammar',
-    component: LanguageGrammarPage,
-    title: 'Language & Grammar',
-    description: 'Guidelines for creating clear, accessible, and purposeful content that aligns with Lenovo\'s tone of voice',
-    category: 'foundations'
-  },
-
 ];
 
 export const getSearchResults = (query) => {
-  if (!query.trim()) return { components: [], foundations: [], guides: [], subsystems: [] };
+  if (!query.trim()) return { components: [], foundations: [], resources: [], guides: [] };
 
   const lowerQuery = query.toLowerCase();
   const results = {
     components: [],
     foundations: [],
+    resources: [],
     guides: [],
-    subsystems: []
   };
 
-  routes.forEach(route => {
+  routes.forEach((route) => {
     const matchesTitle = route.title.toLowerCase().includes(lowerQuery);
     const matchesDescription = route.description.toLowerCase().includes(lowerQuery);
     const matchesPath = route.path.toLowerCase().includes(lowerQuery);
 
     if (matchesTitle || matchesDescription || matchesPath) {
-      results[route.category].push({
+      const bucket = results[route.category] ? route.category : 'guides';
+      results[bucket].push({
         title: route.title,
         path: route.path,
-        description: route.description
+        description: route.description,
       });
     }
   });
 
   return results;
-}; 
+};

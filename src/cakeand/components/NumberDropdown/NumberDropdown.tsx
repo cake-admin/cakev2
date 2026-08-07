@@ -95,7 +95,7 @@ const Trigger = styled(RadixSelect.Trigger)<{ $size: 'sm' | 'md' }>`
   color: var(--color-text-icon-primary);
   cursor: pointer;
   outline: none;
-  transition: background 120ms ease, border-color 120ms ease;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
 
   &:hover:not([data-state='open']):not(:disabled) {
     border-color: var(--color-stroke-border-high);
@@ -122,9 +122,23 @@ const Trigger = styled(RadixSelect.Trigger)<{ $size: 'sm' | 'md' }>`
     color: var(--color-disabled-disabled-inverse);
     cursor: not-allowed;
   }
+
+  /* Same HCT trigger affordance as Dropdown — collapsed stroke tokens. */
+  :root[data-theme='win hct'] &:hover:not([data-state='open']):not(:disabled),
+  [data-theme='win hct'] &:hover:not([data-state='open']):not(:disabled) {
+    background: var(--color-surfaces-inverse-container);
+    border-color: var(--color-primary-primary);
+    color: var(--color-text-icon-inverse);
+  }
+
+  :root[data-theme='win hct'] &[data-state='open'],
+  [data-theme='win hct'] &[data-state='open'] {
+    background: var(--color-surfaces-inverse-container);
+    color: var(--color-text-icon-inverse);
+  }
 `;
 
-/** Value slot — placeholder stays placeholder-colored; a chosen value is primary. */
+/** Value slot — inherits trigger ink; placeholder stays placeholder-colored. */
 const Value = styled(RadixSelect.Value)`
   flex: 1;
   min-width: 0;
@@ -134,7 +148,7 @@ const Value = styled(RadixSelect.Value)`
   white-space: nowrap;
   text-align: left;
   line-height: 1.35;
-  color: var(--color-text-icon-primary);
+  color: inherit;
 
   &[data-placeholder],
   ${Trigger}:not([data-has-value='true']) & {
@@ -143,6 +157,13 @@ const Value = styled(RadixSelect.Value)`
 
   ${Trigger}:disabled & {
     color: var(--color-disabled-disabled-inverse);
+  }
+
+  :root[data-theme='win hct'] ${Trigger}:hover:not([data-state='open']):not(:disabled) &,
+  [data-theme='win hct'] ${Trigger}:hover:not([data-state='open']):not(:disabled) &,
+  :root[data-theme='win hct'] ${Trigger}[data-state='open'] &,
+  [data-theme='win hct'] ${Trigger}[data-state='open'] & {
+    color: inherit;
   }
 `;
 
@@ -176,6 +197,12 @@ const Content = styled(RadixSelect.Content)`
   border-radius: var(--radius-200);
   box-shadow: var(--elevation-3);
   overflow: hidden;
+
+  :root[data-theme='win hct'] &,
+  [data-theme='win hct'] & {
+    border: var(--stroke-100) solid var(--color-stroke-border);
+    box-shadow: none;
+  }
 `;
 
 const Viewport = styled(RadixSelect.Viewport)`
@@ -219,6 +246,13 @@ const Item = styled(RadixSelect.Item)`
     background: var(--color-tonal-tonal-overlay);
     color: var(--color-text-icon-on-tonal);
     font-weight: var(--font-weight-medium);
+  }
+
+  /* HCT: secondary-overlay hover is solid white (good); keep inverse text. */
+  :root[data-theme='win hct'] &[data-highlighted],
+  [data-theme='win hct'] &[data-highlighted] {
+    background: var(--color-surfaces-inverse-container);
+    color: var(--color-text-icon-inverse);
   }
 
   &[data-disabled] {

@@ -1,53 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontStack } from '../../../styles/globalStyles';
 import DbConsumer from '../../../assets/ai/db_consumer.svg';
 import MyAiLogo from '../../../assets/ai/my_ai.svg';
 import heroExamplePng from '../../../assets/ai/hero_example..png';
 import messageExamplePng from '../../../assets/ai/ai_message_example.png';
 
-// ─── Layout ──────────────────────────────────────────────────────────────────
-
-const PageContainer = styled.div`
-  padding: 40px;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: #f8fafc;
-  box-sizing: border-box;
-
-  @media (max-width: 768px) {
-    padding: 24px 16px;
-  }
-`;
-
 const ContentStack = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 64px;
-`;
-
-const PageTitle = styled.h1`
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 40px;
-  color: #0f172a;
-  margin: 0 0 16px 0;
-  font-family: ${fontStack};
-
-  @media (max-width: 768px) {
-    font-size: 24px;
-    line-height: 32px;
-  }
-`;
-
-const PageDescription = styled.p`
-  font-size: 16px;
-  line-height: 22px;
-  color: #1e1e1e;
-  max-width: 680px;
-  margin: 0;
-  font-family: ${fontStack};
+  gap: var(--space-800);
 `;
 
 // ─── Type definition rows ─────────────────────────────────────────────────────
@@ -55,8 +16,7 @@ const PageDescription = styled.p`
 const TypeSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  margin-top: 32px;
+  gap: var(--space-500);
 `;
 
 const TypeRow = styled.div`
@@ -96,7 +56,7 @@ const AnnotationLine = styled.div`
   flex: 1;
   min-width: 16px;
   height: 0;
-  border-top: 1.5px dashed #cbd5e1;
+  border-top: var(--stroke-100) dashed var(--color-stroke-border);
   align-self: center;
 
   @media (max-width: 1060px) {
@@ -106,12 +66,12 @@ const AnnotationLine = styled.div`
 
 const TypeDescription = styled.div`
   font-size: 14px;
-  color: #334155;
-  font-family: ${fontStack};
+  color: var(--color-text-icon-secondary);
+  font-family: var(--font-family);
   min-width: 0;
 
   @media (max-width: 1060px) {
-    border-top: 1.5px dashed #cbd5e1;
+    border-top: var(--stroke-100) dashed var(--color-stroke-border);
     padding-top: 16px;
   }
 `;
@@ -120,18 +80,18 @@ const TypeDescTitle = styled.p`
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
-  color: #334155;
+  color: var(--color-text-icon-secondary);
   margin: 0 0 4px 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 `;
 
 const TypeDescText = styled.p`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  color: #334155;
+  color: var(--color-text-icon-secondary);
   margin: 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 `;
 
 // ─── Usage Examples ───────────────────────────────────────────────────────────
@@ -146,9 +106,9 @@ const UsageSectionTitle = styled.h2`
   font-size: 28px;
   font-weight: 600;
   line-height: 36px;
-  color: #0f172a;
+  color: var(--color-text-icon-primary);
   margin: 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 
   @media (max-width: 768px) {
     font-size: 22px;
@@ -160,9 +120,9 @@ const UsageSectionSubtitle = styled.p`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  color: #0f172a;
+  color: var(--color-text-icon-primary);
   margin: 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 `;
 
 const ExampleBlock = styled.div`
@@ -175,19 +135,19 @@ const ExampleSubtitle = styled.h3`
   font-size: 20px;
   font-weight: 600;
   line-height: 28px;
-  color: #0f172a;
+  color: var(--color-text-icon-primary);
   margin: 0 0 8px 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 `;
 
 const ExampleDesc = styled.p`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
-  color: #0f172a;
+  color: var(--color-text-icon-primary);
   max-width: 680px;
   margin: 0;
-  font-family: ${fontStack};
+  font-family: var(--font-family);
 
   & + & {
     margin-top: 16px;
@@ -243,94 +203,79 @@ const typeDefinitions = [
   },
 ];
 
-const AiLogoIconPage = () => {
+const AiLogoIconContent = () => {
   return (
-    <PageContainer>
-      <ContentStack>
-        {/* Header + Type Definitions */}
+    <ContentStack>
+      <TypeSection>
+        {typeDefinitions.map((type) => (
+          <TypeRow key={type.title}>
+            <VisualSide>
+              <IconGroup>
+                {type.icons.map((icon, i) => (
+                  <img
+                    key={i}
+                    src={icon.src}
+                    alt={i === 0 ? type.title : ''}
+                    width={icon.size}
+                    height={icon.size}
+                    style={{ display: 'block', flexShrink: 0 }}
+                  />
+                ))}
+              </IconGroup>
+              <AnnotationLine aria-hidden="true" />
+            </VisualSide>
+
+            <TypeDescription>
+              <TypeDescTitle>{type.title}</TypeDescTitle>
+              <TypeDescText>{type.description}</TypeDescText>
+            </TypeDescription>
+          </TypeRow>
+        ))}
+      </TypeSection>
+
+      <div>
+        <UsageHeader>
+          <UsageSectionTitle>AI Icon + Logo Usage Examples</UsageSectionTitle>
+          <UsageSectionSubtitle>Consumer examples shown</UsageSectionSubtitle>
+        </UsageHeader>
+      </div>
+
+      <ExampleBlock>
         <div>
-          <PageTitle>AI Logo + Icon</PageTitle>
-          <PageDescription>
-            AI logos and icons are used to signal AI-powered experiences with a recognizable visual
-            mark. They should be used intentionally and only when the AI capability needs clear
-            recognition, persistent presence, or state-based feedback.
-          </PageDescription>
-
-          <TypeSection>
-            {typeDefinitions.map((type) => (
-              <TypeRow key={type.title}>
-                <VisualSide>
-                  <IconGroup>
-                    {type.icons.map((icon, i) => (
-                      <img
-                        key={i}
-                        src={icon.src}
-                        alt={i === 0 ? type.title : ''}
-                        width={icon.size}
-                        height={icon.size}
-                        style={{ display: 'block', flexShrink: 0 }}
-                      />
-                    ))}
-                  </IconGroup>
-                  <AnnotationLine aria-hidden="true" />
-                </VisualSide>
-
-                <TypeDescription>
-                  <TypeDescTitle>{type.title}</TypeDescTitle>
-                  <TypeDescText>{type.description}</TypeDescText>
-                </TypeDescription>
-              </TypeRow>
-            ))}
-          </TypeSection>
+          <ExampleSubtitle>Hero</ExampleSubtitle>
+          <ExampleDesc>
+            The Hero example shows the largest allowed size for the AI icon. This treatment is
+            reserved for hero use cases where AI is the primary focus of the experience.
+          </ExampleDesc>
+          <ExampleDesc>
+            At this size, the AI icon should appear only once per screen and function as a logo
+            mark rather than a repeated icon.
+          </ExampleDesc>
         </div>
+        <GradientCanvas>
+          <ExampleImage src={heroExamplePng} alt="Hero AI logo usage example" />
+        </GradientCanvas>
+      </ExampleBlock>
 
-        {/* Usage Examples */}
+      <ExampleBlock>
         <div>
-          <UsageHeader>
-            <UsageSectionTitle>AI Icon + Logo Usage Examples</UsageSectionTitle>
-            <UsageSectionSubtitle>Consumer examples shown</UsageSectionSubtitle>
-          </UsageHeader>
+          <ExampleSubtitle>Messages</ExampleSubtitle>
+          <ExampleDesc>
+            The Messages example shows the AI icon used as a chat placeholder and status
+            indicator. The icon may animate to communicate personality or application states such
+            as thinking, loading, or completion.
+          </ExampleDesc>
+          <ExampleDesc>
+            Once the AI task is complete, the icon should be hidden from view until a new task is
+            requested. This keeps the experience focused and avoids repetitive icon usage.
+          </ExampleDesc>
         </div>
-
-        {/* Hero */}
-        <ExampleBlock>
-          <div>
-            <ExampleSubtitle>Hero</ExampleSubtitle>
-            <ExampleDesc>
-              The Hero example shows the largest allowed size for the AI icon. This treatment is
-              reserved for hero use cases where AI is the primary focus of the experience.
-            </ExampleDesc>
-            <ExampleDesc>
-              At this size, the AI icon should appear only once per screen and function as a logo
-              mark rather than a repeated icon.
-            </ExampleDesc>
-          </div>
-          <GradientCanvas>
-            <ExampleImage src={heroExamplePng} alt="Hero AI logo usage example" />
-          </GradientCanvas>
-        </ExampleBlock>
-
-        {/* Messages */}
-        <ExampleBlock>
-          <div>
-            <ExampleSubtitle>Messages</ExampleSubtitle>
-            <ExampleDesc>
-              The Messages example shows the AI icon used as a chat placeholder and status
-              indicator. The icon may animate to communicate personality or application states such
-              as thinking, loading, or completion.
-            </ExampleDesc>
-            <ExampleDesc>
-              Once the AI task is complete, the icon should be hidden from view until a new task is
-              requested. This keeps the experience focused and avoids repetitive icon usage.
-            </ExampleDesc>
-          </div>
-          <GradientCanvas>
-            <ExampleImage src={messageExamplePng} alt="AI icon messages usage example" />
-          </GradientCanvas>
-        </ExampleBlock>
-      </ContentStack>
-    </PageContainer>
+        <GradientCanvas>
+          <ExampleImage src={messageExamplePng} alt="AI icon messages usage example" />
+        </GradientCanvas>
+      </ExampleBlock>
+    </ContentStack>
   );
 };
 
-export default AiLogoIconPage;
+export default AiLogoIconContent;

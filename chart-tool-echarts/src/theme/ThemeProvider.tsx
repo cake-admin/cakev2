@@ -1,4 +1,12 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 import { TOKENS } from '../tokens/loadTokens';
 import type { Mode } from '../tokens/tokens.types';
 import { buildChartTheme } from './buildChartTheme';
@@ -16,20 +24,38 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 export function ThemeProvider({
   children,
   initialMode = 'light',
+  /** When set, theme mode is controlled by the parent (e.g. site TopNav). */
+  mode: controlledMode,
 }: {
   children: ReactNode;
   initialMode?: Mode;
+  mode?: Mode;
 }) {
-  const [mode, setMode] = useState<Mode>(initialMode);
+  const [internalMode, setInternalMode] = useState<Mode>(initialMode);
+  const isControlled = controlledMode != null;
+  const mode = controlledMode ?? internalMode;
+
+  useEffect(() => {
+    if (controlledMode != null) setInternalMode(controlledMode);
+  }, [controlledMode]);
+
+  const setMode = useCallback(
+    (next: Mode) => {
+      if (!isControlled) setInternalMode(next);
+    },
+    [isControlled],
+  );
+
   const theme = useMemo(() => buildChartTheme(TOKENS, mode), [mode]);
   const value = useMemo<ThemeContextValue>(
     () => ({
       mode,
       setMode,
-      toggleMode: () => setMode((m) => (m === 'light' ? 'dark' : 'light')),
+      toggleMode: () =>
+        setMode(mode === 'light' ? 'dark' : mode === 'dark' ? 'hct' : 'light'),
       theme,
     }),
-    [mode, theme],
+    [mode, theme, setMode],
   );
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

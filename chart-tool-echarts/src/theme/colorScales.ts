@@ -1,6 +1,7 @@
 import { oklch, oklab, formatHex, clampChroma, clampRgb } from 'culori';
 import type { Mode } from '../tokens/tokens.types';
 import type { BaseKey, ChartColorSystem, ColorConfig, SemanticColors } from './chartTheme.types';
+import { WIREFRAME_SHADE_LIMIT } from './chartTheme.types';
 
 interface Lab {
   mode: 'oklab';
@@ -57,10 +58,15 @@ function toHex(o: Ok): string {
 
 const clamp = (n: number, lo: number, hi: number): number => Math.min(hi, Math.max(lo, n));
 
+/** Dark-canvas modes (dark + Windows HCT) share the lighter ramp window. */
+function isDarkCanvas(mode: Mode): boolean {
+  return mode === 'dark' || mode === 'hct';
+}
+
 /** Lightness window for a base's ramp. `wide` spreads steps further apart for
  *  categorical (more distinguishable); narrow is for tonal sequences. */
 function lightnessWindow(mode: Mode, wide: boolean): { lo: number; hi: number } {
-  if (mode === 'dark') return wide ? { lo: 0.5, hi: 0.95 } : { lo: 0.55, hi: 0.9 };
+  if (isDarkCanvas(mode)) return wide ? { lo: 0.5, hi: 0.95 } : { lo: 0.55, hi: 0.9 };
   return wide ? { lo: 0.34, hi: 0.92 } : { lo: 0.42, hi: 0.86 };
 }
 
@@ -68,7 +74,7 @@ function lightnessWindow(mode: Mode, wide: boolean): { lo: number; hi: number } 
 function ramp(baseHex: string, steps: number, mode: Mode, wide: boolean): string[] {
   const base = toOklch(baseHex);
   const { lo, hi } = lightnessWindow(mode, wide);
-  const c = base.c * (mode === 'dark' ? 0.85 : 1);
+  const c = base.c * (isDarkCanvas(mode) ? 0.85 : 1);
   if (steps <= 1) return [toHex({ mode: 'oklch', l: clamp(base.l, lo, hi), c, h: base.h })];
   return Array.from({ length: steps }, (_, i) => {
     const t = i / (steps - 1);
@@ -81,7 +87,7 @@ function ramp(baseHex: string, steps: number, mode: Mode, wide: boolean): string
 function deriveState(color: string, state: 'hover' | 'press', mode: Mode): string {
   const o = toOklch(color);
   const d = state === 'press' ? 0.1 : 0.05;
-  const l = clamp(mode === 'dark' ? o.l + d : o.l - d, 0.05, 0.97);
+  const l = clamp(isDarkCanvas(mode) ? o.l + d : o.l - d, 0.05, 0.97);
   return toHex({ mode: 'oklch', l, c: o.c, h: o.h });
 }
 
@@ -187,9 +193,18 @@ export function buildColorSystem(
       if (config.variation === 'categorical') {
         return fixed ? categorical(count) : categoricalMix(config.base ?? 'primary', count);
       }
-      // primary / secondary → one solid token color for every mark.
-      const fallback = config.variation === 'secondary' ? secondaryHex : primaryHex;
-      const color = (config.token && singleColors[config.token]) || fallback;
+      // Wireframe (secondary): multiple distinct neutral greys (up to 6), then
+      // cycle — patterns beyond the 6th shade are applied by option builders.
+      if (config.variation === 'secondary') {
+        const tokenHex = config.token ? singleColors[config.token] : undefined;
+        // Overlays (rgba) are poor ramp anchors — fall back to the secondary base.
+        const baseHex =
+          tokenHex && /^#([0-9a-f]{6})$/i.test(tokenHex) ? tokenHex : secondaryHex;
+        const shades = interleave(ramp(baseHex, WIREFRAME_SHADE_LIMIT, mode, true));
+        return Array.from({ length: Math.max(0, count) }, (_, i) => shades[i % shades.length]);
+      }
+      // primary → one solid token color for every mark.
+      const color = (config.token && singleColors[config.token]) || primaryHex;
       return Array.from({ length: count }, () => color);
     },
     states: (config: ColorConfig, rest: string) => {

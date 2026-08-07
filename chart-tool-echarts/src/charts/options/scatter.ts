@@ -14,6 +14,7 @@ import {
   tooltipFor,
   type ChartContext,
 } from './common';
+import { fillStyle } from './wireframe';
 
 /** Scatter (X/Y) with optional size-encoded bubbles and category coloring. */
 export function buildScatter(ctx: ChartContext): EChartsOption {
@@ -36,18 +37,22 @@ export function buildScatter(ctx: ChartContext): EChartsOption {
   const sizeFor = (size: number) =>
     px(ctx, bubble ? 6 + ((size - sMin) / (sMax - sMin || 1)) * 22 : style.pointRadius * 2);
 
-  const mkSeries = (name: string, pts: XYPoint[], color: string) => ({
+  const mkSeries = (name: string, pts: XYPoint[], color: string, index: number) => ({
     type: 'scatter' as const,
     name,
     selectedMode: SELECTED_MODE,
     data: pts.map((p) => ({ value: [p.x, p.y], symbolSize: sizeFor(p.size ?? 0) })),
-    itemStyle: { color, opacity: 0.85, borderColor: theme.surface.card, borderWidth: px(ctx, 1) },
+    itemStyle: fillStyle(ctx, color, index, {
+      opacity: 0.85,
+      borderColor: theme.surface.card,
+      borderWidth: px(ctx, 1),
+    }),
     ...markStates(ctx, color, 'series'),
   });
 
   const series = hasCat
-    ? categories.map((c, i) => mkSeries(c, points.filter((p) => p.category === c), colors[i % colors.length]))
-    : [mkSeries('', points, colors[0])];
+    ? categories.map((c, i) => mkSeries(c, points.filter((p) => p.category === c), colors[i % colors.length], i))
+    : [mkSeries('', points, colors[0], 0)];
 
   const valueAxis = (showSplit: boolean) => ({
     type: 'value' as const,

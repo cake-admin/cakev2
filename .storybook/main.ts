@@ -25,6 +25,11 @@ const config: StorybookConfig = {
     options: {},
   },
 
+  // Hide the Storybook onboarding checklist widget in the sidebar.
+  features: {
+    sidebarOnboardingChecklist: false,
+  },
+
   // Serve Rookery fonts + favicon only — never the whole `public/` tree.
   // Copying `public/` wholesale overwrites Storybook's manager `index.html`
   // with the CRA SPA shell (and drops CNAME / 404.html into the SB output).
@@ -85,6 +90,20 @@ const config: StorybookConfig = {
         'process.env.NODE_ENV': JSON.stringify(
           configType === 'PRODUCTION' ? 'production' : 'development'
         ),
+      },
+      // Windows often locks binary assets under src/assets; Vite's native
+      // watcher then crashes with EBUSY. cake& Storybook does not HMR those
+      // files, so skip them (and fall back to polling for everything else).
+      server: {
+        watch: {
+          ignored: [
+            '**/src/assets/**',
+            '**/node_modules/**',
+            '**/.git/**',
+          ],
+          usePolling: process.platform === 'win32',
+          interval: 1000,
+        },
       },
     });
   },

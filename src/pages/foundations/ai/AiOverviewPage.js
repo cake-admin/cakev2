@@ -1,55 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontStack } from '../../../styles/globalStyles';
-
-const PageContainer = styled.div`
-  padding: 40px;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 100vh;
-  background: #f8fafc;
-  box-sizing: border-box;
-`;
-
-const PageTitle = styled.h1`
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 40px;
-  color: #0f172a;
-  margin: 0 0 16px 0;
-  font-family: ${fontStack};
-`;
-
-const PageDescription = styled.div`
-  font-size: 16px;
-  line-height: 22px;
-  color: #1e1e1e;
-  max-width: 680px;
-  margin: 0 0 32px 0;
-  font-family: ${fontStack};
-
-  p {
-    margin: 0 0 22px 0;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 28px;
-  color: #0f172a;
-  margin: 0 0 16px 0;
-  font-family: ${fontStack};
-`;
 
 const PrincipleGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: var(--space-300);
   width: 100%;
 
   @media (max-width: 768px) {
@@ -60,8 +15,9 @@ const PrincipleGrid = styled.div`
 const PrincipleGrid3 = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 16px;
+  gap: var(--space-300);
   width: 100%;
+  margin-top: var(--space-300);
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr 1fr;
@@ -73,31 +29,41 @@ const PrincipleGrid3 = styled.div`
 `;
 
 const PrincipleCard = styled.div`
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
-  padding: 24px 32px 32px;
+  background: var(--color-surfaces-container);
+  border: var(--stroke-100) solid var(--color-stroke-border);
+  border-radius: var(--radius-200);
+  padding: var(--space-500) var(--space-600) var(--space-600);
   display: flex;
   flex-direction: column;
+  box-shadow: var(--elevation-0);
 `;
 
 const PrincipleTitle = styled.span`
   display: block;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 22px;
-  color: #1e1e1e;
-  margin-bottom: 4px;
-  font-family: ${fontStack};
+  font-size: var(--type-size-subject);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  color: var(--color-text-icon-primary);
+  margin-bottom: var(--space-050);
+  font-family: var(--font-family);
 `;
 
 const PrincipleText = styled.span`
   display: block;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 22px;
-  color: #1e1e1e;
-  font-family: ${fontStack};
+  font-size: var(--type-size-subject);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.4;
+  color: var(--color-text-icon-secondary);
+  font-family: var(--font-family);
+`;
+
+const Subhead = styled.h3`
+  margin: 0 0 var(--space-300);
+  font-family: var(--font-family);
+  font-size: var(--type-size-subtitle);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  color: var(--color-text-icon-primary);
 `;
 
 const principles = [
@@ -128,28 +94,13 @@ const principles = [
   },
 ];
 
-const AiOverviewPage = () => {
+/** Body for the Foundations AI overview panel (no page chrome). */
+export const AiOverviewContent = () => {
   const [firstRow, secondRow] = [principles.slice(0, 2), principles.slice(2)];
 
   return (
-    <PageContainer>
-      <PageTitle>AI Overview</PageTitle>
-
-      <PageDescription>
-        <p>
-          Lenovo's AI strategy follows a hybrid, tiered system. Rather than relying on a single
-          universal AI icon across all products, our goal is to create harmony across AI experiences
-          through a shared visual system.
-        </p>
-        <p>
-          This system brings together gradient treatments, syncopated motion, shared brand cues, and
-          consistent visual indicators that can scale across consumer, commercial, and internal
-          Lenovo products.
-        </p>
-      </PageDescription>
-
-      <SectionTitle>Our AI Design Principles</SectionTitle>
-
+    <>
+      <Subhead>Our AI Design Principles</Subhead>
       <PrincipleGrid>
         {firstRow.map((principle) => (
           <PrincipleCard key={principle.title}>
@@ -158,8 +109,7 @@ const AiOverviewPage = () => {
           </PrincipleCard>
         ))}
       </PrincipleGrid>
-
-      <PrincipleGrid3 style={{ marginTop: 16 }}>
+      <PrincipleGrid3>
         {secondRow.map((principle) => (
           <PrincipleCard key={principle.title}>
             <PrincipleTitle>{principle.title}</PrincipleTitle>
@@ -167,8 +117,8 @@ const AiOverviewPage = () => {
           </PrincipleCard>
         ))}
       </PrincipleGrid3>
-    </PageContainer>
+    </>
   );
 };
 
-export default AiOverviewPage;
+export default AiOverviewContent;

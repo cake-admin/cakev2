@@ -80,7 +80,7 @@ const Trigger = styled(RadixSelect.Trigger)`
   color: var(--color-text-icon-primary);
   cursor: pointer;
   outline: none;
-  transition: background 120ms ease, border-color 120ms ease;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
 
   &:hover:not([data-state='open']):not(:disabled) {
     border-color: var(--color-stroke-border-high);
@@ -108,9 +108,28 @@ const Trigger = styled(RadixSelect.Trigger)`
     color: var(--color-disabled-disabled-inverse);
     cursor: not-allowed;
   }
+
+  /*
+   * Windows HCT collapses on-container surfaces and stroke-border /
+   * stroke-border-high to the same values, so the default hover is invisible.
+   * Use the inverse surface + primary border (existing win-hct tokens) so the
+   * trigger reads clearly without inventing hex.
+   */
+  :root[data-theme='win hct'] &:hover:not([data-state='open']):not(:disabled),
+  [data-theme='win hct'] &:hover:not([data-state='open']):not(:disabled) {
+    background: var(--color-surfaces-inverse-container);
+    border-color: var(--color-primary-primary);
+    color: var(--color-text-icon-inverse);
+  }
+
+  :root[data-theme='win hct'] &[data-state='open'],
+  [data-theme='win hct'] &[data-state='open'] {
+    background: var(--color-surfaces-inverse-container);
+    color: var(--color-text-icon-inverse);
+  }
 `;
 
-/** Value slot — placeholder stays placeholder-colored; a chosen value is primary. */
+/** Value slot — inherits trigger ink; placeholder stays placeholder-colored. */
 const Value = styled(RadixSelect.Value)`
   flex: 1;
   min-width: 0;
@@ -120,7 +139,7 @@ const Value = styled(RadixSelect.Value)`
   white-space: nowrap;
   text-align: left;
   line-height: 1.35;
-  color: var(--color-text-icon-primary);
+  color: inherit;
 
   /* Placeholder (no selection) stays placeholder-colored. */
   &[data-placeholder],
@@ -130,6 +149,14 @@ const Value = styled(RadixSelect.Value)`
 
   ${Trigger}:disabled & {
     color: var(--color-disabled-disabled-inverse);
+  }
+
+  /* HCT inverse-fill hover/open: keep label/placeholder on the trigger ink. */
+  :root[data-theme='win hct'] ${Trigger}:hover:not([data-state='open']):not(:disabled) &,
+  [data-theme='win hct'] ${Trigger}:hover:not([data-state='open']):not(:disabled) &,
+  :root[data-theme='win hct'] ${Trigger}[data-state='open'] &,
+  [data-theme='win hct'] ${Trigger}[data-state='open'] & {
+    color: inherit;
   }
 `;
 
@@ -156,13 +183,21 @@ const Arrow = styled(RadixSelect.Icon)`
 `;
 
 const Content = styled(RadixSelect.Content)`
-  z-index: 1;
+  /* Above site chrome (TopNav z-index 1000); matches Tooltip overlays. */
+  z-index: 1100;
   width: var(--radix-select-trigger-width);
   max-height: var(--radix-select-content-available-height);
   background: var(--color-surfaces-container);
   border-radius: var(--radius-300);
   box-shadow: var(--elevation-3);
   overflow: hidden;
+
+  /* HCT elevation tokens collapse to the canvas color — add a real border. */
+  :root[data-theme='win hct'] &,
+  [data-theme='win hct'] & {
+    border: var(--stroke-100) solid var(--color-stroke-border);
+    box-shadow: none;
+  }
 `;
 
 const Viewport = styled(RadixSelect.Viewport)`
@@ -208,6 +243,28 @@ const Item = styled(RadixSelect.Item)`
   &[data-state='checked'] {
     color: var(--color-text-icon-on-tonal-secondary);
     font-weight: var(--font-weight-medium);
+  }
+
+  /*
+   * win hct maps on-tonal-secondary → #202020 (text-on-white-overlay) while the
+   * menu surface stays #202020, so a checked item with no fill becomes invisible.
+   * Keep primary text at rest; highlighted still gets the solid white overlay.
+   */
+  :root[data-theme='win hct'] &[data-state='checked']:not([data-highlighted]),
+  [data-theme='win hct'] &[data-state='checked']:not([data-highlighted]) {
+    color: var(--color-text-icon-primary);
+  }
+
+  :root[data-theme='win hct'] &[data-highlighted],
+  [data-theme='win hct'] &[data-highlighted] {
+    background: var(--color-surfaces-inverse-container);
+    color: var(--color-text-icon-inverse);
+  }
+
+  :root[data-theme='win hct'] &:active:not([data-disabled]),
+  [data-theme='win hct'] &:active:not([data-disabled]) {
+    background: var(--color-primary-primary);
+    color: var(--color-text-icon-on-primary);
   }
 
   &[data-disabled] {

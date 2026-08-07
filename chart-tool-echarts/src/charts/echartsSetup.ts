@@ -22,6 +22,7 @@ import {
   PolarComponent,
   VisualMapComponent,
   MarkLineComponent,
+  AriaComponent,
 } from 'echarts/components';
 import { CanvasRenderer, SVGRenderer } from 'echarts/renderers';
 
@@ -44,6 +45,7 @@ echarts.use([
   PolarComponent, // radial (polar) bar
   VisualMapComponent, // heatmap color scale
   MarkLineComponent, // zero baseline (pos/neg bars)
+  AriaComponent, // wireframe decal / pattern fills
   CanvasRenderer, // live preview
   SVGRenderer, // Figma export (SSR → SVG string)
 ]);

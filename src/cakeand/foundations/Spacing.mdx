@@ -15,7 +15,10 @@ border width — never arbitrary pixel values.
 export const spacing = tokens.value.spacing;
 export const radius = tokens.value.radius;
 export const stroke = tokens.value.stroke;
-export const MUTED = { fontSize: 12, opacity: 0.6 };
+export const MUTED = { fontSize: 12, color: 'var(--color-text-icon-secondary)' };
+export const LINE = '1px solid var(--color-stroke-border)';
+export const SWATCH = 'var(--color-primary-primary)';
+export const SWATCH_SOFT = 'var(--color-primary-primary-overlay)';
 
 ## Spacing — `--space-*`
 
@@ -32,12 +35,12 @@ Grouped in Figma as Small (2–10), Medium (12–24), and Large (32–80).
   </thead>
   <tbody>
     {spacing.map((t) => (
-      <tr key={t.name} style={{ borderTop: '1px solid rgba(127,127,127,0.2)' }}>
+      <tr key={t.name} style={{ borderTop: LINE }}>
         <td style={{ padding: 8 }}><code>--{t.name}</code></td>
         <td style={{ padding: 8, ...MUTED }}>{t.figmaPath}</td>
         <td style={{ padding: 8 }}>{t.px}</td>
         <td style={{ padding: 8 }}>
-          <span style={{ display: 'inline-block', height: 14, width: t.px, background: '#394edb', borderRadius: 3 }} />
+          <span style={{ display: 'inline-block', height: 14, width: t.px, background: SWATCH, borderRadius: 3 }} />
         </td>
       </tr>
     ))}
@@ -56,14 +59,14 @@ and Switch.
         style={{
           width: 72,
           height: 72,
-          background: '#bcc3ff',
-          border: '2px solid #394edb',
+          background: SWATCH_SOFT,
+          border: `2px solid ${SWATCH}`,
           borderRadius: t.px,
         }}
       />
       <div style={{ fontSize: 12, marginTop: 6 }}>
         <code>--{t.name}</code>
-        <div style={{ opacity: 0.6 }}>{t.px}px</div>
+        <div style={{ color: 'var(--color-text-icon-secondary)' }}>{t.px}px</div>
       </div>
     </div>
   ))}
@@ -84,11 +87,11 @@ outlines `--stroke-100`, focus rings `--stroke-300`).
   </thead>
   <tbody>
     {stroke.map((t) => (
-      <tr key={t.name} style={{ borderTop: '1px solid rgba(127,127,127,0.2)' }}>
+      <tr key={t.name} style={{ borderTop: LINE }}>
         <td style={{ padding: 8 }}><code>--{t.name}</code></td>
         <td style={{ padding: 8 }}>{t.px}</td>
         <td style={{ padding: 8 }}>
-          <div style={{ width: 180, borderTop: `${t.px}px solid #394edb` }} />
+          <div style={{ width: 180, borderTop: `${t.px}px solid ${SWATCH}` }} />
         </td>
       </tr>
     ))}

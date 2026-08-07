@@ -1,5 +1,6 @@
 import type { EChartsOption } from 'echarts';
 import { isPartition } from '../../data/dataModel';
+import { CORNER_RADIUS, SEGMENT_GAP } from '../types';
 import {
   animationOpts,
   FONT,
@@ -14,6 +15,7 @@ import {
   tooltipFor,
   type ChartContext,
 } from './common';
+import { fillStyle } from './wireframe';
 
 /** Pie family — pie | donut | half | nested | polar(rose). */
 export function buildPie(ctx: ChartContext): EChartsOption {
@@ -31,17 +33,24 @@ export function buildPie(ctx: ChartContext): EChartsOption {
   const k = rOut / 70;
   const ratio = Math.min(0.85, Math.max(0, style.donutInnerRatio));
   const inner = `${Math.round(ratio * rOut)}%`;
+  const gap = px(ctx, SEGMENT_GAP);
+  const corner = px(ctx, CORNER_RADIUS);
 
-  const items = slices.map((s, i) => ({
-    name: s.label,
-    value: s.value,
-    itemStyle: { color: colors[i % colors.length] },
-    ...markStates(ctx, colors[i % colors.length]),
-  }));
+  const items = slices.map((s, i) => {
+    const color = colors[i % colors.length];
+    return {
+      name: s.label,
+      value: s.value,
+      itemStyle: fillStyle(ctx, color, i),
+      ...markStates(ctx, color),
+    };
+  });
 
   const label = style.showDirectLabels
     ? { show: true, color: theme.text.secondary, fontFamily: FONT, fontSize: fs(ctx, 11), formatter: '{b}: {c}' }
     : { show: false };
+  // SEGMENT_GAP via card-colored border (~2px seam). padAngle is degrees and
+  // radius-dependent, so borderWidth is the reliable pixel gap.
   const common = {
     type: 'pie' as const,
     center,
@@ -50,7 +59,11 @@ export function buildPie(ctx: ChartContext): EChartsOption {
     selectedOffset: px(ctx, 6),
     label,
     labelLine: { show: style.showDirectLabels, lineStyle: { color: theme.axis.line } },
-    itemStyle: { borderColor: theme.surface.card, borderWidth: px(ctx, 2) },
+    itemStyle: {
+      borderColor: theme.surface.card,
+      borderWidth: gap,
+      borderRadius: corner,
+    },
     emphasis: { focus: 'self' as const },
   };
 

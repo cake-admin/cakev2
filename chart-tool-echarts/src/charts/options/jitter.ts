@@ -15,6 +15,7 @@ import {
   withSource,
   type ChartContext,
 } from './common';
+import { fillStyle } from './wireframe';
 
 /** Stable pseudo-random in [-0.5, 0.5] so export matches the live preview. */
 function jitterFrac(seed: number): number {
@@ -37,15 +38,22 @@ export function buildJitter(ctx: ChartContext): EChartsOption {
   const legendShown = style.showLegend && series.length > 0;
   const n = Math.max(1, categories.length);
 
-  const echSeries = series.map((s, si) => ({
-    type: 'scatter' as const,
-    name: s.name,
-    symbolSize: px(ctx, style.pointRadius * 2),
-    selectedMode: SELECTED_MODE,
-    itemStyle: { color: colors[si % colors.length], opacity: 0.85, borderColor: theme.surface.card, borderWidth: px(ctx, 1) },
-    data: s.points.map((p, pi) => [(idx.get(p.x) ?? 0) + jitterFrac(si * 131 + pi * 17 + 1) * 0.72, p.y]),
-    ...markStates(ctx, colors[si % colors.length], 'series'),
-  }));
+  const echSeries = series.map((s, si) => {
+    const color = colors[si % colors.length];
+    return {
+      type: 'scatter' as const,
+      name: s.name,
+      symbolSize: px(ctx, style.pointRadius * 2),
+      selectedMode: SELECTED_MODE,
+      itemStyle: fillStyle(ctx, color, si, {
+        opacity: 0.85,
+        borderColor: theme.surface.card,
+        borderWidth: px(ctx, 1),
+      }),
+      data: s.points.map((p, pi) => [(idx.get(p.x) ?? 0) + jitterFrac(si * 131 + pi * 17 + 1) * 0.72, p.y]),
+      ...markStates(ctx, color, 'series'),
+    };
+  });
 
   const base = axisCommon(ctx, style.showAxes);
   // Map integer tick → category name; tagged with inlined categories so the

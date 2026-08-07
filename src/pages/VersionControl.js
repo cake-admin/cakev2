@@ -1,428 +1,476 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Card from '../components/design-system/Card';
+import { ArrowLeft } from 'lucide-react';
+import { Card } from '../cakeand/components/Card';
+import { Badge } from '../cakeand/components/Badge';
+import { pageGutterX } from '../styles/pageChrome';
+import { StickyWallpaper } from './HomePage';
+import heroBg from '../assets/home/hero-bg.png';
 
-const PageContainer = styled.div`
-  padding: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
-  min-height: 100vh;
+const ROOKERY = "'Rookery New', Rookery, var(--font-family)";
+
+/**
+ * Hero title on the wallpaper. Same ink mapping as Home/Resources:
+ * white in light/dark, black in HCT.
+ */
+const Page = styled.div`
+  --page-on-media: #ffffff;
+
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  font-family: var(--font-family);
+
+  html[data-theme='win hct'] & {
+    --page-on-media: #000000;
+  }
 `;
 
-const Header = styled.div`
-  margin-bottom: 48px;
+const Layer = styled.div`
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
-const PageTitle = styled.h1`
-  font-size: 2rem;
-  margin-bottom: 16px;
-  color: #0F172A;
+const Hero = styled.section`
+  display: flex;
+  align-items: flex-end;
+  min-height: 200px;
+  padding-top: var(--space-200);
+  padding-bottom: var(--space-200);
+  ${pageGutterX}
+  box-sizing: border-box;
 `;
 
-const PageSubtitle = styled.p`
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #475569;
-  max-width: 800px;
+const HeroTitle = styled.h1`
+  margin: 0;
+  font-family: ${ROOKERY};
+  font-size: var(--type-size-hero);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.35;
+  letter-spacing: 0.2px;
+  color: var(--page-on-media);
+`;
+
+const Content = styled.section`
+  flex: 1;
+  backdrop-filter: blur(45px);
+  background: var(--color-surfaces-container-blur-high);
+  box-shadow: var(--elevation-5);
+  padding-top: var(--space-600);
+  padding-bottom: var(--space-600);
+  ${pageGutterX}
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-600);
+`;
+
+const BackLink = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  align-self: flex-start;
+  font-size: var(--type-size-body);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.2px;
+  color: var(--color-primary-primary);
+  text-decoration: none;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--color-primary-primary);
+  }
+`;
+
+const Intro = styled.div`
+  margin: var(--space-200) 0 0;
+  max-width: 40rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+`;
+
+const IntroText = styled.p`
+  margin: 0;
+  font-size: var(--type-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.35;
+  letter-spacing: 0.2px;
+  color: var(--color-text-icon-secondary);
 `;
 
 const Section = styled.section`
-  margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  max-width: 48rem;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 24px;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 16px 0;
+  margin: 0;
+  font-family: ${ROOKERY};
+  font-size: var(--type-size-page);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.35;
+  letter-spacing: 0.2px;
+  color: var(--color-text-icon-primary);
 `;
 
-const SectionDescription = styled.p`
-  font-size: 16px;
-  color: #6b7280;
-  margin: 0 0 32px 0;
-  line-height: 1.6;
+const SectionCopy = styled.p`
+  margin: 0;
+  font-size: var(--type-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.35;
+  letter-spacing: 0.2px;
+  color: var(--color-text-icon-secondary);
+  max-width: 40rem;
+`;
+
+const CardInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  padding: var(--space-600);
+  box-sizing: border-box;
+  font-family: ${ROOKERY};
+`;
+
+const TitleBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  align-items: flex-start;
+`;
+
+const CardTitle = styled.h3`
+  margin: 0;
+  font-family: ${ROOKERY};
+  font-size: var(--type-size-title);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.35;
+  color: var(--color-text-icon-primary);
+`;
+
+const BadgeRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-150);
+`;
+
+const CardBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  font-size: var(--type-size-subject);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.35;
+  letter-spacing: 0.2px;
+  color: var(--color-text-icon-primary);
+
+  p {
+    margin: 0;
+  }
 `;
 
 const VersionTimeline = styled.div`
   position: relative;
-  padding-left: 32px;
-  
+  padding-left: var(--space-500);
+
   &::before {
     content: '';
     position: absolute;
-    left: 16px;
+    left: var(--space-100);
     top: 0;
     bottom: 0;
     width: 2px;
-    background: #e5e7eb;
+    background: var(--color-stroke-border);
   }
 `;
 
 const VersionEntry = styled.div`
   position: relative;
-  margin-bottom: 40px;
-  
+  margin-bottom: var(--space-500);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
   &::before {
     content: '';
     position: absolute;
-    left: -24px;
-    top: 8px;
+    left: calc(-1 * var(--space-500) + var(--space-100) - 5px);
+    top: 6px;
     width: 12px;
     height: 12px;
-    border-radius: 50%;
-    background: ${props => {
-      if (props.isLatest) return '#2563eb';
-      if (props.isMajor) return '#dc2626';
-      if (props.isMinor) return '#059669';
-      return '#6b7280';
-    }};
-    border: 2px solid #ffffff;
-    box-shadow: 0 0 0 2px #e5e7eb;
+    border-radius: var(--radius-1000);
+    background: ${(p) =>
+      p.$latest
+        ? 'var(--color-primary-primary)'
+        : 'var(--color-secondary-secondary)'};
+    border: var(--stroke-100) solid var(--color-surfaces-container);
+    box-shadow: 0 0 0 2px var(--color-stroke-border);
   }
 `;
 
 const VersionHeader = styled.div`
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  margin-bottom: var(--space-300);
 `;
 
 const VersionNumber = styled.h3`
-  font-size: 20px;
-  font-weight: 600;
-  color: #111827;
-  margin: 0 0 4px 0;
+  margin: 0;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-150);
+  font-family: ${ROOKERY};
+  font-size: var(--type-size-title);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.35;
+  color: var(--color-text-icon-primary);
 `;
 
-const VersionDate = styled.div`
-  font-size: 14px;
-  color: #6b7280;
-  margin-bottom: 8px;
-`;
-
-const VersionBadge = styled.span`
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  
-  ${props => {
-    if (props.type === 'latest') return 'background: #eff6ff; color: #2563eb;';
-    if (props.type === 'major') return 'background: #fef2f2; color: #dc2626;';
-    if (props.type === 'minor') return 'background: #f0fdf4; color: #059669;';
-    return 'background: #f3f4f6; color: #6b7280;';
-  }}
+const VersionDate = styled.span`
+  font-size: var(--type-size-caption);
+  color: var(--color-text-icon-secondary);
+  letter-spacing: 0.2px;
 `;
 
 const ChangeList = styled.ul`
-  list-style: none;
-  padding: 0;
   margin: 0;
-`;
-
-const ChangeItem = styled.li`
-  margin-bottom: 8px;
-  padding-left: 20px;
-  position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 8px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: ${props => {
-      if (props.type === 'added') return '#059669';
-      if (props.type === 'changed') return '#d97706';
-      if (props.type === 'removed') return '#dc2626';
-      return '#6b7280';
-    }};
-  }
-`;
-
-const ChangeText = styled.span`
-  color: #374151;
+  padding-left: var(--space-400);
+  font-size: var(--type-size-body);
   line-height: 1.5;
-`;
+  letter-spacing: 0.2px;
+  color: var(--color-text-icon-secondary);
 
-const BreakingChange = styled.div`
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
-  padding: 12px;
-  margin: 12px 0;
-  
-  &::before {
-    content: '⚠️ Breaking Change';
-    display: block;
-    font-weight: 600;
-    color: #dc2626;
-    margin-bottom: 4px;
-    font-size: 14px;
+  li {
+    margin-bottom: var(--space-100);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  strong {
+    color: var(--color-text-icon-primary);
+    font-weight: var(--font-weight-medium);
   }
 `;
 
-const VersionControl = () => {
-  const versions = [
-    {
-      version: '4.0.1',
-      date: '2024-03-15',
-      type: 'latest',
-      isLatest: true,
-      isMajor: true,
-      description: 'Major update with enhanced components and accessibility improvements',
-      changes: [
-        { type: 'added', text: 'Enhanced component library with improved accessibility' },
-        { type: 'added', text: 'New color system with better contrast ratios' },
-        { type: 'added', text: 'Improved documentation and examples' },
-        { type: 'added', text: 'Advanced form components and validation' },
-        { type: 'added', text: 'Dark mode support across all components' },
-        { type: 'added', text: 'Performance optimizations and bug fixes' }
-      ]
-    },
-    {
-      version: '3.0.0',
-      date: '2024-02-15',
-      type: 'major',
-      isMajor: true,
-      description: 'Complete design system overhaul',
-      changes: [
-        { type: 'added', text: 'Redesigned component architecture' },
-        { type: 'added', text: 'New theming system' },
-        { type: 'added', text: 'Improved responsive design' },
-        { type: 'changed', text: 'Updated color palette and typography' },
-        { type: 'changed', text: 'Enhanced component APIs' }
-      ]
-    },
-    {
-      version: '2.0.0',
-      date: '2024-01-15',
-      type: 'major',
-      isMajor: true,
-      description: 'Major feature update',
-      changes: [
-        { type: 'added', text: 'Advanced component library' },
-        { type: 'added', text: 'Interactive documentation' },
-        { type: 'added', text: 'New design tokens system' },
-        { type: 'changed', text: 'Improved accessibility standards' }
-      ]
-    },
-    {
-      version: '1.0.0',
-      date: '2024-01-01',
-      type: 'major',
-      isMajor: true,
-      description: 'Initial stable release',
-      changes: [
-        { type: 'added', text: 'Core component library' },
-        { type: 'added', text: 'Basic documentation' },
-        { type: 'added', text: 'Design tokens' },
-        { type: 'added', text: 'Basic theming support' }
-      ]
-    }
-  ];
+const StrategyGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-400);
+`;
 
-  const getChangeTypeLabel = (type) => {
-    switch (type) {
-      case 'added': return 'Added';
-      case 'changed': return 'Changed';
-      case 'removed': return 'Removed';
-      case 'fixed': return 'Fixed';
-      default: return 'Updated';
-    }
-  };
+/** Matches WhatsNew Cake& 1.0.0 / major Aug 13 entry. */
+const CURRENT_RELEASE = {
+  version: '1.0.0',
+  date: 'August 13, 2026',
+  title: 'Cake& 1.0.0',
+  body: [
+    "We're excited to introduce Cake& 1.0.0.",
+    "This release marks the beginning of a new chapter for Lenovo design. Built together by Lenovo and Motorola, Cake& unifies our design languages into a single PC software system that's modern, accessible, and ready for the future.",
+    'Our goal is simple: help teams design, build, and ship with greater consistency and confidence. This release includes our new Figma library, React component library, Storybook documentation, design foundations, and developer resources—all working from the same source of truth.',
+    "This is just the beginning. We'll continue evolving Cake& alongside our products and the teams who build them.",
+  ],
+  changes: [
+    { type: 'Added', text: 'Public Cake& Figma community library' },
+    { type: 'Added', text: 'React component library on Radix with Storybook docs' },
+    { type: 'Added', text: 'Design foundations — color, type, spacing, elevation, surfaces' },
+    { type: 'Added', text: 'AI styling guidance for overview, gradient, and logo & icon' },
+    { type: 'Added', text: 'Developer resources, data viz tool, and AI Labs starter' },
+  ],
+};
 
-  return (
-    <PageContainer>
-      <Header>
-        <PageTitle>Version Control</PageTitle>
-        <PageSubtitle>
-          Track the evolution of our design system through version history and changelog entries.
-        </PageSubtitle>
-      </Header>
+const PRIOR_RELEASES = [
+  {
+    version: 'Cake Web V2',
+    date: 'October 8, 2025',
+    description: 'Modern responsive design system built with React',
+    changes: [
+      { type: 'Added', text: 'Cake Web V2 site and documentation' },
+      { type: 'Added', text: 'WCAG 2.2 AA accessibility baseline' },
+      { type: 'Added', text: 'Standardized design tokens and enhanced components' },
+    ],
+  },
+  {
+    version: '1.4.0',
+    date: 'May 1, 2025',
+    description: 'Accessibility and interaction consistency update',
+    changes: [
+      { type: 'Changed', text: 'Core components and focus states for WCAG 2.2' },
+      { type: 'Changed', text: 'Interaction consistency across core components' },
+      { type: 'Changed', text: 'Color contrast for readability' },
+    ],
+  },
+];
 
-      <Section>
-        <SectionTitle>Current Version</SectionTitle>
-        <SectionDescription>
-          We're currently on version 4.0.1, which represents our latest major release with significant improvements in accessibility and component functionality.
-        </SectionDescription>
+const VersionControl = () => (
+  <Page>
+    <StickyWallpaper aria-hidden>
+      <img src={heroBg} alt="" />
+    </StickyWallpaper>
 
-        <Card elevated>
-          <Card.Header>
-            <Card.Title>Version 4.0.1 - Latest Release</Card.Title>
-            <Card.Subtitle>Released on March 15, 2024</Card.Subtitle>
-          </Card.Header>
-          <Card.Body>
-            <p style={{ margin: '0 0 16px 0', color: '#6b7280', lineHeight: '1.6' }}>
-              This release brings major improvements to our component library with enhanced accessibility,
-              dark mode support, and performance optimizations.
-            </p>
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              <span style={{
-                background: '#eff6ff',
-                color: '#2563eb',
-                padding: '4px 8px',
-                borderRadius: '4px',
-                fontSize: '12px',
-                fontWeight: '500'
-              }}>
-                Latest Release
-              </span>
-              <span style={{
-                background: '#f0fdf4',
-                color: '#059669',
-                padding: '4px 8px',
-                borderRadius: '4px',
-                fontSize: '12px',
-                fontWeight: '500'
-              }}>
-                Production Ready
-              </span>
-            </div>
-          </Card.Body>
-        </Card>
-      </Section>
+    <Layer>
+      <Hero>
+        <HeroTitle>Version control</HeroTitle>
+      </Hero>
 
-      <Section>
-        <SectionTitle>Changelog</SectionTitle>
-        <SectionDescription>
-          A complete history of all changes, improvements, and new features added to the design system.
-        </SectionDescription>
+      <Content>
+        <BackLink to="/resources/whats-new">
+          <ArrowLeft aria-hidden />
+          Back to what&apos;s new
+        </BackLink>
 
-        <VersionTimeline>
-          {versions.map((version, index) => (
-            <VersionEntry 
-              key={version.version}
-              isLatest={version.isLatest}
-              isMajor={version.isMajor}
-              isMinor={version.isMinor}
-            >
+        <Intro>
+          <IntroText>
+            Track the evolution of Cake&amp; through version history and changelog
+            entries. We follow semantic versioning so teams know what changed and
+            how to adopt it.
+          </IntroText>
+        </Intro>
+
+        <Section>
+          <SectionTitle>Current version</SectionTitle>
+          <SectionCopy>
+            We&apos;re currently on Cake&amp; {CURRENT_RELEASE.version}, our first
+            major unified release across Figma, React, Storybook, and foundations.
+          </SectionCopy>
+
+          <Card elevation="low">
+            <CardInner>
+              <TitleBlock>
+                <CardTitle>{CURRENT_RELEASE.title}</CardTitle>
+                <BadgeRow>
+                  <Badge color="secondary" tone="subtle" dot={false}>
+                    {CURRENT_RELEASE.date}
+                  </Badge>
+                  <Badge color="primary" tone="solid" dot={false}>
+                    Major release
+                  </Badge>
+                  <Badge color="primary" tone="subtle" dot={false}>
+                    Latest
+                  </Badge>
+                </BadgeRow>
+              </TitleBlock>
+              <CardBody>
+                {CURRENT_RELEASE.body.map((para) => (
+                  <p key={para.slice(0, 40)}>{para}</p>
+                ))}
+              </CardBody>
+            </CardInner>
+          </Card>
+        </Section>
+
+        <Section>
+          <SectionTitle>Changelog</SectionTitle>
+          <SectionCopy>
+            A history of releases, improvements, and new features across Cake&amp;
+            and earlier Cake Web milestones.
+          </SectionCopy>
+
+          <VersionTimeline>
+            <VersionEntry $latest>
               <VersionHeader>
                 <VersionNumber>
-                  v{version.version}
-                  {version.isLatest && <VersionBadge type="latest">Latest</VersionBadge>}
-                  {version.isMajor && <VersionBadge type="major">Major</VersionBadge>}
-                  {version.isMinor && <VersionBadge type="minor">Minor</VersionBadge>}
+                  v{CURRENT_RELEASE.version}
+                  <Badge color="primary" tone="solid" dot={false}>
+                    Latest
+                  </Badge>
+                  <Badge color="primary" tone="subtle" dot={false}>
+                    Major
+                  </Badge>
                 </VersionNumber>
-                <VersionDate>{version.date}</VersionDate>
-                <p style={{ margin: 0, color: '#6b7280', lineHeight: '1.5' }}>
-                  {version.description}
-                </p>
+                <VersionDate>{CURRENT_RELEASE.date}</VersionDate>
+                <IntroText>
+                  Unified Lenovo + Motorola design system for PC software.
+                </IntroText>
               </VersionHeader>
-
               <ChangeList>
-                {version.changes.map((change, changeIndex) => (
-                  <ChangeItem key={changeIndex} type={change.type}>
-                    <ChangeText>
-                      <strong>{getChangeTypeLabel(change.type)}:</strong> {change.text}
-                    </ChangeText>
-                  </ChangeItem>
+                {CURRENT_RELEASE.changes.map((change) => (
+                  <li key={change.text}>
+                    <strong>{change.type}:</strong> {change.text}
+                  </li>
                 ))}
               </ChangeList>
             </VersionEntry>
-          ))}
-        </VersionTimeline>
-      </Section>
 
-      <Section>
-        <SectionTitle>Versioning Strategy</SectionTitle>
-        <SectionDescription>
-          We follow semantic versioning (SemVer) to ensure clear communication about the nature of changes.
-        </SectionDescription>
+            {PRIOR_RELEASES.map((release) => (
+              <VersionEntry key={release.version}>
+                <VersionHeader>
+                  <VersionNumber>v{release.version}</VersionNumber>
+                  <VersionDate>{release.date}</VersionDate>
+                  <IntroText>{release.description}</IntroText>
+                </VersionHeader>
+                <ChangeList>
+                  {release.changes.map((change) => (
+                    <li key={change.text}>
+                      <strong>{change.type}:</strong> {change.text}
+                    </li>
+                  ))}
+                </ChangeList>
+              </VersionEntry>
+            ))}
+          </VersionTimeline>
+        </Section>
 
-        <CardGrid>
-          <Card>
-            <Card.Body>
-              <h3 style={{ margin: '0 0 12px 0', color: '#111827' }}>Major Versions</h3>
-              <p style={{ margin: 0, color: '#6b7280', lineHeight: '1.5' }}>
-                Incompatible API changes that may require updates to existing implementations. 
-                These releases include breaking changes and new major features.
-              </p>
-            </Card.Body>
-          </Card>
+        <Section>
+          <SectionTitle>Versioning strategy</SectionTitle>
+          <SectionCopy>
+            We follow semantic versioning (SemVer) to communicate the nature of
+            each change clearly.
+          </SectionCopy>
+          <StrategyGrid>
+            <Card elevation="low">
+              <CardInner>
+                <CardTitle>Major versions</CardTitle>
+                <IntroText>
+                  Incompatible API changes that may require updates to existing
+                  implementations. These releases include breaking changes and new
+                  major features.
+                </IntroText>
+              </CardInner>
+            </Card>
+            <Card elevation="low">
+              <CardInner>
+                <CardTitle>Minor versions</CardTitle>
+                <IntroText>
+                  New functionality added in a backwards-compatible manner —
+                  features and improvements without breaking changes.
+                </IntroText>
+              </CardInner>
+            </Card>
+            <Card elevation="low">
+              <CardInner>
+                <CardTitle>Patch versions</CardTitle>
+                <IntroText>
+                  Backwards-compatible bug fixes and minor improvements focused on
+                  stability.
+                </IntroText>
+              </CardInner>
+            </Card>
+          </StrategyGrid>
+        </Section>
+      </Content>
+    </Layer>
+  </Page>
+);
 
-          <Card>
-            <Card.Body>
-              <h3 style={{ margin: '0 0 12px 0', color: '#111827' }}>Minor Versions</h3>
-              <p style={{ margin: 0, color: '#6b7280', lineHeight: '1.5' }}>
-                New functionality added in a backwards-compatible manner. These releases 
-                include new features and improvements to existing components.
-              </p>
-            </Card.Body>
-          </Card>
-
-          <Card>
-            <Card.Body>
-              <h3 style={{ margin: '0 0 12px 0', color: '#111827' }}>Patch Versions</h3>
-              <p style={{ margin: 0, color: '#6b7280', lineHeight: '1.5' }}>
-                Backwards-compatible bug fixes and minor improvements. These releases 
-                focus on stability and bug fixes without new features.
-              </p>
-            </Card.Body>
-          </Card>
-        </CardGrid>
-      </Section>
-
-      <Section>
-        <SectionTitle>Upcoming Features</SectionTitle>
-        <SectionDescription>
-          Planned features and improvements for future releases of the design system.
-        </SectionDescription>
-
-        <CardGrid>
-          <Card>
-            <Card.Body>
-              <h3 style={{ margin: '0 0 12px 0', color: '#111827' }}>v1.1.0 - Enhanced Components</h3>
-              <ul style={{ margin: 0, color: '#6b7280', lineHeight: '1.5' }}>
-                <li>Dropdown component with search and multi-select</li>
-                <li>Table component with sorting and pagination</li>
-                <li>Toast notification system</li>
-                <li>Enhanced form validation</li>
-              </ul>
-            </Card.Body>
-          </Card>
-
-          <Card>
-            <Card.Body>
-              <h3 style={{ margin: '0 0 12px 0', color: '#111827' }}>v1.2.0 - Advanced Features</h3>
-              <ul style={{ margin: 0, color: '#6b7280', lineHeight: '1.5' }}>
-                <li>Date picker component</li>
-                <li>File upload component</li>
-                <li>Rich text editor</li>
-                <li>Advanced data visualization</li>
-              </ul>
-            </Card.Body>
-          </Card>
-
-          <Card>
-            <Card.Body>
-              <h3 style={{ margin: '0 0 12px 0', color: '#111827' }}>v2.0.0 - Major Overhaul</h3>
-              <ul style={{ margin: 0, color: '#6b7280', lineHeight: '1.5' }}>
-                <li>Dark mode support</li>
-                <li>Customizable theme system</li>
-                <li>Animation library integration</li>
-                <li>Performance optimizations</li>
-              </ul>
-            </Card.Body>
-          </Card>
-        </CardGrid>
-      </Section>
-    </PageContainer>
-  );
-};
-
-const CardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  margin-top: 32px;
-`;
-
-export default VersionControl; 
+export default VersionControl;

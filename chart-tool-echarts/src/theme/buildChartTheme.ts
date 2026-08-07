@@ -10,6 +10,7 @@ import {
 import type { Mode, RawTokens } from '../tokens/tokens.types';
 import { buildColorSystem } from './colorScales';
 import type { ChartTheme } from './chartTheme.types';
+import { HCT, HCT_CATEGORICAL, HCT_SEQUENTIAL } from './hctTheme';
 
 /**
  * Assemble a full ChartTheme for a mode. Structural fields map 1:1 from base
@@ -21,8 +22,13 @@ import type { ChartTheme } from './chartTheme.types';
  *   tooltip bg/text  ← textPrimary/surface  (Tooltips)
  *   surfaces         ← surfaceCanvas/Card
  *   focus ring       ← referenceFocus       (Button)
+ *
+ * `hct` overlays cake& Windows High-Contrast (`win hct`) surfaces + series
+ * colors — chart tokens.json has no HCT channel of its own.
  */
 export function buildChartTheme(tokens: RawTokens, mode: Mode): ChartTheme {
+  if (mode === 'hct') return buildHctChartTheme();
+
   const t = makeResolver(tokens, mode);
   // Tooltip elevation copied from the Tooltips component (two-layer drop shadow,
   // heavier on dark). Elevation only — not a data color, so kept token-free.
@@ -64,6 +70,49 @@ export function buildChartTheme(tokens: RawTokens, mode: Mode): ChartTheme {
       sequentialFor(mode),
       semanticScaleFor(mode),
       divergingFor(mode),
+    ),
+  };
+}
+
+/** High-contrast chart theme from cake& `win hct` token values. */
+function buildHctChartTheme(): ChartTheme {
+  return {
+    mode: 'hct',
+    surface: { ...HCT.surface },
+    text: { ...HCT.text },
+    axis: { line: HCT.border.standard, tick: HCT.text.secondary, label: HCT.text.secondary },
+    grid: { line: HCT.border.weak },
+    border: { ...HCT.border },
+    tooltip: {
+      bg: HCT.tooltip.bg,
+      text: HCT.tooltip.text,
+      border: HCT.border.standard,
+      shadow: '0 2px 16px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.35)',
+      radius: 4,
+    },
+    focus: HCT.focus,
+    // Stronger strokes for HCT readability on near-black canvas.
+    shape: { cornerRadius: 4, strokeWidth: 3, dotRadius: 6, donutInnerRatio: 0.6 },
+    motion: { duration: 0.4, easing: [0.23, 1, 0.32, 1], stagger: 0.05 },
+    color: buildColorSystem(
+      HCT.primary,
+      HCT.secondary,
+      'hct',
+      {
+        'primary.primary': HCT.primary,
+        'secondary.secondary': HCT.secondary,
+      },
+      [...HCT_CATEGORICAL],
+      { ...HCT.semantic },
+      [...HCT_SEQUENTIAL],
+      [
+        HCT.semantic.negative,
+        HCT.semantic.warning,
+        HCT.semantic.neutral,
+        HCT.semantic.info,
+        HCT.semantic.positive,
+      ],
+      [HCT.data, HCT.border.weak, HCT.secondary, HCT.primary],
     ),
   };
 }

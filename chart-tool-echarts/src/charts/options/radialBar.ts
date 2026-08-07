@@ -12,6 +12,7 @@ import {
   tooltipFor,
   type ChartContext,
 } from './common';
+import { fillStyle } from './wireframe';
 
 /** Radial (polar) bar — categories radiate around a circle, value = bar length. */
 export function buildRadialBar(ctx: ChartContext): EChartsOption {
@@ -56,11 +57,14 @@ export function buildRadialBar(ctx: ChartContext): EChartsOption {
         coordinateSystem: 'polar',
         roundCap: true,
         selectedMode: SELECTED_MODE,
-        data: categories.map((cat, i) => ({
-          value: first?.points.find((p) => p.x === cat)?.y ?? 0,
-          itemStyle: { color: colors[i % colors.length] },
-          ...markStates(ctx, colors[i % colors.length]),
-        })),
+        data: categories.map((cat, i) => {
+          const color = colors[i % colors.length];
+          return {
+            value: first?.points.find((p) => p.x === cat)?.y ?? 0,
+            itemStyle: fillStyle(ctx, color, i),
+            ...markStates(ctx, color),
+          };
+        }),
       },
     ] as EChartsOption['series'],
   };

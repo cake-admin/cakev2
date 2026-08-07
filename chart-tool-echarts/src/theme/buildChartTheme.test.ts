@@ -32,4 +32,14 @@ describe('buildChartTheme', () => {
       buildChartTheme(TOKENS, 'dark').surface.canvas,
     );
   });
+
+  it('hct uses Windows High-Contrast canvas and data cyan', () => {
+    const t = buildChartTheme(TOKENS, 'hct');
+    expect(t.mode).toBe('hct');
+    expect(t.surface.canvas).toBe('#202020');
+    expect(t.text.primary).toBe('#ffffff');
+    expect(t.color.base.primary).toBe('#8ee3f0');
+    expect(t.color.categorical(1)[0]).toBe('#75e9fc');
+    expect(t.shape.strokeWidth).toBeGreaterThan(buildChartTheme(TOKENS, 'light').shape.strokeWidth);
+  });
 });

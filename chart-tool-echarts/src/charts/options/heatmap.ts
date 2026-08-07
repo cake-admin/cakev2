@@ -1,5 +1,6 @@
 import type { EChartsOption } from 'echarts';
 import { categoriesOf, isSeries } from '../../data/dataModel';
+import { CORNER_RADIUS, SEGMENT_GAP } from '../types';
 import {
   animationOpts,
   axisCommon,
@@ -42,6 +43,8 @@ export function buildHeatmap(ctx: ChartContext): EChartsOption {
         : theme.color.sequentialRamp;
 
   const grid = { ...(gridFor(ctx, false) as object), bottom: px(ctx, legendShown ? 56 : 24) };
+  const gap = px(ctx, SEGMENT_GAP);
+  const corner = px(ctx, CORNER_RADIUS);
 
   return {
     textStyle: { fontFamily: FONT },
@@ -79,7 +82,11 @@ export function buildHeatmap(ctx: ChartContext): EChartsOption {
         type: 'heatmap',
         data: cells,
         label: { show: style.showDirectLabels, color: theme.text.primary, fontFamily: FONT, fontSize: fs(ctx, 11) },
-        itemStyle: { borderColor: theme.surface.card, borderWidth: px(ctx, 2) },
+        itemStyle: {
+          borderColor: theme.surface.card,
+          borderWidth: gap,
+          borderRadius: corner,
+        },
         emphasis: { itemStyle: { borderColor: theme.text.primary, borderWidth: px(ctx, 1) } },
       },
     ] as EChartsOption['series'],

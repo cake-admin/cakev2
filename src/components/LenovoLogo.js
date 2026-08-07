@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import logoVert from '../assets/logo_vert.svg';
+import lenovoMark from '../assets/home/lenovo-mark.png';
 
 const LogoContainer = styled.div`
   position: fixed;
@@ -10,11 +10,11 @@ const LogoContainer = styled.div`
   background-color: #e1251b;
   cursor: pointer;
   z-index: 1000;
-  
+
   @media (max-width: 768px) {
     width: 36px;
   }
-  
+
   @media (max-width: 480px) {
     width: 32px;
   }
@@ -32,8 +32,19 @@ const LenovoLogo = () => {
   };
 
   return (
-    <LogoContainer onClick={handleClick} role="button" tabIndex="0" aria-label="Visit Lenovo.com">
-      <LogoImage src={logoVert} alt="Lenovo" />
+    <LogoContainer
+      onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label="Visit Lenovo.com"
+    >
+      <LogoImage src={lenovoMark} alt="Lenovo" />
     </LogoContainer>
   );
 };

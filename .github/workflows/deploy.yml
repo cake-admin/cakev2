@@ -50,9 +50,9 @@ jobs:
         env:
           CI: false
 
-      # Data-visualization tool (ECharts edition) — built at base /dataviz/ and
-      # nested under the main site so it goes live at cake.lenovo.com/dataviz.
-      - name: Install dataviz tool dependencies
+      # Data-visualization tool (ECharts edition) — built at base /datavis/ and
+      # nested under the main site so it goes live at cake.lenovo.com/datavis.
+      - name: Install datavis tool dependencies
         working-directory: chart-tool-echarts
         run: npm ci
 
@@ -60,16 +60,33 @@ jobs:
       # `prebuild` token-regen step: it reads design-token exports from repo-root
       # "& *" folders that aren't part of the deploy. The committed
       # src/tokens/tokens.json is the source of truth for the build.
-      - name: Build dataviz tool
+      - name: Build datavis tool
         working-directory: chart-tool-echarts
         run: |
           node node_modules/typescript/bin/tsc --noEmit
           node node_modules/vite/bin/vite.js build
 
-      - name: Add dataviz tool to Pages output
+      - name: Add datavis tool to Pages output
         run: |
+          mkdir -p build/datavis
+          cp -r chart-tool-echarts/dist/. build/datavis/
+          # Keep /dataviz working for old bookmarks → redirect to canonical /datavis.
           mkdir -p build/dataviz
-          cp -r chart-tool-echarts/dist/. build/dataviz/
+          cat > build/dataviz/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <meta http-equiv="refresh" content="0;url=/datavis/">
+            <link rel="canonical" href="https://cake.lenovo.com/datavis/">
+            <title>Redirecting…</title>
+            <script>location.replace('/datavis/' + location.search + location.hash);</script>
+          </head>
+          <body>
+            <p>Moved to <a href="/datavis/">/datavis/</a>.</p>
+          </body>
+          </html>
+          EOF
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
