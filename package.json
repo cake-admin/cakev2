@@ -12,8 +12,10 @@
     "postbuild": "npm run build-storybook && node scripts/nest-storybook.mjs",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "nest:datavis": "node scripts/nest-datavis.mjs",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
+
     "build:cakeand-tokens": "node scripts/build-cakeand-tokens.mjs",
     "storybook": "node node_modules/storybook/dist/bin/dispatcher.js dev -p 6006",
     "build-storybook": "node node_modules/storybook/dist/bin/dispatcher.js build",
