@@ -289,30 +289,47 @@ export function buildHeatmapOption(colors, chrome) {
   };
 }
 
-/** Card-colored seams between gauge axisLine stops (SEGMENT_GAP = 2px look). */
-function gaugeZonesWithSeams(zones, seamColor, gapFrac = 0.012) {
-  if (zones.length <= 1 || gapFrac <= 0) return zones;
-  const out = [];
-  let prev = 0;
-  for (let i = 0; i < zones.length; i++) {
-    const [end, color] = zones[i];
-    const clampedEnd = Math.min(1, Math.max(prev, end));
-    if (i === zones.length - 1) {
-      out.push([clampedEnd, color]);
-      break;
-    }
-    const colorEnd = Math.max(prev, clampedEnd - gapFrac);
-    out.push([colorEnd, color]);
-    out.push([clampedEnd, seamColor]);
-    prev = clampedEnd;
-  }
-  return out;
+/** Hidden chrome shared by silent zone / end-cap overlay gauges. */
+const GAUGE_SILENT_CHROME = {
+  progress: { show: false },
+  pointer: { show: false },
+  anchor: { show: false },
+  axisTick: { show: false },
+  splitLine: { show: false },
+  axisLabel: { show: false },
+  title: { show: false },
+  detail: { show: false },
+  data: [{ value: 1 }],
+};
+
+/**
+ * One silent single-color arc for a ramp zone. roundCap stays false so seams
+ * between zones stay square; outer tips are painted by gaugeRoundEndCap.
+ */
+function gaugeZoneArc({ center, radius, startAngle, endAngle, width, color }) {
+  return {
+    type: 'gauge',
+    center,
+    radius,
+    min: 0,
+    max: 1,
+    startAngle,
+    endAngle,
+    clockwise: true,
+    silent: true,
+    z: 2,
+    animation: false,
+    axisLine: {
+      roundCap: false,
+      lineStyle: { width, color: [[1, color]] },
+    },
+    ...GAUGE_SILENT_CHROME,
+  };
 }
 
 /**
  * Short silent gauge with a single-color roundCap axisLine (ECharts Sausage).
- * Overlays rounded outer tips on a multi-stop Sector axisLine so seams stay
- * sharp while the arc start/end read as caps.
+ * Overlays rounded outer tips on square-seamed zone arcs.
  */
 function gaugeRoundEndCap({ center, radius, startAngle, endAngle, width, color }) {
   return {
@@ -331,15 +348,7 @@ function gaugeRoundEndCap({ center, radius, startAngle, endAngle, width, color }
       roundCap: true,
       lineStyle: { width, color: [[1, color]] },
     },
-    progress: { show: false },
-    pointer: { show: false },
-    anchor: { show: false },
-    axisTick: { show: false },
-    splitLine: { show: false },
-    axisLabel: { show: false },
-    title: { show: false },
-    detail: { show: false },
-    data: [{ value: 1 }],
+    ...GAUGE_SILENT_CHROME,
   };
 }
 
@@ -349,89 +358,113 @@ export function buildGaugeOption(colors, chrome) {
     Math.round(((i + 1) / ramp.length) * 100) / 100,
     c,
   ]);
-  // Same SEGMENT_GAP / card-seam pattern as pie samples (2px card-colored).
-  const zones = gaugeZonesWithSeams(rawZones, chrome.surface, 0.012);
   const center = ['50%', '55%'];
   const radius = '68%';
   const startAngle = 210;
   const endAngle = -30;
+  const span = startAngle - endAngle; // 240°
   const barWidth = 10;
+  // ~2px gutter along the arc at the compact card radius.
+  const gapDeg = (2 / 120) * (180 / Math.PI);
   const capDeg = 4;
   const startColor = rawZones[0][1];
   const endColor = rawZones[rawZones.length - 1][1];
 
+  const series = [
+    {
+      type: 'gauge',
+      // Compact 180px card: keep the arc inset so scale labels sit next to
+      // the bar instead of floating into the detail value.
+      center,
+      radius,
+      min: 0,
+      max: 100,
+      splitNumber: 4,
+      startAngle,
+      endAngle,
+      progress: { show: false },
+      // Track is painted by per-zone silent series (true angular gutters).
+      axisLine: { show: false },
+      axisTick: { show: false },
+      splitLine: { show: false },
+      axisLabel: {
+        color: chrome.muted,
+        fontFamily: FONT,
+        fontSize: 9,
+        distance: 4,
+      },
+      // Short needle + detail below the hub so the value is not covered.
+      pointer: {
+        show: true,
+        width: 3,
+        length: '48%',
+        itemStyle: { color: chrome.text },
+      },
+      anchor: { show: false },
+      title: {
+        color: chrome.muted,
+        fontFamily: FONT,
+        fontSize: 11,
+        offsetCenter: [0, '78%'],
+      },
+      detail: {
+        valueAnimation: true,
+        color: chrome.text,
+        fontFamily: FONT,
+        fontWeight: 700,
+        fontSize: 20,
+        offsetCenter: [0, '40%'],
+        formatter: '{value}',
+      },
+      data: [{ value: 72, name: 'Score' }],
+    },
+  ];
+
+  const gapFrac = rawZones.length > 1 ? gapDeg / span : 0;
+  let prev = 0;
+  for (let i = 0; i < rawZones.length; i++) {
+    const [end, zoneColor] = rawZones[i];
+    const clampedEnd = Math.min(1, Math.max(prev, end));
+    const from = prev;
+    const to = i < rawZones.length - 1 ? Math.max(from, clampedEnd - gapFrac) : clampedEnd;
+    if (to > from) {
+      series.push(
+        gaugeZoneArc({
+          center,
+          radius,
+          startAngle: startAngle - from * span,
+          endAngle: startAngle - to * span,
+          width: barWidth,
+          color: zoneColor,
+        }),
+      );
+    }
+    prev = clampedEnd;
+  }
+
+  series.push(
+    gaugeRoundEndCap({
+      center,
+      radius,
+      startAngle,
+      endAngle: startAngle - capDeg,
+      width: barWidth,
+      color: startColor,
+    }),
+    gaugeRoundEndCap({
+      center,
+      radius,
+      startAngle: endAngle + capDeg,
+      endAngle,
+      width: barWidth,
+      color: endColor,
+    }),
+  );
+
   return {
     textStyle: { fontFamily: FONT },
     animationDuration: 400,
-    series: [
-      {
-        type: 'gauge',
-        // Compact 180px card: keep the arc inset so scale labels sit next to
-        // the bar instead of floating into the detail value.
-        center,
-        radius,
-        min: 0,
-        max: 100,
-        splitNumber: 4,
-        startAngle,
-        endAngle,
-        progress: { show: false },
-        axisLine: {
-          // Straight seams between zones (roundCap would round every stop).
-          // Rounded outer tips come from the silent end-cap series below.
-          roundCap: false,
-          lineStyle: { width: barWidth, color: zones },
-        },
-        axisTick: { show: false },
-        splitLine: { show: false },
-        axisLabel: {
-          color: chrome.muted,
-          fontFamily: FONT,
-          fontSize: 9,
-          distance: 4,
-        },
-        // Short needle + detail below the hub so the value is not covered.
-        pointer: {
-          show: true,
-          width: 3,
-          length: '48%',
-          itemStyle: { color: chrome.text },
-        },
-        anchor: { show: false },
-        title: {
-          color: chrome.muted,
-          fontFamily: FONT,
-          fontSize: 11,
-          offsetCenter: [0, '78%'],
-        },
-        detail: {
-          valueAnimation: true,
-          color: chrome.text,
-          fontFamily: FONT,
-          fontWeight: 700,
-          fontSize: 20,
-          offsetCenter: [0, '40%'],
-          formatter: '{value}',
-        },
-        data: [{ value: 72, name: 'Score' }],
-      },
-      gaugeRoundEndCap({
-        center,
-        radius,
-        startAngle,
-        endAngle: startAngle - capDeg,
-        width: barWidth,
-        color: startColor,
-      }),
-      gaugeRoundEndCap({
-        center,
-        radius,
-        startAngle: endAngle + capDeg,
-        endAngle,
-        width: barWidth,
-        color: endColor,
-      }),
-    ],
+    series,
   };
 }
 

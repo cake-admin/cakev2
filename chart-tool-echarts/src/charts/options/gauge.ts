@@ -5,34 +5,54 @@ import { animationOpts, FONT, fs, headerGraphic, px, seriesColors, type ChartCon
 
 type ColorStop = [number, string];
 
+/** Hidden chrome shared by silent zone / end-cap overlay gauges. */
+const SILENT_GAUGE_CHROME = {
+  progress: { show: false },
+  pointer: { show: false },
+  anchor: { show: false },
+  axisTick: { show: false },
+  splitLine: { show: false },
+  axisLabel: { show: false },
+  title: { show: false },
+  detail: { show: false },
+  data: [{ value: 1 }],
+} as const;
+
 /**
- * Insert card-colored seams between axisLine color stops so multi-zone gauges
- * read like pie slices (SEGMENT_GAP ≈ 2px). ECharts axisLine can't stroke
- * sectors, so gaps are modeled as thin stops of the card surface color.
+ * One silent single-color arc for a ramp zone. roundCap stays false so seams
+ * between zones stay square; outer tips are painted by roundEndCap overlays.
  */
-function zonesWithSeams(zones: ColorStop[], seamColor: string, gapFrac: number): ColorStop[] {
-  if (zones.length <= 1 || gapFrac <= 0) return zones;
-  const out: ColorStop[] = [];
-  let prev = 0;
-  for (let i = 0; i < zones.length; i++) {
-    const [end, color] = zones[i];
-    const clampedEnd = Math.min(1, Math.max(prev, end));
-    if (i === zones.length - 1) {
-      out.push([clampedEnd, color]);
-      break;
-    }
-    const colorEnd = Math.max(prev, clampedEnd - gapFrac);
-    out.push([colorEnd, color]);
-    out.push([clampedEnd, seamColor]);
-    prev = clampedEnd;
-  }
-  return out;
+function zoneArc(opts: {
+  center: [string, string];
+  radius: string;
+  startAngle: number;
+  endAngle: number;
+  width: number;
+  color: string;
+}): Record<string, unknown> {
+  return {
+    type: 'gauge',
+    center: opts.center,
+    radius: opts.radius,
+    min: 0,
+    max: 1,
+    startAngle: opts.startAngle,
+    endAngle: opts.endAngle,
+    clockwise: true,
+    silent: true,
+    z: 2,
+    animation: false,
+    axisLine: {
+      roundCap: false,
+      lineStyle: { width: opts.width, color: [[1, opts.color]] as ColorStop[] },
+    },
+    ...SILENT_GAUGE_CHROME,
+  };
 }
 
 /**
  * Short silent gauge whose axisLine is a single-color Sausage (roundCap).
- * Used to paint rounded outer tips on top of a multi-stop Sector axisLine
- * (roundCap false), so zone seams stay sharp while arc ends read as caps.
+ * Used to paint rounded outer tips on top of square-seamed zone arcs.
  */
 function roundEndCap(opts: {
   center: [string, string];
@@ -58,15 +78,7 @@ function roundEndCap(opts: {
       roundCap: true,
       lineStyle: { width: opts.width, color: [[1, opts.color]] as ColorStop[] },
     },
-    progress: { show: false },
-    pointer: { show: false },
-    anchor: { show: false },
-    axisTick: { show: false },
-    splitLine: { show: false },
-    axisLabel: { show: false },
-    title: { show: false },
-    detail: { show: false },
-    data: [{ value: 1 }],
+    ...SILENT_GAUGE_CHROME,
   };
 }
 
@@ -84,10 +96,12 @@ export function buildGauge(ctx: ChartContext): EChartsOption {
   const radius = '76%';
   const startAngle = 210;
   const endAngle = -30;
+  const span = startAngle - endAngle; // 240° clockwise arc
   const barWidth = px(ctx, 14);
-  const gap = px(ctx, SEGMENT_GAP);
-  // ~240° arc; gapFrac maps SEGMENT_GAP px onto the unit color-stop range.
-  const gapFrac = Math.min(0.04, Math.max(0.004, gap / 280));
+  const gapPx = px(ctx, SEGMENT_GAP);
+  // Map SEGMENT_GAP px onto degrees along the arc (radius ≈ 76% of ~200px @1×).
+  const radiusPx = Math.max(1, px(ctx, 152));
+  const gapDeg = Math.min(4, Math.max(0.5, (gapPx / radiusPx) * (180 / Math.PI)));
   // ~4° tip overlays — enough for a Sausage cap without eating zone seams.
   const capDeg = 4;
 
@@ -104,9 +118,6 @@ export function buildGauge(ctx: ChartContext): EChartsOption {
   const rawZones: ColorStop[] = ramp.map(
     (c, i) => [Math.round(((i + 1) / ramp.length) * 100) / 100, c],
   );
-  const zones = rampMode
-    ? zonesWithSeams(rawZones, theme.surface.card, gapFrac)
-    : ([[1, theme.grid.line]] as ColorStop[]);
   const startColor = rawZones[0]?.[1] ?? accent;
   const endColor = rawZones[rawZones.length - 1]?.[1] ?? accent;
 
@@ -124,13 +135,15 @@ export function buildGauge(ctx: ChartContext): EChartsOption {
       roundCap: true,
       itemStyle: { color: accent },
     },
-    axisLine: {
-      // Multi-stop axisLine uses Sector (square seams). roundCap would turn
-      // every stop into a Sausage and soften the 2px card gaps — keep false
-      // in ramp mode; single-track gauges can round the whole arc.
-      roundCap: !rampMode,
-      lineStyle: { width: barWidth, color: zones },
-    },
+    axisLine: rampMode
+      ? {
+          // Track is painted by per-zone silent series (true angular gutters).
+          show: false,
+        }
+      : {
+          roundCap: true,
+          lineStyle: { width: barWidth, color: [[1, theme.grid.line]] as ColorStop[] },
+        },
     axisTick: { show: false },
     splitLine: { show: false },
     axisLabel: { color: theme.text.helper, fontFamily: FONT, fontSize: fs(ctx, 10), distance: px(ctx, 18) },
@@ -153,7 +166,30 @@ export function buildGauge(ctx: ChartContext): EChartsOption {
   };
 
   const series: unknown[] = [main];
-  if (rampMode) {
+
+  if (rampMode && rawZones.length > 0) {
+    const gapFrac = rawZones.length > 1 ? gapDeg / span : 0;
+    let prev = 0;
+    for (let i = 0; i < rawZones.length; i++) {
+      const [end, zoneColor] = rawZones[i];
+      const clampedEnd = Math.min(1, Math.max(prev, end));
+      const from = prev;
+      const to = i < rawZones.length - 1 ? Math.max(from, clampedEnd - gapFrac) : clampedEnd;
+      if (to > from) {
+        series.push(
+          zoneArc({
+            center,
+            radius,
+            startAngle: startAngle - from * span,
+            endAngle: startAngle - to * span,
+            width: barWidth,
+            color: zoneColor,
+          }),
+        );
+      }
+      prev = clampedEnd;
+    }
+
     series.push(
       roundEndCap({
         center,

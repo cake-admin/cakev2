@@ -89,15 +89,6 @@ const IntroBlock = styled.div`
   gap: var(--space-300);
 `;
 
-const IntroHeading = styled.h2`
-  margin: 0;
-  font-family: 'Rookery New', Rookery, var(--font-family);
-  font-size: var(--type-size-subtitle);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.35;
-  color: var(--color-text-icon-primary);
-`;
-
 const IntroText = styled.p`
   margin: 0;
   font-size: var(--type-size-body);
@@ -105,28 +96,6 @@ const IntroText = styled.p`
   line-height: 1.35;
   letter-spacing: 0.2px;
   color: var(--color-text-icon-secondary);
-`;
-
-const FeatureList = styled.ul`
-  margin: 0;
-  padding-left: var(--space-400);
-  color: var(--color-text-icon-secondary);
-  font-size: var(--type-size-body);
-  line-height: 1.5;
-  letter-spacing: 0.2px;
-
-  li {
-    margin-bottom: var(--space-150);
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  strong {
-    color: var(--color-text-icon-primary);
-    font-weight: var(--font-weight-medium);
-  }
 `;
 
 /**
@@ -303,7 +272,7 @@ const RESOURCES = [
     body:
       'Browse every Cake& component, pattern, and style in our public community library, always up to date with the latest releases.',
     action: 'Open in Figma',
-    href: 'https://www.figma.com/community/file/1397963315281891204/cake-one-lenovo-design-system',
+    href: 'https://www.figma.com/community/file/1667712364680681509/lenovo-cake-1-0',
     icon: figmaTile,
     iconKind: 'tile',
   },
@@ -429,51 +398,6 @@ const Resources = () => (
               guidelines to create cohesive, user-centered experiences efficiently
               while maintaining Lenovo&apos;s brand identity and quality standards.
             </IntroText>
-          </IntroBlock>
-
-          <IntroBlock>
-            <IntroHeading>Key features</IntroHeading>
-            <FeatureList>
-              <li>
-                <strong>Unified components:</strong> A comprehensive library of
-                reusable UI components that maintain consistency across all Lenovo
-                products.
-              </li>
-              <li>
-                <strong>Design tokens:</strong> Standardized design variables for
-                colors, typography, spacing, and other foundational elements.
-              </li>
-              <li>
-                <strong>Accessibility:</strong> Built-in accessibility features
-                ensuring all components meet WCAG guidelines.
-              </li>
-              <li>
-                <strong>Documentation:</strong> Detailed guidelines and best
-                practices for implementing the design system effectively.
-              </li>
-            </FeatureList>
-          </IntroBlock>
-
-          <IntroBlock>
-            <IntroHeading>Who it&apos;s for</IntroHeading>
-            <FeatureList>
-              <li>
-                <strong>Designers:</strong> Create consistent designs using our
-                Figma libraries and guidelines.
-              </li>
-              <li>
-                <strong>Developers:</strong> Build robust applications using our
-                React component library and documentation.
-              </li>
-              <li>
-                <strong>Product managers:</strong> Ensure product consistency and
-                quality across the Lenovo ecosystem.
-              </li>
-              <li>
-                <strong>Content strategists:</strong> Maintain consistent voice and
-                tone using our content guidelines.
-              </li>
-            </FeatureList>
           </IntroBlock>
         </Intro>
 
