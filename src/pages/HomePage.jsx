@@ -10,8 +10,8 @@ import heroBg from '../assets/home/hero-bg.png';
 import cakeSlice from '../assets/home/cake-slice.png';
 import iconCake from '../assets/home/icon-cake.svg';
 import iconOpenInNew from '../assets/home/icon-open-in-new.svg';
-import winCanvasLight from '../assets/home/win-canvas-light.svg';
-import winCanvasDark from '../assets/home/win-canvas-dark.svg';
+import winCanvasLight from '../assets/home/win-canvas-light.png';
+import winCanvasDark from '../assets/home/win-canvas-dark.png';
 
 /**
  * Ink on the hero wallpaper + quicklinks tint.
@@ -232,15 +232,15 @@ const Showcase = styled.section`
 `;
 
 const ShowcaseFrame = styled.div`
-  position: relative;
   width: 100%;
-  aspect-ratio: 1562 / 1021;
+  /* Clip opaque black corner fill outside the rounded app chrome. */
+  border-radius: clamp(10px, 1.1vw, 16px);
+  overflow: hidden;
 
   img {
     display: block;
     width: 100%;
-    height: 100%;
-    object-fit: contain;
+    height: auto;
   }
 `;
 
@@ -495,7 +495,7 @@ const QUICK_LINKS = [
   { label: 'Cake& Storybook', href: STORYBOOK_PATH, external: true },
   {
     label: 'Cake& Figma library',
-    href: 'https://www.figma.com/community/file/1397963315281891204/cake-one-lenovo-design-system',
+    href: 'https://www.figma.com/community/file/1667712364680681509/lenovo-cake-1-0',
     external: true,
   },
   { label: 'Cake& data visualization playground', href: 'https://cake.lenovo.com/datavis/', external: true },

@@ -13,7 +13,7 @@ import {
 
 // Always load tokens + fonts in the preview iframe — pure MDX docs pages do
 // not run story decorators, so CakeProvider never mounts for Introduction /
-// Foundations / Guides unless we import these here.
+// Foundations / Cake& Maintenance unless we import these here.
 import '../src/cakeand/tokens/cake-vars.css';
 import '../src/cakeand/theme/fonts.css';
 
@@ -58,16 +58,38 @@ addons.getChannel().on(GLOBALS_UPDATED, ({ globals }) => {
  * inside decorators and story functions. DocsContainer is neither — calling
  * them throws "Storybook preview hooks can only be called inside decorators
  * and story functions" on the deployed docs pages. Read theme from the
- * channel instead.
+ * channel / store instead.
+ *
+ * Seed from the *live* store (not only initialGlobals). Pure MDX pages remount
+ * DocsContainer on navigation; seeding from initialGlobals would force light
+ * and wipe a Dark/HCT toolbar choice that CSF stories recover via withTheme.
  */
+const readLiveThemeGlobal = (context: DocsContainerProps['context']): unknown => {
+  const store = (
+    context as {
+      store?: {
+        userGlobals?: { globals?: Record<string, unknown> };
+        globals?: { globals?: Record<string, unknown> };
+      };
+    }
+  ).store;
+  return (
+    store?.userGlobals?.globals?.theme ??
+    store?.globals?.globals?.theme ??
+    (context.projectAnnotations?.initialGlobals as { theme?: unknown } | undefined)?.theme ??
+    DEFAULT_THEME_GLOBAL
+  );
+};
+
 const CakeDocsContainer = ({ children, context }: DocsContainerProps) => {
-  const [themeGlobal, setThemeGlobal] = React.useState<unknown>(
-    () =>
-      (context.projectAnnotations?.initialGlobals as { theme?: unknown } | undefined)
-        ?.theme ?? DEFAULT_THEME_GLOBAL,
+  const [themeGlobal, setThemeGlobal] = React.useState<unknown>(() =>
+    readLiveThemeGlobal(context),
   );
 
   React.useEffect(() => {
+    // Re-sync once on mount in case the store was ready after first paint.
+    setThemeGlobal(readLiveThemeGlobal(context));
+
     const onGlobals = (payload: { globals?: Record<string, unknown> }) => {
       if (payload?.globals && 'theme' in payload.globals) {
         setThemeGlobal(payload.globals.theme);
@@ -77,7 +99,7 @@ const CakeDocsContainer = ({ children, context }: DocsContainerProps) => {
     return () => {
       context.channel.off(GLOBALS_UPDATED, onGlobals);
     };
-  }, [context.channel]);
+  }, [context, context.channel]);
 
   const managerKey = resolveManagerThemeKey(themeGlobal);
   const mode = resolveMode(themeGlobal);
@@ -178,10 +200,10 @@ const preview: Preview = {
           'Introduction',
           'Foundations',
           ['Colors', 'Typography', 'Spacing', 'Elevation', 'Special Surfaces'],
-          'Guides',
-          ['Getting Started', 'Building a Component', 'Shipping a Component'],
-          'Elements',
           'Components',
+          'Elements',
+          'Cake& Maintenance',
+          ['Getting Started', 'Building a Component', 'Shipping a Component'],
         ],
       },
     },

@@ -1,12 +1,16 @@
 # cake&
 
-Lenovo's design system: 63 React components, ~470 design tokens, and three
-themes. Every interactive component wraps a [Radix](https://www.radix-ui.com/primitives)
-primitive, so behaviour and accessibility come from Radix and cake& owns the
-visuals. Every value resolves from a design token — nothing is hardcoded.
+Lenovo's design system: React components, design tokens, and three themes
+(Light A, Dark A, Windows HCT). Every interactive component wraps a
+[Radix](https://www.radix-ui.com/primitives) primitive, so behaviour and
+accessibility come from Radix and cake& owns the visuals. Every value resolves
+from a design token — nothing is hardcoded.
 
+**Live site:** <https://cake.lenovo.com/>  
 **Documentation:** <https://cake.lenovo.com/storybook/> — the source of truth for
-every component's API, variants, states, and accessibility contract.
+every component's API, variants, states, and accessibility contract.  
+**Data viz playground:** <https://cake.lenovo.com/datavis/>  
+**Figma community:** <https://www.figma.com/community/file/1667712364680681509/lenovo-cake-1-0>
 
 ---
 
@@ -23,7 +27,7 @@ npm run dev
 
 You get a Vite + React + TypeScript app with the provider, theming, fonts, and
 coding-agent context already wired up. **No GitHub token and no `.npmrc`** — see
-[Getting Started](https://cake.lenovo.com/storybook/?path=/docs/guides-getting-started--docs)
+[Getting Started](https://cake.lenovo.com/storybook/?path=/docs/cake-maintenance-getting-started--docs)
 for the full walkthrough.
 
 <details>
@@ -70,7 +74,7 @@ import { CakeProvider, Card, HeroCard, Button } from '@cake-admin/cakeand';
 
 Three details matter and are easy to miss — `resolve.dedupe` for
 `styled-components`, the stylesheet import, and `data-theme` on `<html>`. All
-three are covered in [Getting Started](https://cake.lenovo.com/storybook/?path=/docs/guides-getting-started--docs),
+three are covered in [Getting Started](https://cake.lenovo.com/storybook/?path=/docs/cake-maintenance-getting-started--docs),
 and all three are already done in the starter.
 
 ### Prototyping with AI agents
@@ -112,14 +116,17 @@ integrity error that is very hard to trace back.
 | Path | What |
 |------|------|
 | `src/cakeand/` | The design system — the only thing that ships in the package |
-| `src/cakeand/foundations/` | Storybook docs pages (Colors, Typography, Spacing, Elevation, guides) |
+| `src/cakeand/foundations/` | Storybook docs (Introduction, Foundations, Cake& Maintenance) |
+| `src/pages/` | Marketing site (Home, Resources, foundations/components demos) |
 | `starter/` | The template designers scaffold from |
 | `scripts/` | Token generation, package build, agent-context generation |
-| `chart-tool-echarts/` | Cake& data visualization playground (Vite app at /datavis) |
+| `chart-tool-echarts/` | Cake& data visualization playground (Vite app at `/datavis`) |
+| `.storybook/` | Storybook config for the cake& component library |
 
 Building components and publishing versions is the design-system team's
-workflow, documented in Storybook under **Guides** — *Building a Component* and
-*Shipping a Component*. Agent conventions live in [AGENTS.md](AGENTS.md).
+workflow, documented in Storybook under **Cake& Maintenance** — *Building a
+Component* and *Shipping a Component*. Agent conventions live in
+[AGENTS.md](AGENTS.md).
 
 ---
 
@@ -161,6 +168,7 @@ npm run nest:datavis
 
 ## License
 
-Internal Lenovo design system. The published package declares `UNLICENSED`, and
-the bundled Rookery New typeface is proprietary — it is not licensed for
-redistribution outside Lenovo.
+Internal Lenovo design system. The published package declares `UNLICENSED`.
+Rookery New is an open-source but **protected** font — it ships with cake& for
+Lenovo use and is not licensed for unrestricted redistribution outside that
+context.
