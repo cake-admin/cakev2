@@ -4,11 +4,14 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Getting Started
 
-This is the longer walkthrough. If you only need the four commands to start a
-prototype, use [Introduction](?path=/docs/introduction--docs) instead.
+This is the longer walkthrough — extra wiring, updating, and troubleshooting.
+For “what is Storybook vs the Devkit?” and the short install steps, start on
+[Introduction](?path=/docs/introduction--docs).
 
 You do **not** need a GitHub password, a `.npmrc` file, or access to GitHub
-Packages. The starter downloads from a public release file.
+Packages. The starter downloads from a public
+[release file](https://github.com/cake-admin/cakev2/releases#release-v4.2.3)
+(currently **v4.2.3**).
 
 ## Start a new prototype
 
@@ -64,11 +67,34 @@ You should not have to configure these yourself:
 Open `my-prototype` in Cursor and describe the screen you want. The starter
 includes `AGENTS.md` and `context/`:
 
-| File | What it is |
-| --- | --- |
-| `context/cake-components.md` | A one-line list of every component. The agent should read this first. |
-| `context/components/<name>.md` | Props and a real example for one component. |
-| `context/cake-tokens.md` | Every color/space/type token. |
+<table>
+  <thead>
+    <tr>
+      <th>File</th>
+      <th>What it is</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>context/cake-components.md</code>
+      </td>
+      <td>A one-line list of every component. The agent should read this first.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>context/components/&lt;name&gt;.md</code>
+      </td>
+      <td>Props and a real example for one component.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>context/cake-tokens.md</code>
+      </td>
+      <td>Every color/space/type token.</td>
+    </tr>
+  </tbody>
+</table>
 
 These files are generated from this Storybook. **Do not edit `context/` by
 hand** — a cake& release regenerates it.
@@ -78,13 +104,13 @@ hand** — a cake& release regenerates it.
 Use this only if a developer already has a React app. Prefer Path A on
 [Introduction](?path=/docs/introduction--docs) when you can.
 
-**1.** Open the [latest GitHub release](https://github.com/cake-admin/cakev2/releases/latest)
-and copy the `cake-admin-cakeand-….tgz` URL.
+**1.** Open the [v4.2.3 release](https://github.com/cake-admin/cakev2/releases#release-v4.2.3)
+and copy the `cake-admin-cakeand-4.2.3.tgz` URL (or use the command below).
 
 **2.** Install cake& and the libraries it shares with the app:
 
 ```bash
-npm install https://github.com/cake-admin/cakev2/releases/download/vX.Y.Z/cake-admin-cakeand-X.Y.Z.tgz
+npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.3/cake-admin-cakeand-4.2.3.tgz
 npm install react react-dom styled-components radix-ui lucide-react
 ```
 
@@ -143,15 +169,66 @@ URL changed.
 
 ## Troubleshooting
 
-| What you see | What to try |
-| --- | --- |
-| No color; tokens look empty | The cake& CSS file did not load. Check the `cakeand.css` import in `src/main.tsx`. |
-| Your CSS cannot override cake& | Import your stylesheet **after** the cake& one. |
-| Components ignore the theme | Two copies of `styled-components`. Run `npm ls styled-components`. |
-| Wrong theme for a split second on load | `data-theme` in `index.html` does not match `CakeProvider` `mode`. |
-| Menus/dialogs are the wrong theme | Do not pass `scope="subtree"` if you use Modal, Dropdown, or Tooltips. |
-| `npm error EINTEGRITY` | Delete `package-lock.json` and reinstall (starter: `npm run cake:update`). |
-| npm fails oddly on Windows | A folder name containing `&` breaks npm. Rename the folder. |
+<table>
+  <thead>
+    <tr>
+      <th>What you see</th>
+      <th>What to try</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>No color; tokens look empty</td>
+      <td>
+        The cake&amp; CSS file did not load. Check the{' '}
+        <code>cakeand.css</code> import in <code>src/main.tsx</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>Your CSS cannot override cake&amp;</td>
+      <td>
+        Import your stylesheet <strong>after</strong> the cake&amp; one.
+      </td>
+    </tr>
+    <tr>
+      <td>Components ignore the theme</td>
+      <td>
+        Two copies of <code>styled-components</code>. Run{' '}
+        <code>npm ls styled-components</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>Wrong theme for a split second on load</td>
+      <td>
+        <code>data-theme</code> in <code>index.html</code> does not match{' '}
+        <code>CakeProvider</code> <code>mode</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>Menus/dialogs are the wrong theme</td>
+      <td>
+        Do not pass <code>scope=&quot;subtree&quot;</code> if you use Modal,
+        Dropdown, or Tooltips.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>npm error EINTEGRITY</code>
+      </td>
+      <td>
+        Delete <code>package-lock.json</code> and reinstall (starter:{' '}
+        <code>npm run cake:update</code>).
+      </td>
+    </tr>
+    <tr>
+      <td>npm fails oddly on Windows</td>
+      <td>
+        A folder name containing <code>&amp;</code> breaks npm. Rename the
+        folder.
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 Use **npm**. Other package managers can install from a URL, but this starter
 is tested with npm only.

@@ -57,15 +57,15 @@ You are not forking this whole repository.
 ### Adding cake& to an existing app
 
 If a developer already has a React project, install the **release file**
-(`.tgz`) from the [newest release](https://github.com/cake-admin/cakev2/releases/latest)
+(`.tgz`) from [v4.2.3](https://github.com/cake-admin/cakev2/releases#release-v4.2.3)
 — still no login:
 
 ```bash
-npm install https://github.com/cake-admin/cakev2/releases/download/vX.Y.Z/cake-admin-cakeand-X.Y.Z.tgz
+npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.3/cake-admin-cakeand-4.2.3.tgz
 npm install react react-dom styled-components radix-ui lucide-react
 ```
 
-Replace `vX.Y.Z` with the version on that page. Then wrap the app **once** in
+Then wrap the app **once** in
 `CakeProvider`. The starter already has the three easy-to-miss pieces
 (`styled-components` dedupe, the cake& CSS import, and `data-theme` on
 `<html>`). Copy those from `starter/` or follow
@@ -105,9 +105,9 @@ project pins one exact version:
 | Your own app | `npm install` with the newer release's `.tgz` URL |
 
 `npm outdated` will not notice a new cake& — this package is not installed from
-the public npm registry. Watch
-[releases](https://github.com/cake-admin/cakev2/releases), or run the update
-command now and then.
+the public npm registry. Start from the current kit,
+[v4.2.3](https://github.com/cake-admin/cakev2/releases#release-v4.2.3), or run
+the update command now and then.
 
 Pinning an exact file is deliberate: if the file behind one URL kept changing,
 installs would eventually fail with a hard-to-debug integrity error.

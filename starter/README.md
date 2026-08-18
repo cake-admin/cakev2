@@ -52,12 +52,12 @@ explains the full reasoning.
 ## Adding cake& to an app you already have
 
 ```bash
-npm install https://github.com/cake-admin/cakev2/releases/download/vX.Y.Z/cake-admin-cakeand-X.Y.Z.tgz
+npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.3/cake-admin-cakeand-4.2.3.tgz
 npm install react react-dom styled-components radix-ui lucide-react
 ```
 
-Replace `vX.Y.Z` with the version on the
-[latest release](https://github.com/cake-admin/cakev2/releases/latest).
+The current kit is
+[v4.2.3](https://github.com/cake-admin/cakev2/releases#release-v4.2.3).
 
 Then copy three things from this starter, all of which matter:
 
