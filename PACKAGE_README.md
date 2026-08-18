@@ -24,11 +24,11 @@ coding-agent context already wired up. Nothing to configure.
 The repository is public, so npm can fetch the tarball directly. No `.npmrc`, no
 personal access token, nothing to set up.
 
-Take the `.tgz` URL from the newest release —
-<https://github.com/cake-admin/cakev2/releases/latest> — and install it:
+Take the `.tgz` URL from the current release —
+<https://github.com/cake-admin/cakev2/releases#release-v4.2.3> — and install it:
 
 ```bash
-npm install https://github.com/cake-admin/cakev2/releases/download/vX.Y.Z/cake-admin-cakeand-X.Y.Z.tgz
+npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.3/cake-admin-cakeand-4.2.3.tgz
 ```
 
 Always install a **version-specific** URL, never one that resolves to "latest".
@@ -39,8 +39,8 @@ with an integrity error that is hard to trace back.
 Upgrading later is the same command with the newer version's URL.
 
 Note that `npm outdated` will not report new versions of this package — it
-compares against a registry, and this installs from a URL. Watch
-<https://github.com/cake-admin/cakev2/releases>.
+compares against a registry, and this installs from a URL. Start from
+<https://github.com/cake-admin/cakev2/releases#release-v4.2.3>.
 
 ### Peer dependencies
 
