@@ -47,7 +47,7 @@ persists it.
 | Part · state | Tokens |
 | --- | --- |
 | resting dropzone | \`--color-stroke-border\`, \`--stroke-100\`, \`--radius-300\` |
-| hover | \`--color-tonal-tonal-overlay\` |
+| hover | \`--color-tonal-tonal-lightest\` |
 | dragging | \`--color-tonal-tonal-overlay\`, \`--stroke-200\`, \`--color-text-icon-on-tonal\` |
 | loading | \`--color-tonal-tonal-overlay\`, \`--stroke-200\`, \`--color-text-icon-on-tonal\` |
 | media panel | \`--color-tonal-tonal\`, \`--radius-200\`, \`--color-text-icon-on-tonal\` |

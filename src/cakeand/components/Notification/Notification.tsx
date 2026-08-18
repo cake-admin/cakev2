@@ -34,30 +34,35 @@ const Card = styled.article<{ $flush: boolean }>`
      drop shadow (0 1px 2px light + 0 0 4px heavy) so the card lifts off the
      page. flush drops both so the card tiles inside a list/panel that owns
      the rounding, clipping, and dividers (see NotificationPanel). */
+  min-width: 0;
+
   ${(p) =>
     p.$flush
       ? ''
       : `
     border-radius: var(--radius-400);
-    overflow: hidden;
     box-shadow: var(--elevation-0);
   `}
 `;
 
 const Structure = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: var(--space-300);
   width: 100%;
+  min-width: 0;
   padding: var(--space-300);
 `;
 
 const ContentRow = styled.div`
+  box-sizing: border-box;
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
   gap: var(--space-600);
   width: 100%;
+  min-width: 0;
 `;
 
 const IconAndText = styled.div`
@@ -104,10 +109,13 @@ const Description = styled.p`
 `;
 
 const Footer = styled.div`
+  box-sizing: border-box;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-300);
   width: 100%;
+  min-width: 0;
   /* Indent past the 24px icon + 16px gap so the metadata + actions align
      under the text column, not the icon. */
   padding-left: var(--space-700);
@@ -146,8 +154,10 @@ const Sep = styled.span`
 const Actions = styled.div`
   display: flex;
   flex: none;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-100);
+  min-width: 0;
 `;
 
 export interface NotificationProps extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {

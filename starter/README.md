@@ -3,6 +3,10 @@
 A ready-to-run Vite + React + TypeScript app wired to the cake& design system.
 **No GitHub token, no `.npmrc`, no registry setup.**
 
+You need [Node.js](https://nodejs.org/) (LTS). That gives you `npm`. Open a
+terminal and run the steps below. A slower, plain-language walkthrough is on
+the Storybook [Introduction](https://cake.lenovo.com/storybook/?path=/docs/introduction--docs).
+
 ## Start
 
 ```bash
@@ -48,9 +52,12 @@ explains the full reasoning.
 ## Adding cake& to an app you already have
 
 ```bash
-npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.2/cake-admin-cakeand-4.2.2.tgz
+npm install https://github.com/cake-admin/cakev2/releases/download/vX.Y.Z/cake-admin-cakeand-X.Y.Z.tgz
 npm install react react-dom styled-components radix-ui lucide-react
 ```
+
+Replace `vX.Y.Z` with the version on the
+[latest release](https://github.com/cake-admin/cakev2/releases/latest).
 
 Then copy three things from this starter, all of which matter:
 

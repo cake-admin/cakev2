@@ -42,19 +42,24 @@ const Panel = styled.section`
 /** Padded content region (header + list). Its own padding is the panel inset,
  *  and its bottom padding is the gap down to the full-bleed footer alert. */
 const Body = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  gap: var(--space-500);
   width: 100%;
+  min-width: 0;
+  min-height: 0;
   padding: var(--space-300);
 `;
 
 const Header = styled.div`
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-100);
   width: 100%;
-  margin-bottom: var(--space-500);
+  min-width: 0;
 `;
 
 const Heading = styled.h2`
@@ -81,9 +86,11 @@ const List = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   border-radius: var(--radius-400);
   border: var(--stroke-100) solid var(--color-stroke-border-low);
-  overflow: hidden;
 
   & > * + * {
     border-top: var(--stroke-100) solid var(--color-stroke-border-low);
@@ -97,10 +104,13 @@ const List = styled.div`
  *  aligns the message with the notification icon column (16px list inset + 16px
  *  card padding). The panel's overflow clip rounds its bottom corners. */
 const Footer = styled.div`
+  box-sizing: border-box;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: var(--space-300);
   width: 100%;
+  min-width: 0;
   padding: var(--space-300) var(--space-600);
   background: var(--color-primary-primary-overlay);
   border-bottom-left-radius: var(--radius-400);

@@ -10,7 +10,9 @@ import { HelperString, InputLabel, type HelperTone } from '../Elements';
  * HelperString beneath them.
  *
  * Hours and minutes use native text inputs with numeric input modes, retaining
- * the expected mobile keyboard and form semantics. Radix ToggleGroup owns the
+ * the expected mobile keyboard and form semantics. Extra digits overflow the
+ * 2-character slot so `0934` fills hours and minutes together, and 24-hour
+ * values (`1924`) convert to 12-hour + AM/PM. Radix ToggleGroup owns the
  * mutually-exclusive AM/PM selector and its keyboard/radio-like behavior.
  *
  * Figma states:
@@ -70,7 +72,6 @@ const TimeBox = styled.div<{ $status: TimeStatus }>`
   display: inline-flex;
   align-items: center;
   height: ${CONTROL_HEIGHT}px;
-  overflow: hidden;
   border: var(--stroke-100) solid var(--color-stroke-border);
   border-radius: var(--radius-200);
   background: var(--color-surfaces-on-container-high);
@@ -113,7 +114,9 @@ const TimeBox = styled.div<{ $status: TimeStatus }>`
 
 const Segment = styled.input<{ $edge: 'start' | 'end' }>`
   box-sizing: content-box;
-  width: 2ch;
+  min-width: 2ch;
+  width: auto;
+  max-width: 4ch;
   height: 100%;
   padding: 0 ${(p) => (p.$edge === 'start' ? 'var(--space-100)' : 'var(--space-200)')}
     0 ${(p) => (p.$edge === 'start' ? 'var(--space-200)' : 'var(--space-100)')};
@@ -206,7 +209,51 @@ const normalizeSegment = (value: string, min: number, max: number) => {
   return String(Math.min(Math.max(numeric, min), max)).padStart(2, '0');
 };
 
-const sanitizeSegment = (value: string) => value.replace(/\D/g, '').slice(0, 2);
+/** Clock digits typed across hours (and overflow into minutes). Four digits
+ *  `HHMM` split into a 12-hour value; 13–23 (and 00) switch AM/PM. */
+export const parseClockDigits = (digits: string, fallbackPeriod: TimePeriod): TimeValue => {
+  const cleaned = digits.replace(/\D/g, '').slice(0, 4);
+  if (cleaned.length === 0) return { hours: '', minutes: '', period: fallbackPeriod };
+  if (cleaned.length <= 2) return { hours: cleaned, minutes: '', period: fallbackPeriod };
+
+  const padded = cleaned.length === 3 ? cleaned.padStart(4, '0') : cleaned;
+  let hour24 = Number(padded.slice(0, 2));
+  const minutes = padded.slice(2, 4);
+  let period = fallbackPeriod;
+  let hours = hour24;
+
+  if (hour24 >= 13 && hour24 <= 23) {
+    period = 'PM';
+    hours = hour24 - 12;
+  } else if (hour24 === 0) {
+    period = 'AM';
+    hours = 12;
+  } else if (hour24 === 12) {
+    period = 'PM';
+  }
+
+  return {
+    hours: String(hours).padStart(2, '0'),
+    minutes,
+    period,
+  };
+};
+
+const commitHours = (value: TimeValue): TimeValue => {
+  if (value.hours === '') return value;
+  const combined = `${value.hours}${value.minutes}`.replace(/\D/g, '');
+  if (combined.length >= 3) {
+    return parseClockDigits(combined.length === 3 ? combined.padStart(4, '0') : combined, value.period);
+  }
+  const numeric = Number(value.hours);
+  if (numeric >= 13 && numeric <= 23) {
+    return { ...value, hours: String(numeric - 12).padStart(2, '0'), period: 'PM' };
+  }
+  if (numeric === 0) {
+    return { ...value, hours: '12', period: 'AM' };
+  }
+  return { ...value, hours: normalizeSegment(value.hours, 1, 12) };
+};
 
 export interface TimeInputProps {
   /** Renders one time control or the Figma start/end range pair. @default 'single' */
@@ -274,15 +321,26 @@ const TimeField = ({
   const minuteId = `${generatedId}-minutes`;
   const description = ariaLabel ?? label;
 
-  const updateSegment = (segment: 'hours' | 'minutes', raw: string) => {
-    onChange({ ...value, [segment]: sanitizeSegment(raw) });
+  const updateHours = (raw: string) => {
+    const digits = raw.replace(/\D/g, '').slice(0, 4);
+    if (digits.length < 4) {
+      onChange({ ...value, hours: digits });
+      return;
+    }
+    onChange(parseClockDigits(digits, value.period));
   };
 
-  const commitSegment = (segment: 'hours' | 'minutes') => {
-    onChange({
-      ...value,
-      [segment]: normalizeSegment(value[segment], segment === 'hours' ? 1 : 0, segment === 'hours' ? 12 : 59),
-    });
+  const updateMinutes = (raw: string) => {
+    const digits = raw.replace(/\D/g, '').slice(0, 4);
+    if (digits.length <= 2) {
+      onChange({ ...value, minutes: digits });
+      return;
+    }
+    onChange(parseClockDigits(digits, value.period));
+  };
+
+  const commitMinutes = () => {
+    onChange({ ...value, minutes: normalizeSegment(value.minutes, 0, 59) });
   };
 
   return (
@@ -312,8 +370,8 @@ const TimeField = ({
           aria-label={`${description} hours`}
           aria-describedby={helperId}
           aria-invalid={status === 'error' || undefined}
-          onChange={(event) => updateSegment('hours', event.target.value)}
-          onBlur={() => commitSegment('hours')}
+          onChange={(event) => updateHours(event.target.value)}
+          onBlur={() => onChange(commitHours(value))}
         />
         <Separator aria-hidden>:</Separator>
         <Segment
@@ -328,8 +386,8 @@ const TimeField = ({
           aria-label={`${description} minutes`}
           aria-describedby={helperId}
           aria-invalid={status === 'error' || undefined}
-          onChange={(event) => updateSegment('minutes', event.target.value)}
-          onBlur={() => commitSegment('minutes')}
+          onChange={(event) => updateMinutes(event.target.value)}
+          onBlur={() => commitMinutes()}
         />
         <PeriodGroup
           type="single"

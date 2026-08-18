@@ -1,0 +1,21 @@
+---
+description: How cake& Storybook and the npm package reach production after component work
+globs:
+  - "src/cakeand/components/**"
+  - "src/cakeand/components/**/*.stories.tsx"
+  - ".storybook/**"
+alwaysApply: false
+---
+
+When editing cake& components or Storybook config — or when asked how to
+publish cake&, ship a version, or update cake.lenovo.com/storybook — read and
+follow
+[.claude/skills/storybook-publish-pipeline/SKILL.md](../../.claude/skills/storybook-publish-pipeline/SKILL.md).
+
+Pages (Storybook + site) deploy on every `main` merge. The npm package does
+**not**: run **Publish design system package** by hand, dry-run first, never
+reuse a tag, never hand-edit `starter/context/`.
+
+If the designer install path changes, update Introduction, Getting Started,
+the Resources Devkit card, and README **Use it** together — step-by-step,
+layman's terms.

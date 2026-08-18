@@ -15,8 +15,8 @@ import { Checkbox } from '../Checkbox/Checkbox';
  *
  * The Figma `state` axis (default stripe / inverse stripe / hover / selected /
  * disabled) maps to props + CSS: `stripe` for zebra banding, `selected` for the
- * tonal highlight + checked box, the `interactive` hover lift via `:hover`, and
- * the `disabled` prop. Every value resolves from cake& token custom properties,
+ * tonal highlight + checked box, hover lift on every non-disabled non-selected
+ * row, and the `disabled` prop. Every value resolves from cake& token custom properties,
  * so the **Theme** toolbar re-themes rows live.
  *
  * Rendered as ARIA grid rows/cells (`role="row"` / `role="gridcell"`) so it can
@@ -52,13 +52,19 @@ const Root = styled.div<{
   transition: background-color 120ms ease, box-shadow 120ms ease;
 
   ${(p) =>
-    p.$interactive && !p.$disabled
+    !p.$disabled && !p.$selected
       ? css`
-          cursor: pointer;
           &:hover {
             background: var(--color-surfaces-on-container);
             box-shadow: var(--elevation-0);
           }
+        `
+      : ''}
+
+  ${(p) =>
+    p.$interactive && !p.$disabled
+      ? css`
+          cursor: pointer;
         `
       : ''}
 
@@ -178,8 +184,9 @@ export interface DataRowProps
    */
   disabled?: boolean;
   /**
-   * Gives the whole row a hover lift + pointer (Figma `state=hover`). Use for
-   * rows that navigate or open a detail on click; pair with `onClick`.
+   * Adds a pointer cursor for rows that navigate or open a detail on click.
+   * Pair with `onClick`. Hover lift (Figma `state=hover`) is applied to every
+   * non-disabled, non-selected row regardless of this flag.
    * @default false
    */
   interactive?: boolean;

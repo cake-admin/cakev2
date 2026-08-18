@@ -84,8 +84,9 @@ string becomes truncating body text, while richer cells take a **Chip**, a
 and row groups (the examples here use a small frame for that).
 
 The Figma \`state\` axis collapses into props: \`stripe\` (default / inverse
-banding), \`selected\` (tonal highlight + checked box), \`interactive\` (a
-whole-row hover lift for click-through rows), and \`disabled\`.
+banding), \`selected\` (tonal highlight + checked box), hover lift on every
+non-disabled non-selected row, \`interactive\` (pointer cursor for click-through
+rows), and \`disabled\`.
 
 ## Usage
 
@@ -120,7 +121,7 @@ import { DataRow, DataCell } from '@/cakeand/components/Table';
 | --- | --- |
 | row · default stripe | \`--color-surfaces-container\` |
 | row · inverse stripe | \`--color-surfaces-on-container-high\` |
-| row · hover (interactive) | \`--color-surfaces-on-container\` + \`--elevation-0\` |
+| row · hover | \`--color-surfaces-on-container\` + \`--elevation-0\` |
 | row · selected | \`--color-tonal-tonal-lightest\` |
 | row · disabled | \`--color-disabled-disabled\` bg, \`--color-disabled-disabled-inverse\` text |
 | cell rule | \`--stroke-100\` top/bottom, \`--color-stroke-border-low\` |
@@ -148,7 +149,7 @@ import { DataRow, DataCell } from '@/cakeand/components/Table';
 | --- | --- |
 | Alternate \`stripe\` per row for readable banding | Randomly mix stripes — the pattern should track row parity |
 | Reuse **Chip** / **Badge** inside cells | Re-draw pills or status dots by hand in a cell |
-| Use \`interactive\` only when the whole row navigates | Make a row \`interactive\` when its cells already own the clicks |
+| Set \`interactive\` when the whole row navigates on click | Rely on \`interactive\` for hover — hover lift is the default |
 | Give the checkbox a meaningful \`checkboxLabel\` | Leave it as "Select row" when a name column exists ("Select Ada Lovelace") |
 | Keep the same column count as the **Header Row** | Let body columns drift out of alignment with the header |
 `,
@@ -218,8 +219,8 @@ export const Stripes: Story = {
 };
 
 /**
- * The stateful treatments: a `selected` row (tonal highlight + checked box), an
- * `interactive` row (hover it for the lift), and a `disabled` row. Selected uses
+ * The stateful treatments: a `selected` row (tonal highlight + checked box), a
+ * default row (hover it for the Figma lift), and a `disabled` row. Selected uses
  * `--color-tonal-tonal-lightest`; disabled uses `--color-disabled-disabled`.
  */
 export const States: Story = {
@@ -229,7 +230,7 @@ export const States: Story = {
       <DataRow selected action={InfoAction}>
         <DemoCells />
       </DataRow>
-      <DataRow interactive action={InfoAction}>
+      <DataRow action={InfoAction}>
         <DemoCells />
       </DataRow>
       <DataRow disabled action={InfoAction}>

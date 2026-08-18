@@ -177,8 +177,8 @@ accessible. It reuses everything built for the family (**Action Bar**,
 **Pagination** in the footer and the cake& scrollbar look on the body.
 
 The Figma \`state\` axis (default / hover / select / select all) isn't a set of
-Table variants — it's the parts in different states: a Data Row's \`interactive\`
-hover and \`selected\`, and the Action Bar's \`selected\` bulk-action mode. The
+Table variants — it's the parts in different states: a Data Row's hover lift
+and \`selected\`, and the Action Bar's \`selected\` bulk-action mode. The
 examples wire the classic select-all ↔ per-row relationship in component state;
 copy that pattern.
 
@@ -279,8 +279,8 @@ export const Default: Story = {
 };
 
 /**
- * Rows respond to hover with the Data Row lift (`interactive`), for tables where
- * the whole row is a click target.
+ * `interactive` adds a pointer cursor for click-through rows. Hover lift
+ * (Figma `state=hover`) already applies to every non-disabled, non-selected row.
  */
 export const InteractiveRows: Story = {
   parameters: { controls: { disable: true } },

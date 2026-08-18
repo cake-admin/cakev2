@@ -23,8 +23,10 @@ custom properties that mirror the Figma variables. The **Theme** toolbar
 re-themes every example live; nothing is hardcoded.
 
 Hours and minutes render as native numeric-text inputs for predictable mobile
-keyboards and form behavior. Radix ToggleGroup owns the mutually exclusive
-AM/PM selector. Values remain segment objects while a user is typing; on blur,
+keyboards and form behavior. Extra digits overflow the 2-character slot so
+\`0934\` fills hours and minutes together, and 24-hour values (\`1924\`) convert
+to 12-hour + AM/PM. Radix ToggleGroup owns the mutually exclusive AM/PM
+selector. Values remain segment objects while a user is typing; on blur,
 hours clamp to 01–12 and minutes to 00–59. The range mode is independently
 controlled through \`rangeValue\` / \`onRangeValueChange\`.
 
@@ -74,7 +76,7 @@ narrow.
 
 | Do | Don't |
 | --- | --- |
-| Use a 12-hour value with its AM/PM period. | Store 24-hour notation in the displayed segments. |
+| Let 24-hour typing (\`1924\`) convert to 12-hour + PM. | Keep 24-hour numbers in the displayed hour segment. |
 | Use range mode for one start/end interval. | Place two separate Time Inputs when their validation is shared. |
 | Add helper guidance for timezone or duration context. | Assume a time alone communicates its timezone. |
 | Validate chronological ranges in the parent form. | Treat the component’s segment bounds as range-order validation. |
@@ -237,6 +239,39 @@ export const EditsAndSelectsPeriod: Story = {
     await userEvent.click(canvas.getByRole('button', { name: 'PM' }));
 
     await expect(args.onValueChange).toHaveBeenLastCalledWith({ hours: '09', minutes: '07', period: 'PM' });
+    await expect(canvas.getByRole('button', { name: 'PM' })).toHaveAttribute('data-state', 'on');
+  },
+};
+
+/** Pure interaction test: four digits in hours fill hours and minutes (`0934` → 09:34). */
+export const OverflowsIntoMinutes: Story = {
+  tags: ['!autodocs'],
+  args: { label: 'Meeting time', helperText: undefined, onValueChange: fn() },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const hours = canvas.getByLabelText('Meeting time hours');
+
+    await userEvent.type(hours, '0934');
+
+    await expect(args.onValueChange).toHaveBeenLastCalledWith({ hours: '09', minutes: '34', period: 'AM' });
+    await expect(hours).toHaveValue('09');
+    await expect(canvas.getByLabelText('Meeting time minutes')).toHaveValue('34');
+  },
+};
+
+/** Pure interaction test: 24-hour `1924` becomes 07:24 PM. */
+export const ConvertsMilitaryTime: Story = {
+  tags: ['!autodocs'],
+  args: { label: 'Meeting time', helperText: undefined, onValueChange: fn() },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const hours = canvas.getByLabelText('Meeting time hours');
+
+    await userEvent.type(hours, '1924');
+
+    await expect(args.onValueChange).toHaveBeenLastCalledWith({ hours: '07', minutes: '24', period: 'PM' });
+    await expect(hours).toHaveValue('07');
+    await expect(canvas.getByLabelText('Meeting time minutes')).toHaveValue('24');
     await expect(canvas.getByRole('button', { name: 'PM' })).toHaveAttribute('data-state', 'on');
   },
 };

@@ -84,7 +84,7 @@ const Body = styled.div`
   width: 100%;
   color: var(--color-text-icon-primary);
   font-family: var(--font-family);
-  font-size: var(--type-size-subject);
+  font-size: var(--type-size-body);
   font-weight: var(--font-weight-regular);
   line-height: 1.35;
   letter-spacing: 0.2px;

@@ -4,75 +4,95 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Getting Started
 
-Build a prototype with the real cake& components. **No GitHub token, no
-`.npmrc`, no registry setup.**
+This is the longer walkthrough. If you only need the four commands to start a
+prototype, use [Introduction](?path=/docs/introduction--docs) instead.
 
-## Start here
+You do **not** need a GitHub password, a `.npmrc` file, or access to GitHub
+Packages. The starter downloads from a public release file.
+
+## Start a new prototype
+
+You need [Node.js](https://nodejs.org/) (LTS). Then, in a terminal:
+
+**1.** Copy the starter into a new folder (change `my-prototype` if you like):
 
 ```bash
 npx degit cake-admin/cakev2/starter my-prototype
+```
+
+`npx` runs a helper once. `degit` copies files **without** git history, so you
+get a clean project — not a fork of the whole design system.
+
+If `degit` fails (it is older software), either of these is equivalent:
+
+```bash
+npx giget@latest gh:cake-admin/cakev2/starter my-prototype
+```
+
+```bash
+git clone --depth 1 https://github.com/cake-admin/cakev2
+cp -r cakev2/starter my-prototype
+```
+
+On Windows, copy the `starter` folder out of the clone in File Explorer if you
+prefer not to use `cp`.
+
+**2.** Go into the folder, install, and start the preview:
+
+```bash
 cd my-prototype
 npm install
 npm run dev
 ```
 
-That is the whole setup.
+Open the `http://localhost:5173` link your terminal prints.
 
-**What that first command does:** `npx` runs a package without installing it
-globally, and `degit` copies one folder out of a git repository as plain files —
-no `.git` directory, no history. So it means *"download just the `starter/`
-folder from the cake& repo into `my-prototype`, as a clean project."* Unlike
-`git clone`, you do not get the whole design system, and the result is your
-project from the first commit, not a fork of ours.
+## What is already wired up
 
-`degit` is unmaintained but still works. If it gives you trouble,
-`npx giget@latest gh:cake-admin/cakev2/starter my-prototype` does the same thing,
-and `git clone --depth 1 https://github.com/cake-admin/cakev2` followed by
-copying the `starter/` folder always works.
+You should not have to configure these yourself:
 
-## What you get
-
-- **`CakeProvider`** mounted once, with a working light/dark toggle
-- **~470 design tokens** live as CSS custom properties, theme-aware
-- **Rookery New** loaded from the package — no font wiring
-- **63 components** behind a single import path
-- **Agent context** in `context/`, so Claude Code and Cursor know the real
-  component APIs instead of inventing them
+- **CakeProvider** — one wrapper that turns on cake& colors, type, and the
+  light/dark toggle
+- **Design tokens** — the same variables as Figma, as CSS custom properties
+- **Rookery New** — the cake& font, loaded for you
+- **Components** — import from `@cake-admin/cakeand` (one path)
+- **Agent notes** — a `context/` folder so Cursor or Claude Code uses real
+  component names instead of guessing
 
 ## Working with a coding agent
 
-Open the folder in Claude Code or Cursor and ask for what you want — *"build a
-settings page with tabs, a table, and a save button"*.
+Open `my-prototype` in Cursor and describe the screen you want. The starter
+includes `AGENTS.md` and `context/`:
 
-The starter ships an `AGENTS.md` and a generated `context/` directory:
-
-| File | Purpose |
+| File | What it is |
 | --- | --- |
-| `context/cake-components.md` | The index — every component, one line each. Always read. |
-| `context/components/<name>.md` | Props, a real usage snippet, accessibility, do/don't. Read on demand. |
-| `context/cake-tokens.md` | Every CSS custom property, grouped, with light values. |
+| `context/cake-components.md` | A one-line list of every component. The agent should read this first. |
+| `context/components/<name>.md` | Props and a real example for one component. |
+| `context/cake-tokens.md` | Every color/space/type token. |
 
-These are generated from the same docs prose you are reading now, so they cannot
-drift from Storybook, and they are regenerated and re-pinned with every cake&
-release.
-
-**Do not hand-edit anything in `context/`** — it is regenerated on every release.
+These files are generated from this Storybook. **Do not edit `context/` by
+hand** — a cake& release regenerates it.
 
 ## Adding cake& to an app you already have
 
-Take the `.tgz` URL from the newest release —
-[github.com/cake-admin/cakev2/releases/latest](https://github.com/cake-admin/cakev2/releases/latest)
-— and install it alongside the peer dependencies:
+Use this only if a developer already has a React app. Prefer Path A on
+[Introduction](?path=/docs/introduction--docs) when you can.
+
+**1.** Open the [latest GitHub release](https://github.com/cake-admin/cakev2/releases/latest)
+and copy the `cake-admin-cakeand-….tgz` URL.
+
+**2.** Install cake& and the libraries it shares with the app:
 
 ```bash
 npm install https://github.com/cake-admin/cakev2/releases/download/vX.Y.Z/cake-admin-cakeand-X.Y.Z.tgz
 npm install react react-dom styled-components radix-ui lucide-react
 ```
 
-Those five are **peer dependencies** — deliberately not bundled, so your app owns
-one copy of each. `styled-components` in particular must resolve to a single
-instance; two copies means two stylesheets and two theme contexts, and components
-silently lose their theme. In Vite:
+Those five extra packages are **peer dependencies**: they are not bundled
+inside cake&, so the app has exactly one copy of React and
+`styled-components`. Two copies of `styled-components` means components look
+unstyled, with no clear error. In Vite, keep this in `vite.config.ts` (the
+starter already has it):
 
 ```ts
 export default defineConfig({
@@ -80,7 +100,7 @@ export default defineConfig({
 });
 ```
 
-Then wrap the app **once**:
+**3.** Wrap the app **once**:
 
 ```tsx
 import { CakeProvider, Card, HeroCard, Button } from '@cake-admin/cakeand';
@@ -92,44 +112,46 @@ import { CakeProvider, Card, HeroCard, Button } from '@cake-admin/cakeand';
 </CakeProvider>;
 ```
 
-`CakeProvider` sets `data-theme` on `<html>`, supplies the styled-components
-theme, and loads tokens and fonts. Modes: `light.a` (default), `dark.a`,
-`win hct`.
+Copy three things from the starter if they are not already there:
 
-The attribute goes on `<html>` deliberately — Modal, Dropdown, both Tooltips,
-Breadcrumb, NumberDropdown and Pagination render through a Radix portal into
-`document.body`, outside your React tree. On a wrapper `<div>` those would escape
-the theme and render light inside a dark app.
+1. `resolve.dedupe` in `vite.config.ts` (above)
+2. `import '@cake-admin/cakeand/cakeand.css'` at the **top** of your main
+   entry file (`src/main.tsx` in the starter)
+3. `data-theme="light.a"` on the `<html>` tag in `index.html`
 
-Because the attribute is applied in a layout effect, the **first paint uses the
-default (light) values**. If your app boots dark, set `data-theme` on `<html>` in
-your HTML shell too.
+`CakeProvider` writes `data-theme` onto `<html>` so menus and dialogs that
+pop over the page (Modal, Dropdown, Tooltips) stay on the same theme. If you
+only wrap a `<div>`, those popovers can jump back to light.
 
-## Updating
+Modes: `light.a` (default), `dark.a`, `win hct`. The first paint uses whatever
+is on `<html>` in `index.html`, so keep that in sync with `mode`.
 
-If you started from the template:
+## Updating cake&
+
+From a starter project:
 
 ```bash
 npm run cake:update
 ```
 
-If you added cake& to your own app, re-run the install with the newer release's
-URL — there is no `cake:update` script outside the template.
+From an app you added cake& to yourself, install the newer `.tgz` URL again.
+There is no `cake:update` script outside the starter.
 
-Either way the dependency ends up pinned to a **version-specific** URL, and
-upgrading is deliberately explicit. A URL that always served "latest" would look
-convenient and behave badly: npm records a checksum of the exact tarball bytes,
-so a changing URL first fails to update at all, then breaks `npm ci` with an
-integrity error that has no obvious cause.
+Each project pins **one exact version** on purpose. A link that always meant
+“latest” would look convenient, then break installs when the file on that
+URL changed.
 
 ## Troubleshooting
 
-| Symptom | Cause |
+| What you see | What to try |
 | --- | --- |
-| Everything unstyled, every token an empty string | The cake& stylesheet did not load. Check the `@cake-admin/cakeand/cakeand.css` import. |
-| Components render but ignore the theme | Two copies of `styled-components`. Check `npm ls styled-components`. |
-| Flash of the wrong theme on load | `data-theme` on `<html>` disagrees with the `mode` passed to `CakeProvider`. |
-| Portalled menus and dialogs are unthemed | `scope="subtree"` was passed to `CakeProvider`. Portals escape a subtree. |
-| `npm error EINTEGRITY` | A lockfile pinned to a tarball whose bytes changed. Delete `package-lock.json` and reinstall. |
-| npm behaves strangely on Windows | An `&` in the folder path breaks npm's `.bin` shims. Rename the folder. |
+| No color; tokens look empty | The cake& CSS file did not load. Check the `cakeand.css` import in `src/main.tsx`. |
+| Your CSS cannot override cake& | Import your stylesheet **after** the cake& one. |
+| Components ignore the theme | Two copies of `styled-components`. Run `npm ls styled-components`. |
+| Wrong theme for a split second on load | `data-theme` in `index.html` does not match `CakeProvider` `mode`. |
+| Menus/dialogs are the wrong theme | Do not pass `scope="subtree"` if you use Modal, Dropdown, or Tooltips. |
+| `npm error EINTEGRITY` | Delete `package-lock.json` and reinstall (starter: `npm run cake:update`). |
+| npm fails oddly on Windows | A folder name containing `&` breaks npm. Rename the folder. |
 
+Use **npm**. Other package managers can install from a URL, but this starter
+is tested with npm only.

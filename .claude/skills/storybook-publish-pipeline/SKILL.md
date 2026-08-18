@@ -1,0 +1,118 @@
+---
+name: storybook-publish-pipeline
+description: >
+  How cake& Storybook and the npm package reach production after component
+  work. Use when editing src/cakeand/components/, *.stories.tsx, Storybook
+  config, or when asked how to publish cake&, ship a version, update
+  cake.lenovo.com/storybook, or run the Publish design system package workflow.
+  Pages deploys on every main merge; npm does not.
+---
+
+# cake& Storybook + package publish pipeline
+
+Component work is not done when the local Storybook looks right. This skill
+is the release path: what updates automatically, what must be triggered by
+hand, and what CI must prove on the PR.
+
+## What updates automatically (GitHub Pages)
+
+Merging to `main` runs **Deploy to GitHub Pages** (`.github/workflows/deploy.yml`).
+That job builds the CRA site **and** Storybook, then publishes:
+
+- Site → `https://cake.lenovo.com/`
+- Storybook → `https://cake.lenovo.com/storybook/`
+
+Every `src/cakeand/` change that lands on `main` is live on Storybook after
+that deploy. There is no separate “publish Storybook” step.
+
+## What does **not** update automatically (npm)
+
+The design-system package `@cake-admin/cakeand` publishes **only** from
+**Actions → Publish design system package** (`.github/workflows/main.yml`),
+which is `workflow_dispatch`. Merging to `main` never publishes npm.
+
+Do **not** wire package publish to `push` / `pull_request`. A Storybook-only
+fix must not mint a version.
+
+### How to ship a package version
+
+1. Confirm the work is on `main` (or will be, before you run the workflow).
+2. Choose the **next semver** (`1.0.0`, `1.1.0`, …). Never reuse a tag.
+3. Run **Publish design system package** with that `version`.
+4. Leave **dry_run** checked on the first pass. Inspect the job summary
+   (manifest, tarball name). Re-run with dry_run **unchecked** to publish.
+5. The workflow:
+   - rejects non-semver and any version **older than or equal to** the latest
+     `v*` tag (the Release asset URL is immutable)
+   - creates tag `vX.Y.Z` + GitHub Release tarball
+     `cake-admin-cakeand-X.Y.Z.tgz`
+   - publishes GitHub Packages
+   - opens a PR pinning `starter/` to that Release URL and regenerating
+     `starter/context/` (never hand-edit that folder)
+
+If tags such as `v4.2.2` already exist, `1.0.0` will fail the guard. Either
+publish the next 4.x, or treat “Cake& 1.0” as marketing copy while npm stays
+on the 4.x line — do not delete and reuse a tag.
+
+## Before you open the PR
+
+Follow **storybook-component-docs** for anything under
+`src/cakeand/components/`. Additional pipeline rules:
+
+- A **new component folder** must be added to `CATEGORIES` in
+  `scripts/build-agent-context.mjs`. A folder missing from that map is a
+  component agents will never use. Same-folder additions (Calendar next to
+  DateInput) do not need a new category.
+- Run Storybook via the package scripts (this repo path contains `&`, which
+  breaks `npx` shims on Windows):
+
+  ```bash
+  npm run storybook          # dev, port 6006
+  npm run build-storybook    # static build; then remove storybook-static
+  ```
+
+- Do **not** hand-edit `starter/context/`. It is generated at publish time.
+
+## Consumer docs (designers downloading the kit)
+
+If the **install path** changes (degit, giget, Release `.tgz` URL, peer
+deps, `CakeProvider`, `cake:update`), update these three surfaces in the
+same PR. They are written for designers who may be new to development —
+numbered steps, plain language, what each command does.
+
+1. **Storybook** — [Introduction.mdx](../../../src/cakeand/foundations/Introduction.mdx)
+   (short “Use cake&”) and
+   [GettingStarted.mdx](../../../src/cakeand/foundations/GettingStarted.mdx)
+   (full walkthrough).
+2. **Site** — the Cake& Devkit card on
+   [Resources.js](../../../src/pages/Resources.js). CTA stays
+   `STORYBOOK_PATH?path=/docs/introduction--docs` (instructions, not a raw
+   GitHub clone). Keep `MEDIA_GRADIENTS.devkit` in sync with Figma
+   `gradient/ui/blue alt` (`#004e5e` → `#3b92f9`, 12.3deg).
+3. **GitHub** — root [README.md](../../../README.md) **Use it** / **Updating**.
+   Do not invent a third tutorial. Do not hardcode a version in the tarball
+   URL (`vX.Y.Z`). Touch `starter/README.md` only if commands would drift.
+
+Storybook on cake.lenovo.com updates on merge. The npm kit designers install
+does **not** until **Publish design system package** runs.
+
+## CI on the PR
+
+PRs that touch `src/cakeand/**` or `.storybook/**` run
+`.github/workflows/storybook.yml`:
+
+1. `npm run build-storybook` — the docs site that Pages will nest
+2. `npm run build:package` + `npm pack --dry-run` in `dist-package/` — the
+   tarball the Publish workflow would ship
+
+A red Storybook build means `main` would fail Pages. A red pack means the
+next version cannot publish. Fix those on the PR; do not merge around them.
+
+## After merge
+
+- Wait for **Deploy to GitHub Pages** to go green, then confirm
+  `https://cake.lenovo.com/storybook/` shows the change (Introduction **Use
+  cake&** and the Resources Devkit card if you changed either).
+- If this change should be installable (`npm install` the Release tarball),
+  run **Publish design system package** as above. Storybook being live is
+  not the same as a new package version.

@@ -16,7 +16,7 @@ import { HelperString, type HelperTone } from '../Elements/HelperString';
  * for browser file selection.
  *
  * State model:
- * - default / hover: outlined dropzone; hover washes with tonal overlay.
+ * - default / hover: outlined dropzone; hover washes with tonal lightest.
  * - dragging: tonal overlay + dashed on-tonal border.
  * - loading: tonal overlay + solid on-tonal border and spinner.
  * - disabled: muted disabled surface with blocked interactions.
@@ -63,7 +63,15 @@ const Dropzone = styled.div<{
   transition: background 120ms ease, border-color 120ms ease;
 
   ${(p) =>
-    (p.$hovered || p.$dragging || p.$loading) &&
+    p.$hovered &&
+    !p.$dragging &&
+    !p.$loading &&
+    css`
+      background: var(--color-tonal-tonal-lightest);
+    `}
+
+  ${(p) =>
+    (p.$dragging || p.$loading) &&
     css`
       background: var(--color-tonal-tonal-overlay);
     `}

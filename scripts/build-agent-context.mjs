@@ -89,7 +89,7 @@ const CATEGORY_ORDER = ['Actions', 'Forms', 'Surfaces', 'Navigation', 'Data', 'F
 /** Components that render through a Radix portal into document.body. */
 const PORTALLED = new Set([
   'Modal', 'Dropdown', 'SimpleTooltip', 'RichTooltip', 'Breadcrumb',
-  'NumberDropdown', 'Pagination',
+  'NumberDropdown', 'Pagination', 'DateInput', 'DateRangePicker',
 ]);
 
 // ── Prop extraction ─────────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, Package } from 'lucide-react';
 import { Card } from '../cakeand/components/Card';
 import { Button } from '../cakeand/components/Button';
 import { Badge } from '../cakeand/components/Badge';
@@ -135,6 +135,8 @@ const MEDIA_GRADIENTS = {
     'linear-gradient(12.3deg, #541cb8 0%, #e758cc 100%)',
   'ai-labs':
     'linear-gradient(12.3deg, #91061c 0%, #fb911c 100%)',
+  devkit:
+    'linear-gradient(12.3deg, #004e5e 0%, #3b92f9 100%)',
 };
 
 const MediaBand = styled.div`
@@ -288,6 +290,16 @@ const RESOURCES = [
     iconKind: 'tile',
   },
   {
+    id: 'devkit',
+    title: 'Cake& Devkit',
+    subtitle: 'The fastest way to start building.',
+    body:
+      'Download the Cake& starter kit to begin prototyping immediately. Includes components, tokens, and step-by-step setup so you can get a local preview running in minutes — even if you are new to development.',
+    action: 'Get started',
+    href: `${STORYBOOK_PATH}?path=/docs/introduction--docs`,
+    iconKind: 'package',
+  },
+  {
     id: 'dataviz',
     title: 'Cake& data visualization playground',
     subtitle: 'Build charts in minutes.',
@@ -335,6 +347,10 @@ const ResourceCard = ({ resource }) => (
       {resource.iconKind === 'github' ? (
         <GithubTile aria-hidden>
           <Github />
+        </GithubTile>
+      ) : resource.iconKind === 'package' ? (
+        <GithubTile aria-hidden>
+          <Package />
         </GithubTile>
       ) : resource.iconKind === 'chart' ? (
         <ChartIcon>

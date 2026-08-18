@@ -136,7 +136,13 @@ narrower width its container allows.
     onPrimaryAction: { action: 'primary action', table: { category: 'Events' } },
     onDismiss: { action: 'dismiss', table: { category: 'Events' } },
   },
-  decorators: [(Story) => <div style={{ width: 480, maxWidth: '100%' }}>{Story()}</div>],
+  decorators: [
+    (Story) => (
+      <div style={{ width: 480, maxWidth: '100%', padding: 24, boxSizing: 'border-box' }}>
+        {Story()}
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof Notification>;
 
 export default meta;

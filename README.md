@@ -16,51 +16,60 @@ every component's API, variants, states, and accessibility contract.
 
 ## Use it
 
-### Starting something new
+You need [Node.js](https://nodejs.org/) (the LTS build). That installs the
+`npm` command. Then open a terminal and follow the steps. A longer,
+designer-oriented walkthrough lives on the Storybook
+[Introduction](https://cake.lenovo.com/storybook/?path=/docs/introduction--docs).
+
+### Starting a new prototype (recommended)
+
+**1.** Copy the starter onto your machine (pick any folder name instead of
+`my-prototype`):
 
 ```bash
 npx degit cake-admin/cakev2/starter my-prototype
+```
+
+**2.** Go into the folder, install, and open the local preview:
+
+```bash
 cd my-prototype
 npm install
 npm run dev
 ```
 
-You get a Vite + React + TypeScript app with the provider, theming, fonts, and
-coding-agent context already wired up. **No GitHub token and no `.npmrc`** — see
+You get a Vite + React app with cake& already wired (theme, fonts, components).
+**No GitHub token and no `.npmrc`.** If the first command fails, see
 [Getting Started](https://cake.lenovo.com/storybook/?path=/docs/cake-maintenance-getting-started--docs)
-for the full walkthrough.
+for backups (`giget`, or copy the `starter/` folder from a clone).
 
 <details>
 <summary>What is <code>npx degit</code>?</summary>
 
-`npx` runs a package without installing it globally. `degit` copies a git
-repository — or one folder inside it — as plain files, with no `.git` directory
-and no history.
+`npx` runs a helper once, without installing it forever. `degit` copies files
+from GitHub **without** git history.
 
-So that command means *"download just the `starter/` folder from this repo into
-`my-prototype`, as a clean project."* Unlike `git clone`, you do not get the
-whole design system or its history, and you are not connected to this repo — it
-is your project from the first commit.
-
-`degit` is unmaintained but still works. Equivalents:
-`npx giget@latest gh:cake-admin/cakev2/starter my-prototype`, or
-`git clone --depth 1 https://github.com/cake-admin/cakev2 && cp -r cakev2/starter my-prototype`.
+So that command means: *download just the starter project into `my-prototype`.*
+You are not forking this whole repository.
 
 </details>
 
 ### Adding cake& to an existing app
 
-Take the `.tgz` URL from the [newest release](https://github.com/cake-admin/cakev2/releases/latest):
+If a developer already has a React project, install the **release file**
+(`.tgz`) from the [newest release](https://github.com/cake-admin/cakev2/releases/latest)
+— still no login:
 
 ```bash
 npm install https://github.com/cake-admin/cakev2/releases/download/vX.Y.Z/cake-admin-cakeand-X.Y.Z.tgz
 npm install react react-dom styled-components radix-ui lucide-react
 ```
 
-No token is needed: the repository is public and npm sends no credentials to a
-non-registry host.
-
-Then wrap your app **once**:
+Replace `vX.Y.Z` with the version on that page. Then wrap the app **once** in
+`CakeProvider`. The starter already has the three easy-to-miss pieces
+(`styled-components` dedupe, the cake& CSS import, and `data-theme` on
+`<html>`). Copy those from `starter/` or follow
+[Getting Started](https://cake.lenovo.com/storybook/?path=/docs/cake-maintenance-getting-started--docs).
 
 ```tsx
 import { CakeProvider, Card, HeroCard, Button } from '@cake-admin/cakeand';
@@ -72,42 +81,36 @@ import { CakeProvider, Card, HeroCard, Button } from '@cake-admin/cakeand';
 </CakeProvider>;
 ```
 
-Three details matter and are easy to miss — `resolve.dedupe` for
-`styled-components`, the stylesheet import, and `data-theme` on `<html>`. All
-three are covered in [Getting Started](https://cake.lenovo.com/storybook/?path=/docs/cake-maintenance-getting-started--docs),
-and all three are already done in the starter.
+New components show up in Storybook as soon as they merge to `main`. They show
+up in this install **only after someone publishes a package version**.
 
 ### Prototyping with AI agents
 
-[`cake-admin/ai-lab`](https://github.com/cake-admin/ai-lab) is the workspace for
-building prototypes with Cursor or Claude Code — skills, agents, and a
-machine-readable component index. Clone it and ask for a prototype; it installs
-cake& for you.
+[`cake-admin/ai-lab`](https://github.com/cake-admin/ai-lab) is a Lenovo-internal
+workspace (Cursor / Claude Code skills plus cake&). Clone it and ask for a
+prototype; it installs cake& for you. Access is restricted — ask the cake&
+team.
 
 ---
 
 ## Updating
 
-A new cake& version does **not** reach your project on its own. Each project
-pins one exact version, and you move it deliberately:
+A new cake& version does **not** appear in your prototype by itself. Each
+project pins one exact version:
 
-| Your project | Command |
+| Your project | What to run |
 |---|---|
-| Scaffolded from the starter | `npm run cake:update` |
+| Started from the starter | `npm run cake:update` |
 | A prototype inside ai-lab | `node scripts/install-cake.mjs prototypes/<name>` |
-| Your own app | Re-run `npm install` with the newer release's `.tgz` URL |
+| Your own app | `npm install` with the newer release's `.tgz` URL |
 
-The first two resolve the newest release for you; nothing to look up.
+`npm outdated` will not notice a new cake& — this package is not installed from
+the public npm registry. Watch
+[releases](https://github.com/cake-admin/cakev2/releases), or run the update
+command now and then.
 
-**`npm outdated` will not tell you a new version exists.** It compares against a
-registry, and this package is installed from a URL, so npm has nothing to compare
-against. Watch [releases](https://github.com/cake-admin/cakev2/releases) — or
-just run the update command periodically, since it always resolves the latest.
-
-Pinning an exact version is deliberate rather than a limitation. npm records a
-checksum of the exact tarball bytes in your lockfile, so a URL that always served
-"latest" would first fail to update silently, then break `npm ci` with an
-integrity error that is very hard to trace back.
+Pinning an exact file is deliberate: if the file behind one URL kept changing,
+installs would eventually fail with a hard-to-debug integrity error.
 
 ---
 

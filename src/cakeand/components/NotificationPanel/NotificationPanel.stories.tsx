@@ -137,6 +137,13 @@ the panel owns their rounding, clipping, and dividers.
     },
   },
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div style={{ padding: 24, maxWidth: 480, boxSizing: 'border-box' }}>
+        {Story()}
+      </div>
+    ),
+  ],
   args: {
     title: 'Notifications',
     onSettings: fn(),

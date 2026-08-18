@@ -60,7 +60,7 @@ surface reuses cake& **IconButton** for close and **Button** for default actions
 | --- | --- |
 | blurred surface | \`--color-surfaces-container-blur-high\`, 45px backdrop blur |
 | title | \`--font-family\`, \`--type-size-subtitle\`, \`--font-weight-medium\`, \`--color-text-icon-primary\` |
-| body | \`--font-family\`, \`--type-size-subject\`, \`--font-weight-regular\`, \`--color-text-icon-primary\` |
+| body | \`--font-family\`, \`--type-size-body\` (14px), \`--font-weight-regular\`, \`--color-text-icon-primary\` |
 | step text | \`--type-size-body\`, \`--font-weight-medium\`, \`--color-text-icon-primary\` |
 | padding / gaps / shape | \`--space-500\`, \`--space-300\`, \`--space-200\`, \`--space-100\`, \`--radius-400\` |
 | elevation | \`--elevation-5\` (Figma \`elevation/5\`) |

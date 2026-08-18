@@ -17,7 +17,7 @@ import { nativeScrollbarStyles } from '../Elements/Scrollbar';
  * toolbar re-themes the whole table live.
  *
  * The Figma `state` axis (default / hover / select / select all) is expressed by
- * the parts themselves — a Data Row's `interactive` hover and `selected`, and
+ * the parts themselves — a Data Row's hover lift and `selected`, and
  * the Action Bar's `selected` bulk-action mode — not by Table variants.
  */
 

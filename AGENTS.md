@@ -18,6 +18,20 @@ It defines the mandatory docs-page template (section order, story taxonomy,
 props-table rules, hard constraints, verification steps). Canonical exemplar:
 `src/cakeand/components/Button/`.
 
+## Publishing Storybook and the npm package
+
+After component work, read
+**[.claude/skills/storybook-publish-pipeline/SKILL.md](.claude/skills/storybook-publish-pipeline/SKILL.md)**.
+Merging to `main` updates `cake.lenovo.com/storybook/` via Pages. The npm
+package does **not** publish on merge — run **Publish design system package**
+(dry-run first; never reuse a tag).
+
+If the designer install path changes (degit, Release tarball, peers,
+`cake:update`), keep three consumer surfaces in the same PR, in layman's
+step-by-step language: Storybook Introduction + Getting Started, the
+Resources **Cake& Devkit** card, and README **Use it**. Details in that
+skill.
+
 ## The designer starter (`starter/`)
 
 `starter/` is the template designers scaffold from

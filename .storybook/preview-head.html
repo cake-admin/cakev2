@@ -112,21 +112,67 @@
   }
 
   /*
-   * Panel surfaces — Usage code fences, markdown tables, props tables.
-   * Storybook defaults these to white / zebra-gray; force cake& container
-   * tokens so Dark / HCT don't leave bright islands on the canvas.
+   * Usage fences are Storybook Source: a .docblock-source Wrapper (bordered
+   * flex + white content bg) around ScrollArea > pre.prismjs + Copy.
+   * Card chrome belongs on the wrapper only. A border/background on `pre`
+   * paints a second card inside the first.
    */
-  .sbdocs-content pre,
-  .sbdocs-content pre.prismjs,
   .sbdocs-content .docblock-source,
-  .docblock-source,
-  .sbdocs-content [class*='prismjs'] {
+  .docblock-source {
+    position: relative;
+    display: block !important;
+    overflow: hidden;
     background: var(--color-surfaces-container) !important;
     background-color: var(--color-surfaces-container) !important;
     border: 1px solid var(--color-stroke-border) !important;
-    border-radius: 8px;
-    color: var(--color-text-icon-primary) !important;
+    border-radius: 8px !important;
     box-shadow: none !important;
+    color: var(--color-text-icon-primary) !important;
+  }
+
+  /* Inner scroll/highlighter surfaces — never a second card. */
+  .sbdocs-content .docblock-source > *,
+  .sbdocs-content .docblock-source pre,
+  .sbdocs-content .docblock-source pre[class],
+  .sbdocs-content .docblock-source [class*='prismjs'],
+  .sbdocs-content .docblock-source [data-radix-scroll-area-root],
+  .sbdocs-content .docblock-source [data-radix-scroll-area-viewport],
+  .docblock-source > *,
+  .docblock-source pre,
+  .docblock-source pre[class],
+  .docblock-source [class*='prismjs'] {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .sbdocs-content .docblock-source > *:first-child,
+  .docblock-source > *:first-child {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Overlay Copy; do not leave it as a flex sibling column. */
+  .sbdocs-content .docblock-source > *:not(:first-child),
+  .docblock-source > *:not(:first-child) {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    margin: 0 !important;
+    z-index: 1;
+  }
+
+  /* Markdown <pre> that is not a Source wrapper: same surface, no extra border. */
+  .sbdocs-content pre {
+    background: var(--color-surfaces-container) !important;
+    background-color: var(--color-surfaces-container) !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--color-text-icon-primary) !important;
   }
 
   .sbdocs-content pre code,
@@ -204,12 +250,13 @@
     color: var(--color-text-icon-primary) !important;
   }
 
-  /* Copy button on source panels. */
+  /* Copy button on source panels — recolor only; ActionBar already owns
+     the top+left seam. A full 1px box made it look like a second card. */
   .docblock-source button,
   .sbdocs-content pre button {
     background: var(--color-surfaces-on-container) !important;
     color: var(--color-text-icon-primary) !important;
-    border: 1px solid var(--color-stroke-border) !important;
+    border-color: var(--color-stroke-border) !important;
   }
 
   /*

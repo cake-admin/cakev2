@@ -93,4 +93,17 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4
+
+      - name: Summary
+        run: |
+          {
+            echo "## Deployed to GitHub Pages"
+            echo
+            echo "- Site: ${{ steps.deployment.outputs.page_url }}"
+            echo "- Storybook: https://cake.lenovo.com/storybook/"
+            echo
+            echo "The npm package is **not** published by this workflow. To ship"
+            echo "\`@cake-admin/cakeand\`, run **Publish design system package**"
+            echo "(dry_run first; never reuse a tag)."
+          } >> "$GITHUB_STEP_SUMMARY" 

@@ -1,18 +1,28 @@
 import React from 'react';
-import { AccessibleIcon } from 'radix-ui';
+import { Popover as RadixPopover } from 'radix-ui';
 import styled from 'styled-components';
 import { CalendarDays } from 'lucide-react';
 
+import { IconButton } from '../Button/IconButton';
 import { HelperString, InputLabel, type HelperTone } from '../Elements';
+import { Calendar, type CalendarRangeValue } from './Calendar';
+import {
+  dateToDisplay,
+  formatDateInput,
+  parseDisplayDate,
+} from './dateParse';
 
 /**
- * cake& DateInput — an MM/DD/YY field with a native calendar picker action
- * (Figma "Date Input", node 76:6598). It composes InputLabel and
- * HelperString, and can render one date or a start/end range.
+ * cake& DateInput — an MM/DD/YY field with a cake& Calendar popover
+ * (Figma "Date Input", nodes 4890:19504 / 4890:19510 + `&calendar`
+ * 4890:20174). It composes InputLabel and HelperString. `mode="range"` is
+ * one combined control (`MM/DD/YY — MM/DD/YY`), not two fields.
  *
- * There is no Figma calendar panel in the supplied node, so the calendar
- * action opens the browser's native date picker rather than inventing an
- * unreviewed popover calendar. Typed dates are normalized to MM/DD/YY on blur.
+ * The typed segments behave like Time Input: they hug `MM/DD/YY` and accept
+ * overflow digits (`MMDDYYYY` collapses to `MM/DD/YY`). Two-digit years
+ * expand with a +20 rolling window (see `dateParse`). Only the trailing
+ * IconButton opens the calendar, aligned to the bottom-center of the icon
+ * (Radix flips it when there is no room).
  *
  * State model:
  * - default: `--color-surfaces-on-container-high` / border hairline.
@@ -21,9 +31,8 @@ import { HelperString, InputLabel, type HelperTone } from '../Elements';
  * - validation/disabled: the established cake& form-field semantic treatment.
  */
 
-/** Figma node 76:6598 intrinsic field and calendar-slot geometry. */
+/** Figma 4890:19504 / 4890:19510 — field chrome (not a spacing token). */
 const FIELD_HEIGHT = 40;
-const CALENDAR_SIZE = 24;
 
 export interface DateRangeValue {
   start: string;
@@ -35,32 +44,30 @@ type DateStatus = 'default' | 'success' | 'error';
 const Root = styled.div`
   display: inline-flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-050);
   max-width: 100%;
   font-family: var(--font-family);
 `;
 
 const DateFieldRoot = styled.div`
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
-  gap: var(--space-050);
-  width: 136px;
-`;
-
-const RangeFields = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-800);
   align-items: flex-start;
+  width: max-content;
+  max-width: 100%;
+  gap: var(--space-050);
 `;
 
 const Box = styled.div<{ $status: DateStatus }>`
   box-sizing: border-box;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  width: 100%;
+  flex: none;
+  width: max-content;
   height: ${FIELD_HEIGHT}px;
-  padding: 0 var(--space-200);
+  max-width: 100%;
+  padding: 0 0 0 var(--space-200);
   border: var(--stroke-100) solid var(--color-stroke-border);
   border-radius: var(--radius-200);
   background: var(--color-surfaces-on-container-high);
@@ -101,21 +108,27 @@ const Box = styled.div<{ $status: DateStatus }>`
   }
 `;
 
-const TextInput = styled.input`
-  flex: 1;
+/** Hug MM/DD/YY. The ch unit is the 0 glyph and leaves a tail after YY. */
+const TextInput = styled.input<{ $bold?: boolean }>`
+  box-sizing: content-box;
+  flex: none;
+  field-sizing: content;
+  width: auto;
   min-width: 0;
   height: 100%;
-  padding: 0 var(--space-100);
+  padding: 0;
   border: none;
   outline: none;
   background: transparent;
   font-family: var(--font-family);
   font-size: var(--type-size-body);
+  font-weight: ${(p) => (p.$bold ? 'var(--font-weight-bold)' : 'var(--font-weight-regular)')};
   line-height: 1.35;
   color: var(--color-text-icon-primary);
 
   &::placeholder {
     color: var(--color-text-icon-placeholder);
+    font-weight: var(--font-weight-regular);
   }
 
   &:disabled {
@@ -128,103 +141,51 @@ const TextInput = styled.input`
   }
 `;
 
-const CalendarButton = styled.button`
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+const RangeDash = styled.span`
   flex-shrink: 0;
-  width: ${CALENDAR_SIZE}px;
-  height: ${CALENDAR_SIZE}px;
+  padding: 0 var(--space-050);
+  color: var(--color-text-icon-primary);
+  font-size: var(--type-size-body);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.35;
+`;
+
+const CalendarAnchor = styled(RadixPopover.Anchor)`
+  display: inline-flex;
+  flex-shrink: 0;
+`;
+
+const PopoverContent = styled(RadixPopover.Content)`
+  z-index: 1100;
   padding: 0;
   border: none;
-  border-radius: var(--radius-1000);
   background: transparent;
-  color: var(--color-text-icon-secondary);
-  cursor: pointer;
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible::after {
-    position: absolute;
-    inset: calc(var(--space-025) * -1);
-    border: var(--stroke-200) solid var(--color-primary-primary);
-    border-radius: var(--radius-1000);
-    content: '';
-    pointer-events: none;
-  }
-
-  & > svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  &:disabled {
-    color: var(--color-disabled-disabled-inverse);
-    cursor: not-allowed;
-  }
+  outline: none;
 `;
-
-const NativePicker = styled.input`
-  position: absolute;
-  width: 0;
-  height: 0;
-  opacity: 0;
-  pointer-events: none;
-`;
-
-const sanitizeDate = (value: string) => value.replace(/\D/g, '').slice(0, 6);
-
-const formatDate = (value: string) => {
-  const digits = sanitizeDate(value);
-  if (digits.length <= 2) return digits;
-  if (digits.length <= 4) return `${digits.slice(0, 2)}/${digits.slice(2)}`;
-  return `${digits.slice(0, 2)}/${digits.slice(2, 4)}/${digits.slice(4)}`;
-};
-
-const isValidDate = (value: string) => {
-  const match = /^(\d{2})\/(\d{2})\/(\d{2})$/.exec(value);
-  if (!match) return false;
-  const month = Number(match[1]);
-  const day = Number(match[2]);
-  const year = 2000 + Number(match[3]);
-  const date = new Date(year, month - 1, day);
-  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
-};
-
-const isoToDisplay = (iso: string) => {
-  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
-  return match ? `${match[2]}/${match[3]}/${match[1].slice(-2)}` : '';
-};
-
-const displayToIso = (value: string) => {
-  if (!isValidDate(value)) return '';
-  const [month, day, year] = value.split('/');
-  return `20${year}-${month}-${day}`;
-};
 
 export interface DateInputProps {
-  /** Renders one date field or the Figma start/end range pair. @default 'single' */
+  /** Renders one date field or the Figma combined range field. @default 'single' */
   mode?: 'single' | 'range';
-  /** Label for the single date field. @default 'Select date' */
+  /**
+   * Visible label. Range mode uses one label for the combined control.
+   * @default 'Select date' (single) / 'Select date range' (range)
+   */
   label?: string;
-  /** Label for the range start field. @default 'Start date' */
+  /** Accessible name for the range start segment. @default 'Start date' */
   startLabel?: string;
-  /** Label for the range end field. @default 'End date' */
+  /** Accessible name for the range end segment. @default 'End date' */
   endLabel?: string;
-  /** Shows the InputLabel info icon(s). @default false */
+  /** Shows the InputLabel info icon. @default false */
   showLabelInfo?: boolean;
-  /** Marks every native date input required. @default false */
+  /** Marks every date input required. @default false */
   required?: boolean;
-  /** Helper content below the field(s), replacing the Figma default guidance. */
+  /** Helper content below the field, replacing the Figma default guidance. */
   helperText?: React.ReactNode;
-  /** Hides the shared HelperString. @default true */
+  /** Hides the HelperString. @default true */
   showHelper?: boolean;
-  /** Validation state for all rendered fields. @default 'default' */
+  /** Validation state for the field. @default 'default' */
   status?: DateStatus;
-  /** Disables date typing and the native calendar action. @default false */
+  /** Disables date typing and the calendar action. @default false */
   disabled?: boolean;
   /** Controlled MM/DD/YY value for `mode="single"`. */
   value?: string;
@@ -242,47 +203,39 @@ export interface DateInputProps {
   'aria-label'?: string;
 }
 
-interface DateFieldProps {
+const toCalendarRange = (range: DateRangeValue): CalendarRangeValue => ({
+  start: parseDisplayDate(range.start),
+  end: parseDisplayDate(range.end),
+});
+
+interface FieldShellProps {
   label: string;
   showLabelInfo: boolean;
   required: boolean;
   status: DateStatus;
   disabled: boolean;
-  value: string;
-  helperId?: string;
-  ariaLabel?: string;
-  onChange: (value: string) => void;
+  inputId: string;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  calendar: React.ReactNode;
+  calendarName: string;
+  children: React.ReactNode;
 }
 
-const DateField = ({
+const FieldShell = ({
   label,
   showLabelInfo,
   required,
   status,
   disabled,
-  value,
-  helperId,
-  ariaLabel,
-  onChange,
-}: DateFieldProps) => {
-  const generatedId = React.useId();
-  const inputId = `${generatedId}-input`;
-  const nativePickerRef = React.useRef<HTMLInputElement>(null);
-
-  const openNativePicker = () => {
-    const picker = nativePickerRef.current;
-    if (!picker) return;
-    // Feature-detect on the METHOD, not with `'showPicker' in picker`: the DOM
-    // lib types declare showPicker as always present on HTMLInputElement, so the
-    // `in` check narrowed the else branch to `never` and the fallback below was
-    // unreachable to the type checker. Browsers without showPicker still need it.
-    if (typeof picker.showPicker === 'function') {
-      picker.showPicker();
-    } else {
-      picker.focus();
-      picker.click();
-    }
-  };
+  inputId,
+  open,
+  setOpen,
+  calendar,
+  calendarName,
+  children,
+}: FieldShellProps) => {
+  const iconRef = React.useRef<HTMLButtonElement>(null);
 
   return (
     <DateFieldRoot>
@@ -297,36 +250,214 @@ const DateField = ({
           {label}
         </InputLabel>
       ) : null}
-      <Box $status={status}>
-        <TextInput
-          id={inputId}
-          value={value}
-          disabled={disabled}
-          required={required}
-          inputMode="numeric"
-          autoComplete="off"
-          placeholder="MM/DD/YY"
-          aria-label={ariaLabel ?? label}
-          aria-describedby={helperId}
-          aria-invalid={status === 'error' || undefined}
-          onChange={(event) => onChange(formatDate(event.target.value))}
-          onBlur={(event) => onChange(formatDate(event.target.value))}
-        />
-        <CalendarButton type="button" disabled={disabled} onClick={openNativePicker}>
-          <AccessibleIcon.Root label={`Choose ${(ariaLabel ?? label) || 'date'} from calendar`}>
-            <CalendarDays aria-hidden />
-          </AccessibleIcon.Root>
-        </CalendarButton>
-        <NativePicker
-          ref={nativePickerRef}
-          type="date"
-          tabIndex={-1}
-          aria-hidden
-          value={displayToIso(value)}
-          onChange={(event) => onChange(isoToDisplay(event.target.value))}
-        />
-      </Box>
+      <RadixPopover.Root open={open} onOpenChange={setOpen} modal>
+        <Box $status={status}>
+          {children}
+          <CalendarAnchor>
+            <IconButton
+              ref={iconRef}
+              type="button"
+              label={`Choose ${calendarName} from calendar`}
+              icon={<CalendarDays />}
+              size="xs"
+              intent="secondary"
+              variant="ghost"
+              disabled={disabled}
+              aria-haspopup="dialog"
+              aria-expanded={open}
+              onClick={() => setOpen((value) => !value)}
+            />
+          </CalendarAnchor>
+        </Box>
+        <RadixPopover.Portal>
+          <PopoverContent
+            side="bottom"
+            align="center"
+            sideOffset={8}
+            collisionPadding={8}
+            avoidCollisions
+            onPointerDownOutside={(event) => {
+              const target = event.detail.originalEvent.target as Node | null;
+              if (target && iconRef.current?.contains(target)) event.preventDefault();
+            }}
+          >
+            {calendar}
+          </PopoverContent>
+        </RadixPopover.Portal>
+      </RadixPopover.Root>
     </DateFieldRoot>
+  );
+};
+
+interface SingleFieldProps {
+  label: string;
+  showLabelInfo: boolean;
+  required: boolean;
+  status: DateStatus;
+  disabled: boolean;
+  value: string;
+  helperId?: string;
+  ariaLabel?: string;
+  onChange: (value: string) => void;
+}
+
+const SingleField = ({
+  label,
+  showLabelInfo,
+  required,
+  status,
+  disabled,
+  value,
+  helperId,
+  ariaLabel,
+  onChange,
+}: SingleFieldProps) => {
+  const generatedId = React.useId();
+  const inputId = `${generatedId}-input`;
+  const [open, setOpen] = React.useState(false);
+  const parsed = parseDisplayDate(value);
+
+  const commit = (next: Date | CalendarRangeValue | null) => {
+    if (next instanceof Date) onChange(dateToDisplay(next));
+    setOpen(false);
+  };
+
+  return (
+    <FieldShell
+      label={label}
+      showLabelInfo={showLabelInfo}
+      required={required}
+      status={status}
+      disabled={disabled}
+      inputId={inputId}
+      open={open}
+      setOpen={setOpen}
+      calendarName={(ariaLabel ?? label) || 'date'}
+      calendar={
+        <Calendar
+          key={String(open)}
+          defaultValue={parsed}
+          onCancel={() => setOpen(false)}
+          onConfirm={commit}
+        />
+      }
+    >
+      <TextInput
+        id={inputId}
+        value={value}
+        disabled={disabled}
+        required={required}
+        inputMode="numeric"
+        autoComplete="off"
+        placeholder="MM/DD/YY"
+        size={8}
+        aria-label={ariaLabel ?? label}
+        aria-describedby={helperId}
+        aria-invalid={status === 'error' || undefined}
+        onChange={(event) => onChange(formatDateInput(event.target.value))}
+        onBlur={(event) => onChange(formatDateInput(event.target.value))}
+      />
+    </FieldShell>
+  );
+};
+
+interface RangeFieldProps {
+  label: string;
+  startLabel: string;
+  endLabel: string;
+  showLabelInfo: boolean;
+  required: boolean;
+  status: DateStatus;
+  disabled: boolean;
+  rangeValue: DateRangeValue;
+  helperId?: string;
+  onChange: (key: keyof DateRangeValue, value: string) => void;
+  onRangeChange: (value: DateRangeValue) => void;
+}
+
+const RangeField = ({
+  label,
+  startLabel,
+  endLabel,
+  showLabelInfo,
+  required,
+  status,
+  disabled,
+  rangeValue,
+  helperId,
+  onChange,
+  onRangeChange,
+}: RangeFieldProps) => {
+  const generatedId = React.useId();
+  const startId = `${generatedId}-start`;
+  const endId = `${generatedId}-end`;
+  const [open, setOpen] = React.useState(false);
+
+  const commit = (next: Date | CalendarRangeValue | null) => {
+    if (next && !(next instanceof Date)) {
+      onRangeChange({
+        start: next.start ? dateToDisplay(next.start) : '',
+        end: next.end ? dateToDisplay(next.end) : next.start ? dateToDisplay(next.start) : '',
+      });
+    }
+    setOpen(false);
+  };
+
+  return (
+    <FieldShell
+      label={label}
+      showLabelInfo={showLabelInfo}
+      required={required}
+      status={status}
+      disabled={disabled}
+      inputId={startId}
+      open={open}
+      setOpen={setOpen}
+      calendarName={label || 'date range'}
+      calendar={
+        <Calendar
+          key={String(open)}
+          mode="range"
+          defaultRangeValue={toCalendarRange(rangeValue)}
+          onCancel={() => setOpen(false)}
+          onConfirm={commit}
+        />
+      }
+    >
+      <TextInput
+        $bold
+        id={startId}
+        value={rangeValue.start}
+        disabled={disabled}
+        required={required}
+        inputMode="numeric"
+        autoComplete="off"
+        placeholder="MM/DD/YY"
+        size={8}
+        aria-label={startLabel}
+        aria-describedby={helperId}
+        aria-invalid={status === 'error' || undefined}
+        onChange={(event) => onChange('start', formatDateInput(event.target.value))}
+        onBlur={(event) => onChange('start', formatDateInput(event.target.value))}
+      />
+      <RangeDash aria-hidden>—</RangeDash>
+      <TextInput
+        $bold
+        id={endId}
+        value={rangeValue.end}
+        disabled={disabled}
+        required={required}
+        inputMode="numeric"
+        autoComplete="off"
+        placeholder="MM/DD/YY"
+        size={8}
+        aria-label={endLabel}
+        aria-describedby={helperId}
+        aria-invalid={status === 'error' || undefined}
+        onChange={(event) => onChange('end', formatDateInput(event.target.value))}
+        onBlur={(event) => onChange('end', formatDateInput(event.target.value))}
+      />
+    </FieldShell>
   );
 };
 
@@ -334,7 +465,7 @@ export const DateInput = React.forwardRef<HTMLDivElement, DateInputProps>(
   (
     {
       mode = 'single',
-      label = 'Select date',
+      label,
       startLabel = 'Start date',
       endLabel = 'End date',
       showLabelInfo = false,
@@ -355,16 +486,17 @@ export const DateInput = React.forwardRef<HTMLDivElement, DateInputProps>(
   ) => {
     const generatedId = React.useId();
     const helperId = `${generatedId}-helper`;
-    const [innerValue, setInnerValue] = React.useState(() => formatDate(defaultValue ?? ''));
+    const [innerValue, setInnerValue] = React.useState(() => formatDateInput(defaultValue ?? ''));
     const [innerRangeValue, setInnerRangeValue] = React.useState<DateRangeValue>(() => ({
-      start: formatDate(defaultRangeValue?.start ?? ''),
-      end: formatDate(defaultRangeValue?.end ?? ''),
+      start: formatDateInput(defaultRangeValue?.start ?? ''),
+      end: formatDateInput(defaultRangeValue?.end ?? ''),
     }));
 
-    const currentValue = formatDate(value ?? innerValue);
+    const resolvedLabel = label ?? (mode === 'range' ? 'Select date range' : 'Select date');
+    const currentValue = formatDateInput(value ?? innerValue);
     const currentRangeValue = {
-      start: formatDate(rangeValue?.start ?? innerRangeValue.start),
-      end: formatDate(rangeValue?.end ?? innerRangeValue.end),
+      start: formatDateInput(rangeValue?.start ?? innerRangeValue.start),
+      end: formatDateInput(rangeValue?.end ?? innerRangeValue.end),
     };
     const tone: HelperTone = disabled
       ? 'disabled'
@@ -374,7 +506,8 @@ export const DateInput = React.forwardRef<HTMLDivElement, DateInputProps>(
           ? 'error'
           : 'greyscale';
     const resolvedHelperText =
-      helperText ?? (mode === 'range' ? 'Enter a start and end date for the range' : 'Enter a date or pick from calendar');
+      helperText ??
+      (mode === 'range' ? 'Enter a start and end date for the range' : 'Enter a date or pick from calendar');
 
     const updateSingle = (next: string) => {
       setInnerValue(next);
@@ -387,34 +520,30 @@ export const DateInput = React.forwardRef<HTMLDivElement, DateInputProps>(
       onRangeValueChange?.(updated);
     };
 
+    const replaceRange = (updated: DateRangeValue) => {
+      setInnerRangeValue(updated);
+      onRangeValueChange?.(updated);
+    };
+
     return (
       <Root ref={ref}>
         {mode === 'range' ? (
-          <RangeFields>
-            <DateField
-              label={startLabel}
-              showLabelInfo={showLabelInfo}
-              required={required}
-              status={status}
-              disabled={disabled}
-              value={currentRangeValue.start}
-              helperId={showHelper ? helperId : undefined}
-              onChange={(next) => updateRange('start', next)}
-            />
-            <DateField
-              label={endLabel}
-              showLabelInfo={showLabelInfo}
-              required={required}
-              status={status}
-              disabled={disabled}
-              value={currentRangeValue.end}
-              helperId={showHelper ? helperId : undefined}
-              onChange={(next) => updateRange('end', next)}
-            />
-          </RangeFields>
+          <RangeField
+            label={resolvedLabel}
+            startLabel={startLabel}
+            endLabel={endLabel}
+            showLabelInfo={showLabelInfo}
+            required={required}
+            status={status}
+            disabled={disabled}
+            rangeValue={currentRangeValue}
+            helperId={showHelper ? helperId : undefined}
+            onChange={updateRange}
+            onRangeChange={replaceRange}
+          />
         ) : (
-          <DateField
-            label={label}
+          <SingleField
+            label={resolvedLabel}
             showLabelInfo={showLabelInfo}
             required={required}
             status={status}

@@ -11,23 +11,28 @@ const meta = {
     docs: {
       description: {
         component: `
-Date Input collects a typed \`MM/DD/YY\` date and exposes a calendar action
-that opens the browser’s native date picker. It composes [Input
+Date Input collects a typed \`MM/DD/YY\` date and opens the cake&
+[Calendar](?path=/docs/components-calendar--docs) from a trailing
+[Icon Button](?path=/docs/components-icon-button--docs). The typed segment
+hugs its value the same way Time Input does — clicking it focuses for entry,
+it does not open the calendar. It composes [Input
 Label](?path=/docs/elements-input-label--docs) with [Helper
-String](?path=/docs/elements-helper-string--docs); use \`mode="range"\` to
-collect a start and end date with one shared helper. Use Time Input when the
-value also needs a time of day.
+String](?path=/docs/elements-helper-string--docs). Use
+[Date Range Picker](?path=/docs/components-date-range-picker--docs) (or
+\`mode="range"\`) for a start/end interval in one combined field. Use Time
+Input when the value also needs a time of day.
 
 Every color, spacing, radius, stroke, and type value resolves from cake& CSS
 custom properties mirroring the Figma variables. The **Theme** toolbar
 re-themes every example live; nothing is hardcoded.
 
-The supplied Figma node defines the input and calendar trigger, but no custom
-calendar panel. The trigger therefore opens the browser-native date picker
-instead of inventing unreviewed calendar visuals. The visible native text input
-remains the form control; typed values are formatted progressively and
-normalized to \`MM/DD/YY\` on blur. Range values are independently controlled
-through \`rangeValue\` / \`onRangeValueChange\`.
+Typed digits may overflow six characters so \`MMDDYYYY\` can be entered; the
+visible value always collapses to \`MM/DD/YY\`. Two-digit years expand with a
+rolling **+20** window: \`2000 + yy\`, unless that date is more than 20 years
+ahead of today, in which case it becomes \`1900 + yy\` (in 2026, \`46\` → 2046
+and \`47\` → 1947). Only the IconButton opens the calendar, in a Radix
+Popover aligned to the bottom-center of the icon (it flips when there is no
+room). Cancel discards the draft; OK writes the field.
 
 ## Usage
 
@@ -35,7 +40,7 @@ through \`rangeValue\` / \`onRangeValueChange\`.
 <DateInput />
 <DateInput label="Appointment date" required showLabelInfo />
 <DateInput defaultValue="09/30/26" />
-<DateInput mode="range" startLabel="Start date" endLabel="End date" />
+<DateInput mode="range" />
 <DateInput status="error" helperText="Choose a valid date" />
 <DateInput mode="range" disabled />
 \`\`\`
@@ -48,21 +53,24 @@ through \`rangeValue\` / \`onRangeValueChange\`.
 | hover | \`--color-stroke-border-high\` |
 | typing / focus | \`--color-surfaces-container\`, \`--stroke-150\`, \`--color-primary-primary\` |
 | validation | \`--color-success-success-overlay\` / \`--color-success-success\`; \`--color-error-error-overlay\` / \`--color-error-error\` |
-| calendar action | \`--color-text-icon-secondary\`, \`--stroke-200\`, \`--color-primary-primary\`, \`--radius-1000\` |
+| calendar action | **IconButton** \`xs\` \`ghost\` \`secondary\` |
+| range dash | \`--font-weight-bold\`, \`--color-text-icon-primary\`, \`--space-050\` (4px) on both sides |
 | disabled | \`--color-disabled-disabled\`, \`--color-disabled-disabled-inverse\` |
 | labels / helper | reused InputLabel and HelperString token recipes |
-| layout / shape | \`--space-050\`, \`--space-100\`, \`--space-200\`, \`--space-800\`, \`--radius-200\` |
+| layout / shape | \`--space-050\`, \`--space-200\`, \`--radius-200\` |
 
-Figma intrinsic geometry is a 136px-wide, 40px-high date field with a 24px
-calendar slot. Range fields use the Figma \`--space-800\` (48px) gap and wrap
-when their container is narrower.
+The field is \`inline-flex\` and hugs \`MM/DD/YY\`, like Time Input. Range is
+one control: two segments, an em dash, and the IconButton.
+The popover Calendar is documented on its own page.
 
 ## Accessibility
 
-- Each visible label is a real \`<label htmlFor>\` that focuses its text input.
-  Supply an \`aria-label\` for a labelless single field.
-- The calendar is a labelled icon-only button that invokes the browser’s native
-  picker; it has a tokenized keyboard focus ring.
+- The visible label is a real \`<label htmlFor>\` that focuses the (start)
+  text input. Supply an \`aria-label\` for a labelless single field.
+  \`startLabel\` / \`endLabel\` name the two range segments for assistive tech.
+- The calendar control is a real IconButton (\`aria-haspopup="dialog"\`) that
+  opens a \`role="dialog"\` Calendar. Clicking a typed segment focuses it for
+  entry and does not open the panel.
 - Error state applies \`aria-invalid\` and Helper String is wired through
   \`aria-describedby\`; disabled state blocks typing and calendar actions.
 - Parent forms should validate calendar ordering for ranges and any product
@@ -73,9 +81,9 @@ when their container is narrower.
 | Do | Don't |
 | --- | --- |
 | Use the \`MM/DD/YY\` display contract consistently within a product flow. | Mix regional date formats in adjacent controls. |
-| Use range mode when one helper and validation rule cover both dates. | Build a date range from unrelated single controls. |
+| Use range mode (or Date Range Picker) when one helper covers both dates. | Build a date range from two unrelated single controls. |
 | Validate date availability and ordering in the parent form. | Treat formatting as proof the date is allowed. |
-| Let users type or choose from their platform picker. | Add a custom calendar panel without an approved calendar design. |
+| Let users type or choose from the cake& Calendar. | Reintroduce a native \`<input type="date">\` picker beside this field. |
 `,
       },
     },
@@ -128,8 +136,8 @@ export const Modes: Story = {
     docs: {
       description: {
         story:
-          'The Figma single and double variants. Range uses the 48px `--space-800` gap ' +
-          'and exposes one helper string for the full interval.',
+          'The Figma single and double variants. Range is one combined field ' +
+          '(`MM/DD/YY — MM/DD/YY`) with a shared helper string.',
       },
     },
   },
@@ -147,8 +155,8 @@ export const FilledValues: Story = {
     docs: {
       description: {
         story:
-          'Prepopulated values preserve the Figma display format. The native calendar actions ' +
-          'can update either field independently while each value remains controlled or uncontrolled.',
+          'Prepopulated values preserve the Figma display format. The calendar action ' +
+          'writes the single date, or both ends of a range, on OK.',
       },
     },
   },
@@ -218,5 +226,52 @@ export const FormatsDate: Story = {
     await userEvent.type(input, '010126');
     await expect(args.onValueChange).toHaveBeenLastCalledWith('01/01/26');
     await expect(input).toHaveValue('01/01/26');
+  },
+};
+
+/** Pure interaction test: eight typed digits collapse a four-digit year to YY. */
+export const CollapsesFourDigitYear: Story = {
+  tags: ['!autodocs'],
+  args: { label: 'Historic date', helperText: undefined, onValueChange: fn() },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByLabelText('Historic date');
+
+    await userEvent.type(input, '01011984');
+    await expect(args.onValueChange).toHaveBeenLastCalledWith('01/01/84');
+    await expect(input).toHaveValue('01/01/84');
+  },
+};
+
+/** Pure interaction test: years more than 20 ahead of now resolve to 19xx in the calendar. */
+export const WindowsTwoDigitYear: Story = {
+  tags: ['!autodocs'],
+  args: { label: 'Archive date', helperText: undefined, defaultValue: '01/01/47' },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: /from calendar/i }));
+    const dialog = await within(document.body).findByRole('dialog', { name: 'Choose date' });
+    const from2000 = 2047;
+    const fullYear = from2000 > new Date().getFullYear() + 20 ? 1947 : from2000;
+    await expect(within(dialog).getByRole('button', { name: String(fullYear) })).toBeVisible();
+  },
+};
+
+/** Pure interaction test: OK on the calendar writes the field. */
+export const PicksFromCalendar: Story = {
+  tags: ['!autodocs'],
+  args: { label: 'Meeting date', helperText: undefined, onValueChange: fn() },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole('button', { name: /from calendar/i }));
+    const dialog = await within(document.body).findByRole('dialog', { name: 'Choose date' });
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Today' }));
+    await userEvent.click(within(dialog).getByRole('button', { name: 'OK' }));
+    await expect(args.onValueChange).toHaveBeenCalled();
+    const today = new Date();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const yy = String(today.getFullYear()).slice(-2);
+    await expect(canvas.getByLabelText('Meeting date')).toHaveValue(`${mm}/${dd}/${yy}`);
   },
 };
