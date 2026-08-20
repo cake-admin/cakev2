@@ -30,7 +30,7 @@ If the designer install path changes (degit, Release tarball, peers,
 `cake:update`), keep three consumer surfaces in the same PR, in layman's
 step-by-step language: Storybook Introduction + Getting Started, the
 Resources **Cake& Devkit** card, and README **Use it**. Current kit:
-https://github.com/cake-admin/cakev2/releases#release-v4.2.3. Details in that
+https://github.com/cake-admin/cakev2/releases#release-v4.2.4. Details in that
 skill.
 
 ## The designer starter (`starter/`)
