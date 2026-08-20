@@ -92,9 +92,9 @@ numbered steps, plain language, what each command does.
    `gradient/ui/blue alt` (`#004e5e` → `#3b92f9`, 12.3deg).
 3. **GitHub** — root [README.md](../../../README.md) **Use it** / **Updating**.
    Do not invent a third tutorial. Consumer copy currently points at
-   [v4.2.3](https://github.com/cake-admin/cakev2/releases#release-v4.2.3)
+   [v4.2.4](https://github.com/cake-admin/cakev2/releases#release-v4.2.4)
    and the matching tarball
-   `…/download/v4.2.3/cake-admin-cakeand-4.2.3.tgz`. When a new version
+   `…/download/v4.2.4/cake-admin-cakeand-4.2.4.tgz`. When a new version
    ships, update that hash link and tarball together on Introduction,
    Getting Started, README, `starter/README.md`, and `PACKAGE_README.md`.
    Touch `starter/README.md` only if commands would drift.
