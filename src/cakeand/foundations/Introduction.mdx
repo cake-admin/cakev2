@@ -91,189 +91,109 @@ You never log in to GitHub to download it. Each version ships as a public
 </p>
 
 On that page, look for the file named `cake-admin-cakeand-4.2.3.tgz`. That is
-the kit. The Devkit starter already points at one of those files for you, so
-most people never copy the URL by hand.
+the installable package. The starter already points at it for you, so most
+people never copy the URL by hand.
 
 ### Why use it
 
-- You get **real cake& components**, not pictures of them. Buttons, tables,
-  date fields, and the rest behave the way they do in this Storybook.
+- You get **real cake& components**, not pictures of them.
 - **Light and dark** (and Windows high contrast) already work.
-- The **Rookery New** font and design tokens are wired in. You do not set
-  those up yourself.
+- The **Rookery New** font and design tokens are wired in.
 - A coding agent can build from the **actual component names and props**,
   instead of inventing a look-alike.
 - Sharing the prototype is sharing a folder that runs — useful in critiques
   and handoff.
 
-### What you get, and how to use it
+### What’s inside the package
 
-Once the starter is on your machine, the folder already contains:
-
-- **CakeProvider** — one wrapper that turns on cake& color, type, and theme.
-  You should not need to add a second one.
-- **Components** — import from `@cake-admin/cakeand` (one path). Browse this
-  Storybook when you want to see a control’s options before you ask the agent
-  to use it.
-- **Tokens** — the same variables as Figma, as CSS custom properties.
-- **`context/`** — notes for Cursor / Claude Code: a list of components, then
-  a short file per component. **Do not edit `context/` by hand**; a cake&
-  release regenerates it.
-- **`npm run cake:update`** — pulls a newer cake& version into that same
-  folder when you are ready.
-
-Typical loop: keep Storybook open in a tab for reference, keep the Devkit
-preview open in another, and describe the screen you want in the agent. For
-example: *“Build a settings page with tabs and a save button, using cake&
-components.”*
-
-The numbered install steps are next. Extra detail for “add cake& to an app we
-already have” lives on
-[Getting Started](?path=/docs/cake-maintenance-getting-started--docs).
-
-## Step-by-step: download the Devkit
-
-You need [Node.js](https://nodejs.org/) installed (the **LTS** version is
-fine). That gives you the `npm` command. Then open a terminal — **Terminal** on
-Mac, **PowerShell** on Windows.
-
-### Path A — I want a new prototype (recommended)
-
-This copies only the starter onto your machine. It is **not** a clone of the
-whole design-system repo. No GitHub password or token.
-
-**1.** Download the starter into a folder named `my-prototype` (any name is
-fine):
-
-```bash
-npx degit cake-admin/cakev2/starter my-prototype
-```
-
-The first time, your computer may ask “ok to proceed?” — type `y` and press
-Enter. `npx` means “run this helper once”; `degit` means “copy these files,
-without git history.”
-
-If that command fails, this does the same thing:
-
-```bash
-npx giget@latest gh:cake-admin/cakev2/starter my-prototype
-```
-
-**2.** Move into that folder:
-
-```bash
-cd my-prototype
-```
-
-**3.** Install the pieces the project needs (this can take a minute):
-
-```bash
-npm install
-```
-
-**4.** Start the local preview:
-
-```bash
-npm run dev
-```
-
-Your terminal will print a link, usually `http://localhost:5173`. Open it in a
-browser. You should see a small cake& page with a light/dark toggle.
-
-**5.** Open the `my-prototype` folder in Cursor (or another coding agent) and
-ask for what you want.
-
-To pull a newer cake& version later, from that same folder run
-`npm run cake:update`.
-
-### Path B — I already have an app
-
-If an engineer already has a React project, cake& installs from a release
-file. Still no login:
-
-1. Open the [v4.2.3 release](https://github.com/cake-admin/cakev2/releases#release-v4.2.3)
-   and copy the `cake-admin-cakeand-4.2.3.tgz` download link (or use the
-   command below).
-2. In the project folder, install that file, then the five libraries cake&
-   expects to share with the app:
-
-```bash
-npm install https://github.com/cake-admin/cakev2/releases/download/v4.2.3/cake-admin-cakeand-4.2.3.tgz
-npm install react react-dom styled-components radix-ui lucide-react
-```
-
-3. Wrap the app **once** in `CakeProvider` (the starter already does this):
-
-```tsx
-import { CakeProvider, Card, HeroCard, Button } from '@cake-admin/cakeand';
-
-<CakeProvider mode="light.a">
-  <Card>
-    <HeroCard title="Hello" actions={<Button size="lg">Get started</Button>} />
-  </Card>
-</CakeProvider>;
-```
-
-The extra wiring (theme on the page, fonts, a shared copy of
-`styled-components`) is already done in the starter. If you are adding cake&
-to an existing app, follow the numbered checklist on
-[Getting Started](?path=/docs/cake-maintenance-getting-started--docs).
-
-## If something goes wrong
+When cake& is installed (inside the starter under `node_modules/@cake-admin/cakeand/`,
+or in an app that added the release file), the folder looks like this:
 
 <table>
   <thead>
     <tr>
-      <th>What you see</th>
-      <th>What to try</th>
+      <th>Path</th>
+      <th>What it is (in plain language)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>The page has no color / looks unstyled</td>
       <td>
-        You skipped <code>npm install</code>, or the cake&amp; stylesheet did
-        not load. In the starter it is imported in{' '}
-        <code>src/main.tsx</code>.
+        <code>index.js</code>
+      </td>
+      <td>
+        The components you import — <code>Button</code>, <code>Card</code>,
+        and the rest.
       </td>
     </tr>
     <tr>
       <td>
-        <code>npx</code> or <code>npm</code> is “not recognized”
+        <code>cakeand.css</code>
       </td>
       <td>
-        Node.js is not installed, or the terminal was open before you
-        installed it. Close the terminal and open a new one.
-      </td>
-    </tr>
-    <tr>
-      <td>Odd npm errors on Windows</td>
-      <td>
-        Do not put the project in a folder whose name contains{' '}
-        <code>&amp;</code>. Rename the folder.
+        Colors, type, spacing, and fonts. Loaded automatically when you use
+        the package.
       </td>
     </tr>
     <tr>
       <td>
-        <code>npm error EINTEGRITY</code>
+        <code>types/components</code>
       </td>
       <td>
-        Delete <code>package-lock.json</code> and run{' '}
-        <code>npm install</code> again (in the starter:{' '}
-        <code>npm run cake:update</code>).
+        TypeScript names for each component (helps editors and coding agents).
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>types/tokens</code>
+      </td>
+      <td>TypeScript names for design tokens.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>types/theme</code>
+      </td>
+      <td>TypeScript names for theming (<code>CakeProvider</code>, modes).</td>
+    </tr>
+    <tr>
+      <td>
+        <code>stories/</code>
+      </td>
+      <td>
+        The same Storybook example files as source (for example{' '}
+        <code>Button/Button.stories.tsx</code>). For agents and reference —
+        do <strong>not</strong> import these into your app.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>context/</code>
+      </td>
+      <td>
+        Markdown notes agents should read first (component list, props,
+        tokens). Same idea as the starter’s <code>context/</code> folder.
       </td>
     </tr>
   </tbody>
 </table>
 
-More detail is on
-[Getting Started](?path=/docs/cake-maintenance-getting-started--docs).
+The **starter** project also adds a working app shell: one `CakeProvider`, a
+light/dark toggle, and its own `context/` copy. You do not need to wire those
+by hand if you start from the template.
+
+### How to start
+
+Follow the numbered walkthrough on
+[Getting Started](?path=/docs/getting-started--docs) — download the starter,
+install, open the preview, and (when you are done) stop the server with
+**Ctrl+C**.
 
 ## What’s in this Storybook
 
 - **Foundations** — color, type, space, elevation.
 - **Components** / **Elements** — click a component, change the controls,
   copy the usage snippet. Start with Button if you want a simple example.
+- **Getting Started** — step-by-step Devkit setup for designers.
 - **Cake& Maintenance** — for the design-system team (how we build and ship).
   Designers building prototypes can skip it.
 

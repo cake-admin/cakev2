@@ -198,12 +198,13 @@ const preview: Preview = {
       storySort: {
         order: [
           'Introduction',
+          'Getting Started',
           'Foundations',
           ['Colors', 'Typography', 'Spacing', 'Elevation', 'Special Surfaces'],
           'Components',
           'Elements',
           'Cake& Maintenance',
-          ['Getting Started', 'Building a Component', 'Shipping a Component'],
+          ['Building a Component', 'Shipping a Component'],
         ],
       },
     },

@@ -132,6 +132,21 @@ Interactive components wrap Radix primitives, so behaviour and accessibility
 (roles, keyboard, focus management) come from Radix; cake& owns the visuals.
 Every value resolves from design tokens — nothing is hardcoded.
 
+### Package layout
+
+After install, `node_modules/@cake-admin/cakeand/` contains:
+
+| Path | Purpose |
+|------|---------|
+| `index.js` | Runtime components (`import { Button } from '@cake-admin/cakeand'`) |
+| `cakeand.css` | Tokens, fonts, baseline (imported by the entry) |
+| `types/components`, `types/tokens`, `types/theme` | TypeScript declarations |
+| `stories/` | Storybook `*.stories.tsx` sources (e.g. `Button/Button.stories.tsx`) — for agents and reference; **do not import into app code** |
+| `context/` | Generated markdown agents should read (`cake-components.md`, `components/*.md`, tokens) |
+
+`stories/` and `context/` are documentation for coding agents. They are not part
+of the runtime API.
+
 ## TypeScript
 
 Types ship with the package, including per-prop documentation and defaults.

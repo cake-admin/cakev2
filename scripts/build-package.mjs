@@ -8,7 +8,9 @@
  *  2. run the Vite library build (vite.lib.config.mts);
  *  3. prepend the stylesheet import to the entry, so consumers get the tokens +
  *     fonts just by importing the package (no second import to remember);
- *  4. emit a purpose-built package.json.
+ *  4. copy Storybook `*.stories.tsx` and generate agent `context/` markdown
+ *     (for AI / docs — never on the runtime entry);
+ *  5. emit a purpose-built package.json.
  *
  * The published manifest is written fresh here rather than reusing the repo's
  * root package.json: that one describes the Create React App site (react-scripts,
@@ -94,7 +96,57 @@ if (cssEmitted) {
   console.warn(`\n! ${CSS_FILE} was not emitted — the package would ship without tokens/fonts.`);
 }
 
-// 4. The published manifest.
+// 4. AI / docs artifacts — not part of the runtime graph.
+//    Stories stay outside Vite's entry so consumers cannot accidentally import
+//    Storybook into their app. Context markdown is the same generator the
+//    starter uses (stamped to this package version).
+const componentsRoot = path.join(root, 'src', 'cakeand', 'components');
+const storiesOut = path.join(outDir, 'stories');
+
+const copyStories = (dir, rel = '') => {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const from = path.join(dir, entry.name);
+    const nextRel = rel ? path.join(rel, entry.name) : entry.name;
+    if (entry.isDirectory()) {
+      copyStories(from, nextRel);
+      continue;
+    }
+    if (!entry.name.endsWith('.stories.tsx')) continue;
+    const to = path.join(storiesOut, nextRel);
+    fs.mkdirSync(path.dirname(to), { recursive: true });
+    fs.copyFileSync(from, to);
+  }
+};
+
+process.stdout.write('\n▸ copying Storybook stories → dist-package/stories/\n');
+if (fs.existsSync(storiesOut)) fs.rmSync(storiesOut, { recursive: true, force: true });
+copyStories(componentsRoot);
+const storyCount = (() => {
+  let n = 0;
+  const walk = (d) => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.name.endsWith('.stories.tsx')) n += 1;
+    }
+  };
+  if (fs.existsSync(storiesOut)) walk(storiesOut);
+  return n;
+})();
+process.stdout.write(`  ${storyCount} story file(s)\n`);
+
+run(
+  [
+    path.join(root, 'scripts', 'build-agent-context.mjs'),
+    '--md-out',
+    path.join(outDir, 'context'),
+    '--stamp',
+    version,
+  ],
+  'generating agent context → dist-package/context/',
+);
+
+// 5. The published manifest.
 //
 // The licence needs a deliberate answer, not a silent default. Today the root
 // manifest has no `license` field, so the fallback below always fires and the
@@ -132,9 +184,21 @@ const pkg = {
     // are reachable: without an `exports` entry, any tool that enforces the map
     // 404s them and the browser silently falls back to system-ui.
     './assets/*': './assets/*',
+    // Docs for coding agents — not runtime. Do not import stories from app code.
+    './stories/*': './stories/*',
+    './context/*': './context/*',
     './package.json': './package.json',
   },
-  files: ['index.js', 'index.js.map', 'types', CSS_FILE, 'assets', 'README.md'],
+  files: [
+    'index.js',
+    'index.js.map',
+    'types',
+    CSS_FILE,
+    'assets',
+    'stories',
+    'context',
+    'README.md',
+  ],
   peerDependencies: {
     react: '>=18',
     'react-dom': '>=18',
