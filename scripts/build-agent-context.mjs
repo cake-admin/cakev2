@@ -538,7 +538,7 @@ const emitLlms = (dir, version, index, details) => {
     '',
     `- [Component index](${base}/cake-components.md): every component and where to read more`,
     `- [Design tokens](${base}/cake-tokens.md): every CSS custom property`,
-    '- [Getting started](https://cake.lenovo.com/storybook/?path=/docs/cake-maintenance-getting-started--docs)',
+    '- [Getting started](https://cake.lenovo.com/storybook/?path=/docs/getting-started--docs)',
     '',
     '## Components',
     '',

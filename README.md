@@ -40,7 +40,7 @@ npm run dev
 
 You get a Vite + React app with cake& already wired (theme, fonts, components).
 **No GitHub token and no `.npmrc`.** If the first command fails, see
-[Getting Started](https://cake.lenovo.com/storybook/?path=/docs/cake-maintenance-getting-started--docs)
+[Getting Started](https://cake.lenovo.com/storybook/?path=/docs/getting-started--docs)
 for backups (`giget`, or copy the `starter/` folder from a clone).
 
 <details>
@@ -69,7 +69,7 @@ Then wrap the app **once** in
 `CakeProvider`. The starter already has the three easy-to-miss pieces
 (`styled-components` dedupe, the cake& CSS import, and `data-theme` on
 `<html>`). Copy those from `starter/` or follow
-[Getting Started](https://cake.lenovo.com/storybook/?path=/docs/cake-maintenance-getting-started--docs).
+[Getting Started](https://cake.lenovo.com/storybook/?path=/docs/getting-started--docs).
 
 ```tsx
 import { CakeProvider, Card, HeroCard, Button } from '@cake-admin/cakeand';

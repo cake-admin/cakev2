@@ -18,5 +18,7 @@ reuse a tag, never hand-edit `starter/context/`.
 
 If the designer install path changes, update Introduction, Getting Started,
 the Resources Devkit card, and README **Use it** together — step-by-step,
-layman's terms. Consumer release links currently go to
+layman's terms. Getting Started is top-level Storybook docs (not under
+Cake& Maintenance). Consumer release links currently go to
 https://github.com/cake-admin/cakev2/releases#release-v4.2.3
+The published package ships `stories/` and `context/` via build-package.mjs.
