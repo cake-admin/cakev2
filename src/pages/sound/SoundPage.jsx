@@ -2,13 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import { ArrowDown, ArrowUp, Check, ExternalLink, X } from 'lucide-react';
 import { Button } from '../../cakeand/components/Button';
+import { Badge } from '../../cakeand/components/Badge/Badge';
 import { Card } from '../../cakeand/components/Card';
+import { ContentCard } from '../../cakeand/components/Card/ContentCard';
+import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
 import { pageGutterX } from '../../styles/pageChrome';
 import { StickyWallpaper } from '../HomePage';
 import heroBg from '../../assets/home/hero-bg.png';
 import { getSoundById } from '../../data/sound-catalog';
 import SoundLibrary from './SoundLibrary';
 import SoundPreview, { SoundPlayerProvider } from './SoundPreview';
+import SoundWaveform from './SoundWaveform';
 
 const ROOKERY = "'Rookery New', Rookery, var(--font-family)";
 
@@ -225,29 +229,18 @@ const Tile = styled(Card)`
   min-width: 0;
 `;
 
-const TileInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-200);
+const EditorialTemplate = styled(SimpleCard)`
   height: 100%;
-  padding: var(--space-400);
+`;
+
+const WaveMedia = styled.div`
   box-sizing: border-box;
-`;
-
-const TileTitle = styled.h3`
-  margin: 0;
-  color: var(--color-text-icon-primary);
-  font-family: ${ROOKERY};
-  font-size: var(--type-size-subtitle);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.35;
-`;
-
-const TileCopy = styled.p`
-  margin: 0;
-  color: var(--color-text-icon-secondary);
-  font-size: var(--type-size-body);
-  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 96px;
+  padding: var(--space-300) var(--space-400);
 `;
 
 const Spectrum = styled.div`
@@ -289,32 +282,6 @@ const SpectrumTrack = styled.div`
   }
 `;
 
-const List = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-100);
-  margin: 0;
-  padding-left: var(--space-400);
-  color: var(--color-text-icon-secondary);
-  font-size: var(--type-size-body);
-  line-height: 1.45;
-`;
-
-const Example = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-200);
-  padding-top: var(--space-200);
-  border-top: var(--stroke-100) solid var(--color-stroke-border);
-`;
-
-const ExampleLabel = styled.p`
-  margin: 0;
-  color: var(--color-text-icon-primary);
-  font-size: var(--type-size-body);
-  font-weight: var(--font-weight-medium);
-`;
-
 const Pair = styled.div`
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -325,21 +292,19 @@ const Pair = styled.div`
   }
 `;
 
-const GrammarCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-300);
-  padding: var(--space-400);
-  border: var(--stroke-100) solid var(--color-stroke-border);
-  border-radius: var(--radius-300);
-  background: var(--color-surfaces-container);
-`;
+const GrammarTemplate = styled(ContentCard)`
+  height: 100%;
 
-const Direction = styled.div`
-  display: flex;
-  align-items: center;
-  gap: var(--space-200);
-  color: var(--color-primary-primary);
+  @media (max-width: 560px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    & > div:last-child {
+      width: 100%;
+      height: auto;
+      min-height: 96px;
+    }
+  }
 `;
 
 const TableWrap = styled.div`
@@ -380,16 +345,6 @@ const ChoiceGrid = styled.div`
   @media (max-width: 680px) {
     grid-template-columns: 1fr;
   }
-`;
-
-const ChoiceTitle = styled.h3`
-  display: flex;
-  align-items: center;
-  gap: var(--space-150);
-  margin: 0;
-  color: var(--color-text-icon-primary);
-  font-family: ${ROOKERY};
-  font-size: var(--type-size-title);
 `;
 
 const Close = styled.section`
@@ -513,6 +468,18 @@ const tocItems = [
   ['checklist', 'Designer checklist'],
 ];
 
+const EditorialCard = ({ title, body, media, actions, menu }) => (
+  <Tile elevation="low">
+    <EditorialTemplate
+      title={title}
+      body={body}
+      media={media}
+      actions={actions}
+      menu={menu}
+    />
+  </Tile>
+);
+
 const IntroSection = () => (
   <IntroLayout>
     <Toc aria-label="Sound DNA sections">
@@ -583,12 +550,7 @@ const SoundPage = () => {
               </SectionHeader>
               <Grid>
                 {principles.map(([title, description]) => (
-                  <Tile key={title}>
-                    <TileInner>
-                      <TileTitle>{title}</TileTitle>
-                      <TileCopy>{description}</TileCopy>
-                    </TileInner>
-                  </Tile>
+                  <EditorialCard key={title} title={title} body={description} />
                 ))}
               </Grid>
             </Section>
@@ -619,27 +581,13 @@ const SoundPage = () => {
               </SectionHeader>
               <Grid>
                 {useCases.map(([title, items]) => (
-                  <Tile key={title}>
-                    <TileInner>
-                      <TileTitle>{title}</TileTitle>
-                      <List>
-                        {items.map((item) => <li key={item}>{item}</li>)}
-                      </List>
-                    </TileInner>
-                  </Tile>
+                  <EditorialCard key={title} title={title} body={items.join(' · ')} />
                 ))}
               </Grid>
-              <Tile>
-                <TileInner>
-                  <TileTitle>When Not to Use Sound</TileTitle>
-                  <TileCopy>
-                    Introduce sound only when it adds meaningful information. Do not
-                    add a cue simply to decorate a transition, repeat obvious visual
-                    feedback, or fill silence. Frequent actions should remain quiet
-                    unless sound materially improves awareness or confidence.
-                  </TileCopy>
-                </TileInner>
-              </Tile>
+              <EditorialCard
+                title="When Not to Use Sound"
+                body="Introduce sound only when it adds meaningful information. Do not add a cue simply to decorate a transition, repeat obvious visual feedback, or fill silence. Frequent actions should remain quiet unless sound materially improves awareness or confidence."
+              />
             </Section>
 
             <Section id="attributes">
@@ -649,12 +597,7 @@ const SoundPage = () => {
               </SectionHeader>
               <Grid>
                 {attributes.map(([title, description]) => (
-                  <Tile key={title}>
-                    <TileInner>
-                      <TileTitle>{title}</TileTitle>
-                      <TileCopy>{description}</TileCopy>
-                    </TileInner>
-                  </Tile>
+                  <EditorialCard key={title} title={title} body={description} />
                 ))}
               </Grid>
             </Section>
@@ -669,12 +612,7 @@ const SoundPage = () => {
               </SectionHeader>
               <Grid>
                 {materials.map(([title, description]) => (
-                  <Tile key={title}>
-                    <TileInner>
-                      <TileTitle>{title}</TileTitle>
-                      <TileCopy>{description}</TileCopy>
-                    </TileInner>
-                  </Tile>
+                  <EditorialCard key={title} title={title} body={description} />
                 ))}
               </Grid>
             </Section>
@@ -691,16 +629,22 @@ const SoundPage = () => {
                 {familyExamples.map(([label, id]) => {
                   const sound = getSoundById(id);
                   return (
-                    <Tile key={label}>
-                      <TileInner>
-                        <TileTitle>{label}</TileTitle>
-                        <TileCopy>{sound.description}</TileCopy>
-                        <Example>
-                          <ExampleLabel>{sound.name}</ExampleLabel>
-                          <SoundPreview sound={sound} />
-                        </Example>
-                      </TileInner>
-                    </Tile>
+                    <EditorialCard
+                      key={label}
+                      title={label}
+                      body={`${sound.name}: ${sound.description}`}
+                      media={
+                        <WaveMedia>
+                          <SoundWaveform
+                            peaks={sound.primary.peaks}
+                            label={`Static waveform for ${sound.name}`}
+                          />
+                        </WaveMedia>
+                      }
+                      actions={
+                        <SoundPreview sound={sound} showWaveform={false} />
+                      }
+                    />
                   );
                 })}
               </Grid>
@@ -716,16 +660,40 @@ const SoundPage = () => {
                 </Copy>
               </SectionHeader>
               <Pair>
-                <GrammarCard>
-                  <Direction><ArrowUp aria-hidden /><Subhead>Up</Subhead></Direction>
-                  <TileCopy>Ascending movement: increase, open, activate, progress.</TileCopy>
-                  <SoundPreview sound={confirmUp} />
-                </GrammarCard>
-                <GrammarCard>
-                  <Direction><ArrowDown aria-hidden /><Subhead>Down</Subhead></Direction>
-                  <TileCopy>Descending movement: decrease, close, reduce, deactivate.</TileCopy>
-                  <SoundPreview sound={confirmDown} />
-                </GrammarCard>
+                <Tile elevation="low">
+                  <GrammarTemplate
+                    leadingText="Paired sound"
+                    leadingIcon={<ArrowUp />}
+                    title="Up"
+                    body="Ascending movement: increase, open, activate, progress."
+                    actions={<SoundPreview sound={confirmUp} showWaveform={false} />}
+                    media={
+                      <WaveMedia>
+                        <SoundWaveform
+                          peaks={confirmUp.primary.peaks}
+                          label="Static waveform for Confirm Up"
+                        />
+                      </WaveMedia>
+                    }
+                  />
+                </Tile>
+                <Tile elevation="low">
+                  <GrammarTemplate
+                    leadingText="Paired sound"
+                    leadingIcon={<ArrowDown />}
+                    title="Down"
+                    body="Descending movement: decrease, close, reduce, deactivate."
+                    actions={<SoundPreview sound={confirmDown} showWaveform={false} />}
+                    media={
+                      <WaveMedia>
+                        <SoundWaveform
+                          peaks={confirmDown.primary.peaks}
+                          label="Static waveform for Confirm Down"
+                        />
+                      </WaveMedia>
+                    }
+                  />
+                </Tile>
               </Pair>
             </Section>
 
@@ -741,16 +709,22 @@ const SoundPage = () => {
                 {hierarchy.map(([title, description, id]) => {
                   const sound = getSoundById(id);
                   return (
-                    <Tile key={title}>
-                      <TileInner>
-                        <TileTitle>{title}</TileTitle>
-                        <TileCopy>{description}</TileCopy>
-                        <Example>
-                          <ExampleLabel>{sound.name}</ExampleLabel>
-                          <SoundPreview sound={sound} />
-                        </Example>
-                      </TileInner>
-                    </Tile>
+                    <EditorialCard
+                      key={title}
+                      title={title}
+                      body={`${description} Example: ${sound.name}.`}
+                      media={
+                        <WaveMedia>
+                          <SoundWaveform
+                            peaks={sound.primary.peaks}
+                            label={`Static waveform for ${sound.name}`}
+                          />
+                        </WaveMedia>
+                      }
+                      actions={
+                        <SoundPreview sound={sound} showWaveform={false} />
+                      }
+                    />
                   );
                 })}
               </Grid>
@@ -766,33 +740,18 @@ const SoundPage = () => {
                 </Copy>
               </SectionHeader>
               <Grid>
-                <Tile>
-                  <TileInner>
-                    <TileTitle>Repetition</TileTitle>
-                    <TileCopy>
-                      Repeated navigation sounds should use minimal variants or be
-                      suppressed when rapid movement would become overwhelming.
-                    </TileCopy>
-                  </TileInner>
-                </Tile>
-                <Tile>
-                  <TileInner>
-                    <TileTitle>Priority</TileTitle>
-                    <TileCopy>
-                      Higher-priority alerts may interrupt ambient and informational
-                      cues. Routine notifications should never mask critical feedback.
-                    </TileCopy>
-                  </TileInner>
-                </Tile>
-                <Tile>
-                  <TileInner>
-                    <TileTitle>Cancellation</TileTitle>
-                    <TileCopy>
-                      Stop looping or sustained audio as soon as its state ends. Do not
-                      let stale sound continue after the interface has moved on.
-                    </TileCopy>
-                  </TileInner>
-                </Tile>
+                <EditorialCard
+                  title="Repetition"
+                  body="Repeated navigation sounds should use minimal variants or be suppressed when rapid movement would become overwhelming."
+                />
+                <EditorialCard
+                  title="Priority"
+                  body="Higher-priority alerts may interrupt ambient and informational cues. Routine notifications should never mask critical feedback."
+                />
+                <EditorialCard
+                  title="Cancellation"
+                  body="Stop looping or sustained audio as soon as its state ends. Do not let stale sound continue after the interface has moved on."
+                />
               </Grid>
             </Section>
 
@@ -834,24 +793,24 @@ const SoundPage = () => {
             <Section id="do-dont">
               <SectionHeader><SectionTitle>Do / Don’t</SectionTitle></SectionHeader>
               <ChoiceGrid>
-                <Tile>
-                  <TileInner>
-                    <ChoiceTitle><Check aria-hidden />Do</ChoiceTitle>
-                    <List>
-                      {['Short', 'Warm', 'Controlled', 'Purposeful', 'Tactile', 'Connected', 'Recognizable']
-                        .map((item) => <li key={item}>{item}</li>)}
-                    </List>
-                  </TileInner>
-                </Tile>
-                <Tile>
-                  <TileInner>
-                    <ChoiceTitle><X aria-hidden />Don’t</ChoiceTitle>
-                    <List>
-                      {['Harsh', 'Long', 'Generic', 'Overly dramatic', 'Robotic', 'Sci-fi cliché', 'Repetitive']
-                        .map((item) => <li key={item}>{item}</li>)}
-                    </List>
-                  </TileInner>
-                </Tile>
+                <EditorialCard
+                  title="Recommended sound"
+                  menu={
+                    <Badge color="primary" tone="subtle" dot={false}>
+                      <Check size={14} aria-hidden /> Do
+                    </Badge>
+                  }
+                  body="Short · Warm · Controlled · Purposeful · Tactile · Connected · Recognizable"
+                />
+                <EditorialCard
+                  title="Sound to avoid"
+                  menu={
+                    <Badge color="destructive" tone="subtle" dot={false}>
+                      <X size={14} aria-hidden /> Don’t
+                    </Badge>
+                  }
+                  body="Harsh · Long · Generic · Overly dramatic · Robotic · Sci-fi cliché · Repetitive"
+                />
               </ChoiceGrid>
             </Section>
 
@@ -862,12 +821,7 @@ const SoundPage = () => {
               </SectionHeader>
               <Grid>
                 {checklist.map(([title, question]) => (
-                  <Tile key={title}>
-                    <TileInner>
-                      <TileTitle>{title}</TileTitle>
-                      <TileCopy>{question}</TileCopy>
-                    </TileInner>
-                  </Tile>
+                  <EditorialCard key={title} title={title} body={question} />
                 ))}
               </Grid>
             </Section>

@@ -2,7 +2,11 @@ import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Search } from 'lucide-react';
 import { Card } from '../../cakeand/components/Card';
+import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
+import { Badge } from '../../cakeand/components/Badge/Badge';
+import { Chip } from '../../cakeand/components/Chip/Chip';
 import { Dropdown } from '../../cakeand/components/Dropdown';
+import { HelperString } from '../../cakeand/components/Elements/HelperString';
 import { TextInput } from '../../cakeand/components/TextInput';
 import {
   soundCatalog,
@@ -10,6 +14,7 @@ import {
   soundLibrarySource,
 } from '../../data/sound-catalog';
 import SoundPreview from './SoundPreview';
+import SoundWaveform from './SoundWaveform';
 
 const Toolbar = styled.div`
   display: grid;
@@ -41,44 +46,21 @@ const SoundCard = styled(Card)`
   min-width: 0;
 `;
 
-const CardInner = styled.article`
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-300);
+const ProfileTemplate = styled(SimpleCard)`
   height: 100%;
-  padding: var(--space-400);
 `;
 
-const CardHeader = styled.div`
+const WaveMedia = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--space-300) var(--space-400);
+`;
+
+const BadgeRow = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: var(--space-050);
-`;
-
-const SoundName = styled.h3`
-  margin: 0;
-  color: var(--color-text-icon-primary);
-  font-family: 'Rookery New', Rookery, var(--font-family);
-  font-size: var(--type-size-subtitle);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.35;
-`;
-
-const Classification = styled.p`
-  margin: 0;
-  color: var(--color-primary-primary);
-  font-size: var(--type-size-caption);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.35;
-`;
-
-const Description = styled.p`
-  flex: 1;
-  margin: 0;
-  color: var(--color-text-icon-secondary);
-  font-size: var(--type-size-body);
-  line-height: 1.45;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-100);
 `;
 
 const Attributes = styled.ul`
@@ -90,23 +72,16 @@ const Attributes = styled.ul`
   list-style: none;
 `;
 
-const Attribute = styled.li`
-  border-radius: var(--radius-1000);
-  padding: var(--space-050) var(--space-150);
-  background: var(--color-tonal-tonal-secondary-overlay);
-  color: var(--color-text-icon-on-tonal-secondary);
-  font-size: var(--type-size-caption);
-  line-height: 1.35;
+const ActionStack = styled.div`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-300);
+  min-width: 0;
 `;
 
 const VariantField = styled.div`
   width: 100%;
-`;
-
-const Count = styled.p`
-  margin: 0;
-  color: var(--color-text-icon-secondary);
-  font-size: var(--type-size-body);
 `;
 
 const Empty = styled.div`
@@ -133,33 +108,60 @@ const SoundLibraryCard = ({ sound }) => {
 
   return (
     <SoundCard elevation="low">
-      <CardInner>
-        <CardHeader>
-          <SoundName>{sound.name}</SoundName>
-          <Classification>
-            {[sound.family, sound.category].filter(Boolean).join(' / ') || 'Unclassified'}
-          </Classification>
-        </CardHeader>
-        {sound.description ? <Description>{sound.description}</Description> : null}
-        <Attributes aria-label={`${sound.name} sonic attributes`}>
-          {Object.values(sound.attributes).map((attribute) => (
-            <Attribute key={attribute}>{attribute}</Attribute>
-          ))}
-          <Attribute>{sound.hierarchy || 'Unclassified'}</Attribute>
-        </Attributes>
-        {sound.files.length > 1 ? (
-          <VariantField>
-            <Dropdown
-              id={`variant-${sound.id}`}
-              label={`${sound.name} version`}
-              value={selectedFile.id}
-              onValueChange={setFileId}
-              options={options}
+      <ProfileTemplate
+        media={
+          <WaveMedia>
+            <SoundWaveform
+              peaks={selectedFile.peaks}
+              label={`Static waveform for ${sound.name}`}
             />
-          </VariantField>
-        ) : null}
-        <SoundPreview sound={sound} file={selectedFile} />
-      </CardInner>
+          </WaveMedia>
+        }
+        title={sound.name}
+        menu={
+          <BadgeRow aria-label={`${sound.name} classification`}>
+            {sound.family ? (
+              <Badge color="primary" tone="subtle" dot={false}>
+                {sound.family}
+              </Badge>
+            ) : null}
+            {sound.category ? (
+              <Badge color="secondary" tone="subtle" dot={false}>
+                {sound.category}
+              </Badge>
+            ) : null}
+          </BadgeRow>
+        }
+        body={sound.description || 'No authored description is available yet.'}
+        actions={
+          <ActionStack>
+            <Attributes aria-label={`${sound.name} sonic attributes`}>
+              {Object.values(sound.attributes).map((attribute) => (
+                <li key={attribute}>
+                  <Chip type="secondary" size="sm">{attribute}</Chip>
+                </li>
+              ))}
+              <li>
+                <Chip type="secondary" size="sm">
+                  {sound.hierarchy || 'Unclassified'}
+                </Chip>
+              </li>
+            </Attributes>
+            {sound.files.length > 1 ? (
+              <VariantField>
+                <Dropdown
+                  id={`variant-${sound.id}`}
+                  label={`${sound.name} version`}
+                  value={selectedFile.id}
+                  onValueChange={setFileId}
+                  options={options}
+                />
+              </VariantField>
+            ) : null}
+            <SoundPreview sound={sound} file={selectedFile} showWaveform={false} />
+          </ActionStack>
+        }
+      />
     </SoundCard>
   );
 };
@@ -210,9 +212,9 @@ const SoundLibrary = () => {
           options={familyOptions}
         />
       </Toolbar>
-      <Count role="status">
+      <HelperString role="status" tone="greyscale" showIcon={false}>
         Showing {filtered.length} of {soundCatalog.length} sound profiles
-      </Count>
+      </HelperString>
       {filtered.length ? (
         <Grid>
           {filtered.map((sound) => (
@@ -222,13 +224,13 @@ const SoundLibrary = () => {
       ) : (
         <Empty>No sounds match that search and filter combination.</Empty>
       )}
-      <Count>
+      <HelperString tone="greyscale" showIcon={false}>
         Audio assets synchronized from the{' '}
         <SourceLink href={soundLibrarySource} target="_blank" rel="noopener noreferrer">
           official Cake&amp; sound library
         </SourceLink>
         .
-      </Count>
+      </HelperString>
     </>
   );
 };

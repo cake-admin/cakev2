@@ -10,6 +10,7 @@ import React, {
 import styled from 'styled-components';
 import { Pause, Play } from 'lucide-react';
 import { IconButton } from '../../cakeand/components/Button/IconButton';
+import { HelperString } from '../../cakeand/components/Elements/HelperString';
 import { formatDuration, getSoundUrl } from '../../data/sound-catalog';
 import SoundWaveform from './SoundWaveform';
 
@@ -90,12 +91,8 @@ const Duration = styled.span`
   line-height: 1.35;
 `;
 
-const ErrorText = styled.span`
-  display: block;
+const ErrorWrap = styled.div`
   margin-top: var(--space-100);
-  color: var(--color-error-error);
-  font-size: var(--type-size-caption);
-  line-height: 1.35;
 `;
 
 const SoundPreview = ({ sound, file = sound.primary, showWaveform = true }) => {
@@ -135,9 +132,11 @@ const SoundPreview = ({ sound, file = sound.primary, showWaveform = true }) => {
         </Visual>
       </Preview>
       {hasError ? (
-        <ErrorText role="status">
-          This preview could not be played. Check the file or browser audio settings.
-        </ErrorText>
+        <ErrorWrap>
+          <HelperString role="status" tone="error">
+            This preview could not be played. Check the file or browser audio settings.
+          </HelperString>
+        </ErrorWrap>
       ) : null}
     </div>
   );
