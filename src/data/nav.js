@@ -32,6 +32,11 @@ export const NAV_SECTIONS = [
     label: 'Components',
     path: '/components',
   },
+  {
+    id: 'sound',
+    label: 'Sound',
+    path: '/sound',
+  },
 ];
 
 /** Blog (What's new) lives under /resources but is its own top-nav item. */
@@ -44,6 +49,9 @@ export const getActiveSection = (pathname) => {
   if (pathname === '/' || pathname === '') return null;
   // Prefer Blog over Resources for what's-new (and nested blog routes).
   if (isBlogPath(pathname)) return null;
+  if (pathname === '/sound' || pathname.startsWith('/sound/')) {
+    return NAV_SECTIONS.find((s) => s.id === 'sound');
+  }
   if (pathname === '/components' || pathname.startsWith('/components/')) {
     return NAV_SECTIONS.find((s) => s.id === 'components');
   }
