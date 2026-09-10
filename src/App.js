@@ -88,7 +88,8 @@ const AppShell = () => {
     pathname === '/foundations' ||
     pathname.startsWith('/foundations/ai') ||
     pathname === '/components' ||
-    pathname === '/version-control';
+    pathname === '/version-control' ||
+    pathname === '/sound';
 
   return (
     <Shell $home={isWallpaperPage}>

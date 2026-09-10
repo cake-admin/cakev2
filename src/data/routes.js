@@ -1,6 +1,7 @@
 import VersionControl from '../pages/VersionControl';
 import WhatsNew from '../pages/WhatsNew';
 import Resources from '../pages/Resources';
+import SoundPage from '../pages/SoundPage';
 import FoundationsPage from '../pages/foundations/FoundationsPage';
 import ComponentsPage from '../pages/ComponentsPage';
 import HomePage from '../pages/HomePage';
@@ -30,6 +31,14 @@ export const routes = [
     component: WhatsNew,
     title: "What's new",
     description: 'Latest updates and changes',
+    category: 'resources',
+  },
+  {
+    path: '/sound',
+    component: SoundPage,
+    title: 'Cake & Sound',
+    description:
+      'Guidelines, assets, and documentation for creating consistent sound and audio experiences across Lenovo software.',
     category: 'resources',
   },
   {
