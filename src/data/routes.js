@@ -49,13 +49,6 @@ export const routes = [
     category: 'resources',
   },
   {
-    path: '/sound/duration',
-    component: SoundPage,
-    title: 'Sound duration guidelines',
-    description: 'Target durations for Cake& interface sounds',
-    category: 'resources',
-  },
-  {
     path: '/sound/library',
     component: SoundPage,
     title: 'Cake& sound library',

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Button } from '../../cakeand/components/Button';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
-import { Table } from '../../cakeand/components/Table/Table';
 import {
   VerticalTabs,
   VerticalTabsList,
@@ -201,64 +200,9 @@ const EditorialTemplate = styled(SimpleCard)`
   height: 100%;
 `;
 
-const DurationTable = styled(Table)`
-  max-width: 48rem;
-`;
-
-/**
- * Two-column guideline rows. The cake& DataRow/HeaderRow parts reserve fixed
- * 48px selection and action rails, which this reference table has no use for —
- * so the rows are local, and Table supplies the surface and grid semantics.
- */
-const rowGrid = `
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  width: 100%;
-  box-sizing: border-box;
-`;
-
-const TableHeadRow = styled.div`
-  ${rowGrid}
-  background: var(--color-surfaces-on-container-high);
-`;
-
-const TableRow = styled.div`
-  ${rowGrid}
-
-  &:not(:last-child) {
-    border-bottom: var(--stroke-100) solid var(--color-stroke-border);
-  }
-`;
-
-const HeadCell = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  min-height: 48px;
-  padding: var(--space-100) var(--space-300);
-  border-bottom: var(--stroke-100) solid var(--color-stroke-border);
-  color: var(--color-text-icon-primary);
-  font-size: var(--type-size-body);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: 0.1px;
-  line-height: 1.35;
-`;
-
-const Cell = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  min-height: 48px;
-  padding: var(--space-100) var(--space-300);
-  color: var(--color-text-icon-primary);
-  font-size: var(--type-size-body);
-  line-height: 1.35;
-`;
-
 const SECTIONS = [
   { id: 'overview', label: 'Overview', path: '/sound' },
   { id: 'materials', label: 'Sonic materials', path: '/sound/materials' },
-  { id: 'duration', label: 'Duration guidelines', path: '/sound/duration' },
   { id: 'library', label: 'Sound library', path: '/sound/library' },
 ];
 
@@ -274,15 +218,6 @@ const materials = [
   ['Natural', 'Wood, mallets, felt, rounded percussion, and acoustic resonance.'],
   ['Digital', 'Soft synthesis, rounded electronic tones, tonal pulses, and harmonic layers.'],
   ['Hybrid', 'Natural gesture with digital treatment — the key territory of the Cake& sonic identity.'],
-];
-
-const durations = [
-  ['Success', '300–400 ms'],
-  ['Warning', '~300 ms'],
-  ['Error', '~250 ms'],
-  ['Control', '100–300 ms'],
-  ['Hardware interaction', '150–400 ms'],
-  ['Critical', '250–500 ms'],
 ];
 
 const EditorialCard = ({ title, body }) => (
@@ -396,37 +331,6 @@ const SoundPage = () => {
                           <EditorialCard key={title} title={title} body={description} />
                         ))}
                       </Grid>
-                    </Block>
-                </Section>
-              </Panel>
-
-              <Panel value="duration">
-                <Section>
-                    <Block>
-                      <SectionHeader>
-                        <SectionTitle>Duration guidelines</SectionTitle>
-                        <Copy>
-                          Guideline duration is a target, not a claim about the library.
-                          Every profile in the sound library displays the measured
-                          duration of its actual audio file.
-                        </Copy>
-                      </SectionHeader>
-                      <DurationTable
-                        aria-label="Target duration by sound type"
-                        header={
-                          <TableHeadRow role="row">
-                            <HeadCell role="columnheader">Sound type</HeadCell>
-                            <HeadCell role="columnheader">Target</HeadCell>
-                          </TableHeadRow>
-                        }
-                      >
-                        {durations.map(([type, target]) => (
-                          <TableRow key={type} role="row">
-                            <Cell role="cell">{type}</Cell>
-                            <Cell role="cell">{target}</Cell>
-                          </TableRow>
-                        ))}
-                      </DurationTable>
                     </Block>
                 </Section>
               </Panel>
