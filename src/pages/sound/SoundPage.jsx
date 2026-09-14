@@ -1,9 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Check, ExternalLink, X } from 'lucide-react';
 import { Button } from '../../cakeand/components/Button';
-import { Badge } from '../../cakeand/components/Badge/Badge';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
 import { Table } from '../../cakeand/components/Table/Table';
@@ -194,16 +192,6 @@ const Grid = styled.div`
   }
 `;
 
-const ChoiceGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-300);
-
-  @media (max-width: 680px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
 const Tile = styled(Card)`
   height: 100%;
   min-width: 0;
@@ -267,52 +255,11 @@ const Cell = styled.div`
   line-height: 1.35;
 `;
 
-const Close = styled.div`
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr));
-  gap: var(--space-500);
-  padding: var(--space-600);
-  border-radius: var(--radius-400);
-  background: var(--color-primary-primary);
-  color: var(--color-text-icon-on-primary);
-
-  @media (max-width: 760px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const CloseTitle = styled.h3`
-  margin: 0;
-  color: inherit;
-  font-family: ${ROOKERY};
-  font-size: var(--type-size-page);
-  font-weight: var(--font-weight-regular);
-`;
-
-const CloseGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-150);
-
-  h3,
-  p {
-    margin: 0;
-    color: inherit;
-  }
-`;
-
-const SourceNote = styled(Copy)`
-  a {
-    color: var(--color-primary-primary);
-  }
-`;
-
 const SECTIONS = [
   { id: 'overview', label: 'Overview', path: '/sound' },
   { id: 'materials', label: 'Sonic materials', path: '/sound/materials' },
   { id: 'duration', label: 'Duration guidelines', path: '/sound/duration' },
   { id: 'library', label: 'Sound library', path: '/sound/library' },
-  { id: 'guidance', label: 'Designer guidance', path: '/sound/guidance' },
 ];
 
 const useCases = [
@@ -338,21 +285,9 @@ const durations = [
   ['Critical', '250–500 ms'],
 ];
 
-const checklist = [
-  ['Purpose', 'What information does the sound communicate?'],
-  ['Necessity', 'Does sound add meaningful value?'],
-  ['Identity', 'Does it sound like Cake&?'],
-  ['Relationship', 'Does it belong to an existing family?'],
-  ['Duration', 'Could it be shorter?'],
-  ['Hierarchy', 'Is the attention level appropriate?'],
-  ['Accessibility', 'Does the experience still work without sound?'],
-  ['Frequency', 'Will repeated exposure become annoying?'],
-  ['Choreography', 'What happens when multiple sounds occur together?'],
-];
-
-const EditorialCard = ({ title, body, menu }) => (
+const EditorialCard = ({ title, body }) => (
   <Tile elevation="low">
-    <EditorialTemplate title={title} body={body} menu={menu} />
+    <EditorialTemplate title={title} body={body} />
   </Tile>
 );
 
@@ -509,76 +444,6 @@ const SoundPage = () => {
                       </SectionHeader>
                       <SoundLibrary />
                     </Block>
-                </Section>
-              </Panel>
-
-              <Panel value="guidance">
-                <Section>
-                    <Block>
-                      <SectionHeader>
-                        <SectionTitle>Designer guidance</SectionTitle>
-                        <Copy>
-                          Use these references when introducing or reviewing a sound.
-                        </Copy>
-                      </SectionHeader>
-                      <ChoiceGrid>
-                        <EditorialCard
-                          title="Recommended sound"
-                          menu={
-                            <Badge color="primary" tone="subtle" dot={false}>
-                              <Check size={14} aria-hidden /> Do
-                            </Badge>
-                          }
-                          body="Short · Warm · Controlled · Purposeful · Tactile · Connected · Recognizable"
-                        />
-                        <EditorialCard
-                          title="Sound to avoid"
-                          menu={
-                            <Badge color="destructive" tone="subtle" dot={false}>
-                              <X size={14} aria-hidden /> Don’t
-                            </Badge>
-                          }
-                          body="Harsh · Long · Generic · Overly dramatic · Robotic · Sci-fi cliché · Repetitive"
-                        />
-                      </ChoiceGrid>
-                    </Block>
-
-                    <Block>
-                      <SectionHeader>
-                        <Subhead>Designer checklist</Subhead>
-                        <Copy>
-                          Ask these questions before introducing or approving a sound.
-                        </Copy>
-                      </SectionHeader>
-                      <Grid>
-                        {checklist.map(([title, question]) => (
-                          <EditorialCard key={title} title={title} body={question} />
-                        ))}
-                      </Grid>
-                    </Block>
-
-                    <Close>
-                      <CloseTitle>One design language. Multiple senses.</CloseTitle>
-                      <CloseGroup>
-                        <Subhead>Visual</Subhead>
-                        <p>Color · Typography · Material · Motion</p>
-                      </CloseGroup>
-                      <CloseGroup>
-                        <Subhead>Sonic</Subhead>
-                        <p>Pitch · Timbre · Rhythm · Dynamics</p>
-                      </CloseGroup>
-                    </Close>
-
-                    <SourceNote>
-                      Sound is another expression of the Ampersand design system.{' '}
-                      <a
-                        href="https://github.com/cake-admin/cake-sound-library"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View source assets <ExternalLink size={14} aria-hidden />
-                      </a>
-                    </SourceNote>
                 </Section>
               </Panel>
             </Layout>

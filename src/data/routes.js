@@ -63,13 +63,6 @@ export const routes = [
     category: 'resources',
   },
   {
-    path: '/sound/guidance',
-    component: SoundPage,
-    title: 'Sound designer guidance',
-    description: 'Do and don’t guidance and a checklist for Cake& sound',
-    category: 'resources',
-  },
-  {
     path: '/foundations',
     component: FoundationsPage,
     title: 'Foundations',
