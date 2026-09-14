@@ -510,7 +510,7 @@ const SoundPage = () => {
         </StickyWallpaper>
         <Layer>
           <Hero>
-            <HeroTitle>Sound DNA</HeroTitle>
+            <HeroTitle>Sound</HeroTitle>
           </Hero>
 
           <Content>
