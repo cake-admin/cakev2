@@ -48,8 +48,11 @@ export const SoundPlayerProvider = ({ children }) => {
     }
 
     setErrorId(null);
+    // Switching sounds: stop and rewind whatever is playing before the handoff,
+    // so only one preview is ever audible.
     if (activeId !== file.id) {
       audio.pause();
+      audio.currentTime = 0;
       audio.src = getSoundUrl(file);
       audio.preload = 'none';
       setActiveId(file.id);
