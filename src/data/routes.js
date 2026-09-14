@@ -36,9 +36,37 @@ export const routes = [
   {
     path: '/sound',
     component: SoundPage,
-    title: 'Cake & Sound',
+    title: 'Sound overview',
     description:
       'Guidelines, assets, and documentation for creating consistent sound and audio experiences across Lenovo software.',
+    category: 'resources',
+  },
+  {
+    path: '/sound/materials',
+    component: SoundPage,
+    title: 'Sonic materials',
+    description: 'Natural, digital, and hybrid materials in the Cake& sonic identity',
+    category: 'resources',
+  },
+  {
+    path: '/sound/duration',
+    component: SoundPage,
+    title: 'Sound duration guidelines',
+    description: 'Target durations for Cake& interface sounds',
+    category: 'resources',
+  },
+  {
+    path: '/sound/library',
+    component: SoundPage,
+    title: 'Cake& sound library',
+    description: 'Search, filter, compare, and play official Cake& sound assets',
+    category: 'resources',
+  },
+  {
+    path: '/sound/guidance',
+    component: SoundPage,
+    title: 'Sound designer guidance',
+    description: 'Do and don’t guidance and a checklist for Cake& sound',
     category: 'resources',
   },
   {

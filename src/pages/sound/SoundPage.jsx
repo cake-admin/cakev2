@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Check, ExternalLink, X } from 'lucide-react';
 import { Button } from '../../cakeand/components/Button';
@@ -6,6 +7,12 @@ import { Badge } from '../../cakeand/components/Badge/Badge';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
 import { Table } from '../../cakeand/components/Table/Table';
+import {
+  VerticalTabs,
+  VerticalTabsList,
+  VerticalTabsContent,
+} from '../../cakeand/components/VerticalTabs/VerticalTabs';
+import { VerticalTabItem } from '../../cakeand/components/VerticalTabs/VerticalTabItem';
 import { pageGutterX } from '../../styles/pageChrome';
 import { StickyWallpaper } from '../HomePage';
 import heroBg from '../../assets/home/hero-bg.png';
@@ -13,9 +20,6 @@ import SoundLibrary from './SoundLibrary';
 import { SoundPlayerProvider } from './SoundPreview';
 
 const ROOKERY = "'Rookery New', Rookery, var(--font-family)";
-
-/** Clears the fixed TopNav when an anchor is jumped to. */
-const SCROLL_OFFSET = 96;
 
 const Page = styled.div`
   --page-on-media: #ffffff;
@@ -74,39 +78,26 @@ const Content = styled.section`
   flex-direction: column;
 `;
 
-/** Caps the reading measure on ultra-wide displays without affecting mobile. */
-const Measure = styled.div`
-  width: 100%;
-  max-width: 90rem;
-  margin-inline: auto;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-`;
-
-const Layout = styled.div`
-  display: grid;
+const Layout = styled(VerticalTabs)`
+  display: grid !important;
   grid-template-columns: 220px minmax(0, 1fr);
   align-items: start;
   gap: var(--space-500);
   width: 100%;
+  max-width: none;
   flex: 1;
+  min-height: 0;
 
   @media (max-width: 720px) {
     grid-template-columns: 1fr;
   }
 `;
 
-/** Matches VerticalTabsList geometry so the rail reads as the site's tab rail. */
-const Rail = styled.nav`
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-025);
+const Rail = styled(VerticalTabsList)`
+  grid-column: 1;
   width: 100%;
   max-width: 220px;
-  padding: var(--space-050);
-  border-radius: var(--radius-200);
+  flex-shrink: 0;
   align-self: start;
   position: sticky;
   top: var(--space-400);
@@ -117,98 +108,19 @@ const Rail = styled.nav`
   }
 `;
 
-/*
- * Visual parity with VerticalTabItem (Figma 145:8457): the 32px row and its
- * 4x16px leading indicator. These links jump to sections rather than switching
- * panels, so they are anchors — a tablist whose tabs own no panel misleads
- * assistive tech.
- */
-const RailLink = styled.a`
-  position: relative;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  gap: var(--space-300);
-  width: 100%;
-  height: 32px;
-  padding: var(--space-050) var(--space-100) var(--space-050) var(--space-300);
-  border-radius: var(--radius-150);
-  background: transparent;
-  color: var(--color-text-icon-primary);
-  font-family: var(--font-family);
-  font-size: var(--type-size-body);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.1px;
-  line-height: 1.35;
-  text-align: left;
-  text-decoration: none;
-  overflow: hidden;
-  transition: background 120ms ease;
-
-  &:hover {
-    background: var(--color-tonal-tonal-secondary-overlay-hover);
-    color: var(--color-text-icon-primary);
-    text-decoration: none;
-  }
-
-  &:active {
-    background: var(--color-tonal-tonal-secondary-overlay-press);
-  }
-
-  &[aria-current='true'] {
-    background: var(--color-tonal-tonal-overlay);
-    color: var(--color-text-icon-on-tonal);
-    font-weight: var(--font-weight-bold);
-  }
-
-  &[aria-current='true']:hover {
-    background: var(--color-tonal-tonal-overlay-hover);
-    color: var(--color-text-icon-on-tonal);
-  }
-
-  &[aria-current='true']:active {
-    background: var(--color-tonal-tonal-overlay-press);
-  }
-
-  &[aria-current='true']::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 4px;
-    height: 16px;
-    border-radius: var(--radius-1000);
-    background: var(--color-text-icon-on-tonal);
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible {
-    outline: var(--stroke-200) solid var(--color-primary-primary);
-    outline-offset: calc(-1 * var(--stroke-200));
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-`;
-
-const RailLabel = styled.span`
-  flex: 1 1 0%;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const Sections = styled.div`
+const Panel = styled(VerticalTabsContent)`
+  grid-column: 2;
   display: flex;
   flex-direction: column;
-  gap: var(--space-800);
+  gap: var(--space-600);
+  width: 100%;
+  max-width: none;
   min-width: 0;
+
+  &[data-state='inactive'],
+  &[hidden] {
+    display: none;
+  }
 
   @media (max-width: 720px) {
     grid-column: 1;
@@ -219,7 +131,6 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   gap: var(--space-600);
-  scroll-margin-top: ${SCROLL_OFFSET}px;
 `;
 
 const Block = styled.div`
@@ -397,11 +308,11 @@ const SourceNote = styled(Copy)`
 `;
 
 const SECTIONS = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'materials', label: 'Sonic materials' },
-  { id: 'duration', label: 'Duration guidelines' },
-  { id: 'library', label: 'Sound library' },
-  { id: 'guidance', label: 'Designer guidance' },
+  { id: 'overview', label: 'Overview', path: '/sound' },
+  { id: 'materials', label: 'Sonic materials', path: '/sound/materials' },
+  { id: 'duration', label: 'Duration guidelines', path: '/sound/duration' },
+  { id: 'library', label: 'Sound library', path: '/sound/library' },
+  { id: 'guidance', label: 'Designer guidance', path: '/sound/guidance' },
 ];
 
 const useCases = [
@@ -445,55 +356,18 @@ const EditorialCard = ({ title, body, menu }) => (
   </Tile>
 );
 
-/** Mirrors what a rail link does, so the hash stays shareable. */
-const jumpToLibrary = () => {
-  window.location.hash = '#library';
+const tabFromPath = (pathname) => {
+  const normalized = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+  return SECTIONS.find((section) => section.path === normalized)?.id ?? 'overview';
 };
 
-/**
- * Highlights the section currently under the header. The band is biased to the
- * upper half of the viewport so a tall section (the library) does not keep the
- * previous link lit once its own heading has scrolled past.
- */
-const useActiveSection = (ids) => {
-  const [activeId, setActiveId] = useState(ids[0]);
-  const visibleRef = useRef(new Set());
-
-  useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return undefined;
-
-    const visible = visibleRef.current;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) visible.add(entry.target.id);
-          else visible.delete(entry.target.id);
-        });
-
-        const next = ids.find((id) => visible.has(id));
-        if (next) setActiveId(next);
-      },
-      { rootMargin: `-${SCROLL_OFFSET}px 0px -55% 0px` },
-    );
-
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => {
-      observer.disconnect();
-      visible.clear();
-    };
-  }, [ids]);
-
-  return activeId;
-};
-
-const SECTION_IDS = SECTIONS.map((section) => section.id);
+const pathForTab = (value) =>
+  SECTIONS.find((section) => section.id === value)?.path ?? '/sound';
 
 const SoundPage = () => {
-  const activeId = useActiveSection(SECTION_IDS);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const activeTab = tabFromPath(pathname);
 
   return (
     <SoundPlayerProvider>
@@ -507,22 +381,20 @@ const SoundPage = () => {
           </Hero>
 
           <Content>
-            <Measure>
-              <Layout>
-                <Rail aria-label="Sound sections">
-                  {SECTIONS.map((section) => (
-                    <RailLink
-                      key={section.id}
-                      href={`#${section.id}`}
-                      aria-current={activeId === section.id ? 'true' : undefined}
-                    >
-                      <RailLabel>{section.label}</RailLabel>
-                    </RailLink>
-                  ))}
-                </Rail>
+            <Layout
+              value={activeTab}
+              onValueChange={(value) => navigate(pathForTab(value))}
+            >
+              <Rail aria-label="Sound sections">
+                {SECTIONS.map((section) => (
+                  <VerticalTabItem key={section.id} value={section.id}>
+                    {section.label}
+                  </VerticalTabItem>
+                ))}
+              </Rail>
 
-                <Sections>
-                  <Section id="overview">
+              <Panel value="overview">
+                <Section>
                     <Block>
                       <SectionHeader>
                         <SectionTitle>Overview</SectionTitle>
@@ -543,7 +415,7 @@ const SoundPage = () => {
                           intent="primary"
                           variant="fill"
                           size="md"
-                          onClick={jumpToLibrary}
+                          onClick={() => navigate('/sound/library')}
                         >
                           Explore the sound library
                         </Button>
@@ -571,9 +443,11 @@ const SoundPage = () => {
                         body="Introduce sound only when it adds meaningful information. Do not add a cue simply to decorate a transition, repeat obvious visual feedback, or fill silence. Frequent actions should remain quiet unless sound materially improves awareness or confidence."
                       />
                     </Block>
-                  </Section>
+                </Section>
+              </Panel>
 
-                  <Section id="materials">
+              <Panel value="materials">
+                <Section>
                     <Block>
                       <SectionHeader>
                         <SectionTitle>Sonic materials</SectionTitle>
@@ -588,9 +462,11 @@ const SoundPage = () => {
                         ))}
                       </Grid>
                     </Block>
-                  </Section>
+                </Section>
+              </Panel>
 
-                  <Section id="duration">
+              <Panel value="duration">
+                <Section>
                     <Block>
                       <SectionHeader>
                         <SectionTitle>Duration guidelines</SectionTitle>
@@ -617,9 +493,11 @@ const SoundPage = () => {
                         ))}
                       </DurationTable>
                     </Block>
-                  </Section>
+                </Section>
+              </Panel>
 
-                  <Section id="library">
+              <Panel value="library">
+                <Section>
                     <Block>
                       <SectionHeader>
                         <SectionTitle>Cake&amp; sound library</SectionTitle>
@@ -631,9 +509,11 @@ const SoundPage = () => {
                       </SectionHeader>
                       <SoundLibrary />
                     </Block>
-                  </Section>
+                </Section>
+              </Panel>
 
-                  <Section id="guidance">
+              <Panel value="guidance">
+                <Section>
                     <Block>
                       <SectionHeader>
                         <SectionTitle>Designer guidance</SectionTitle>
@@ -699,10 +579,9 @@ const SoundPage = () => {
                         View source assets <ExternalLink size={14} aria-hidden />
                       </a>
                     </SourceNote>
-                  </Section>
-                </Sections>
-              </Layout>
-            </Measure>
+                </Section>
+              </Panel>
+            </Layout>
           </Content>
         </Layer>
       </Page>
