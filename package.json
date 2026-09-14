@@ -21,7 +21,8 @@
     "build:cakeand-vars": "node scripts/build-cakeand-css-vars.mjs",
     "build:package": "node scripts/build-package.mjs",
     "build:knowledge": "node scripts/build-knowledge.mjs",
-    "build:agent-context": "node scripts/build-agent-context.mjs"
+    "build:agent-context": "node scripts/build-agent-context.mjs",
+    "sync:sounds": "node scripts/sync-sound-library.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

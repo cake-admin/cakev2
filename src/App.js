@@ -88,7 +88,9 @@ const AppShell = () => {
     pathname === '/foundations' ||
     pathname.startsWith('/foundations/ai') ||
     pathname === '/components' ||
-    pathname === '/version-control';
+    pathname === '/version-control' ||
+    pathname === '/sound' ||
+    pathname.startsWith('/sound/');
 
   return (
     <Shell $home={isWallpaperPage}>
@@ -101,6 +103,9 @@ const AppShell = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/whats-new" element={<Navigate to="/resources/whats-new" replace />} />
+          <Route path="/sound/guidance" element={<Navigate to="/sound" replace />} />
+          <Route path="/sound/duration" element={<Navigate to="/sound" replace />} />
+          <Route path="/sound/materials" element={<Navigate to="/sound" replace />} />
           <Route path="/resources/about" element={<Navigate to="/resources" replace />} />
           <Route
             path="/get-started/about-cake"
