@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Check, ExternalLink, X } from 'lucide-react';
 import { Button } from '../../cakeand/components/Button';
@@ -6,12 +6,6 @@ import { Badge } from '../../cakeand/components/Badge/Badge';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
 import { Table } from '../../cakeand/components/Table/Table';
-import {
-  VerticalTabs,
-  VerticalTabsList,
-  VerticalTabsContent,
-} from '../../cakeand/components/VerticalTabs/VerticalTabs';
-import { VerticalTabItem } from '../../cakeand/components/VerticalTabs/VerticalTabItem';
 import { pageGutterX } from '../../styles/pageChrome';
 import { StickyWallpaper } from '../HomePage';
 import heroBg from '../../assets/home/hero-bg.png';
@@ -19,6 +13,9 @@ import SoundLibrary from './SoundLibrary';
 import { SoundPlayerProvider } from './SoundPreview';
 
 const ROOKERY = "'Rookery New', Rookery, var(--font-family)";
+
+/** Clears the fixed TopNav when an anchor is jumped to. */
+const SCROLL_OFFSET = 96;
 
 const Page = styled.div`
   --page-on-media: #ffffff;
@@ -88,26 +85,28 @@ const Measure = styled.div`
   min-height: 0;
 `;
 
-const Layout = styled(VerticalTabs)`
-  display: grid !important;
+const Layout = styled.div`
+  display: grid;
   grid-template-columns: 220px minmax(0, 1fr);
   align-items: start;
   gap: var(--space-500);
   width: 100%;
-  max-width: none;
   flex: 1;
-  min-height: 0;
 
   @media (max-width: 720px) {
     grid-template-columns: 1fr;
   }
 `;
 
-const Rail = styled(VerticalTabsList)`
-  grid-column: 1;
+/** Matches VerticalTabsList geometry so the rail reads as the site's tab rail. */
+const Rail = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-025);
   width: 100%;
   max-width: 220px;
-  flex-shrink: 0;
+  padding: var(--space-050);
+  border-radius: var(--radius-200);
   align-self: start;
   position: sticky;
   top: var(--space-400);
@@ -118,25 +117,98 @@ const Rail = styled(VerticalTabsList)`
   }
 `;
 
-const Panel = styled(VerticalTabsContent)`
-  /* Stay in the content column of Layout's 2-col grid (rail is col 1). */
-  grid-column: 2;
+/*
+ * Visual parity with VerticalTabItem (Figma 145:8457): the 32px row and its
+ * 4x16px leading indicator. These links jump to sections rather than switching
+ * panels, so they are anchors — a tablist whose tabs own no panel misleads
+ * assistive tech.
+ */
+const RailLink = styled.a`
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--space-300);
+  width: 100%;
+  height: 32px;
+  padding: var(--space-050) var(--space-100) var(--space-050) var(--space-300);
+  border-radius: var(--radius-150);
+  background: transparent;
+  color: var(--color-text-icon-primary);
+  font-family: var(--font-family);
+  font-size: var(--type-size-body);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.1px;
+  line-height: 1.35;
+  text-align: left;
+  text-decoration: none;
+  overflow: hidden;
+  transition: background 120ms ease;
+
+  &:hover {
+    background: var(--color-tonal-tonal-secondary-overlay-hover);
+    color: var(--color-text-icon-primary);
+    text-decoration: none;
+  }
+
+  &:active {
+    background: var(--color-tonal-tonal-secondary-overlay-press);
+  }
+
+  &[aria-current='true'] {
+    background: var(--color-tonal-tonal-overlay);
+    color: var(--color-text-icon-on-tonal);
+    font-weight: var(--font-weight-bold);
+  }
+
+  &[aria-current='true']:hover {
+    background: var(--color-tonal-tonal-overlay-hover);
+    color: var(--color-text-icon-on-tonal);
+  }
+
+  &[aria-current='true']:active {
+    background: var(--color-tonal-tonal-overlay-press);
+  }
+
+  &[aria-current='true']::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 16px;
+    border-radius: var(--radius-1000);
+    background: var(--color-text-icon-on-tonal);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: var(--stroke-200) solid var(--color-primary-primary);
+    outline-offset: calc(-1 * var(--stroke-200));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+`;
+
+const RailLabel = styled.span`
+  flex: 1 1 0%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const Sections = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--space-600);
-  width: 100%;
-  max-width: none;
+  gap: var(--space-800);
   min-width: 0;
-
-  /*
-   * styled-components' display: flex overrides the UA [hidden] rule, so
-   * inactive Radix panels would still participate in the grid and auto-place
-   * into the rail column. Force them out of flow.
-   */
-  &[data-state='inactive'],
-  &[hidden] {
-    display: none;
-  }
 
   @media (max-width: 720px) {
     grid-column: 1;
@@ -144,6 +216,13 @@ const Panel = styled(VerticalTabsContent)`
 `;
 
 const Section = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-600);
+  scroll-margin-top: ${SCROLL_OFFSET}px;
+`;
+
+const Block = styled.div`
   display: flex;
   flex-direction: column;
   gap: var(--space-400);
@@ -277,7 +356,7 @@ const Cell = styled.div`
   line-height: 1.35;
 `;
 
-const Close = styled.section`
+const Close = styled.div`
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(0, 1fr));
   gap: var(--space-500);
@@ -291,7 +370,7 @@ const Close = styled.section`
   }
 `;
 
-const CloseTitle = styled.h2`
+const CloseTitle = styled.h3`
   margin: 0;
   color: inherit;
   font-family: ${ROOKERY};
@@ -317,7 +396,7 @@ const SourceNote = styled(Copy)`
   }
 `;
 
-const TABS = [
+const SECTIONS = [
   { id: 'overview', label: 'Overview' },
   { id: 'materials', label: 'Sonic materials' },
   { id: 'duration', label: 'Duration guidelines' },
@@ -366,8 +445,55 @@ const EditorialCard = ({ title, body, menu }) => (
   </Tile>
 );
 
+/** Mirrors what a rail link does, so the hash stays shareable. */
+const jumpToLibrary = () => {
+  window.location.hash = '#library';
+};
+
+/**
+ * Highlights the section currently under the header. The band is biased to the
+ * upper half of the viewport so a tall section (the library) does not keep the
+ * previous link lit once its own heading has scrolled past.
+ */
+const useActiveSection = (ids) => {
+  const [activeId, setActiveId] = useState(ids[0]);
+  const visibleRef = useRef(new Set());
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return undefined;
+
+    const visible = visibleRef.current;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) visible.add(entry.target.id);
+          else visible.delete(entry.target.id);
+        });
+
+        const next = ids.find((id) => visible.has(id));
+        if (next) setActiveId(next);
+      },
+      { rootMargin: `-${SCROLL_OFFSET}px 0px -55% 0px` },
+    );
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => {
+      observer.disconnect();
+      visible.clear();
+    };
+  }, [ids]);
+
+  return activeId;
+};
+
+const SECTION_IDS = SECTIONS.map((section) => section.id);
+
 const SoundPage = () => {
-  const [tab, setTab] = useState('overview');
+  const activeId = useActiveSection(SECTION_IDS);
 
   return (
     <SoundPlayerProvider>
@@ -382,190 +508,199 @@ const SoundPage = () => {
 
           <Content>
             <Measure>
-              <Layout value={tab} onValueChange={setTab}>
+              <Layout>
                 <Rail aria-label="Sound sections">
-                  {TABS.map((item) => (
-                    <VerticalTabItem key={item.id} value={item.id}>
-                      {item.label}
-                    </VerticalTabItem>
+                  {SECTIONS.map((section) => (
+                    <RailLink
+                      key={section.id}
+                      href={`#${section.id}`}
+                      aria-current={activeId === section.id ? 'true' : undefined}
+                    >
+                      <RailLabel>{section.label}</RailLabel>
+                    </RailLink>
                   ))}
                 </Rail>
 
-                <Panel value="overview">
-                  <Section>
-                    <SectionHeader>
-                      <SectionTitle>Overview</SectionTitle>
-                      <Lead>
-                        Sound is another layer of the interface. It carries the
-                        principles, characteristics, and behaviors that make software
-                        sound unmistakably part of the Cake&amp; experience.
-                      </Lead>
-                      <Copy>
-                        This vocabulary helps teams select and evaluate sound with the
-                        same care used for color, typography, material, and motion.
-                        Sound reinforces information; it never replaces the visual or
-                        textual experience.
-                      </Copy>
-                    </SectionHeader>
-                    <div>
-                      <Button
-                        intent="primary"
-                        variant="fill"
-                        size="md"
-                        onClick={() => setTab('library')}
+                <Sections>
+                  <Section id="overview">
+                    <Block>
+                      <SectionHeader>
+                        <SectionTitle>Overview</SectionTitle>
+                        <Lead>
+                          Sound is another layer of the interface. It carries the
+                          principles, characteristics, and behaviors that make software
+                          sound unmistakably part of the Cake&amp; experience.
+                        </Lead>
+                        <Copy>
+                          This vocabulary helps teams select and evaluate sound with the
+                          same care used for color, typography, material, and motion.
+                          Sound reinforces information; it never replaces the visual or
+                          textual experience.
+                        </Copy>
+                      </SectionHeader>
+                      <div>
+                        <Button
+                          intent="primary"
+                          variant="fill"
+                          size="md"
+                          onClick={jumpToLibrary}
+                        >
+                          Explore the sound library
+                        </Button>
+                      </div>
+                    </Block>
+
+                    <Block>
+                      <SectionHeader>
+                        <Subhead>When to use sound</Subhead>
+                        <Copy>
+                          Organize sound by what the user needs to understand or do.
+                        </Copy>
+                      </SectionHeader>
+                      <Grid>
+                        {useCases.map(([title, items]) => (
+                          <EditorialCard
+                            key={title}
+                            title={title}
+                            body={items.join(' · ')}
+                          />
+                        ))}
+                      </Grid>
+                      <EditorialCard
+                        title="When not to use sound"
+                        body="Introduce sound only when it adds meaningful information. Do not add a cue simply to decorate a transition, repeat obvious visual feedback, or fill silence. Frequent actions should remain quiet unless sound materially improves awareness or confidence."
+                      />
+                    </Block>
+                  </Section>
+
+                  <Section id="materials">
+                    <Block>
+                      <SectionHeader>
+                        <SectionTitle>Sonic materials</SectionTitle>
+                        <Copy>
+                          Cake&amp; lives in the hybrid territory between tactile natural
+                          gestures and precise digital treatment.
+                        </Copy>
+                      </SectionHeader>
+                      <Grid>
+                        {materials.map(([title, description]) => (
+                          <EditorialCard key={title} title={title} body={description} />
+                        ))}
+                      </Grid>
+                    </Block>
+                  </Section>
+
+                  <Section id="duration">
+                    <Block>
+                      <SectionHeader>
+                        <SectionTitle>Duration guidelines</SectionTitle>
+                        <Copy>
+                          Guideline duration is a target, not a claim about the library.
+                          Every profile in the sound library displays the measured
+                          duration of its actual audio file.
+                        </Copy>
+                      </SectionHeader>
+                      <DurationTable
+                        aria-label="Target duration by sound type"
+                        header={
+                          <TableHeadRow role="row">
+                            <HeadCell role="columnheader">Sound type</HeadCell>
+                            <HeadCell role="columnheader">Target</HeadCell>
+                          </TableHeadRow>
+                        }
                       >
-                        Explore the sound library
-                      </Button>
-                    </div>
+                        {durations.map(([type, target]) => (
+                          <TableRow key={type} role="row">
+                            <Cell role="cell">{type}</Cell>
+                            <Cell role="cell">{target}</Cell>
+                          </TableRow>
+                        ))}
+                      </DurationTable>
+                    </Block>
                   </Section>
 
-                  <Section>
-                    <SectionHeader>
-                      <SectionTitle>When to use sound</SectionTitle>
-                      <Copy>
-                        Organize sound by what the user needs to understand or do.
-                      </Copy>
-                    </SectionHeader>
-                    <Grid>
-                      {useCases.map(([title, items]) => (
+                  <Section id="library">
+                    <Block>
+                      <SectionHeader>
+                        <SectionTitle>Cake&amp; sound library</SectionTitle>
+                        <Copy>
+                          Search the official library, filter by type, compare variants,
+                          and play each asset. Waveforms are static visualizations
+                          generated from the real audio data.
+                        </Copy>
+                      </SectionHeader>
+                      <SoundLibrary />
+                    </Block>
+                  </Section>
+
+                  <Section id="guidance">
+                    <Block>
+                      <SectionHeader>
+                        <SectionTitle>Designer guidance</SectionTitle>
+                        <Copy>
+                          Use these references when introducing or reviewing a sound.
+                        </Copy>
+                      </SectionHeader>
+                      <ChoiceGrid>
                         <EditorialCard
-                          key={title}
-                          title={title}
-                          body={items.join(' · ')}
+                          title="Recommended sound"
+                          menu={
+                            <Badge color="primary" tone="subtle" dot={false}>
+                              <Check size={14} aria-hidden /> Do
+                            </Badge>
+                          }
+                          body="Short · Warm · Controlled · Purposeful · Tactile · Connected · Recognizable"
                         />
-                      ))}
-                    </Grid>
-                    <EditorialCard
-                      title="When not to use sound"
-                      body="Introduce sound only when it adds meaningful information. Do not add a cue simply to decorate a transition, repeat obvious visual feedback, or fill silence. Frequent actions should remain quiet unless sound materially improves awareness or confidence."
-                    />
+                        <EditorialCard
+                          title="Sound to avoid"
+                          menu={
+                            <Badge color="destructive" tone="subtle" dot={false}>
+                              <X size={14} aria-hidden /> Don’t
+                            </Badge>
+                          }
+                          body="Harsh · Long · Generic · Overly dramatic · Robotic · Sci-fi cliché · Repetitive"
+                        />
+                      </ChoiceGrid>
+                    </Block>
+
+                    <Block>
+                      <SectionHeader>
+                        <Subhead>Designer checklist</Subhead>
+                        <Copy>
+                          Ask these questions before introducing or approving a sound.
+                        </Copy>
+                      </SectionHeader>
+                      <Grid>
+                        {checklist.map(([title, question]) => (
+                          <EditorialCard key={title} title={title} body={question} />
+                        ))}
+                      </Grid>
+                    </Block>
+
+                    <Close>
+                      <CloseTitle>One design language. Multiple senses.</CloseTitle>
+                      <CloseGroup>
+                        <Subhead>Visual</Subhead>
+                        <p>Color · Typography · Material · Motion</p>
+                      </CloseGroup>
+                      <CloseGroup>
+                        <Subhead>Sonic</Subhead>
+                        <p>Pitch · Timbre · Rhythm · Dynamics</p>
+                      </CloseGroup>
+                    </Close>
+
+                    <SourceNote>
+                      Sound is another expression of the Ampersand design system.{' '}
+                      <a
+                        href="https://github.com/cake-admin/cake-sound-library"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        View source assets <ExternalLink size={14} aria-hidden />
+                      </a>
+                    </SourceNote>
                   </Section>
-                </Panel>
-
-                <Panel value="materials">
-                  <Section>
-                    <SectionHeader>
-                      <SectionTitle>Sonic materials</SectionTitle>
-                      <Copy>
-                        Cake&amp; lives in the hybrid territory between tactile natural
-                        gestures and precise digital treatment.
-                      </Copy>
-                    </SectionHeader>
-                    <Grid>
-                      {materials.map(([title, description]) => (
-                        <EditorialCard key={title} title={title} body={description} />
-                      ))}
-                    </Grid>
-                  </Section>
-                </Panel>
-
-                <Panel value="duration">
-                  <Section>
-                    <SectionHeader>
-                      <SectionTitle>Duration guidelines</SectionTitle>
-                      <Copy>
-                        Guideline duration is a target, not a claim about the library.
-                        Every profile in the sound library displays the measured
-                        duration of its actual audio file.
-                      </Copy>
-                    </SectionHeader>
-                    <DurationTable
-                      aria-label="Target duration by sound type"
-                      header={
-                        <TableHeadRow role="row">
-                          <HeadCell role="columnheader">Sound type</HeadCell>
-                          <HeadCell role="columnheader">Target</HeadCell>
-                        </TableHeadRow>
-                      }
-                    >
-                      {durations.map(([type, target]) => (
-                        <TableRow key={type} role="row">
-                          <Cell role="cell">{type}</Cell>
-                          <Cell role="cell">{target}</Cell>
-                        </TableRow>
-                      ))}
-                    </DurationTable>
-                  </Section>
-                </Panel>
-
-                <Panel value="library">
-                  <Section>
-                    <SectionHeader>
-                      <SectionTitle>Cake&amp; sound library</SectionTitle>
-                      <Copy>
-                        Search the official library, filter by type, compare variants,
-                        and play each asset. Waveforms are static visualizations
-                        generated from the real audio data.
-                      </Copy>
-                    </SectionHeader>
-                    <SoundLibrary />
-                  </Section>
-                </Panel>
-
-                <Panel value="guidance">
-                  <Section>
-                    <SectionHeader>
-                      <SectionTitle>Do / Don’t</SectionTitle>
-                    </SectionHeader>
-                    <ChoiceGrid>
-                      <EditorialCard
-                        title="Recommended sound"
-                        menu={
-                          <Badge color="primary" tone="subtle" dot={false}>
-                            <Check size={14} aria-hidden /> Do
-                          </Badge>
-                        }
-                        body="Short · Warm · Controlled · Purposeful · Tactile · Connected · Recognizable"
-                      />
-                      <EditorialCard
-                        title="Sound to avoid"
-                        menu={
-                          <Badge color="destructive" tone="subtle" dot={false}>
-                            <X size={14} aria-hidden /> Don’t
-                          </Badge>
-                        }
-                        body="Harsh · Long · Generic · Overly dramatic · Robotic · Sci-fi cliché · Repetitive"
-                      />
-                    </ChoiceGrid>
-                  </Section>
-
-                  <Section>
-                    <SectionHeader>
-                      <SectionTitle>Designer checklist</SectionTitle>
-                      <Copy>
-                        Ask these questions before introducing or approving a sound.
-                      </Copy>
-                    </SectionHeader>
-                    <Grid>
-                      {checklist.map(([title, question]) => (
-                        <EditorialCard key={title} title={title} body={question} />
-                      ))}
-                    </Grid>
-                  </Section>
-
-                  <Close>
-                    <CloseTitle>One design language. Multiple senses.</CloseTitle>
-                    <CloseGroup>
-                      <Subhead>Visual</Subhead>
-                      <p>Color · Typography · Material · Motion</p>
-                    </CloseGroup>
-                    <CloseGroup>
-                      <Subhead>Sonic</Subhead>
-                      <p>Pitch · Timbre · Rhythm · Dynamics</p>
-                    </CloseGroup>
-                  </Close>
-
-                  <SourceNote>
-                    Sound is another expression of the Ampersand design system.{' '}
-                    <a
-                      href="https://github.com/cake-admin/cake-sound-library"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View source assets <ExternalLink size={14} aria-hidden />
-                    </a>
-                  </SourceNote>
-                </Panel>
+                </Sections>
               </Layout>
             </Measure>
           </Content>
