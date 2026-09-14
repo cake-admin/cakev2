@@ -49,21 +49,6 @@ const Hero = styled.header`
   box-sizing: border-box;
 `;
 
-const HeroInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-100);
-`;
-
-const Eyebrow = styled.p`
-  margin: 0;
-  color: var(--page-on-media);
-  font-size: var(--type-size-caption);
-  font-weight: var(--font-weight-bold);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-`;
-
 const HeroTitle = styled.h1`
   margin: 0;
   color: var(--page-on-media);
@@ -71,14 +56,6 @@ const HeroTitle = styled.h1`
   font-size: var(--type-size-hero);
   font-weight: var(--font-weight-regular);
   line-height: 1.15;
-`;
-
-const HeroSubtitle = styled.p`
-  margin: 0;
-  color: var(--page-on-media);
-  font-family: ${ROOKERY};
-  font-size: var(--type-size-page);
-  line-height: 1.35;
 `;
 
 const Content = styled.main`
@@ -533,11 +510,7 @@ const SoundPage = () => {
         </StickyWallpaper>
         <Layer>
           <Hero>
-            <HeroInner>
-              <Eyebrow>Cake&amp; sonic design system</Eyebrow>
-              <HeroTitle>SOUND DNA</HeroTitle>
-              <HeroSubtitle>A sonic language for Lenovo software.</HeroSubtitle>
-            </HeroInner>
+            <HeroTitle>Sound DNA</HeroTitle>
           </Hero>
 
           <Content>
