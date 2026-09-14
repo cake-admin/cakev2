@@ -42,13 +42,6 @@ export const routes = [
     category: 'resources',
   },
   {
-    path: '/sound/materials',
-    component: SoundPage,
-    title: 'Sonic materials',
-    description: 'Natural, digital, and hybrid materials in the Cake& sonic identity',
-    category: 'resources',
-  },
-  {
     path: '/sound/library',
     component: SoundPage,
     title: 'Cake& sound library',

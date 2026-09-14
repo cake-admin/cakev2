@@ -202,7 +202,6 @@ const EditorialTemplate = styled(SimpleCard)`
 
 const SECTIONS = [
   { id: 'overview', label: 'Overview', path: '/sound' },
-  { id: 'materials', label: 'Sonic materials', path: '/sound/materials' },
   { id: 'library', label: 'Sound library', path: '/sound/library' },
 ];
 
@@ -212,12 +211,6 @@ const useCases = [
   ['Alert', ['Warning', 'Error', 'Critical', 'Low battery']],
   ['State', ['Camera open', 'Camera closed', 'Microphone mute', 'Microphone unmute']],
   ['System', ['Startup', 'Shutdown', 'Charger connected', 'Charger disconnected']],
-];
-
-const materials = [
-  ['Natural', 'Wood, mallets, felt, rounded percussion, and acoustic resonance.'],
-  ['Digital', 'Soft synthesis, rounded electronic tones, tonal pulses, and harmonic layers.'],
-  ['Hybrid', 'Natural gesture with digital treatment — the key territory of the Cake& sonic identity.'],
 ];
 
 const EditorialCard = ({ title, body }) => (
@@ -312,25 +305,6 @@ const SoundPage = () => {
                         title="When not to use sound"
                         body="Introduce sound only when it adds meaningful information. Do not add a cue simply to decorate a transition, repeat obvious visual feedback, or fill silence. Frequent actions should remain quiet unless sound materially improves awareness or confidence."
                       />
-                    </Block>
-                </Section>
-              </Panel>
-
-              <Panel value="materials">
-                <Section>
-                    <Block>
-                      <SectionHeader>
-                        <SectionTitle>Sonic materials</SectionTitle>
-                        <Copy>
-                          Cake&amp; lives in the hybrid territory between tactile natural
-                          gestures and precise digital treatment.
-                        </Copy>
-                      </SectionHeader>
-                      <Grid>
-                        {materials.map(([title, description]) => (
-                          <EditorialCard key={title} title={title} body={description} />
-                        ))}
-                      </Grid>
                     </Block>
                 </Section>
               </Panel>
