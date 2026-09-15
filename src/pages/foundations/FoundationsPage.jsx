@@ -17,7 +17,7 @@ import {
   VerticalTabsDivider,
 } from '../../cakeand/components/VerticalTabs/VerticalTabsSection';
 import { STORYBOOK_PATH } from '../../data/nav';
-import { pageGutterX } from '../../styles/pageChrome';
+import { pageGutterX, stickyDocsRail } from '../../styles/pageChrome';
 import { StickyWallpaper } from '../HomePage';
 import tokens from '../../cakeand/tokens/tokens.json';
 import {
@@ -207,18 +207,7 @@ const Layout = styled(VerticalTabs)`
 `;
 
 const Rail = styled(VerticalTabsList)`
-  grid-column: 1;
-  width: 100%;
-  max-width: 220px;
-  flex-shrink: 0;
-  align-self: start;
-  position: sticky;
-  top: var(--space-400);
-
-  @media (max-width: 720px) {
-    max-width: none;
-    position: static;
-  }
+  ${stickyDocsRail}
 `;
 const Panel = styled(VerticalTabsContent)`
   /* Stay in the content column of Layout's 2-col grid (rail is col 1). */

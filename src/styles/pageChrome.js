@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { nativeScrollbarStyles } from '../cakeand/components/Elements/Scrollbar';
 
 /**
  * Horizontal page gutter shared by TopNav and wallpaper page sections.
@@ -11,6 +12,35 @@ export const pageGutterX = css`
   @media (min-width: 960px) {
     padding-left: var(--space-800);
     padding-right: var(--space-800);
+  }
+`;
+
+/**
+ * Sticky docs tab rail, shared by the Components, Foundations, and Sound pages.
+ *
+ * TopNav is `position: fixed` and its BarSpacer only pushes *static* content
+ * down, so a sticky rail has to offset itself by the bar's measured height
+ * (--topnav-height, published by TopNav) or it scrolls behind the nav and its
+ * top tabs get clipped. Rails taller than the viewport scroll internally, so
+ * their bottom items stay reachable instead of being pinned out of view.
+ */
+export const stickyDocsRail = css`
+  grid-column: 1;
+  width: 100%;
+  max-width: 220px;
+  flex-shrink: 0;
+  align-self: start;
+  position: sticky;
+  top: calc(var(--topnav-height, 64px) + var(--space-400));
+  max-height: calc(100vh - var(--topnav-height, 64px) - var(--space-400) * 2);
+  overflow-y: auto;
+  ${nativeScrollbarStyles}
+
+  @media (max-width: 720px) {
+    max-width: none;
+    position: static;
+    max-height: none;
+    overflow-y: visible;
   }
 `;
 
