@@ -11,7 +11,6 @@ import { TextInput } from '../../cakeand/components/TextInput';
 import {
   soundCatalog,
   soundFamilies,
-  soundLibrarySource,
 } from '../../data/sound-catalog';
 import SoundPreview from './SoundPreview';
 import SoundWaveform from './SoundWaveform';
@@ -90,10 +89,6 @@ const Empty = styled.div`
   padding: var(--space-600);
   color: var(--color-text-icon-secondary);
   text-align: center;
-`;
-
-const SourceLink = styled.a`
-  color: var(--color-primary-primary);
 `;
 
 const SoundLibraryCard = ({ sound }) => {
@@ -224,13 +219,6 @@ const SoundLibrary = () => {
       ) : (
         <Empty>No sounds match that search and filter combination.</Empty>
       )}
-      <HelperString tone="greyscale" showIcon={false}>
-        Audio assets synchronized from the{' '}
-        <SourceLink href={soundLibrarySource} target="_blank" rel="noopener noreferrer">
-          official Cake&amp; sound library
-        </SourceLink>
-        .
-      </HelperString>
     </>
   );
 };
