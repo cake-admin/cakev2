@@ -1,16 +1,18 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { ExternalLink } from 'lucide-react';
 import { Button } from '../../cakeand/components/Button';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
+import { Chip } from '../../cakeand/components/Chip/Chip';
 import {
   VerticalTabs,
   VerticalTabsList,
   VerticalTabsContent,
 } from '../../cakeand/components/VerticalTabs/VerticalTabs';
 import { VerticalTabItem } from '../../cakeand/components/VerticalTabs/VerticalTabItem';
-import { pageGutterX } from '../../styles/pageChrome';
+import { pageGutterX, stickyDocsRail } from '../../styles/pageChrome';
 import { StickyWallpaper } from '../HomePage';
 import heroBg from '../../assets/home/hero-bg.png';
 import SoundLibrary from './SoundLibrary';
@@ -91,18 +93,7 @@ const Layout = styled(VerticalTabs)`
 `;
 
 const Rail = styled(VerticalTabsList)`
-  grid-column: 1;
-  width: 100%;
-  max-width: 220px;
-  flex-shrink: 0;
-  align-self: start;
-  position: sticky;
-  top: var(--space-400);
-
-  @media (max-width: 720px) {
-    max-width: none;
-    position: static;
-  }
+  ${stickyDocsRail}
 `;
 
 const Panel = styled(VerticalTabsContent)`
@@ -179,7 +170,7 @@ const Copy = styled.p`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(${(props) => props.$columns || 3}, minmax(0, 1fr));
   gap: var(--space-300);
 
   @media (max-width: 960px) {
@@ -196,6 +187,29 @@ const Tile = styled(Card)`
   min-width: 0;
 `;
 
+const Actions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+`;
+
+const TagList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+`;
+
+const Swatch = styled.span`
+  width: var(--space-100);
+  height: var(--space-100);
+  border-radius: var(--radius-1000);
+  background: currentColor;
+`;
+
 const EditorialTemplate = styled(SimpleCard)`
   height: 100%;
 `;
@@ -203,7 +217,14 @@ const EditorialTemplate = styled(SimpleCard)`
 const SECTIONS = [
   { id: 'overview', label: 'Overview', path: '/sound' },
   { id: 'library', label: 'Sound library', path: '/sound/library' },
+  { id: 'prompting', label: 'Prompting', path: '/sound/prompting' },
 ];
+
+const SOUND_REPO_URL = 'https://github.com/cake-admin/cake-sound-library';
+
+const openExternal = (href) => {
+  window.open(href, '_blank', 'noopener,noreferrer');
+};
 
 const useCases = [
   ['Confirm', ['Success', 'Completion', 'Connected', 'Enabled']],
@@ -213,9 +234,122 @@ const useCases = [
   ['System', ['Startup', 'Shutdown', 'Charger connected', 'Charger disconnected']],
 ];
 
-const EditorialCard = ({ title, body }) => (
+const brandCharacter = [
+  ['Precise', 'Every onset has a reason; tails stop before they obscure the next action.'],
+  ['Calm', 'Attention comes from contrast and timing, not loudness or alarmism.'],
+  [
+    'Connected',
+    'Paired points, converging motion, and resolved tails suggest systems working together.',
+  ],
+  [
+    'Tactile',
+    'Felt, ceramic, coated glass, soft wood, and filtered air keep feedback physical but refined.',
+  ],
+  [
+    'Professional',
+    'Restrained detail and balanced tone support repeated use in work environments.',
+  ],
+];
+
+const acousticPalette = [
+  ['Tactile core', 'Presses, boundaries, state changes', ['felt', 'ceramic', 'coated polymer', 'soft wood']],
+  [
+    'Connected signal',
+    'Completions, arrivals, successful joins',
+    ['paired points', 'converging accents', 'one shared tail'],
+  ],
+  [
+    'Spatial air',
+    'Navigation, reveals, background progress',
+    ['filtered air', 'narrow sweeps', 'shallow halos'],
+  ],
+  [
+    'Priority edge',
+    'Warnings and critical conditions',
+    ['rounded glass', 'firm felt', 'controlled brightness'],
+  ],
+];
+
+const promptIngredients = [
+  ['Purpose', 'Confirm, Guide, Alert, State, or System — the job the cue has to do.'],
+  [
+    'Material',
+    'Name a Cake& surface: felt, ceramic, coated polymer, soft wood, paired points, filtered air, or rounded glass.',
+  ],
+  ['Character', 'Precise, Calm, Connected, Tactile, Professional — at least one, better two.'],
+  [
+    'Shape',
+    'Short one-shot, 100–400 ms. Rising or falling pairs for connected grammar. Tails that stop before the next action.',
+  ],
+];
+
+const promptWritingRules = [
+  [
+    'Describe the cue, not the story',
+    'Write what it sounds like. Prefer “UI confirm, soft felt tap” over “the sound of a successful save.”',
+  ],
+  [
+    'One sound per generation',
+    'Do not chain scenes. Generate a single one-shot, then layer in an editor if you truly need more.',
+  ],
+  [
+    'Commas for traits, not paragraphs',
+    'Purpose, material, character, duration, one-shot, and exclusions can live on one line.',
+  ],
+  [
+    'Say what it must not be',
+    'End with exclusions: no sci-fi, no cinematic trailer, no alarm, no long reverb, no glitch, no braam.',
+  ],
+];
+
+const promptExamples = [
+  [
+    'Confirm',
+    'UI confirm, soft felt tap with a paired ceramic accent, warm precise calm, 250 milliseconds, one-shot, no reverb, no sci-fi, no alarm',
+  ],
+  [
+    'Guide',
+    'UI volume up, coated glass tick with a slight rising pair of points, tactile connected, 180 milliseconds, one-shot, quiet, no whoosh tail',
+  ],
+  [
+    'Alert',
+    'UI warning, rounded glass with firm felt, controlled brightness, 300 milliseconds, one-shot, calm not alarmist, no buzzer, no glitch',
+  ],
+  [
+    'State',
+    'UI camera open, filtered air with a shallow halo and a short felt boundary, professional restrained, 220 milliseconds, one-shot, no cinematic impact',
+  ],
+];
+
+const PROMPT_FORMULA =
+  '[purpose], [material], [character], [duration], one-shot, [exclusions]';
+
+const copyPrompt = (text) => {
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {});
+  }
+};
+
+const EditorialCard = ({ title, body, tags, actions }) => (
   <Tile elevation="low">
-    <EditorialTemplate title={title} body={body} />
+    <EditorialTemplate
+      title={title}
+      body={body}
+      actions={
+        actions ??
+        (tags?.length ? (
+          <TagList aria-label={`${title} materials`}>
+            {tags.map((tag) => (
+              <li key={tag}>
+                <Chip type="secondary" size="sm" leadingIcon={<Swatch />}>
+                  {tag}
+                </Chip>
+              </li>
+            ))}
+          </TagList>
+        ) : undefined)
+      }
+    />
   </Tile>
 );
 
@@ -273,7 +407,7 @@ const SoundPage = () => {
                           textual experience.
                         </Copy>
                       </SectionHeader>
-                      <div>
+                      <Actions>
                         <Button
                           intent="primary"
                           variant="fill"
@@ -282,7 +416,55 @@ const SoundPage = () => {
                         >
                           Explore the sound library
                         </Button>
-                      </div>
+                        <Button
+                          intent="secondary"
+                          variant="outline"
+                          size="md"
+                          endIcon={<ExternalLink size={16} aria-hidden />}
+                          onClick={() => openExternal(SOUND_REPO_URL)}
+                        >
+                          View source on GitHub
+                        </Button>
+                        <Button
+                          intent="secondary"
+                          variant="ghost"
+                          size="md"
+                          onClick={() => navigate('/sound/prompting')}
+                        >
+                          Prompt a Cake&amp; sound
+                        </Button>
+                      </Actions>
+                    </Block>
+
+                    <Block>
+                      <SectionHeader>
+                        <Subhead>Brand character</Subhead>
+                        <Copy>
+                          Ampersand audio should clarify what changed, preserve focus,
+                          and make connected systems feel coherent.
+                        </Copy>
+                      </SectionHeader>
+                      <Grid $columns={4}>
+                        {brandCharacter.map(([title, body]) => (
+                          <EditorialCard key={title} title={title} body={body} />
+                        ))}
+                      </Grid>
+                    </Block>
+
+                    <Block>
+                      <SectionHeader>
+                        <Subhead>Acoustic palette</Subhead>
+                      </SectionHeader>
+                      <Grid>
+                        {acousticPalette.map(([title, body, tags]) => (
+                          <EditorialCard
+                            key={title}
+                            title={title}
+                            body={body}
+                            tags={tags}
+                          />
+                        ))}
+                      </Grid>
                     </Block>
 
                     <Block>
@@ -322,6 +504,122 @@ const SoundPage = () => {
                       </SectionHeader>
                       <SoundLibrary />
                     </Block>
+                </Section>
+              </Panel>
+
+              <Panel value="prompting">
+                <Section>
+                  <Block>
+                    <SectionHeader>
+                      <SectionTitle>Prompt a Cake&amp; sound</SectionTitle>
+                      <Lead>
+                        Write the prompt so a generated cue could sit next to Confirm
+                        Up without sounding like a different product.
+                      </Lead>
+                      <Copy>
+                        Name purpose, material, character, and duration in one line.
+                        If any of those is missing, the model will invent a generic
+                        notification. These prompts work in Firefly, ElevenLabs, and
+                        similar text-to-SFX tools — set duration when the tool allows,
+                        generate several variations, and listen next to the library.
+                      </Copy>
+                    </SectionHeader>
+                  </Block>
+
+                  <Block>
+                    <SectionHeader>
+                      <Subhead>Prompt recipe</Subhead>
+                      <Copy>
+                        Lock every ingredient to Cake&amp; DNA. Do not invent a second
+                        palette or a cinematic vocabulary.
+                      </Copy>
+                    </SectionHeader>
+                    <EditorialCard
+                      title="Formula"
+                      body={PROMPT_FORMULA}
+                      actions={
+                        <Button
+                          intent="secondary"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => copyPrompt(PROMPT_FORMULA)}
+                        >
+                          Copy prompt
+                        </Button>
+                      }
+                    />
+                    <Grid $columns={4}>
+                      {promptIngredients.map(([title, body]) => (
+                        <EditorialCard key={title} title={title} body={body} />
+                      ))}
+                    </Grid>
+                  </Block>
+
+                  <Block>
+                    <SectionHeader>
+                      <Subhead>How to write it</Subhead>
+                    </SectionHeader>
+                    <Grid $columns={4}>
+                      {promptWritingRules.map(([title, body]) => (
+                        <EditorialCard key={title} title={title} body={body} />
+                      ))}
+                    </Grid>
+                  </Block>
+
+                  <Block>
+                    <SectionHeader>
+                      <Subhead>Example prompts</Subhead>
+                      <Copy>
+                        Paste one of these as a starting point, then swap purpose or
+                        material to match the interaction.
+                      </Copy>
+                    </SectionHeader>
+                    <Grid>
+                      {promptExamples.map(([title, prompt]) => (
+                        <EditorialCard
+                          key={title}
+                          title={title}
+                          body={prompt}
+                          actions={
+                            <Button
+                              intent="secondary"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => copyPrompt(prompt)}
+                            >
+                              Copy prompt
+                            </Button>
+                          }
+                        />
+                      ))}
+                    </Grid>
+                  </Block>
+
+                  <Block>
+                    <SectionHeader>
+                      <Subhead>Do / Don’t</Subhead>
+                    </SectionHeader>
+                    <Grid $columns={2}>
+                      <EditorialCard
+                        title="Do"
+                        body="Short, felt / ceramic / wood / glass, paired points, one-shot, work-appropriate. Generate variations and listen against the Cake& sound library."
+                      />
+                      <EditorialCard
+                        title="Don’t"
+                        body="Braam, glitch, drone, sci-fi, trailer hit, looping ambience, speech, music, robotic, loud explosion, or “the sound of…”"
+                      />
+                    </Grid>
+                    <Actions>
+                      <Button
+                        intent="secondary"
+                        variant="outline"
+                        size="md"
+                        onClick={() => navigate('/sound/library')}
+                      >
+                        Compare with the library
+                      </Button>
+                    </Actions>
+                  </Block>
                 </Section>
               </Panel>
             </Layout>

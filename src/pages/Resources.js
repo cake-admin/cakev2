@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { ExternalLink, Github, Package, Volume2 } from 'lucide-react';
+import { AudioLines, ExternalLink, Github, Package } from 'lucide-react';
 import { Card } from '../cakeand/components/Card';
 import { Button } from '../cakeand/components/Button';
 import { Badge } from '../cakeand/components/Badge';
@@ -334,7 +334,7 @@ const RESOURCES = [
       'Guidelines, assets, and documentation for creating consistent sound and audio experiences across Lenovo software.',
     action: 'Open Cake& Sound',
     href: '/sound',
-    iconKind: 'volume',
+    iconKind: 'waveform',
     internal: true,
   },
 ];
@@ -378,9 +378,9 @@ const ResourceCard = ({ resource }) => {
           <GithubTile aria-hidden>
             <Package />
           </GithubTile>
-        ) : resource.iconKind === 'volume' ? (
+        ) : resource.iconKind === 'waveform' ? (
           <GithubTile aria-hidden>
-            <Volume2 />
+            <AudioLines />
           </GithubTile>
         ) : resource.iconKind === 'chart' ? (
           <ChartIcon>

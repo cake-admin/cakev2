@@ -6,7 +6,7 @@ import {
   VerticalTabsContent,
 } from '../cakeand/components/VerticalTabs/VerticalTabs';
 import { VerticalTabItem } from '../cakeand/components/VerticalTabs/VerticalTabItem';
-import { pageGutterX } from '../styles/pageChrome';
+import { pageGutterX, stickyDocsRail } from '../styles/pageChrome';
 import { StickyWallpaper } from './HomePage';
 import heroBg from '../assets/home/hero-bg.png';
 import {
@@ -92,18 +92,7 @@ const Layout = styled(VerticalTabs)`
 `;
 
 const Rail = styled(VerticalTabsList)`
-  grid-column: 1;
-  width: 100%;
-  max-width: 220px;
-  flex-shrink: 0;
-  align-self: start;
-  position: sticky;
-  top: var(--space-400);
-
-  @media (max-width: 720px) {
-    max-width: none;
-    position: static;
-  }
+  ${stickyDocsRail}
 `;
 
 const Panel = styled(VerticalTabsContent)`
