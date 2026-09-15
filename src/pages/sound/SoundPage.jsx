@@ -98,7 +98,9 @@ const Rail = styled(VerticalTabsList)`
   flex-shrink: 0;
   align-self: start;
   position: sticky;
-  top: var(--space-400);
+  /* The TopNav is fixed, so a bare --space-400 offset sticks the rail behind
+     it and clips the tabs. --topnav-height is published by TopNav. */
+  top: calc(var(--topnav-height, 64px) + var(--space-400));
 
   @media (max-width: 720px) {
     max-width: none;

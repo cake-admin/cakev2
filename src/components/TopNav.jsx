@@ -344,14 +344,20 @@ const TopNav = ({ forceNoActive = false, siteOrigin } = {}) => {
 
   useLayoutEffect(() => {
     const el = barRef.current;
-    if (!el || typeof ResizeObserver === 'undefined') return undefined;
+    if (!el) return undefined;
 
+    /* --topnav-height lets sticky page furniture (docs rails) offset itself
+       below the fixed bar; BarSpacer alone only pushes static content down. */
     const sync = () => {
       const next = Math.ceil(el.getBoundingClientRect().height);
-      if (next > 0) setBarHeight(next);
+      if (next > 0) {
+        setBarHeight(next);
+        document.documentElement.style.setProperty('--topnav-height', `${next}px`);
+      }
     };
 
     sync();
+    if (typeof ResizeObserver === 'undefined') return undefined;
     const ro = new ResizeObserver(sync);
     ro.observe(el);
     return () => ro.disconnect();
