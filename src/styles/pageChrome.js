@@ -21,8 +21,15 @@ export const pageGutterX = css`
  * TopNav is `position: fixed` and its BarSpacer only pushes *static* content
  * down, so a sticky rail has to offset itself by the bar's measured height
  * (--topnav-height, published by TopNav) or it scrolls behind the nav and its
- * top tabs get clipped. Rails taller than the viewport scroll internally, so
- * their bottom items stay reachable instead of being pinned out of view.
+ * top tabs get clipped.
+ *
+ * The height cap is what makes that offset hold. A rail as tall as its grid
+ * container (the case whenever the open panel is shorter than the rail) has no
+ * range to stick in, so it just scrolls with the page and ends up bottom-
+ * aligned against the container — back under the nav. Capping the rail to the
+ * space actually available between the nav and the page's bottom chrome keeps
+ * it clear at every scroll position, and it scrolls internally so a rail taller
+ * than that (Components) keeps all of its items reachable.
  */
 export const stickyDocsRail = css`
   grid-column: 1;
@@ -32,7 +39,12 @@ export const stickyDocsRail = css`
   align-self: start;
   position: sticky;
   top: calc(var(--topnav-height, 64px) + var(--space-400));
-  max-height: calc(100vh - var(--topnav-height, 64px) - var(--space-400) * 2);
+  /* Viewport, less: the fixed nav, this rail's own top offset, the page
+     Content's padding-bottom (--space-600) and the site footer (48px). */
+  max-height: calc(
+    100vh - var(--topnav-height, 64px) - var(--space-400) - var(--space-600) -
+      var(--space-800)
+  );
   overflow-y: auto;
   ${nativeScrollbarStyles}
 
