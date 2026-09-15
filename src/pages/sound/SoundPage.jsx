@@ -5,6 +5,7 @@ import { ExternalLink } from 'lucide-react';
 import { Button } from '../../cakeand/components/Button';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
+import { Chip } from '../../cakeand/components/Chip/Chip';
 import {
   VerticalTabs,
   VerticalTabsList,
@@ -169,7 +170,7 @@ const Copy = styled.p`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(${(props) => props.$columns || 3}, minmax(0, 1fr));
   gap: var(--space-300);
 
   @media (max-width: 960px) {
@@ -190,6 +191,23 @@ const Actions = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-200);
+`;
+
+const TagList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+`;
+
+const Swatch = styled.span`
+  width: var(--space-100);
+  height: var(--space-100);
+  border-radius: var(--radius-1000);
+  background: currentColor;
 `;
 
 const EditorialTemplate = styled(SimpleCard)`
@@ -215,9 +233,61 @@ const useCases = [
   ['System', ['Startup', 'Shutdown', 'Charger connected', 'Charger disconnected']],
 ];
 
-const EditorialCard = ({ title, body }) => (
+const brandCharacter = [
+  ['Precise', 'Every onset has a reason; tails stop before they obscure the next action.'],
+  ['Calm', 'Attention comes from contrast and timing, not loudness or alarmism.'],
+  [
+    'Connected',
+    'Paired points, converging motion, and resolved tails suggest systems working together.',
+  ],
+  [
+    'Tactile',
+    'Felt, ceramic, coated glass, soft wood, and filtered air keep feedback physical but refined.',
+  ],
+  [
+    'Professional',
+    'Restrained detail and balanced tone support repeated use in work environments.',
+  ],
+];
+
+const acousticPalette = [
+  ['Tactile core', 'Presses, boundaries, state changes', ['felt', 'ceramic', 'coated polymer', 'soft wood']],
+  [
+    'Connected signal',
+    'Completions, arrivals, successful joins',
+    ['paired points', 'converging accents', 'one shared tail'],
+  ],
+  [
+    'Spatial air',
+    'Navigation, reveals, background progress',
+    ['filtered air', 'narrow sweeps', 'shallow halos'],
+  ],
+  [
+    'Priority edge',
+    'Warnings and critical conditions',
+    ['rounded glass', 'firm felt', 'controlled brightness'],
+  ],
+];
+
+const EditorialCard = ({ title, body, tags }) => (
   <Tile elevation="low">
-    <EditorialTemplate title={title} body={body} />
+    <EditorialTemplate
+      title={title}
+      body={body}
+      actions={
+        tags?.length ? (
+          <TagList aria-label={`${title} materials`}>
+            {tags.map((tag) => (
+              <li key={tag}>
+                <Chip type="secondary" size="sm" leadingIcon={<Swatch />}>
+                  {tag}
+                </Chip>
+              </li>
+            ))}
+          </TagList>
+        ) : undefined
+      }
+    />
   </Tile>
 );
 
@@ -294,6 +364,37 @@ const SoundPage = () => {
                           View source on GitHub
                         </Button>
                       </Actions>
+                    </Block>
+
+                    <Block>
+                      <SectionHeader>
+                        <Subhead>Brand character</Subhead>
+                        <Copy>
+                          Ampersand audio should clarify what changed, preserve focus,
+                          and make connected systems feel coherent.
+                        </Copy>
+                      </SectionHeader>
+                      <Grid $columns={4}>
+                        {brandCharacter.map(([title, body]) => (
+                          <EditorialCard key={title} title={title} body={body} />
+                        ))}
+                      </Grid>
+                    </Block>
+
+                    <Block>
+                      <SectionHeader>
+                        <Subhead>Acoustic palette</Subhead>
+                      </SectionHeader>
+                      <Grid>
+                        {acousticPalette.map(([title, body, tags]) => (
+                          <EditorialCard
+                            key={title}
+                            title={title}
+                            body={body}
+                            tags={tags}
+                          />
+                        ))}
+                      </Grid>
                     </Block>
 
                     <Block>
