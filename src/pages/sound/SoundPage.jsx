@@ -217,6 +217,7 @@ const EditorialTemplate = styled(SimpleCard)`
 const SECTIONS = [
   { id: 'overview', label: 'Overview', path: '/sound' },
   { id: 'library', label: 'Sound library', path: '/sound/library' },
+  { id: 'prompting', label: 'Prompting', path: '/sound/prompting' },
 ];
 
 const SOUND_REPO_URL = 'https://github.com/cake-admin/cake-sound-library';
@@ -269,13 +270,74 @@ const acousticPalette = [
   ],
 ];
 
-const EditorialCard = ({ title, body, tags }) => (
+const promptIngredients = [
+  ['Purpose', 'Confirm, Guide, Alert, State, or System — the job the cue has to do.'],
+  [
+    'Material',
+    'Name a Cake& surface: felt, ceramic, coated polymer, soft wood, paired points, filtered air, or rounded glass.',
+  ],
+  ['Character', 'Precise, Calm, Connected, Tactile, Professional — at least one, better two.'],
+  [
+    'Shape',
+    'Short one-shot, 100–400 ms. Rising or falling pairs for connected grammar. Tails that stop before the next action.',
+  ],
+];
+
+const promptWritingRules = [
+  [
+    'Describe the cue, not the story',
+    'Write what it sounds like. Prefer “UI confirm, soft felt tap” over “the sound of a successful save.”',
+  ],
+  [
+    'One sound per generation',
+    'Do not chain scenes. Generate a single one-shot, then layer in an editor if you truly need more.',
+  ],
+  [
+    'Commas for traits, not paragraphs',
+    'Purpose, material, character, duration, one-shot, and exclusions can live on one line.',
+  ],
+  [
+    'Say what it must not be',
+    'End with exclusions: no sci-fi, no cinematic trailer, no alarm, no long reverb, no glitch, no braam.',
+  ],
+];
+
+const promptExamples = [
+  [
+    'Confirm',
+    'UI confirm, soft felt tap with a paired ceramic accent, warm precise calm, 250 milliseconds, one-shot, no reverb, no sci-fi, no alarm',
+  ],
+  [
+    'Guide',
+    'UI volume up, coated glass tick with a slight rising pair of points, tactile connected, 180 milliseconds, one-shot, quiet, no whoosh tail',
+  ],
+  [
+    'Alert',
+    'UI warning, rounded glass with firm felt, controlled brightness, 300 milliseconds, one-shot, calm not alarmist, no buzzer, no glitch',
+  ],
+  [
+    'State',
+    'UI camera open, filtered air with a shallow halo and a short felt boundary, professional restrained, 220 milliseconds, one-shot, no cinematic impact',
+  ],
+];
+
+const PROMPT_FORMULA =
+  '[purpose], [material], [character], [duration], one-shot, [exclusions]';
+
+const copyPrompt = (text) => {
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {});
+  }
+};
+
+const EditorialCard = ({ title, body, tags, actions }) => (
   <Tile elevation="low">
     <EditorialTemplate
       title={title}
       body={body}
       actions={
-        tags?.length ? (
+        actions ??
+        (tags?.length ? (
           <TagList aria-label={`${title} materials`}>
             {tags.map((tag) => (
               <li key={tag}>
@@ -285,7 +347,7 @@ const EditorialCard = ({ title, body, tags }) => (
               </li>
             ))}
           </TagList>
-        ) : undefined
+        ) : undefined)
       }
     />
   </Tile>
@@ -363,6 +425,14 @@ const SoundPage = () => {
                         >
                           View source on GitHub
                         </Button>
+                        <Button
+                          intent="secondary"
+                          variant="ghost"
+                          size="md"
+                          onClick={() => navigate('/sound/prompting')}
+                        >
+                          Prompt a Cake&amp; sound
+                        </Button>
                       </Actions>
                     </Block>
 
@@ -434,6 +504,122 @@ const SoundPage = () => {
                       </SectionHeader>
                       <SoundLibrary />
                     </Block>
+                </Section>
+              </Panel>
+
+              <Panel value="prompting">
+                <Section>
+                  <Block>
+                    <SectionHeader>
+                      <SectionTitle>Prompt a Cake&amp; sound</SectionTitle>
+                      <Lead>
+                        Write the prompt so a generated cue could sit next to Confirm
+                        Up without sounding like a different product.
+                      </Lead>
+                      <Copy>
+                        Name purpose, material, character, and duration in one line.
+                        If any of those is missing, the model will invent a generic
+                        notification. These prompts work in Firefly, ElevenLabs, and
+                        similar text-to-SFX tools — set duration when the tool allows,
+                        generate several variations, and listen next to the library.
+                      </Copy>
+                    </SectionHeader>
+                  </Block>
+
+                  <Block>
+                    <SectionHeader>
+                      <Subhead>Prompt recipe</Subhead>
+                      <Copy>
+                        Lock every ingredient to Cake&amp; DNA. Do not invent a second
+                        palette or a cinematic vocabulary.
+                      </Copy>
+                    </SectionHeader>
+                    <EditorialCard
+                      title="Formula"
+                      body={PROMPT_FORMULA}
+                      actions={
+                        <Button
+                          intent="secondary"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => copyPrompt(PROMPT_FORMULA)}
+                        >
+                          Copy prompt
+                        </Button>
+                      }
+                    />
+                    <Grid $columns={4}>
+                      {promptIngredients.map(([title, body]) => (
+                        <EditorialCard key={title} title={title} body={body} />
+                      ))}
+                    </Grid>
+                  </Block>
+
+                  <Block>
+                    <SectionHeader>
+                      <Subhead>How to write it</Subhead>
+                    </SectionHeader>
+                    <Grid $columns={4}>
+                      {promptWritingRules.map(([title, body]) => (
+                        <EditorialCard key={title} title={title} body={body} />
+                      ))}
+                    </Grid>
+                  </Block>
+
+                  <Block>
+                    <SectionHeader>
+                      <Subhead>Example prompts</Subhead>
+                      <Copy>
+                        Paste one of these as a starting point, then swap purpose or
+                        material to match the interaction.
+                      </Copy>
+                    </SectionHeader>
+                    <Grid>
+                      {promptExamples.map(([title, prompt]) => (
+                        <EditorialCard
+                          key={title}
+                          title={title}
+                          body={prompt}
+                          actions={
+                            <Button
+                              intent="secondary"
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => copyPrompt(prompt)}
+                            >
+                              Copy prompt
+                            </Button>
+                          }
+                        />
+                      ))}
+                    </Grid>
+                  </Block>
+
+                  <Block>
+                    <SectionHeader>
+                      <Subhead>Do / Don’t</Subhead>
+                    </SectionHeader>
+                    <Grid $columns={2}>
+                      <EditorialCard
+                        title="Do"
+                        body="Short, felt / ceramic / wood / glass, paired points, one-shot, work-appropriate. Generate variations and listen against the Cake& sound library."
+                      />
+                      <EditorialCard
+                        title="Don’t"
+                        body="Braam, glitch, drone, sci-fi, trailer hit, looping ambience, speech, music, robotic, loud explosion, or “the sound of…”"
+                      />
+                    </Grid>
+                    <Actions>
+                      <Button
+                        intent="secondary"
+                        variant="outline"
+                        size="md"
+                        onClick={() => navigate('/sound/library')}
+                      >
+                        Compare with the library
+                      </Button>
+                    </Actions>
+                  </Block>
                 </Section>
               </Panel>
             </Layout>

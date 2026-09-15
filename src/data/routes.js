@@ -49,6 +49,14 @@ export const routes = [
     category: 'resources',
   },
   {
+    path: '/sound/prompting',
+    component: SoundPage,
+    title: 'Prompt a Cake& sound',
+    description:
+      'Write text-to-sound prompts so generated UI cues share Cake& DNA and belong with the official library',
+    category: 'resources',
+  },
+  {
     path: '/foundations',
     component: FoundationsPage,
     title: 'Foundations',
