@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { List, Menu as MenuIcon, Volume2, X } from 'lucide-react';
+import { AudioLines, List, Menu as MenuIcon, X } from 'lucide-react';
 import { Dropdown } from '../cakeand/components/Dropdown';
 import { useSiteTheme, THEME_OPTIONS } from '../theme/SiteThemeProvider';
 import { NAV_SECTIONS, getActiveSection, isBlogPath } from '../data/nav';
@@ -297,7 +297,7 @@ const SectionIcon = ({ id }) => {
   if (id === 'sound') {
     return (
       <IconSlot aria-hidden>
-        <Volume2 />
+        <AudioLines />
       </IconSlot>
     );
   }
