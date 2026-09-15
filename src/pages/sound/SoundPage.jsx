@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { ExternalLink } from 'lucide-react';
 import { Button } from '../../cakeand/components/Button';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
@@ -196,6 +197,12 @@ const Tile = styled(Card)`
   min-width: 0;
 `;
 
+const Actions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-200);
+`;
+
 const EditorialTemplate = styled(SimpleCard)`
   height: 100%;
 `;
@@ -204,6 +211,12 @@ const SECTIONS = [
   { id: 'overview', label: 'Overview', path: '/sound' },
   { id: 'library', label: 'Sound library', path: '/sound/library' },
 ];
+
+const SOUND_REPO_URL = 'https://github.com/cake-admin/cake-sound-library';
+
+const openExternal = (href) => {
+  window.open(href, '_blank', 'noopener,noreferrer');
+};
 
 const useCases = [
   ['Confirm', ['Success', 'Completion', 'Connected', 'Enabled']],
@@ -273,7 +286,7 @@ const SoundPage = () => {
                           textual experience.
                         </Copy>
                       </SectionHeader>
-                      <div>
+                      <Actions>
                         <Button
                           intent="primary"
                           variant="fill"
@@ -282,7 +295,16 @@ const SoundPage = () => {
                         >
                           Explore the sound library
                         </Button>
-                      </div>
+                        <Button
+                          intent="secondary"
+                          variant="outline"
+                          size="md"
+                          endIcon={<ExternalLink size={16} aria-hidden />}
+                          onClick={() => openExternal(SOUND_REPO_URL)}
+                        >
+                          View source on GitHub
+                        </Button>
+                      </Actions>
                     </Block>
 
                     <Block>
