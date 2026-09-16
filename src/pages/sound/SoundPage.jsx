@@ -425,14 +425,6 @@ const SoundPage = () => {
                         >
                           View source on GitHub
                         </Button>
-                        <Button
-                          intent="secondary"
-                          variant="ghost"
-                          size="md"
-                          onClick={() => navigate('/sound/prompting')}
-                        >
-                          Prompt a Cake&amp; sound
-                        </Button>
                       </Actions>
                     </Block>
 
