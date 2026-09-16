@@ -203,13 +203,6 @@ const TagList = styled.ul`
   width: 100%;
 `;
 
-const Swatch = styled.span`
-  width: var(--space-100);
-  height: var(--space-100);
-  border-radius: var(--radius-1000);
-  background: currentColor;
-`;
-
 const EditorialTemplate = styled(SimpleCard)`
   height: 100%;
 `;
@@ -341,7 +334,7 @@ const EditorialCard = ({ title, body, tags, actions }) => (
           <TagList aria-label={`${title} materials`}>
             {tags.map((tag) => (
               <li key={tag}>
-                <Chip type="secondary" size="sm" leadingIcon={<Swatch />}>
+                <Chip type="secondary" size="sm">
                   {tag}
                 </Chip>
               </li>
@@ -424,14 +417,6 @@ const SoundPage = () => {
                           onClick={() => openExternal(SOUND_REPO_URL)}
                         >
                           View source on GitHub
-                        </Button>
-                        <Button
-                          intent="secondary"
-                          variant="ghost"
-                          size="md"
-                          onClick={() => navigate('/sound/prompting')}
-                        >
-                          Prompt a Cake&amp; sound
                         </Button>
                       </Actions>
                     </Block>
