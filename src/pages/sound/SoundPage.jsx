@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Toast as RadixToast } from 'radix-ui';
 import { Copy as CopyIcon, ExternalLink } from 'lucide-react';
 import { Button } from '../../cakeand/components/Button';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
 import { Chip } from '../../cakeand/components/Chip/Chip';
+import { Toast } from '../../cakeand/components/Toast';
 import {
   VerticalTabs,
   VerticalTabsList,
@@ -41,6 +43,21 @@ const Layer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+`;
+
+const ToastViewport = styled(RadixToast.Viewport)`
+  position: fixed;
+  right: var(--space-400);
+  bottom: var(--space-400);
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  width: min(calc(100% - var(--space-800)), 40rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  outline: none;
 `;
 
 const Hero = styled.section`
@@ -314,19 +331,25 @@ const promptExamples = [
   ],
 ];
 
-const copyPrompt = (text) => {
-  if (navigator.clipboard?.writeText) {
-    navigator.clipboard.writeText(text).catch(() => {});
+const copyPrompt = async (text) => {
+  if (!navigator.clipboard?.writeText) return false;
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return false;
   }
 };
 
-const CopyPromptButton = ({ text }) => (
+const CopyPromptButton = ({ text, onCopied }) => (
   <Button
     intent="secondary"
     variant="fill"
     size="sm"
     endIcon={<CopyIcon size={16} aria-hidden />}
-    onClick={() => copyPrompt(text)}
+    onClick={async () => {
+      if (await copyPrompt(text)) onCopied?.();
+    }}
   >
     Copy prompt
   </Button>
@@ -367,8 +390,15 @@ const SoundPage = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const activeTab = tabFromPath(pathname);
+  const [copyToastOpen, setCopyToastOpen] = useState(false);
+
+  const notifyCopied = () => {
+    setCopyToastOpen(false);
+    requestAnimationFrame(() => setCopyToastOpen(true));
+  };
 
   return (
+    <RadixToast.Provider>
     <SoundPlayerProvider>
       <Page>
         <StickyWallpaper aria-hidden>
@@ -560,7 +590,7 @@ const SoundPage = () => {
                           key={title}
                           title={title}
                           body={prompt}
-                          actions={<CopyPromptButton text={prompt} />}
+                          actions={<CopyPromptButton text={prompt} onCopied={notifyCopied} />}
                         />
                       ))}
                     </Grid>
@@ -586,8 +616,17 @@ const SoundPage = () => {
             </Layout>
           </Content>
         </Layer>
+        <Toast
+          status="success"
+          title="Prompt copied to clipboard"
+          open={copyToastOpen}
+          onOpenChange={setCopyToastOpen}
+          onDismiss={() => setCopyToastOpen(false)}
+        />
+        <ToastViewport />
       </Page>
     </SoundPlayerProvider>
+    </RadixToast.Provider>
   );
 };
 
