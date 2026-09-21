@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Search } from 'lucide-react';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
-import { Badge } from '../../cakeand/components/Badge/Badge';
+import { Badge, BADGE_PALETTE } from '../../cakeand/components/Badge/Badge';
 import { Chip } from '../../cakeand/components/Chip/Chip';
 import { Dropdown } from '../../cakeand/components/Dropdown';
 import { HelperString } from '../../cakeand/components/Elements/HelperString';
@@ -56,10 +56,11 @@ const WaveMedia = styled.div`
   padding: var(--space-300) var(--space-400);
 `;
 
-const BadgeRow = styled.div`
+const ClassificationRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
+  align-items: center;
   gap: var(--space-100);
 `;
 
@@ -105,6 +106,25 @@ const capitalizeLabel = (value) => {
   return value.charAt(0).toUpperCase() + value.slice(1);
 };
 
+/** One cake& Badge palette color per distinct property label (High, Focused, …). */
+const PROPERTY_BADGE_COLOR = (() => {
+  const labels = new Set();
+  soundCatalog.forEach((sound) => {
+    Object.values(sound.attributes).forEach((value) => {
+      if (value) labels.add(capitalizeLabel(value));
+    });
+    labels.add(capitalizeLabel(sound.hierarchy || 'Unclassified'));
+  });
+  const colors = {};
+  [...labels].sort().forEach((label, index) => {
+    colors[label] = BADGE_PALETTE[index % BADGE_PALETTE.length];
+  });
+  return colors;
+})();
+
+const propertyBadgeColor = (value) =>
+  PROPERTY_BADGE_COLOR[capitalizeLabel(value)] ?? 'secondary';
+
 const SoundLibraryCard = ({ sound }) => {
   const [fileId, setFileId] = useState(sound.primary.id);
   const selectedFile = sound.files.find((file) => file.id === fileId) ?? sound.primary;
@@ -128,18 +148,18 @@ const SoundLibraryCard = ({ sound }) => {
         }
         title={sound.name}
         menu={
-          <BadgeRow aria-label={`${sound.name} classification`}>
+          <ClassificationRow aria-label={`${sound.name} classification`}>
             {sound.family ? (
-              <Badge color="secondary" tone="subtle" dot={false}>
+              <Chip type="secondary" size="sm">
                 {capitalizeLabel(sound.family)}
-              </Badge>
+              </Chip>
             ) : null}
             {sound.category ? (
-              <Badge color="secondary" tone="subtle" dot={false}>
+              <Chip type="secondary" size="sm">
                 {capitalizeLabel(sound.category)}
-              </Badge>
+              </Chip>
             ) : null}
-          </BadgeRow>
+          </ClassificationRow>
         }
         body={sound.description || 'No authored description is available yet.'}
         actions={
@@ -149,15 +169,24 @@ const SoundLibraryCard = ({ sound }) => {
                 Properties
               </InputLabel>
               <Attributes aria-labelledby={`${sound.id}-properties`}>
-                {Object.values(sound.attributes).map((attribute) => (
-                  <li key={attribute}>
-                    <Chip type="secondary" size="sm">{capitalizeLabel(attribute)}</Chip>
-                  </li>
-                ))}
+                {Object.values(sound.attributes).map((attribute) => {
+                  const label = capitalizeLabel(attribute);
+                  return (
+                    <li key={attribute}>
+                      <Badge color={propertyBadgeColor(label)} tone="subtle" dot={false}>
+                        {label}
+                      </Badge>
+                    </li>
+                  );
+                })}
                 <li>
-                  <Chip type="secondary" size="sm">
+                  <Badge
+                    color={propertyBadgeColor(sound.hierarchy || 'Unclassified')}
+                    tone="subtle"
+                    dot={false}
+                  >
                     {capitalizeLabel(sound.hierarchy || 'Unclassified')}
-                  </Chip>
+                  </Badge>
                 </li>
               </Attributes>
             </PropertyField>
