@@ -100,6 +100,11 @@ const Empty = styled.div`
   text-align: center;
 `;
 
+const capitalizeLabel = (value) => {
+  if (!value) return value;
+  return value.charAt(0).toUpperCase() + value.slice(1);
+};
+
 const SoundLibraryCard = ({ sound }) => {
   const [fileId, setFileId] = useState(sound.primary.id);
   const selectedFile = sound.files.find((file) => file.id === fileId) ?? sound.primary;
@@ -126,12 +131,12 @@ const SoundLibraryCard = ({ sound }) => {
           <BadgeRow aria-label={`${sound.name} classification`}>
             {sound.family ? (
               <Badge color="secondary" tone="subtle" dot={false}>
-                {sound.family}
+                {capitalizeLabel(sound.family)}
               </Badge>
             ) : null}
             {sound.category ? (
               <Badge color="secondary" tone="subtle" dot={false}>
-                {sound.category}
+                {capitalizeLabel(sound.category)}
               </Badge>
             ) : null}
           </BadgeRow>
@@ -146,12 +151,12 @@ const SoundLibraryCard = ({ sound }) => {
               <Attributes aria-labelledby={`${sound.id}-properties`}>
                 {Object.values(sound.attributes).map((attribute) => (
                   <li key={attribute}>
-                    <Chip type="secondary" size="sm">{attribute}</Chip>
+                    <Chip type="secondary" size="sm">{capitalizeLabel(attribute)}</Chip>
                   </li>
                 ))}
                 <li>
                   <Chip type="secondary" size="sm">
-                    {sound.hierarchy || 'Unclassified'}
+                    {capitalizeLabel(sound.hierarchy || 'Unclassified')}
                   </Chip>
                 </li>
               </Attributes>
