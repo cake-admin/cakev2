@@ -344,7 +344,7 @@ const EditorialCard = ({ title, body, tags, actions }) => (
             {tags.map((tag) => (
               <li key={tag}>
                 <Chip type="secondary" size="sm">
-                  {tag}
+                  {tag.charAt(0).toUpperCase() + tag.slice(1)}
                 </Chip>
               </li>
             ))}
