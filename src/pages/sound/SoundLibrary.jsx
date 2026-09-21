@@ -160,7 +160,7 @@ const SoundLibraryCard = ({ sound }) => {
               <VariantField>
                 <Dropdown
                   id={`variant-${sound.id}`}
-                  label={`${sound.name} version`}
+                  label="Variant"
                   value={selectedFile.id}
                   onValueChange={setFileId}
                   options={options}
