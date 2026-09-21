@@ -125,7 +125,7 @@ const SoundLibraryCard = ({ sound }) => {
         menu={
           <BadgeRow aria-label={`${sound.name} classification`}>
             {sound.family ? (
-              <Badge color="primary" tone="subtle" dot={false}>
+              <Badge color="secondary" tone="subtle" dot={false}>
                 {sound.family}
               </Badge>
             ) : null}
