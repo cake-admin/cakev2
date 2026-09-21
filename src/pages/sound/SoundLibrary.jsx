@@ -55,14 +55,6 @@ const WaveMedia = styled.div`
   padding: var(--space-300) var(--space-400);
 `;
 
-const ClassificationRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  align-items: center;
-  gap: var(--space-100);
-`;
-
 const Attributes = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -127,23 +119,32 @@ const SoundLibraryCard = ({ sound }) => {
           </WaveMedia>
         }
         title={sound.name}
-        menu={
-          <ClassificationRow aria-label={`${sound.name} classification`}>
-            {sound.family ? (
-              <Chip type="secondary" size="sm">
-                {capitalizeLabel(sound.family)}
-              </Chip>
-            ) : null}
-            {sound.category ? (
-              <Chip type="secondary" size="sm">
-                {capitalizeLabel(sound.category)}
-              </Chip>
-            ) : null}
-          </ClassificationRow>
-        }
         body={sound.description || 'No authored description is available yet.'}
         actions={
           <ActionStack>
+            {sound.family || sound.category ? (
+              <PropertyField>
+                <InputLabel size="sm" id={`${sound.id}-type`}>
+                  Type
+                </InputLabel>
+                <Attributes aria-labelledby={`${sound.id}-type`}>
+                  {sound.family ? (
+                    <li>
+                      <Chip type="secondary" size="sm">
+                        {capitalizeLabel(sound.family)}
+                      </Chip>
+                    </li>
+                  ) : null}
+                  {sound.category ? (
+                    <li>
+                      <Chip type="secondary" size="sm">
+                        {capitalizeLabel(sound.category)}
+                      </Chip>
+                    </li>
+                  ) : null}
+                </Attributes>
+              </PropertyField>
+            ) : null}
             <PropertyField>
               <InputLabel size="sm" id={`${sound.id}-properties`}>
                 Properties
