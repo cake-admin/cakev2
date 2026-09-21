@@ -192,6 +192,11 @@ const Grid = styled.div`
   align-items: stretch;
   gap: var(--space-300);
 
+  & > * {
+    align-self: stretch;
+    min-height: 0;
+  }
+
   @media (max-width: 960px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -202,10 +207,35 @@ const Grid = styled.div`
 `;
 
 const Tile = styled(Card)`
-  height: 100%;
   min-width: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
+
+  [data-fill-card] {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+  }
+
+  [data-fill-card] > div {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+  }
+
+  [data-fill-card] > div > div:first-child {
+    flex: 1 1 auto;
+  }
+
+  [data-fill-card] > div > div:last-child:not(:only-child) {
+    margin-top: auto;
+    justify-content: flex-start;
+  }
 `;
 
 const Actions = styled.div`
@@ -224,30 +254,9 @@ const TagList = styled.ul`
   width: 100%;
 `;
 
-const EditorialTemplate = styled(SimpleCard)`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-
-  /* SimpleCard content column */
-  & > div {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-
-  /* Head grows so the actions row stays on the bottom left */
-  & > div > div:first-child {
-    flex: 1;
-  }
-
-  & > div > div:last-child:not(:only-child) {
-    margin-top: auto;
-    justify-content: flex-start;
-  }
-`;
+const EditorialTemplate = styled(SimpleCard).attrs({
+  'data-fill-card': true,
+})``;
 
 const TitleCluster = styled.span`
   display: inline-flex;
