@@ -7,6 +7,7 @@ import { Button } from '../../cakeand/components/Button';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
 import { Chip } from '../../cakeand/components/Chip/Chip';
+import { ModalIcon } from '../../cakeand/components/Modal/ModalIcon';
 import { Toast } from '../../cakeand/components/Toast';
 import {
   VerticalTabs,
@@ -222,6 +223,22 @@ const TagList = styled.ul`
 
 const EditorialTemplate = styled(SimpleCard)`
   height: 100%;
+
+  /* Fill the Card so action rows sit on the bottom edge. */
+  & > div {
+    flex: 1;
+    min-height: 0;
+  }
+
+  & > div > div:first-child {
+    flex: 1;
+  }
+`;
+
+const TitleCluster = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-200);
 `;
 
 const SECTIONS = [
@@ -355,10 +372,19 @@ const CopyPromptButton = ({ text, onCopied }) => (
   </Button>
 );
 
-const EditorialCard = ({ title, body, tags, actions }) => (
+const EditorialCard = ({ title, body, tags, actions, tone }) => (
   <Tile elevation="low">
     <EditorialTemplate
-      title={title}
+      title={
+        tone ? (
+          <TitleCluster>
+            <ModalIcon type={tone} decorative />
+            {title}
+          </TitleCluster>
+        ) : (
+          title
+        )
+      }
       body={body}
       actions={
         actions ??
@@ -603,10 +629,12 @@ const SoundPage = () => {
                     <Grid $columns={2}>
                       <EditorialCard
                         title="Do"
+                        tone="success"
                         body="Short, felt / ceramic / wood / glass, paired points, one-shot, work-appropriate. Generate variations and listen against the Cake& sound library."
                       />
                       <EditorialCard
                         title="Don’t"
+                        tone="error"
                         body="Braam, glitch, drone, sci-fi, trailer hit, looping ambience, speech, music, robotic, loud explosion, or “the sound of…”"
                       />
                     </Grid>
