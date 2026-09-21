@@ -314,9 +314,6 @@ const promptExamples = [
   ],
 ];
 
-const PROMPT_FORMULA =
-  '[purpose], [material], [character], [duration], one-shot, [exclusions]';
-
 const copyPrompt = (text) => {
   if (navigator.clipboard?.writeText) {
     navigator.clipboard.writeText(text).catch(() => {});
@@ -531,11 +528,6 @@ const SoundPage = () => {
                         palette or a cinematic vocabulary.
                       </Copy>
                     </SectionHeader>
-                    <EditorialCard
-                      title="Formula"
-                      body={PROMPT_FORMULA}
-                      actions={<CopyPromptButton text={PROMPT_FORMULA} />}
-                    />
                     <Grid $columns={4}>
                       {promptIngredients.map(([title, body]) => (
                         <EditorialCard key={title} title={title} body={body} />
