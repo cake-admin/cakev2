@@ -189,6 +189,7 @@ const Copy = styled.p`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(${(props) => props.$columns || 3}, minmax(0, 1fr));
+  align-items: stretch;
   gap: var(--space-300);
 
   @media (max-width: 960px) {
@@ -203,6 +204,8 @@ const Grid = styled.div`
 const Tile = styled(Card)`
   height: 100%;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Actions = styled.div`
@@ -222,16 +225,27 @@ const TagList = styled.ul`
 `;
 
 const EditorialTemplate = styled(SimpleCard)`
-  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 
-  /* Fill the Card so action rows sit on the bottom edge. */
+  /* SimpleCard content column */
   & > div {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     min-height: 0;
   }
 
+  /* Head grows so the actions row stays on the bottom left */
   & > div > div:first-child {
     flex: 1;
+  }
+
+  & > div > div:last-child:not(:only-child) {
+    margin-top: auto;
+    justify-content: flex-start;
   }
 `;
 
