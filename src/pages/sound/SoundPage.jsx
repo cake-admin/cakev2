@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { ExternalLink } from 'lucide-react';
+import { Copy, ExternalLink } from 'lucide-react';
 import { Button } from '../../cakeand/components/Button';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
@@ -323,6 +323,18 @@ const copyPrompt = (text) => {
   }
 };
 
+const CopyPromptButton = ({ text }) => (
+  <Button
+    intent="secondary"
+    variant="fill"
+    size="sm"
+    endIcon={<Copy size={16} aria-hidden />}
+    onClick={() => copyPrompt(text)}
+  >
+    Copy prompt
+  </Button>
+);
+
 const EditorialCard = ({ title, body, tags, actions }) => (
   <Tile elevation="low">
     <EditorialTemplate
@@ -522,16 +534,7 @@ const SoundPage = () => {
                     <EditorialCard
                       title="Formula"
                       body={PROMPT_FORMULA}
-                      actions={
-                        <Button
-                          intent="secondary"
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => copyPrompt(PROMPT_FORMULA)}
-                        >
-                          Copy prompt
-                        </Button>
-                      }
+                      actions={<CopyPromptButton text={PROMPT_FORMULA} />}
                     />
                     <Grid $columns={4}>
                       {promptIngredients.map(([title, body]) => (
@@ -565,16 +568,7 @@ const SoundPage = () => {
                           key={title}
                           title={title}
                           body={prompt}
-                          actions={
-                            <Button
-                              intent="secondary"
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => copyPrompt(prompt)}
-                            >
-                              Copy prompt
-                            </Button>
-                          }
+                          actions={<CopyPromptButton text={prompt} />}
                         />
                       ))}
                     </Grid>
