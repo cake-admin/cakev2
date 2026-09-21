@@ -7,6 +7,7 @@ import { Badge } from '../../cakeand/components/Badge/Badge';
 import { Chip } from '../../cakeand/components/Chip/Chip';
 import { Dropdown } from '../../cakeand/components/Dropdown';
 import { HelperString } from '../../cakeand/components/Elements/HelperString';
+import { InputLabel } from '../../cakeand/components/Elements/InputLabel';
 import { TextInput } from '../../cakeand/components/TextInput';
 import {
   soundCatalog,
@@ -71,6 +72,14 @@ const Attributes = styled.ul`
   list-style: none;
 `;
 
+const PropertyField = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  width: 100%;
+  min-width: 0;
+`;
+
 const ActionStack = styled.div`
   display: flex;
   flex: 1;
@@ -130,18 +139,23 @@ const SoundLibraryCard = ({ sound }) => {
         body={sound.description || 'No authored description is available yet.'}
         actions={
           <ActionStack>
-            <Attributes aria-label={`${sound.name} sonic attributes`}>
-              {Object.values(sound.attributes).map((attribute) => (
-                <li key={attribute}>
-                  <Chip type="secondary" size="sm">{attribute}</Chip>
+            <PropertyField>
+              <InputLabel size="sm" id={`${sound.id}-properties`}>
+                Properties
+              </InputLabel>
+              <Attributes aria-labelledby={`${sound.id}-properties`}>
+                {Object.values(sound.attributes).map((attribute) => (
+                  <li key={attribute}>
+                    <Chip type="secondary" size="sm">{attribute}</Chip>
+                  </li>
+                ))}
+                <li>
+                  <Chip type="secondary" size="sm">
+                    {sound.hierarchy || 'Unclassified'}
+                  </Chip>
                 </li>
-              ))}
-              <li>
-                <Chip type="secondary" size="sm">
-                  {sound.hierarchy || 'Unclassified'}
-                </Chip>
-              </li>
-            </Attributes>
+              </Attributes>
+            </PropertyField>
             {sound.files.length > 1 ? (
               <VariantField>
                 <Dropdown
