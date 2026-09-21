@@ -594,16 +594,6 @@ const SoundPage = () => {
                         body="Braam, glitch, drone, sci-fi, trailer hit, looping ambience, speech, music, robotic, loud explosion, or “the sound of…”"
                       />
                     </Grid>
-                    <Actions>
-                      <Button
-                        intent="secondary"
-                        variant="outline"
-                        size="md"
-                        onClick={() => navigate('/sound/library')}
-                      >
-                        Compare with the library
-                      </Button>
-                    </Actions>
                   </Block>
                 </Section>
               </Panel>
