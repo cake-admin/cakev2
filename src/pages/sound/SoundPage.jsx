@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Copy, ExternalLink } from 'lucide-react';
+import { Copy as CopyIcon, ExternalLink } from 'lucide-react';
 import { Button } from '../../cakeand/components/Button';
 import { Card } from '../../cakeand/components/Card';
 import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
@@ -328,7 +328,7 @@ const CopyPromptButton = ({ text }) => (
     intent="secondary"
     variant="fill"
     size="sm"
-    endIcon={<Copy size={16} aria-hidden />}
+    endIcon={<CopyIcon size={16} aria-hidden />}
     onClick={() => copyPrompt(text)}
   >
     Copy prompt
