@@ -5,7 +5,7 @@ const WaveformSvg = styled.svg`
   display: block;
   width: 100%;
   height: 56px;
-  background: var(--color-surfaces-container);
+  background: var(--page-on-media, var(--color-surfaces-container));
   color: var(--color-primary-primary);
 `;
 
