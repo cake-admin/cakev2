@@ -44,8 +44,10 @@ export const SoundPlayerProvider = ({ children }) => {
     const audio = audioRef.current;
     if (!audio) return;
 
+    // Stop, not pause: rewind so the next press replays from the beginning.
     if (activeId === file.id && !audio.paused) {
       audio.pause();
+      audio.currentTime = 0;
       return;
     }
 
@@ -115,6 +117,18 @@ const PlayCircleGlyph = () => (
   </svg>
 );
 
+/** Stop counterpart of `PlayCircleGlyph`: same filled circle, square cut-out. */
+const StopCircleGlyph = () => (
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden focusable="false">
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2ZM10 8.5C9.17157 8.5 8.5 9.17157 8.5 10V14C8.5 14.8284 9.17157 15.5 10 15.5H14C14.8284 15.5 15.5 14.8284 15.5 14V10C15.5 9.17157 14.8284 8.5 14 8.5H10Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
 const SoundPreview = ({ sound, file = sound.primary, showWaveform = true }) => {
   const player = useContext(PlayerContext);
   if (!player) {
@@ -129,12 +143,11 @@ const SoundPreview = ({ sound, file = sound.primary, showWaveform = true }) => {
     <div>
       <Preview>
         <IconButton
-          label={isPlaying ? `${sound.name} is playing` : `Play ${sound.name}`}
-          icon={<PlayCircleGlyph />}
+          label={isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`}
+          icon={isPlaying ? <StopCircleGlyph /> : <PlayCircleGlyph />}
           intent="primary"
           variant="tonal"
           size="lg"
-          disabled={isPlaying}
           onClick={() => player.toggle(file)}
         />
         <WaveformSurface>
