@@ -94,6 +94,14 @@ const WaveformSurface = styled.div`
   height: 56px;
   min-width: 0;
   overflow: hidden;
+  background: var(--color-surfaces-container);
+
+  /* Figma 177:4431 keeps the audio wave on white in dark mode. Windows HCT
+     retains its native dark card surface so the cyan primary stroke remains
+     high contrast. */
+  html[data-theme='dark.a'] & {
+    background: var(--color-text-icon-primary);
+  }
 `;
 
 const ErrorWrap = styled.div`
@@ -145,7 +153,7 @@ const SoundPreview = ({ sound, file = sound.primary, showWaveform = true }) => {
           label={isPlaying ? `Stop ${sound.name}` : `Play ${sound.name}`}
           icon={isPlaying ? <StopCircleGlyph /> : <PlayCircleGlyph />}
           intent="primary"
-          variant="tonal"
+          variant="fill"
           size="lg"
           onClick={() => player.toggle(file)}
         />
