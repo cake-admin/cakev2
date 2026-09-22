@@ -246,45 +246,6 @@ const Actions = styled.div`
   gap: var(--space-200);
 `;
 
-const UseCaseList = styled.dl`
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-400) var(--space-500);
-  margin: 0;
-  padding: var(--space-500);
-
-  @media (max-width: 960px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  @media (max-width: 620px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const UseCaseGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-100);
-  min-width: 0;
-`;
-
-const UseCaseTerm = styled.dt`
-  margin: 0;
-  color: var(--color-text-icon-primary);
-  font-size: var(--type-size-subtitle);
-  font-weight: var(--font-weight-bold);
-  line-height: 1.35;
-`;
-
-const UseCaseDetail = styled.dd`
-  margin: 0;
-  color: var(--color-text-icon-secondary);
-  font-size: var(--type-size-body);
-  letter-spacing: 0.2px;
-  line-height: 1.35;
-`;
-
 const TagList = styled.ul`
   display: flex;
   flex-wrap: wrap;
@@ -588,16 +549,15 @@ const SoundPage = () => {
                           Organize sound by what the user needs to understand or do.
                         </Copy>
                       </SectionHeader>
-                      <Card elevation="low">
-                        <UseCaseList>
-                          {useCases.map(([title, items]) => (
-                            <UseCaseGroup key={title}>
-                              <UseCaseTerm>{title}</UseCaseTerm>
-                              <UseCaseDetail>{items.join(' · ')}</UseCaseDetail>
-                            </UseCaseGroup>
-                          ))}
-                        </UseCaseList>
-                      </Card>
+                      <Grid>
+                        {useCases.map(([title, items]) => (
+                          <EditorialCard
+                            key={title}
+                            title={title}
+                            body={items.join(' · ')}
+                          />
+                        ))}
+                      </Grid>
                       <EditorialCard
                         title="When not to use sound"
                         body="Introduce sound only when it adds meaningful information. Do not add a cue simply to decorate a transition, repeat obvious visual feedback, or fill silence. Frequent actions should remain quiet unless sound materially improves awareness or confidence."
