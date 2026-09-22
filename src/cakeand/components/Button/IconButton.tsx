@@ -87,8 +87,12 @@ const colorStyles = (intent: IconButtonIntent, variant: IconButtonVariant) => {
   if (variant === 'tonal') {
     return p
       ? css`
+          /* The translucent overlay lets the page surface through, so the icon
+             takes the theme-flipping on-tonal token (as tonal·secondary does).
+             on-tonal-inverse stays navy in both themes and belongs on Button's
+             solid --color-tonal-tonal container, not on this one. */
           background: var(--color-tonal-tonal-overlay);
-          color: var(--color-text-icon-on-tonal-inverse);
+          color: var(--color-text-icon-on-tonal);
           &:hover:not(:disabled) { background: var(--color-tonal-tonal-overlay-hover); }
           &:active:not(:disabled) { background: var(--color-tonal-tonal-overlay-press); }
         `
