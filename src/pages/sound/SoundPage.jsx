@@ -558,10 +558,19 @@ const SoundPage = () => {
                           />
                         ))}
                       </Grid>
-                      <EditorialCard
-                        title="When not to use sound"
-                        body="Introduce sound only when it adds meaningful information. Do not add a cue simply to decorate a transition, repeat obvious visual feedback, or fill silence. Frequent actions should remain quiet unless sound materially improves awareness or confidence."
-                      />
+                    </Block>
+
+                    <Block>
+                      <SectionHeader>
+                        <Subhead>When not to use sound</Subhead>
+                        <Copy>
+                          Introduce sound only when it adds meaningful information. Do
+                          not add a cue simply to decorate a transition, repeat obvious
+                          visual feedback, or fill silence. Frequent actions should
+                          remain quiet unless sound materially improves awareness or
+                          confidence.
+                        </Copy>
+                      </SectionHeader>
                     </Block>
                 </Section>
               </Panel>
