@@ -4,13 +4,9 @@ import styled from 'styled-components';
 const WaveformSvg = styled.svg`
   display: block;
   width: 100%;
-  height: 48px;
+  height: 56px;
+  background: var(--color-surfaces-container);
   color: var(--color-primary-primary);
-`;
-
-const Baseline = styled.line`
-  stroke: var(--color-stroke-border);
-  stroke-width: var(--stroke-100);
 `;
 
 /**
@@ -21,10 +17,10 @@ const SoundWaveform = ({ peaks = [], label = 'Sound waveform' }) => {
   if (!peaks.length) return null;
 
   const width = 288;
-  const center = 24;
+  const center = 28;
   const step = width / peaks.length;
   const bars = peaks.map((peak, index) => {
-    const height = Math.max(1, peak * 20);
+    const height = Math.max(1, peak * 23);
     return {
       x: index * step + step / 2,
       y1: center - height,
@@ -33,8 +29,7 @@ const SoundWaveform = ({ peaks = [], label = 'Sound waveform' }) => {
   });
 
   return (
-    <WaveformSvg viewBox={`0 0 ${width} 48`} role="img" aria-label={label}>
-      <Baseline x1="0" x2={width} y1={center} y2={center} />
+    <WaveformSvg viewBox={`0 0 ${width} 56`} role="img" aria-label={label}>
       <g stroke="currentColor" strokeWidth="2" strokeLinecap="round">
         {bars.map((bar, index) => (
           <line

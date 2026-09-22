@@ -1,19 +1,15 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { Search } from 'lucide-react';
 import { Card } from '../../cakeand/components/Card';
-import { SimpleCard } from '../../cakeand/components/Card/SimpleCard';
-import { Chip } from '../../cakeand/components/Chip/Chip';
 import { Dropdown } from '../../cakeand/components/Dropdown';
 import { HelperString } from '../../cakeand/components/Elements/HelperString';
-import { InputLabel } from '../../cakeand/components/Elements/InputLabel';
 import { TextInput } from '../../cakeand/components/TextInput';
 import {
   soundCatalog,
   soundFamilies,
 } from '../../data/sound-catalog';
 import SoundPreview from './SoundPreview';
-import SoundWaveform from './SoundWaveform';
 
 const Toolbar = styled.div`
   display: grid;
@@ -43,45 +39,68 @@ const Grid = styled.div`
 const SoundCard = styled(Card)`
   height: 100%;
   min-width: 0;
+  /* Figma nodes 168:627 / 173:3999 are 374×338; width remains responsive. */
+  min-height: 338px;
 `;
 
-const ProfileTemplate = styled(SimpleCard)`
-  height: 100%;
-`;
-
-const WaveMedia = styled.div`
+const CardContent = styled.div`
   box-sizing: border-box;
-  width: 100%;
-  padding: var(--space-300) var(--space-400);
-`;
-
-const Attributes = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-100);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-`;
-
-const PropertyField = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--space-100);
-  width: 100%;
-  min-width: 0;
+  align-items: stretch;
+  gap: var(--space-300);
+  height: 100%;
+  padding: var(--space-500);
+  font-family: var(--font-family);
 `;
 
-const ActionStack = styled.div`
+const SoundTitle = styled.h3`
+  margin: 0;
+  color: var(--color-text-icon-primary);
+  font-size: var(--type-size-title);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.35;
+`;
+
+const Description = styled.p`
+  margin: 0;
+  color: var(--color-text-icon-secondary);
+  font-size: var(--type-size-subject);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0.2px;
+  line-height: 1.35;
+`;
+
+const Details = styled.dl`
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: var(--space-300);
-  min-width: 0;
+  width: 100%;
+  margin: 0;
 `;
 
-const VariantField = styled.div`
-  width: 100%;
+const DetailGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-050);
+`;
+
+const DetailLabel = styled.dt`
+  margin: 0;
+  color: var(--color-text-icon-primary);
+  font-size: var(--type-size-body);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.1px;
+  line-height: 1.35;
+`;
+
+const DetailValue = styled.dd`
+  margin: 0;
+  color: var(--color-text-icon-secondary);
+  font-size: var(--type-size-body);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0.2px;
+  line-height: 1.35;
 `;
 
 const Empty = styled.div`
@@ -97,88 +116,38 @@ const capitalizeLabel = (value) => {
   return value.charAt(0).toUpperCase() + value.slice(1);
 };
 
+const joinLabels = (values) =>
+  values
+    .filter(Boolean)
+    .map(capitalizeLabel)
+    .join(' • ');
+
 const SoundLibraryCard = ({ sound }) => {
-  const [fileId, setFileId] = useState(sound.primary.id);
-  const selectedFile = sound.files.find((file) => file.id === fileId) ?? sound.primary;
-  const options = sound.files.map((file) => ({
-    value: file.id,
-    label: file.variant
-      ? `Variant ${String(file.variant).padStart(2, '0')}`
-      : 'Primary',
-  }));
+  const type = joinLabels([sound.family, sound.category]);
+  const properties = joinLabels([
+    ...Object.values(sound.attributes),
+    sound.hierarchy || 'Unclassified',
+  ]);
 
   return (
     <SoundCard elevation="low">
-      <ProfileTemplate
-        media={
-          <WaveMedia>
-            <SoundWaveform
-              peaks={selectedFile.peaks}
-              label={`Static waveform for ${sound.name}`}
-            />
-          </WaveMedia>
-        }
-        title={sound.name}
-        body={sound.description || 'No authored description is available yet.'}
-        actions={
-          <ActionStack>
-            {sound.family || sound.category ? (
-              <PropertyField>
-                <InputLabel size="sm" id={`${sound.id}-type`}>
-                  Type
-                </InputLabel>
-                <Attributes aria-labelledby={`${sound.id}-type`}>
-                  {sound.family ? (
-                    <li>
-                      <Chip type="secondary" size="sm">
-                        {capitalizeLabel(sound.family)}
-                      </Chip>
-                    </li>
-                  ) : null}
-                  {sound.category ? (
-                    <li>
-                      <Chip type="secondary" size="sm">
-                        {capitalizeLabel(sound.category)}
-                      </Chip>
-                    </li>
-                  ) : null}
-                </Attributes>
-              </PropertyField>
-            ) : null}
-            <PropertyField>
-              <InputLabel size="sm" id={`${sound.id}-properties`}>
-                Properties
-              </InputLabel>
-              <Attributes aria-labelledby={`${sound.id}-properties`}>
-                {Object.values(sound.attributes).map((attribute) => (
-                  <li key={attribute}>
-                    <Chip type="secondary" size="sm">
-                      {capitalizeLabel(attribute)}
-                    </Chip>
-                  </li>
-                ))}
-                <li>
-                  <Chip type="secondary" size="sm">
-                    {capitalizeLabel(sound.hierarchy || 'Unclassified')}
-                  </Chip>
-                </li>
-              </Attributes>
-            </PropertyField>
-            {sound.files.length > 1 ? (
-              <VariantField>
-                <Dropdown
-                  id={`variant-${sound.id}`}
-                  label="Variant"
-                  value={selectedFile.id}
-                  onValueChange={setFileId}
-                  options={options}
-                />
-              </VariantField>
-            ) : null}
-            <SoundPreview sound={sound} file={selectedFile} showWaveform={false} />
-          </ActionStack>
-        }
-      />
+      <CardContent>
+        <SoundPreview sound={sound} file={sound.primary} />
+        <SoundTitle>{sound.name}</SoundTitle>
+        <Description>
+          {sound.description || 'No authored description is available yet.'}
+        </Description>
+        <Details>
+          <DetailGroup>
+            <DetailLabel>Type</DetailLabel>
+            <DetailValue>{type || 'Unclassified'}</DetailValue>
+          </DetailGroup>
+          <DetailGroup>
+            <DetailLabel>Properties</DetailLabel>
+            <DetailValue>{properties}</DetailValue>
+          </DetailGroup>
+        </Details>
+      </CardContent>
     </SoundCard>
   );
 };
