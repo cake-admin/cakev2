@@ -1,11 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
+/* No background of its own: the waveform sits on the card surface, so it
+   re-themes with the card instead of pinning one theme's color. The strokes
+   take --color-primary-primary, which stays legible on every surface
+   (#394edb on white, #bcc3ff on dark, #8ee3f0 on Windows HCT). */
 const WaveformSvg = styled.svg`
   display: block;
   width: 100%;
   height: 56px;
-  background: var(--page-on-media, var(--color-surfaces-container));
   color: var(--color-primary-primary);
 `;
 

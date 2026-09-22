@@ -94,7 +94,6 @@ const WaveformSurface = styled.div`
   height: 56px;
   min-width: 0;
   overflow: hidden;
-  background: var(--page-on-media, var(--color-surfaces-container));
 `;
 
 const ErrorWrap = styled.div`
