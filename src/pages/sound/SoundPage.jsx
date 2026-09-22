@@ -48,11 +48,13 @@ const Layer = styled.div`
 
 const ToastViewport = styled(RadixToast.Viewport)`
   position: fixed;
-  right: var(--space-400);
+  left: 50%;
+  transform: translateX(-50%);
   bottom: var(--space-400);
   z-index: 1100;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--space-300);
   width: min(calc(100% - var(--space-800)), 40rem);
   margin: 0;
