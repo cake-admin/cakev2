@@ -87,6 +87,8 @@ const Preview = styled.div`
   background: var(--color-surfaces-container);
 `;
 
+/* The wave sits on the card's own surface token, so it re-themes with the card
+   in light, dark, and Windows HCT rather than holding one theme's color. */
 const WaveformSurface = styled.div`
   display: flex;
   flex: 1 1 0;
@@ -95,13 +97,6 @@ const WaveformSurface = styled.div`
   min-width: 0;
   overflow: hidden;
   background: var(--color-surfaces-container);
-
-  /* Figma 177:4431 keeps the audio wave on white in dark mode. Windows HCT
-     retains its native dark card surface so the cyan primary stroke remains
-     high contrast. */
-  html[data-theme='dark.a'] & {
-    background: var(--color-text-icon-primary);
-  }
 `;
 
 const ErrorWrap = styled.div`

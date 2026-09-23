@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-/* No background of its own: the waveform sits on the card surface, so it
-   re-themes with the card instead of pinning one theme's color. The strokes
-   take --color-primary-primary, which stays legible on every surface
-   (#394edb on white, #bcc3ff on dark, #8ee3f0 on Windows HCT). */
+/* No background of its own: the waveform inherits whichever surface it is
+   placed on, and its strokes follow that surface's primary token — dark blue
+   on the light audio-wave surface, cyan on the Windows HCT card. */
 const WaveformSvg = styled.svg`
   display: block;
   width: 100%;
