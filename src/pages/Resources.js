@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ExternalLink, Github, Package } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { AudioLines, ExternalLink, Github, Package } from 'lucide-react';
 import { Card } from '../cakeand/components/Card';
 import { Button } from '../cakeand/components/Button';
 import { Badge } from '../cakeand/components/Badge';
@@ -137,6 +138,8 @@ const MEDIA_GRADIENTS = {
     'linear-gradient(12.3deg, #91061c 0%, #fb911c 100%)',
   devkit:
     'linear-gradient(12.3deg, #004e5e 0%, #3b92f9 100%)',
+  sound:
+    'linear-gradient(12.3deg, #0f3d3e 0%, #34d399 100%)',
 };
 
 const MediaBand = styled.div`
@@ -323,6 +326,17 @@ const RESOURCES = [
     iconKind: 'github',
     restricted: true,
   },
+  {
+    id: 'sound',
+    title: 'Cake & Sound',
+    subtitle: 'A library of sound and audio design.',
+    body:
+      'Guidelines, assets, and documentation for creating consistent sound and audio experiences across Lenovo software.',
+    action: 'Open Cake& Sound',
+    href: '/sound',
+    iconKind: 'waveform',
+    internal: true,
+  },
 ];
 
 const openExternal = (href) => {
@@ -341,57 +355,76 @@ const StretchCard = styled(Card)`
   align-self: stretch;
 `;
 
-const ResourceCard = ({ resource }) => (
-  <StretchCard elevation="low">
-    <MediaBand $gradient={MEDIA_GRADIENTS[resource.id]}>
-      {resource.iconKind === 'github' ? (
-        <GithubTile aria-hidden>
-          <Github />
-        </GithubTile>
-      ) : resource.iconKind === 'package' ? (
-        <GithubTile aria-hidden>
-          <Package />
-        </GithubTile>
-      ) : resource.iconKind === 'chart' ? (
-        <ChartIcon>
-          <img src={resource.icon} alt="" />
-        </ChartIcon>
-      ) : (
-        <IconTile>
-          <img src={resource.icon} alt="" />
-        </IconTile>
-      )}
-    </MediaBand>
-    <Body>
-      <TextBlock>
-        <TitleStack>
-          {resource.restricted ? (
-            <Badge color="red" tone="solid" dot={false}>
-              Restricted access
-            </Badge>
+const ResourceCard = ({ resource }) => {
+  const navigate = useNavigate();
+  const isInternal = Boolean(resource.internal);
+
+  const handleAction = () => {
+    if (isInternal) {
+      navigate(resource.href);
+      return;
+    }
+    openExternal(resource.href);
+  };
+
+  return (
+    <StretchCard elevation="low">
+      <MediaBand $gradient={MEDIA_GRADIENTS[resource.id]}>
+        {resource.iconKind === 'github' ? (
+          <GithubTile aria-hidden>
+            <Github />
+          </GithubTile>
+        ) : resource.iconKind === 'package' ? (
+          <GithubTile aria-hidden>
+            <Package />
+          </GithubTile>
+        ) : resource.iconKind === 'waveform' ? (
+          <GithubTile aria-hidden>
+            <AudioLines />
+          </GithubTile>
+        ) : resource.iconKind === 'chart' ? (
+          <ChartIcon>
+            <img src={resource.icon} alt="" />
+          </ChartIcon>
+        ) : (
+          <IconTile>
+            <img src={resource.icon} alt="" />
+          </IconTile>
+        )}
+      </MediaBand>
+      <Body>
+        <TextBlock>
+          <TitleStack>
+            {resource.restricted ? (
+              <Badge color="red" tone="solid" dot={false}>
+                Restricted access
+              </Badge>
+            ) : null}
+            <CardTitle>{resource.title}</CardTitle>
+          </TitleStack>
+          <CardSubtitle>{resource.subtitle}</CardSubtitle>
+          <CardBody>{resource.body}</CardBody>
+          {resource.accessNote ? (
+            <AccessNote>{resource.accessNote}</AccessNote>
           ) : null}
-          <CardTitle>{resource.title}</CardTitle>
-        </TitleStack>
-        <CardSubtitle>{resource.subtitle}</CardSubtitle>
-        <CardBody>{resource.body}</CardBody>
-        {resource.accessNote ? (
-          <AccessNote>{resource.accessNote}</AccessNote>
-        ) : null}
-      </TextBlock>
-      <CardActions>
-        <Button
-          intent="secondary"
-          variant="outline"
-          size="md"
-          endIcon={<ExternalLink size={16} aria-hidden />}
-          onClick={() => openExternal(resource.href)}
-        >
-          {resource.action}
-        </Button>
-      </CardActions>
-    </Body>
-  </StretchCard>
-);
+        </TextBlock>
+        <CardActions>
+          <Button
+            intent="secondary"
+            variant="outline"
+            size="md"
+            endIcon={
+              isInternal ? undefined : <ExternalLink size={16} aria-hidden />
+            }
+            onClick={handleAction}
+          >
+            {resource.action}
+          </Button>
+        </CardActions>
+      </Body>
+    </StretchCard>
+  );
+};
 
 const Resources = () => (
   <Page>
