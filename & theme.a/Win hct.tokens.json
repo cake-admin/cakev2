@@ -81,12 +81,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2357:22806",
@@ -94,8 +94,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -158,12 +158,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2438:26718",
@@ -171,8 +171,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -183,12 +183,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2438:26719",
@@ -196,8 +196,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -208,12 +208,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2438:26720",
@@ -221,8 +221,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -233,12 +233,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2438:26721",
@@ -246,8 +246,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -258,12 +258,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2480:16970",
@@ -271,8 +271,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -537,12 +537,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.4588235318660736,
-            0.9137254953384399,
-            0.9882352948188782
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#75E9FC"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2908:9405",
@@ -550,8 +550,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:136c262ada358cfb7e7118b9da87ad7c8a9d78fb/-1:-1",
-            "targetVariableName": "SystemColorHotlightColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -562,12 +562,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.4588235318660736,
-            0.9137254953384399,
-            0.9882352948188782
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#75E9FC"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2908:9406",
@@ -575,8 +575,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:136c262ada358cfb7e7118b9da87ad7c8a9d78fb/-1:-1",
-            "targetVariableName": "SystemColorHotlightColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -587,12 +587,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.4588235318660736,
-            0.9137254953384399,
-            0.9882352948188782
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#75E9FC"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2913:9192",
@@ -600,8 +600,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:136c262ada358cfb7e7118b9da87ad7c8a9d78fb/-1:-1",
-            "targetVariableName": "SystemColorHotlightColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -614,12 +614,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2475:7979",
@@ -627,8 +627,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -639,12 +639,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2475:7980",
@@ -652,8 +652,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -664,12 +664,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2913:9175",
@@ -677,8 +677,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -691,12 +691,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2475:7981",
@@ -704,8 +704,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -716,12 +716,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2475:7982",
@@ -729,8 +729,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -741,12 +741,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2913:9176",
@@ -754,8 +754,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -768,12 +768,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2460:15827",
@@ -781,8 +781,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -793,12 +793,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2460:15828",
@@ -806,8 +806,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -818,12 +818,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2913:9344",
@@ -831,8 +831,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:8375b87e2ef7854b46c102b23822592a9a7ce8e8/-1:-1",
-            "targetVariableName": "SystemColorWindowTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -870,12 +870,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.6509804129600525,
-            0.6509804129600525,
-            0.6509804129600525
+            0.12549019607843137,
+            0.12549019607843137,
+            0.12549019607843137
           ],
           "alpha": 1,
-          "hex": "#A6A6A6"
+          "hex": "#202020"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2438:9719",
@@ -883,8 +883,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:14b96c5c0213dfa56b82692a864b051928e3c7af/-1:-1",
-            "targetVariableName": "SystemColorGrayTextColor",
+            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
+            "targetVariableName": "SystemColorWindowColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -1451,12 +1451,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.14901961386203766,
-            0.23137255012989044,
-            0.3137255012989044
+            0.12549019607843137,
+            0.12549019607843137,
+            0.12549019607843137
           ],
           "alpha": 1,
-          "hex": "#263B50"
+          "hex": "#202020"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:2391:32205",
@@ -1464,8 +1464,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:a9c8514989e92aaa546c7ca94f059a135d941471/-1:-1",
-            "targetVariableName": "SystemColorHighlightTextColor",
+            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
+            "targetVariableName": "SystemColorWindowColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -1682,12 +1682,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4303:1124",
@@ -1695,8 +1695,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -1707,12 +1707,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1178",
@@ -1720,8 +1720,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -1757,12 +1757,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1154",
@@ -1770,8 +1770,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -1782,12 +1782,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1179",
@@ -1795,8 +1795,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -1832,12 +1832,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1155",
@@ -1845,8 +1845,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -1857,12 +1857,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1182",
@@ -1870,8 +1870,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -1907,12 +1907,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1156",
@@ -1920,8 +1920,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -1932,12 +1932,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1449",
@@ -1945,8 +1945,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -1982,12 +1982,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1157",
@@ -1995,8 +1995,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2007,12 +2007,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1453",
@@ -2020,8 +2020,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2057,12 +2057,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1165",
@@ -2070,8 +2070,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2082,12 +2082,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1363",
@@ -2095,8 +2095,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2132,12 +2132,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1166",
@@ -2145,8 +2145,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2157,12 +2157,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1365",
@@ -2170,8 +2170,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2207,12 +2207,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1167",
@@ -2220,8 +2220,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2232,12 +2232,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1367",
@@ -2245,8 +2245,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2282,12 +2282,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1168",
@@ -2295,8 +2295,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2307,12 +2307,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1369",
@@ -2320,8 +2320,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2357,12 +2357,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1169",
@@ -2370,8 +2370,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2382,12 +2382,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1372",
@@ -2395,8 +2395,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2432,12 +2432,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1170",
@@ -2445,8 +2445,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2457,12 +2457,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1376",
@@ -2470,8 +2470,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2507,12 +2507,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1171",
@@ -2520,8 +2520,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2532,12 +2532,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1378",
@@ -2545,8 +2545,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2582,12 +2582,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1172",
@@ -2595,8 +2595,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2607,12 +2607,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1380",
@@ -2620,8 +2620,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2657,12 +2657,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1173",
@@ -2670,8 +2670,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2682,12 +2682,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1382",
@@ -2695,8 +2695,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2732,12 +2732,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1174",
@@ -2745,8 +2745,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2757,12 +2757,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1384",
@@ -2770,8 +2770,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2807,12 +2807,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1175",
@@ -2820,8 +2820,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2832,12 +2832,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1386",
@@ -2845,8 +2845,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2882,12 +2882,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1176",
@@ -2895,8 +2895,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2907,12 +2907,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1388",
@@ -2920,8 +2920,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2957,12 +2957,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            1,
-            1,
-            1
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#FFFFFF"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4304:1177",
@@ -2970,8 +2970,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:db3c35ac3edbd4803d8d6f355c0b8a3f4b67d1ba/-1:-1",
-            "targetVariableName": "SystemColorButtonTextColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
@@ -2982,12 +2982,12 @@
         "$value": {
           "colorSpace": "srgb",
           "components": [
-            0.125490203499794,
-            0.125490203499794,
-            0.125490203499794
+            0.5568627450980392,
+            0.8901960784313725,
+            0.9411764705882353
           ],
           "alpha": 1,
-          "hex": "#202020"
+          "hex": "#8EE3F0"
         },
         "$extensions": {
           "com.figma.variableId": "VariableID:4306:1390",
@@ -2995,8 +2995,8 @@
             "ALL_SCOPES"
           ],
           "com.figma.aliasData": {
-            "targetVariableId": "VariableID:ab799634427716b7973586099024bff52380fb85/-1:-1",
-            "targetVariableName": "SystemColorWindowColor",
+            "targetVariableId": "VariableID:82012ba17bd45c7aa35236b66cf785d48ca1e20b/-1:-1",
+            "targetVariableName": "SystemColorHighlightColor",
             "targetVariableSetId": "VariableCollectionId:114bb501d20afab9d9b8b330be5132d9a300bdc7/-1:-1",
             "targetVariableSetName": "& win hct"
           }
