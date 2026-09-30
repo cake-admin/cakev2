@@ -1,11 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 /**
  * cake& Simple Card — the vertical media card template (Figma
- * `_elements / simple card`, node 183:11859). Content that slots into a
- * **Card**: a full-bleed media area on top, then a title with an optional
- * overflow menu, a body paragraph, and an actions row.
+ * `_elements / simple card`, nodes 183:11859 / 117:1874). Content that slots
+ * into a **Card**: a full-bleed media area on top, then a title with an
+ * optional overflow menu, a body paragraph grouped with an actions row.
  *
  * The media is full-bleed so it reaches the card's rounded corners (the
  * enclosing **Card**'s `overflow: hidden` clips it); the rest sits in padded
@@ -16,51 +16,61 @@ import styled from 'styled-components';
  * it inside a `<Card>` for the surface and elevation.
  */
 
-const Root = styled.div`
+const Root = styled.div<{ $fillHeight: boolean }>`
   display: flex;
   flex-direction: column;
+  flex: ${(p) => (p.$fillHeight ? '1 0 0' : '0 0 auto')};
+  min-height: ${(p) => (p.$fillHeight ? '0' : 'auto')};
   font-family: var(--font-family);
 `;
 
 /** Full-bleed media strip — no padding, so it reaches the Card's corners. */
-const Media = styled.div`
+const Media = styled.div<{ $grow: boolean }>`
   width: 100%;
   overflow: hidden;
   background: var(--color-surfaces-on-container);
+  ${(p) =>
+    p.$grow &&
+    css`
+      flex: 1 0 0;
+      min-height: 0;
+    `}
   & > img,
-  & > video {
+  & > video,
+  & > div {
     display: block;
     width: 100%;
     height: 100%;
+  }
+  & > img,
+  & > video {
     object-fit: cover;
   }
 `;
 
-const Content = styled.div`
+const Content = styled.div<{ $grow: boolean }>`
   display: flex;
-  flex-direction: column;
-  gap: var(--space-500);
-  /* p-24 from Figma 183:11861 */
-  padding: var(--space-500);
-`;
-
-const Head = styled.div`
-  display: flex;
+  flex: ${(p) => (p.$grow ? '1 0 0' : '0 0 auto')};
   flex-direction: column;
   gap: var(--space-300);
+  min-height: ${(p) => (p.$grow ? '0' : 'auto')};
+  flex-shrink: ${(p) => (p.$grow ? 'initial' : '0')};
+  /* p-24 from Figma 117:1874 / 183:11861 */
+  padding: var(--space-500);
 `;
 
 const TitleRow = styled.div`
   display: flex;
   align-items: center;
   gap: var(--space-200);
+  flex-shrink: 0;
 `;
 
 const Title = styled.h3`
   flex: 1 0 0;
   margin: 0;
   min-width: 0;
-  font-size: var(--type-size-subtitle);
+  font-size: var(--type-size-title);
   font-weight: var(--font-weight-bold);
   line-height: 1.35;
   color: var(--color-text-icon-primary);
@@ -71,9 +81,18 @@ const Menu = styled.div`
   display: inline-flex;
 `;
 
+const BodyGroup = styled.div<{ $stretch: boolean }>`
+  display: flex;
+  flex: ${(p) => (p.$stretch ? '1 0 0' : '0 0 auto')};
+  flex-direction: column;
+  gap: var(--space-500);
+  min-height: ${(p) => (p.$stretch ? '0' : 'auto')};
+  justify-content: ${(p) => (p.$stretch ? 'space-between' : 'flex-start')};
+`;
+
 const Text = styled.p`
   margin: 0;
-  font-size: var(--type-size-body);
+  font-size: var(--type-size-subject);
   font-weight: var(--font-weight-regular);
   letter-spacing: 0.2px;
   line-height: 1.35;
@@ -84,6 +103,7 @@ const Actions = styled.div`
   display: flex;
   align-items: center;
   gap: var(--space-300);
+  flex-shrink: 0;
 `;
 
 /* `title` is redeclared as a ReactNode, so the DOM's `title?: string` (the
@@ -91,14 +111,26 @@ const Actions = styled.div`
 export interface SimpleCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
   /** Full-bleed media on top — an image or any node; clipped to the Card's corners. */
   media?: React.ReactNode;
-  /** The card title (Figma 18px `bold.18`). */
+  /** The card title (Figma 20px `bold.20.title`). */
   title: React.ReactNode;
   /** Trailing overflow control beside the title — a cake& **IconButton** (e.g. a "⋮" menu). */
   menu?: React.ReactNode;
-  /** Body paragraph (Figma 14px `regular.14.body`, secondary color). */
+  /** Body paragraph (Figma 16px `regular.16`, secondary color). */
   body?: React.ReactNode;
   /** Actions row — a cake& **Button** or button group. */
   actions?: React.ReactNode;
+  /**
+   * When true, the card and media slot expand to fill the enclosing **Card**
+   * height (Figma homepage audience cards, node 117:2200).
+   * @default false
+   */
+  fillHeight?: boolean;
+  /**
+   * When true, `actions` pins to the bottom of the body block. Pair with
+   * `fillHeight` for the Designers card (node 117:2195).
+   * @default false
+   */
+  stretchActions?: boolean;
 }
 
 /**
@@ -107,18 +139,20 @@ export interface SimpleCardProps extends Omit<React.HTMLAttributes<HTMLDivElemen
  * elevation.
  */
 export const SimpleCard = React.forwardRef<HTMLDivElement, SimpleCardProps>(
-  ({ media, title, menu, body, actions, ...props }, ref) => (
-    <Root ref={ref} {...props}>
-      {media != null ? <Media>{media}</Media> : null}
-      <Content>
-        <Head>
-          <TitleRow>
-            <Title>{title}</Title>
-            {menu != null ? <Menu>{menu}</Menu> : null}
-          </TitleRow>
-          {body != null ? <Text>{body}</Text> : null}
-        </Head>
-        {actions != null ? <Actions>{actions}</Actions> : null}
+  ({ media, title, menu, body, actions, fillHeight = false, stretchActions = false, ...props }, ref) => (
+    <Root ref={ref} $fillHeight={fillHeight} {...props}>
+      {media != null ? <Media $grow={fillHeight}>{media}</Media> : null}
+      <Content $grow={fillHeight && stretchActions}>
+        <TitleRow>
+          <Title>{title}</Title>
+          {menu != null ? <Menu>{menu}</Menu> : null}
+        </TitleRow>
+        {body != null || actions != null ? (
+          <BodyGroup $stretch={stretchActions}>
+            {body != null ? <Text>{body}</Text> : null}
+            {actions != null ? <Actions>{actions}</Actions> : null}
+          </BodyGroup>
+        ) : null}
       </Content>
     </Root>
   ),
