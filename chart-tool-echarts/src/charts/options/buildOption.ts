@@ -13,6 +13,7 @@ import { buildHeatmap } from './heatmap';
 import { buildRadialBar } from './radialBar';
 import { buildPosNeg } from './posNeg';
 import { buildWaterfall } from './waterfall';
+import { buildBullet } from './bullet';
 import { buildMap } from './map';
 
 /** Single dispatch: chart id → ECharts option (used by preview AND export). */
@@ -60,6 +61,9 @@ export function buildOption(ctx: ChartContext): EChartsOption {
       break;
     case 'waterfall':
       option = buildWaterfall(ctx);
+      break;
+    case 'bullet':
+      option = buildBullet(ctx);
       break;
     case 'map':
       option = buildMap(ctx);

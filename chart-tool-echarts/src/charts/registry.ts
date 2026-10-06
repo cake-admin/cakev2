@@ -12,6 +12,7 @@ import {
   treemapPreset,
   waterfallPreset,
   worldMapPreset,
+  bulletPreset,
 } from '../data/presets';
 import type { Variation } from '../theme/chartTheme.types';
 import type { StyleConfig } from './types';
@@ -31,6 +32,7 @@ export type ChartId =
   | 'radialBar'
   | 'posNegBar'
   | 'waterfall'
+  | 'bullet'
   | 'map';
 
 /**
@@ -76,6 +78,18 @@ export const CHART_REGISTRY: Record<ChartId, ChartDefinition> = {
 
   posNegBar: { id: 'posNegBar', label: 'Positive / Negative', description: 'Bars colored by sign from semantic tokens (positive/negative).', group: 'Semantic', dataKind: 'series', preset: posNegPreset, defaultStyle: { showGrid: true, showLegend: false }, exportName: 'pos-neg-bar', core: false, recommendedThemes: ['semantic'] },
   waterfall: { id: 'waterfall', label: 'Waterfall', description: 'Running total of semantic positive/negative deltas.', group: 'Semantic', dataKind: 'series', preset: waterfallPreset, defaultStyle: { showGrid: true, showLegend: false }, exportName: 'waterfall-chart', core: false, recommendedThemes: ['semantic'] },
+  bullet: {
+    id: 'bullet',
+    label: 'Bullet',
+    description: 'Progress bars with a target marker. One fill or several sections. One row, or a vertical list.',
+    group: 'KPI',
+    dataKind: 'series',
+    preset: bulletPreset,
+    defaultStyle: { showAxes: false, showGrid: false, showLegend: true, orientation: 'horizontal' },
+    exportName: 'bullet-chart',
+    core: false,
+    recommendedThemes: ['primary', 'categorical', 'sequential'],
+  },
 
   map: {
     id: 'map',
@@ -123,6 +137,7 @@ export const CHART_IDS: ChartId[] = [
   'radialBar',
   'posNegBar',
   'waterfall',
+  'bullet',
   'map',
 ];
 

@@ -11,6 +11,8 @@
 export interface SeriesPoint {
   x: string;
   y: number;
+  /** Optional second line under the category label (bullet rows). */
+  note?: string;
 }
 export interface Series {
   id: string;

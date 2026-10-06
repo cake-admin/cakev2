@@ -188,6 +188,70 @@ export function continentMapPreset(): PartitionData {
   };
 }
 
+export function bulletPreset(): SeriesData {
+  // Value, target marker, and track length. `note` is the muted second line.
+  // A max of 0 would size the track to the larger of value and target.
+  const rows: Array<[string, string, number, number, number]> = [
+    ['ISG', 'M. Tan', 76, 96, 100],
+    ['IDG', 'S. Okafor', 68, 90, 100],
+    ['SSG', 'L. Duarte', 40, 78, 100],
+    ['MOB', 'R. Iyer', 52, 70, 96],
+    ['CHN', 'A. Novak', 46, 88, 100],
+    ['GAC', 'J. Whitfield', 72, 76, 80],
+  ];
+  return {
+    kind: 'series',
+    series: [
+      {
+        id: genId('series'),
+        name: 'Value',
+        points: rows.map(([x, note, y]) => ({ x, y, note })),
+      },
+      {
+        id: genId('series'),
+        name: 'Target',
+        points: rows.map(([x, , , y]) => ({ x, y })),
+      },
+      {
+        id: genId('series'),
+        name: 'Maximum',
+        points: rows.map(([x, , , , y]) => ({ x, y })),
+      },
+    ],
+  };
+}
+
+/** Same groups as `bulletPreset`, split into invite-style status sections. */
+export function bulletSectionsPreset(): SeriesData {
+  const rows: Array<[string, string, number, number, number, number, number, number]> = [
+    ['ISG', 'M. Tan', 36, 14, 22, 8, 96, 100],
+    ['IDG', 'S. Okafor', 28, 20, 18, 6, 90, 100],
+    ['SSG', 'L. Duarte', 12, 22, 8, 4, 78, 100],
+    ['MOB', 'R. Iyer', 24, 10, 16, 6, 70, 96],
+    ['CHN', 'A. Novak', 18, 16, 12, 4, 88, 100],
+    ['GAC', 'J. Whitfield', 30, 8, 26, 6, 76, 80],
+  ];
+  const columns: Array<{ name: string; at: number }> = [
+    { name: 'Sent', at: 2 },
+    { name: 'Not yet sent', at: 3 },
+    { name: 'Accepted', at: 4 },
+    { name: 'Rejected', at: 5 },
+    { name: 'Target', at: 6 },
+    { name: 'Maximum', at: 7 },
+  ];
+  return {
+    kind: 'series',
+    series: columns.map((col) => ({
+      id: genId('series'),
+      name: col.name,
+      points: rows.map((row) => {
+        const point = { x: row[0], y: row[col.at] as number };
+        return col.at === 2 ? { ...point, note: row[1] } : point;
+      }),
+    })),
+  };
+}
+
 export function scatterPreset(): XYData {
   const pts: Array<[number, number, number]> = [
     [12, 22, 8],

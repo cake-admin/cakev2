@@ -48,6 +48,15 @@ export interface StyleConfig {
   mapProjection: MapProjection;
   /** World map: country vs continent data grain. */
   mapRegion: MapRegion;
+  /**
+   * Bullet chart: one fill per row, or several stacked sections (sent, accepted, …)
+   * sharing that row's target marker and track.
+   */
+  bulletSections: boolean;
+  /** Bullet chart: draw the target marker. The numbers stay in the data either way. */
+  bulletShowTarget: boolean;
+  /** Bullet chart: draw the track sized by Max. The numbers stay in the data either way. */
+  bulletShowMax: boolean;
 }
 
 export const DEFAULT_STYLE: StyleConfig = {
@@ -67,6 +76,9 @@ export const DEFAULT_STYLE: StyleConfig = {
   transparentBackground: false,
   mapProjection: 'flat',
   mapRegion: 'country',
+  bulletSections: false,
+  bulletShowTarget: true,
+  bulletShowMax: true,
 };
 
 export interface HoverDatum {

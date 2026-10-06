@@ -1,5 +1,5 @@
 import { useChartStore } from '../../state/chartStore';
-import { continentMapPreset, worldMapPreset } from '../../data/presets';
+import { bulletPreset, bulletSectionsPreset, continentMapPreset, worldMapPreset } from '../../data/presets';
 import type {
   CircularStyle,
   LegendPosition,
@@ -106,8 +106,20 @@ export function StyleControls() {
   const isBar = type === 'bar';
   const isLineArea = type === 'line' || type === 'area';
   const isCartesian =
-    isBar || isLineArea || type === 'scatter' || type === 'jitter' || type === 'posNegBar' || type === 'waterfall';
+    isBar ||
+    isLineArea ||
+    type === 'scatter' ||
+    type === 'jitter' ||
+    type === 'posNegBar' ||
+    type === 'waterfall' ||
+    type === 'bullet';
   const isMap = type === 'map';
+
+  const setBulletSections = (on: boolean) => {
+    patch({ bulletSections: on });
+    if (!importedTable) setData(() => (on ? bulletSectionsPreset() : bulletPreset()));
+    if (on) setColor({ variation: 'categorical' });
+  };
 
   const setMapRegion = (region: MapRegion) => {
     patch({ mapRegion: region });
@@ -121,6 +133,31 @@ export function StyleControls() {
 
   return (
     <>
+      {type === 'bullet' ? (
+        <>
+          <Segmented<'single' | 'sections'>
+            label="Bar"
+            value={style.bulletSections ? 'sections' : 'single'}
+            options={[
+              { id: 'single', label: 'Single fill' },
+              { id: 'sections', label: 'Sections' },
+            ]}
+            onChange={(v) => setBulletSections(v === 'sections')}
+          />
+          <p className="field__hint" style={{ marginTop: -4 }}>
+            Sections split each bar into colored parts, such as sent, accepted, and rejected.
+          </p>
+          <Toggle
+            label="Show target"
+            checked={style.bulletShowTarget}
+            onChange={(v) => patch({ bulletShowTarget: v })}
+          />
+          <Toggle label="Show max" checked={style.bulletShowMax} onChange={(v) => patch({ bulletShowMax: v })} />
+          <p className="field__hint" style={{ marginTop: -4 }}>
+            Target is the marker. Max is the track behind the bar. Hiding either keeps its numbers.
+          </p>
+        </>
+      ) : null}
       {isMap ? (
         <Segmented<MapProjection>
           label="Projection"

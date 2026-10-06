@@ -69,9 +69,10 @@ tokens.json ─► buildChartTheme(mode) ─► ChartTheme ─┐
   staticFrame?, scale? }` — the same builder renders the live preview and the
   export. Shared helpers live in `common.ts` (axes, legend, grid insets, KPI
   header, font ladder, interaction states).
-- **Registry** (`src/charts/registry.ts`) — 15 chart types (bar, line, area,
-  pie family, scatter, jitter/strip, radar, treemap, funnel, gauge, heatmap,
-  radial bar, positive/negative bar, waterfall, world map). Adding a chart =
+- **Registry** (`src/charts/registry.ts`) — bar, line, area, pie family, scatter,
+  jitter/strip, radar, treemap, funnel, gauge, heatmap, radial bar,
+  positive/negative bar, waterfall, bullet (progress vs. target), and world map.
+  Adding a chart =
   one registry entry + one option builder. The "＋ More charts" catalog searches
   this list. World map uses partition data (country name → value); names must
   match the GeoJSON in `src/charts/geo/world.json`.
@@ -121,7 +122,7 @@ tokens.json ─► buildChartTheme(mode) ─► ChartTheme ─┐
 ```bash
 npm test            # 48 tests: palettes, token traceability, export guarantees
 npm run build       # typecheck + bundle
-npm run gallery     # eyeball all 14 charts × 2 modes in preview/index.html
+npm run gallery     # eyeball every chart × both modes in preview/index.html
 ```
 
 Manual round-trip: Export → **Copy** → paste into Figma (editable vectors,

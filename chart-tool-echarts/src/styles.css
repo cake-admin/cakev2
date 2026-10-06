@@ -653,6 +653,45 @@ body {
 .data-row__note {
   margin: 0 0 8px;
 }
+/* Bullet rows: label + subtitle, then value / target / max. */
+.bullet-row {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bullet-row__top,
+.bullet-row__nums {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.bullet-row__nums .num-input,
+.bullet-row__measure {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+.data-row .bullet-row__numhead,
+.data-row .bullet-row__top .data-row__head-cat {
+  flex: 1;
+  width: auto;
+}
+.data-row .bullet-row__numhead {
+  text-align: right;
+}
+.bullet-row__nums.bullet-row__nums--scroll {
+  overflow-x: auto;
+}
+.bullet-row__nums.bullet-row__nums--scroll .num-input,
+.data-row .bullet-row__nums--scroll .bullet-row__numhead {
+  flex: 1 0 64px;
+  width: 64px;
+}
+.data-row .bullet-row__top .data-row__head-cat {
+  text-align: left;
+}
 .drag-handle {
   appearance: none;
   border: none;

@@ -66,6 +66,41 @@ export function DataImport() {
       ? `This chart draws one value column — showing “${heads[mapping.valueCols[0]]}”.`
       : '';
 
+  const bulletNotice = (() => {
+    if (type !== 'bullet' || !mapping || !mapping.valueCols.length) return '';
+    const cols = mapping.valueCols;
+    const subtitle = 'Subtitles stay blank until you add them on each row.';
+    const hidden = [
+      style.bulletShowTarget ? '' : 'Target is hidden.',
+      style.bulletShowMax ? '' : 'Max is hidden.',
+    ].filter(Boolean);
+    if (style.bulletSections && cols.length >= 3) {
+      const sections = cols.slice(0, -2).map((c) => `“${heads[c]}”`);
+      return [
+        `Sections: ${sections.join(', ')}.`,
+        `Target column: “${heads[cols[cols.length - 2]]}”.`,
+        `Track column: “${heads[cols[cols.length - 1]]}”.`,
+        ...hidden,
+        subtitle,
+      ].join(' ');
+    }
+    if (style.bulletSections) {
+      return [`Every value column is a section. Add two more columns — target, then track — to place the marker and the bar length.`, ...hidden, subtitle].join(' ');
+    }
+    return [
+      `Value column: “${heads[cols[0]]}”.`,
+      cols[1] != null ? `Target column: “${heads[cols[1]]}”.` : 'No target column — the marker is hidden.',
+      cols[2] != null
+        ? `Track column: “${heads[cols[2]]}”.`
+        : 'No track column — the track covers the value and target.',
+      cols.length > 3 ? 'Extra value columns are ignored. Turn on Sections to draw them.' : '',
+      ...hidden,
+      subtitle,
+    ]
+      .filter(Boolean)
+      .join(' ');
+  })();
+
   const columnSelect = (label: string, value: number, onPick: (col: number) => void) => (
     <label className="import-map">
       <span className="field__hint import-map__label">{label}</span>
@@ -251,7 +286,7 @@ export function DataImport() {
       )}
 
       <div className={`export-status${error ? ' export-status--error' : ''}`} role="status" aria-live="polite">
-        {error || [singleSeriesNotice, ...warnings].filter(Boolean).join(' ')}
+        {error || [singleSeriesNotice, bulletNotice, ...warnings].filter(Boolean).join(' ')}
       </div>
     </div>
   );
