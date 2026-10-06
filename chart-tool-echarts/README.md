@@ -69,10 +69,12 @@ tokens.json ─► buildChartTheme(mode) ─► ChartTheme ─┐
   staticFrame?, scale? }` — the same builder renders the live preview and the
   export. Shared helpers live in `common.ts` (axes, legend, grid insets, KPI
   header, font ladder, interaction states).
-- **Registry** (`src/charts/registry.ts`) — 14 chart types (bar, line, area,
+- **Registry** (`src/charts/registry.ts`) — 15 chart types (bar, line, area,
   pie family, scatter, jitter/strip, radar, treemap, funnel, gauge, heatmap,
-  radial bar, positive/negative bar, waterfall). Adding a chart = one registry
-  entry + one option builder. The "＋ More charts" catalog searches this list.
+  radial bar, positive/negative bar, waterfall, world map). Adding a chart =
+  one registry entry + one option builder. The "＋ More charts" catalog searches
+  this list. World map uses partition data (country name → value); names must
+  match the GeoJSON in `src/charts/geo/world.json`.
 - **Color system** (`src/theme/colorScales.ts`) — `resolve(config, n)` returns
   mark colors for any variation (categorical / sequential / semantic /
   diverging / primary / secondary); ramps interpolate in **OKLab** beyond

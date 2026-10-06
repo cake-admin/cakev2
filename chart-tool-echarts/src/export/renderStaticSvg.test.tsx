@@ -42,4 +42,28 @@ describe('ECharts SVG export', () => {
     expect(light).not.toEqual(dark); // light/dark are distinct token-driven renders
     expect(hct).not.toEqual(dark); // HCT uses win-hct surfaces, distinct from darkA
   });
+
+  it('omits the card fill when transparentBackground is on', () => {
+    const def = CHART_REGISTRY.bar;
+    const solid = renderChartSvg({
+      type: 'bar',
+      data: def.preset(),
+      color: { variation: 'categorical' },
+      style: { ...DEFAULT_STYLE, ...def.defaultStyle, transparentBackground: false },
+      mode: 'light',
+    });
+    const clear = renderChartSvg({
+      type: 'bar',
+      data: def.preset(),
+      color: { variation: 'categorical' },
+      style: { ...DEFAULT_STYLE, ...def.defaultStyle, transparentBackground: true },
+      mode: 'light',
+    });
+    expect(solid).not.toEqual(clear);
+    // Opaque export paints the surface card; transparent must not keep that fill.
+    const themeCard = solid.match(/fill="(#[0-9a-fA-F]{3,8})"/)?.[1];
+    expect(themeCard).toBeTruthy();
+    // First full-bleed rect in a solid export is the background; transparent skips it.
+    expect(clear.includes(`fill="${themeCard}"`)).toBe(false);
+  });
 });

@@ -72,7 +72,7 @@ export interface ChartColorSystem {
 
 export interface ChartTheme {
   mode: Mode;
-  surface: { canvas: string; card: string };
+  surface: { canvas: string; card: string; onContainerHigh: string };
   text: { primary: string; secondary: string; helper: string };
   axis: { line: string; tick: string; label: string };
   grid: { line: string };

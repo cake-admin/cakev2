@@ -36,9 +36,12 @@ export function CodeExport() {
     return (mode: Mode) => {
       const theme = buildChartTheme(TOKENS, mode);
       const name = echartsThemeName(mode, color.variation);
-      return echartsThemeToCode(buildEchartsTheme(theme, color), name);
+      return echartsThemeToCode(
+        buildEchartsTheme(theme, color, { transparentBackground: style.transparentBackground }),
+        name,
+      );
     };
-  }, [color]);
+  }, [color, style.transparentBackground]);
 
   const def = CHART_REGISTRY[type];
   const flash = (msg: string) => {

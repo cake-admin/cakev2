@@ -73,6 +73,16 @@ export function downloadText(text: string, filename: string): void {
   downloadBlob(text, 'text/plain;charset=utf-8', filename);
 }
 
+/** Download a data-URL (e.g. canvas `getDataURL` PNG) as a file. */
+export function downloadDataUrl(dataUrl: string, filename: string): void {
+  const a = document.createElement('a');
+  a.href = dataUrl;
+  a.download = filename.endsWith('.png') ? filename : `${filename}.png`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
 function downloadBlob(content: string, type: string, filename: string): void {
   const blob = new Blob([content], { type });
   const url = URL.createObjectURL(blob);

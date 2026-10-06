@@ -1,8 +1,11 @@
+import { useMemo } from 'react';
 import { useChartStore } from '../../state/chartStore';
 import { usesSingleSeries } from '../../charts/registry';
+import { regionNamesFor } from '../../charts/geo/regionNames';
 import { genId, type PartitionData, type SeriesData, type XYData, type XYPoint } from '../../data/dataModel';
 import { SortableRows } from './SortableRows';
 import { NumberInput } from './NumberInput';
+import { RegionCombobox } from './RegionCombobox';
 
 function SeriesEditor({ data }: { data: SeriesData }) {
   const setData = useChartStore((s) => s.setData);
@@ -157,8 +160,17 @@ function SeriesEditor({ data }: { data: SeriesData }) {
   );
 }
 
-function PartitionEditor({ data }: { data: PartitionData }) {
+function PartitionEditor({
+  data,
+  mapRegion,
+}: {
+  data: PartitionData;
+  /** When set, labels are picked from a searchable country/continent list. */
+  mapRegion?: 'country' | 'continent';
+}) {
   const setData = useChartStore((s) => s.setData);
+  const regionOptions = mapRegion ? regionNamesFor(mapRegion) : null;
+  const taken = useMemo(() => new Set(data.slices.map((s) => s.label)), [data.slices]);
 
   const reorder = (order: string[]) =>
     setData((d) =>
@@ -171,19 +183,23 @@ function PartitionEditor({ data }: { data: PartitionData }) {
   const remove = (id: string) =>
     setData((d) => (d.kind === 'partition' ? { ...d, slices: d.slices.filter((s) => s.id !== id) } : d));
   const add = () =>
-    setData((d) =>
-      d.kind === 'partition'
-        ? { ...d, slices: [...d.slices, { id: genId('slice'), label: `Slice ${d.slices.length + 1}`, value: 10 }] }
-        : d,
-    );
+    setData((d) => {
+      if (d.kind !== 'partition') return d;
+      let label = `Slice ${d.slices.length + 1}`;
+      if (regionOptions) {
+        const used = new Set(d.slices.map((s) => s.label));
+        label = regionOptions.find((n) => !used.has(n)) ?? regionOptions[0] ?? label;
+      }
+      return { ...d, slices: [...d.slices, { id: genId('slice'), label, value: 10 }] };
+    });
 
   return (
     <>
-      <div className="field__label">Slices</div>
+      <div className="field__label">{mapRegion ? 'Regions' : 'Slices'}</div>
       <div className="data-row data-row--head">
         <span className="data-row__spacer" />
-        <span className="field__hint data-row__head-cat">Label</span>
-        <span className="field__hint">Value</span>
+        <span className="field__hint data-row__head-cat">{mapRegion ? 'Region' : 'Label'}</span>
+        <span className="field__hint">{mapRegion ? 'Value (%)' : 'Value'}</span>
         <span className="data-row__spacer--btn" />
       </div>
       <SortableRows ids={data.slices.map((s) => s.id)} onReorder={reorder}>
@@ -193,12 +209,22 @@ function PartitionEditor({ data }: { data: PartitionData }) {
           return (
             <>
               {handle}
-              <input
-                className="text-input data-row__cat"
-                value={slice.label}
-                onChange={(e) => update(id, { label: e.target.value })}
-                aria-label="Slice label"
-              />
+              {regionOptions ? (
+                <RegionCombobox
+                  value={slice.label}
+                  options={regionOptions}
+                  taken={taken}
+                  onChange={(label) => update(id, { label })}
+                  ariaLabel="Region"
+                />
+              ) : (
+                <input
+                  className="text-input data-row__cat"
+                  value={slice.label}
+                  onChange={(e) => update(id, { label: e.target.value })}
+                  aria-label="Slice label"
+                />
+              )}
               <NumberInput value={slice.value} onChange={(v) => update(id, { value: v })} ariaLabel="Slice value" />
               <button type="button" className="icon-btn" onClick={() => remove(id)} aria-label={`Remove ${slice.label}`}>
                 ×
@@ -208,7 +234,7 @@ function PartitionEditor({ data }: { data: PartitionData }) {
         }}
       </SortableRows>
       <button type="button" className="btn btn--sm btn--add" onClick={add}>
-        + Slice
+        {mapRegion ? '+ Region' : '+ Slice'}
       </button>
     </>
   );
@@ -357,6 +383,8 @@ export function DataEditor() {
     // These chart configs read only the first series — show a single Value column.
     return usesSingleSeries(type, style) ? <SingleSeriesEditor data={data} /> : <SeriesEditor data={data} />;
   }
-  if (data.kind === 'partition') return <PartitionEditor data={data} />;
+  if (data.kind === 'partition') {
+    return <PartitionEditor data={data} mapRegion={type === 'map' ? style.mapRegion : undefined} />;
+  }
   return <XYEditor data={data} />;
 }

@@ -37,7 +37,14 @@ export default defineConfig({
       'react-router-dom',
       'styled-components',
       'lucide-react',
+      // echarts-gl registers against `echarts/lib/echarts`; keep one singleton
+      // so globe/scatter3D land on the same instance as `echarts/core`.
+      'echarts',
+      'zrender',
     ],
+  },
+  optimizeDeps: {
+    include: ['echarts/core', 'echarts/lib/echarts', 'echarts-gl'],
   },
   // Parent `nav.js` reads CRA-style process.env at module load.
   define: {

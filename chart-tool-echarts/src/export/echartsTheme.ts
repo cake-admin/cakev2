@@ -12,7 +12,11 @@ const THEME_COLOR_SLOTS = 12;
  * (light / dark / hct); the `color` array is resolved from the panel's Color
  * theme variation.
  */
-export function buildEchartsTheme(theme: ChartTheme, color: ColorConfig): Record<string, unknown> {
+export function buildEchartsTheme(
+  theme: ChartTheme,
+  color: ColorConfig,
+  opts?: { transparentBackground?: boolean },
+): Record<string, unknown> {
   const colors = theme.color.resolve(color, THEME_COLOR_SLOTS);
   const axis = {
     axisLine: { lineStyle: { color: theme.axis.line } },
@@ -24,7 +28,7 @@ export function buildEchartsTheme(theme: ChartTheme, color: ColorConfig): Record
 
   return {
     color: colors,
-    backgroundColor: theme.surface.card,
+    backgroundColor: opts?.transparentBackground ? 'transparent' : theme.surface.card,
     textStyle: { color: theme.text.primary, fontFamily: FONT },
     title: {
       textStyle: { color: theme.text.primary, fontFamily: FONT, fontWeight: 600 },

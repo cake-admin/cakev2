@@ -38,6 +38,7 @@ const tokens = {
   referenceSecondary: pair('secondary', 'secondary'),
   surfaceCanvas: pair('surfaces', 'canvas'),
   surfaceCard: pair('surfaces', 'container'),
+  surfaceOnContainerHigh: pair('surfaces', 'onContainer high'),
   borderWeak: pair('stroke', 'border low'),
   borderStandard: pair('stroke', 'border'),
   textPrimary: pair('text+icon', 'primary'),

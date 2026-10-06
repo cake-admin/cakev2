@@ -1,10 +1,14 @@
 import { useEffect, useRef } from 'react';
 import type { EChartsOption } from 'echarts';
+import { previewChartBridge } from '../preview/previewChartBridge';
 import { echarts } from './echartsSetup';
+import { attachMapLinkHighlight } from './mapLinkHighlight';
 
 interface EChartProps {
   option: EChartsOption;
   className?: string;
+  /** Cross-highlight series/geo items that share `name` / `linkKey` (flat map callouts). */
+  linkHighlightByName?: boolean;
 }
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -25,7 +29,7 @@ function patchEmphasisColor(e: any, color: string) {
  *    always renders emphasis over select under the cursor, so press must ride on
  *    emphasis rather than the select state itself.
  */
-export function EChart({ option, className }: EChartProps) {
+export function EChart({ option, className, linkHighlightByName = false }: EChartProps) {
   const elRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<ReturnType<typeof echarts.init> | null>(null);
   const optionRef = useRef(option);
@@ -35,6 +39,7 @@ export function EChart({ option, className }: EChartProps) {
     if (!el) return;
     const chart = echarts.init(el, undefined, { renderer: 'canvas' });
     chartRef.current = chart;
+    previewChartBridge.set(chart);
     const ro = new ResizeObserver(() => chart.resize());
     ro.observe(el);
 
@@ -84,6 +89,7 @@ export function EChart({ option, className }: EChartProps) {
 
     return () => {
       ro.disconnect();
+      previewChartBridge.set(null);
       chart.dispose();
       chartRef.current = null;
     };
@@ -91,8 +97,21 @@ export function EChart({ option, className }: EChartProps) {
 
   useEffect(() => {
     optionRef.current = option;
-    chartRef.current?.setOption(option, true);
+    const chart = chartRef.current;
+    if (!chart) return;
+    try {
+      chart.setOption(option, true);
+    } catch (err) {
+      // WebGL / echarts-gl can throw on bad option transitions — don't take down React.
+      console.error('[EChart] setOption failed', err);
+    }
   }, [option]);
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (!chart || !linkHighlightByName) return;
+    return attachMapLinkHighlight(chart, () => optionRef.current);
+  }, [linkHighlightByName]);
 
   return <div ref={elRef} className={className} style={{ width: '100%', height: '100%' }} />;
 }

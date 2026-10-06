@@ -11,6 +11,7 @@ import {
   scatterPreset,
   treemapPreset,
   waterfallPreset,
+  worldMapPreset,
 } from '../data/presets';
 import type { Variation } from '../theme/chartTheme.types';
 import type { StyleConfig } from './types';
@@ -29,7 +30,8 @@ export type ChartId =
   | 'heatmap'
   | 'radialBar'
   | 'posNegBar'
-  | 'waterfall';
+  | 'waterfall'
+  | 'map';
 
 /**
  * Catalog of chart types. Registering a new one = adding an entry here plus a
@@ -74,6 +76,26 @@ export const CHART_REGISTRY: Record<ChartId, ChartDefinition> = {
 
   posNegBar: { id: 'posNegBar', label: 'Positive / Negative', description: 'Bars colored by sign from semantic tokens (positive/negative).', group: 'Semantic', dataKind: 'series', preset: posNegPreset, defaultStyle: { showGrid: true, showLegend: false }, exportName: 'pos-neg-bar', core: false, recommendedThemes: ['semantic'] },
   waterfall: { id: 'waterfall', label: 'Waterfall', description: 'Running total of semantic positive/negative deltas.', group: 'Semantic', dataKind: 'series', preset: waterfallPreset, defaultStyle: { showGrid: true, showLegend: false }, exportName: 'waterfall-chart', core: false, recommendedThemes: ['semantic'] },
+
+  map: {
+    id: 'map',
+    label: 'World map',
+    description: 'Choropleth by country or continent (%). Flat SVG export; globe is PNG-only.',
+    group: 'Geographic',
+    dataKind: 'partition',
+    preset: worldMapPreset,
+    defaultStyle: {
+      showAxes: false,
+      showGrid: false,
+      showLegend: true,
+      showDirectLabels: true,
+      mapProjection: 'flat',
+      mapRegion: 'country',
+    },
+    exportName: 'world-map',
+    core: false,
+    recommendedThemes: ['sequential', 'diverging', 'semantic', 'categorical'],
+  },
 };
 
 /**
@@ -101,6 +123,7 @@ export const CHART_IDS: ChartId[] = [
   'radialBar',
   'posNegBar',
   'waterfall',
+  'map',
 ];
 
 /** Charts shown in the picker by default (the rest are added via the catalog). */

@@ -35,6 +35,8 @@ export interface ChartContext {
    * proportionally (Figma won't rescale `<text>` on resize, so we pre-size it).
    */
   scale?: number;
+  /** Chart host size (export W×H or preview card) — map layoutSize is derived from this. */
+  frame?: { width: number; height: number };
 }
 
 /**

@@ -22,6 +22,13 @@ describe('echarts theme export', () => {
     expect(obj.categoryAxis).toBeTruthy();
   });
 
+  it('exports a transparent theme background when requested', () => {
+    const theme = buildChartTheme(TOKENS, 'light');
+    const color = { variation: 'categorical' as const };
+    const obj = buildEchartsTheme(theme, color, { transparentBackground: true });
+    expect(obj.backgroundColor).toBe('transparent');
+  });
+
   it('emits runnable registerTheme code', () => {
     const theme = buildChartTheme(TOKENS, 'light');
     const color = { variation: 'secondary' as const };

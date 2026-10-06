@@ -147,6 +147,47 @@ export function waterfallPreset(): SeriesData {
   };
 }
 
+/** Country labels must match ECharts world GeoJSON feature names. */
+export function worldMapPreset(): PartitionData {
+  const items: Array<[string, number]> = [
+    ['United States', 92],
+    ['China', 88],
+    ['India', 76],
+    ['Germany', 64],
+    ['United Kingdom', 58],
+    ['Japan', 54],
+    ['Brazil', 49],
+    ['Canada', 47],
+    ['France', 45],
+    ['Australia', 41],
+    ['Mexico', 38],
+    ['Korea', 36],
+    ['Italy', 33],
+    ['Spain', 31],
+    ['Indonesia', 28],
+  ];
+  return {
+    kind: 'partition',
+    slices: items.map(([label, value]) => ({ id: genId('slice'), label, value })),
+  };
+}
+
+/** Continent labels must match CONTINENT_NAMES in charts/geo/regionNames.ts. */
+export function continentMapPreset(): PartitionData {
+  const items: Array<[string, number]> = [
+    ['North America', 72],
+    ['South America', 48],
+    ['Europe', 78],
+    ['Africa', 41],
+    ['Asia', 65],
+    ['Oceania', 54],
+  ];
+  return {
+    kind: 'partition',
+    slices: items.map(([label, value]) => ({ id: genId('slice'), label, value })),
+  };
+}
+
 export function scatterPreset(): XYData {
   const pts: Array<[number, number, number]> = [
     [12, 22, 8],

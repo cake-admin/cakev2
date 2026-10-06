@@ -38,7 +38,11 @@ export function buildChartTheme(tokens: RawTokens, mode: Mode): ChartTheme {
       : '0 2px 16px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.05)';
   return {
     mode,
-    surface: { canvas: t('surfaceCanvas'), card: t('surfaceCard') },
+    surface: {
+      canvas: t('surfaceCanvas'),
+      card: t('surfaceCard'),
+      onContainerHigh: t('surfaceOnContainerHigh'),
+    },
     text: { primary: t('textPrimary'), secondary: t('textSecondary'), helper: t('referenceHelper') },
     // Axis baseline uses the stronger Divider weight; gridlines use the weak one.
     axis: { line: t('borderStandard'), tick: t('textSecondary'), label: t('textSecondary') },

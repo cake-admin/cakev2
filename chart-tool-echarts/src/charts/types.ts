@@ -9,6 +9,10 @@ export type ScatterStyle = 'scatter' | 'bubble';
 export type CircularStyle = 'donut' | 'pie' | 'half' | 'nested' | 'polar';
 export type LegendPosition = 'bottom' | 'right';
 export type HeaderPlacement = 'top' | 'left';
+/** Flat GeoJSON map (SVG export) vs WebGL globe (preview + PNG only). */
+export type MapProjection = 'flat' | 'globe';
+/** Choropleth grain — country polygons or continent-colored country groups. */
+export type MapRegion = 'country' | 'continent';
 
 /** Fixed corner radius (px @ 1×) — bars, pie slices, heatmap cells, treemap tiles. */
 export const CORNER_RADIUS = 12;
@@ -35,6 +39,15 @@ export interface StyleConfig {
   /** Circular sub-type (pie / donut / half-gauge / nested / polar rose). */
   circularStyle: CircularStyle;
   legendPosition: LegendPosition;
+  /**
+   * When true, Figma SVG / PNG / ECharts code exports omit the chart card fill
+   * (`backgroundColor: 'transparent'`). Live preview chrome is unchanged.
+   */
+  transparentBackground: boolean;
+  /** World map: flat (SVG) vs globe (PNG-only). */
+  mapProjection: MapProjection;
+  /** World map: country vs continent data grain. */
+  mapRegion: MapRegion;
 }
 
 export const DEFAULT_STYLE: StyleConfig = {
@@ -51,6 +64,9 @@ export const DEFAULT_STYLE: StyleConfig = {
   scatterStyle: 'bubble',
   circularStyle: 'donut',
   legendPosition: 'bottom',
+  transparentBackground: false,
+  mapProjection: 'flat',
+  mapRegion: 'country',
 };
 
 export interface HoverDatum {

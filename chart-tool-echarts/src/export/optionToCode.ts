@@ -48,15 +48,32 @@ function ser(value: any, indent: string): string {
   return 'undefined';
 }
 
+function usesWorldMap(option: EChartsOption): boolean {
+  const series = option.series;
+  const list = Array.isArray(series) ? series : series ? [series] : [];
+  return list.some((s) => s && typeof s === 'object' && (s as { type?: string }).type === 'map');
+}
+
 /**
  * Produce a runnable ECharts snippet that reproduces the current chart. Colors,
  * fonts, and sizes are already resolved to concrete values in the option, so the
  * snippet is self-contained (no design-token runtime needed).
+ *
+ * World maps need GeoJSON registered separately — the comment block points at the
+ * playground asset rather than inlining ~1MB of coordinates.
  */
 export function optionToCode(option: EChartsOption): string {
   const body = ser(option, '');
+  const mapPreamble = usesWorldMap(option)
+    ? `
+// World choropleth needs GeoJSON registered under map: 'world'.
+// Use the playground asset (or any compatible world GeoJSON):
+//   import world from './world.json';
+//   echarts.registerMap('world', world);
+`
+    : '';
   return `import * as echarts from 'echarts';
-
+${mapPreamble}
 // Mount target, e.g.: <div id="chart" style="width: 640px; height: 420px"></div>
 const chart = echarts.init(document.getElementById('chart'));
 

@@ -1,5 +1,13 @@
 import { useChartStore } from '../../state/chartStore';
-import type { CircularStyle, LegendPosition, LineStyle, ScatterStyle } from '../../charts/types';
+import { continentMapPreset, worldMapPreset } from '../../data/presets';
+import type {
+  CircularStyle,
+  LegendPosition,
+  LineStyle,
+  MapProjection,
+  MapRegion,
+  ScatterStyle,
+} from '../../charts/types';
 
 function Toggle({
   label,
@@ -91,14 +99,51 @@ export function StyleControls() {
   const type = useChartStore((s) => s.type);
   const style = useChartStore((s) => s.style);
   const patch = useChartStore((s) => s.patchStyle);
+  const setData = useChartStore((s) => s.setData);
+  const importedTable = useChartStore((s) => s.importedTable);
+  const setColor = useChartStore((s) => s.setColor);
 
   const isBar = type === 'bar';
   const isLineArea = type === 'line' || type === 'area';
   const isCartesian =
     isBar || isLineArea || type === 'scatter' || type === 'jitter' || type === 'posNegBar' || type === 'waterfall';
+  const isMap = type === 'map';
+
+  const setMapRegion = (region: MapRegion) => {
+    patch({ mapRegion: region });
+    if (!importedTable) {
+      setData(() => (region === 'continent' ? continentMapPreset() : worldMapPreset()));
+    }
+    // Continent choropleth reads best as categorical; country stays sequential-first.
+    if (region === 'continent') setColor({ variation: 'categorical' });
+    else setColor({ variation: 'sequential' });
+  };
 
   return (
     <>
+      {isMap ? (
+        <Segmented<MapProjection>
+          label="Projection"
+          value={style.mapProjection}
+          options={[
+            { id: 'flat', label: 'Flat map' },
+            { id: 'globe', label: 'Globe (live preview & PNG only — not SVG)' },
+          ]}
+          onChange={(v) => patch({ mapProjection: v })}
+        />
+      ) : null}
+      {isMap ? (
+        <Segmented<MapRegion>
+          label="Regions"
+          value={style.mapRegion}
+          options={[
+            { id: 'country', label: 'Country' },
+            { id: 'continent', label: 'Continent' },
+          ]}
+          onChange={setMapRegion}
+        />
+      ) : null}
+
       {isLineArea ? (
         <Segmented<LineStyle>
           label="Line style"
@@ -163,6 +208,14 @@ export function StyleControls() {
         />
       ) : null}
       <Toggle label="Direct labels" checked={style.showDirectLabels} onChange={(v) => patch({ showDirectLabels: v })} />
+      <Toggle
+        label="Transparent background (export)"
+        checked={style.transparentBackground}
+        onChange={(v) => patch({ transparentBackground: v })}
+      />
+      <p className="field__hint" style={{ marginTop: -4 }}>
+        SVG / Figma, PNG, and code exports skip the chart card fill. Preview stage color is unchanged.
+      </p>
     </>
   );
 }

@@ -10,6 +10,7 @@ describe('buildChartTheme', () => {
     const colors = [
       t.surface.canvas,
       t.surface.card,
+      t.surface.onContainerHigh,
       t.text.primary,
       t.text.secondary,
       t.axis.line,

@@ -79,10 +79,19 @@ export function ColorControls() {
     };
   }, [open]);
 
+  const mapRegion = useChartStore((s) => s.style.mapRegion);
+
   const recommended = useMemo(() => {
+    // Continent choropleth prefers categorical; country prefers value ramps.
+    if (chartType === 'map' && mapRegion === 'continent') {
+      return new Set<Variation>(['categorical']);
+    }
+    if (chartType === 'map') {
+      return new Set<Variation>(['sequential', 'diverging', 'semantic']);
+    }
     const list = CHART_REGISTRY[chartType]?.recommendedThemes ?? [];
     return new Set(list);
-  }, [chartType]);
+  }, [chartType, mapRegion]);
 
   const orderedThemes = useMemo(() => {
     const rec: typeof VISIBLE_VARIATIONS = [];
@@ -91,10 +100,15 @@ export function ColorControls() {
       (recommended.has(v.id) ? rec : rest).push(v);
     }
     // Keep registry order within the recommended group.
-    const order = CHART_REGISTRY[chartType]?.recommendedThemes ?? [];
+    const order =
+      chartType === 'map' && mapRegion === 'continent'
+        ? (['categorical'] as Variation[])
+        : chartType === 'map'
+          ? (['sequential', 'diverging', 'semantic'] as Variation[])
+          : (CHART_REGISTRY[chartType]?.recommendedThemes ?? []);
     rec.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
     return [...rec, ...rest];
-  }, [chartType, recommended]);
+  }, [chartType, mapRegion, recommended]);
 
   const subgroups = useMemo(() => {
     if (!TOKEN_VARIATIONS.has(color.variation)) return [];

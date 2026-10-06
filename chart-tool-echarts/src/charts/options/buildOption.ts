@@ -13,39 +13,64 @@ import { buildHeatmap } from './heatmap';
 import { buildRadialBar } from './radialBar';
 import { buildPosNeg } from './posNeg';
 import { buildWaterfall } from './waterfall';
+import { buildMap } from './map';
 
 /** Single dispatch: chart id → ECharts option (used by preview AND export). */
 export function buildOption(ctx: ChartContext): EChartsOption {
+  let option: EChartsOption;
   switch (ctx.type) {
     case 'bar':
-      return buildBar(ctx);
+      option = buildBar(ctx);
+      break;
     case 'line':
-      return buildLine(ctx);
+      option = buildLine(ctx);
+      break;
     case 'area':
-      return buildArea(ctx);
+      option = buildArea(ctx);
+      break;
     case 'pie':
-      return buildPie(ctx);
+      option = buildPie(ctx);
+      break;
     case 'scatter':
-      return buildScatter(ctx);
+      option = buildScatter(ctx);
+      break;
     case 'jitter':
-      return buildJitter(ctx);
+      option = buildJitter(ctx);
+      break;
     case 'radar':
-      return buildRadar(ctx);
+      option = buildRadar(ctx);
+      break;
     case 'treemap':
-      return buildTreemap(ctx);
+      option = buildTreemap(ctx);
+      break;
     case 'funnel':
-      return buildFunnel(ctx);
+      option = buildFunnel(ctx);
+      break;
     case 'gauge':
-      return buildGauge(ctx);
+      option = buildGauge(ctx);
+      break;
     case 'heatmap':
-      return buildHeatmap(ctx);
+      option = buildHeatmap(ctx);
+      break;
     case 'radialBar':
-      return buildRadialBar(ctx);
+      option = buildRadialBar(ctx);
+      break;
     case 'posNegBar':
-      return buildPosNeg(ctx);
+      option = buildPosNeg(ctx);
+      break;
     case 'waterfall':
-      return buildWaterfall(ctx);
+      option = buildWaterfall(ctx);
+      break;
+    case 'map':
+      option = buildMap(ctx);
+      break;
     default:
-      return {};
+      option = {};
   }
+  // Export / pasted option: omit the card fill when the style toggle is on.
+  // Preview stage still paints its own chrome behind the chart.
+  if (ctx.style.transparentBackground) {
+    return { ...option, backgroundColor: 'transparent' };
+  }
+  return option;
 }

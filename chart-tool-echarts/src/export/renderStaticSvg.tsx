@@ -16,6 +16,12 @@ export interface ExportArgs {
   mode: Mode;
   width?: number;
   height?: number;
+  /**
+   * Font/spacing scale baked into the SVG. Defaults to {@link exportScale} for
+   * the given width×height. Export UI exposes this so users can shrink labels
+   * when callouts clip at the frame edge.
+   */
+  scale?: number;
   header?: HeaderConfig;
   title?: string;
   description?: string;
@@ -23,6 +29,10 @@ export interface ExportArgs {
 
 /** Reference size at which font/px sizes equal 1× (the in-app design baseline). */
 export const EXPORT_REF = { width: 640, height: 420 };
+
+/** Clamp for the export font-scale control (and auto recommendation). */
+export const EXPORT_SCALE_MIN = 0.4;
+export const EXPORT_SCALE_MAX = 4;
 
 /**
  * Pick a font/px scale for a target export size. Uses the geometric mean of the
@@ -32,7 +42,13 @@ export const EXPORT_REF = { width: 640, height: 420 };
  */
 export function exportScale(width: number, height: number): number {
   const ratio = Math.sqrt((width * height) / (EXPORT_REF.width * EXPORT_REF.height));
-  return Math.min(4, Math.max(0.6, Math.round(ratio * 100) / 100));
+  return Math.min(EXPORT_SCALE_MAX, Math.max(0.6, Math.round(ratio * 100) / 100));
+}
+
+/** Clamp a user-entered font scale into the supported export range. */
+export function clampExportScale(scale: number): number {
+  if (!Number.isFinite(scale)) return 1;
+  return Math.min(EXPORT_SCALE_MAX, Math.max(EXPORT_SCALE_MIN, Math.round(scale * 100) / 100));
 }
 
 /**
@@ -75,11 +91,13 @@ export function renderChartSvg(args: ExportArgs): string {
     header: args.header,
     theme,
     staticFrame: true,
-    scale: exportScale(width, height),
+    scale: clampExportScale(args.scale ?? exportScale(width, height)),
+    frame: { width, height },
   });
 
   const chart = echarts.init(null, undefined, { renderer: 'svg', ssr: true, width, height });
-  chart.setOption({ ...option, backgroundColor: theme.surface.card });
+  const backgroundColor = args.style.transparentBackground ? 'transparent' : theme.surface.card;
+  chart.setOption({ ...option, backgroundColor });
   let svg = chart.renderToSVGString();
   chart.dispose();
 

@@ -73,7 +73,7 @@ describe('hctDecal', () => {
     style: DEFAULT_STYLE,
     theme: {
       mode: 'hct' as const,
-      surface: { canvas: '#202020', card: '#202020' },
+      surface: { canvas: '#202020', card: '#202020', onContainerHigh: '#202020' },
       color: {
         resolve: (_cfg: unknown, count: number) =>
           Array.from({ length: count }, (_, i) => palette[i % palette.length]),

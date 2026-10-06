@@ -37,6 +37,27 @@ describe('export font scaling', () => {
     expect(big).toBeCloseTo(small * 2, 0);
   });
 
+  it('honors an explicit font scale override (for clipped Figma labels)', () => {
+    const def = CHART_REGISTRY.bar;
+    const style = { ...DEFAULT_STYLE, ...def.defaultStyle };
+    const base = {
+      type: 'bar' as const,
+      data: def.preset(),
+      color: { variation: 'categorical' as const },
+      style,
+      mode: 'light' as const,
+      width: 640,
+      height: 420,
+      header: { ...DEFAULT_HEADER, show: true },
+    };
+    // Header value is 40px @ 1× — large enough that 0.5× snaps below it on the ladder.
+    const full = renderChartSvg({ ...base, scale: 1 });
+    const shrunk = renderChartSvg({ ...base, scale: 0.5 });
+    expect(full).toContain('font-size:40px');
+    expect(shrunk).not.toContain('font-size:40px');
+    expect(maxFont(shrunk)).toBeLessThan(maxFont(full));
+  });
+
   it('only uses type-scale ladder font sizes (no odd values like 11/22)', () => {
     const allFonts = new Set<number>();
     const re = /font-size[:=]\s*"?(\d+(?:\.\d+)?)/g;

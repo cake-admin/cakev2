@@ -35,7 +35,9 @@ const PRESET_MARKERS = [
  * too, so that's a pre-existing quirk rather than anything import-specific.
  * Both are covered by the exact-value assertions in csv.test.ts instead.
  */
-const NO_CATEGORY_TEXT: ChartId[] = ['scatter', 'jitter'];
+// `map` draws countries as paths; imported labels only match when they are
+  // real GeoJSON names, so CSV regions like "North" never appear as SVG text.
+  const NO_CATEGORY_TEXT: ChartId[] = ['scatter', 'jitter', 'map'];
 
 describe('imported data drives every chart', () => {
   const out = importText(CSV);
