@@ -1,7 +1,9 @@
-import type { ECharts } from 'echarts';
 import type { EChartsOption } from 'echarts';
+import { echarts } from './echartsSetup';
 
+type ChartInstance = ReturnType<typeof echarts.init>;
 type Linkable = { name?: string; linkKey?: string };
+type HoverParams = { name?: string; data?: unknown };
 
 /** Build linkKey → ECharts `name`s that should highlight together. */
 export function buildLinkIndex(option: EChartsOption): Map<string, string[]> {
@@ -45,12 +47,14 @@ export function buildLinkIndex(option: EChartsOption): Map<string, string[]> {
   return out;
 }
 
-function linkKeyFromEvent(
-  params: { name?: string; data?: Linkable },
-  index: Map<string, string[]>,
-): string | null {
-  const fromData = params.data && typeof params.data === 'object' ? params.data.linkKey : undefined;
-  if (fromData) return fromData;
+function linkableFromData(data: unknown): Linkable | undefined {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return undefined;
+  return data as Linkable;
+}
+
+function linkKeyFromEvent(params: HoverParams, index: Map<string, string[]>): string | null {
+  const linkable = linkableFromData(params.data);
+  if (linkable?.linkKey) return linkable.linkKey;
   const name = params.name;
   if (!name) return null;
   // Geo mouseover often only exposes `name` (feature id). Find the group that owns it.
@@ -66,7 +70,7 @@ function linkKeyFromEvent(
  * Clears only on chart globalout so moving between a country and its pill doesn't flicker.
  */
 export function attachMapLinkHighlight(
-  chart: ECharts,
+  chart: ChartInstance,
   getOption: () => EChartsOption,
 ): () => void {
   let activeKey: string | null = null;
@@ -88,7 +92,7 @@ export function attachMapLinkHighlight(
     });
   };
 
-  const onOver = (params: { name?: string; data?: Linkable }) => {
+  const onOver = (params: HoverParams) => {
     index = buildLinkIndex(getOption());
     const key = linkKeyFromEvent(params, index);
     if (!key) return;
@@ -104,11 +108,12 @@ export function attachMapLinkHighlight(
     activeKey = null;
   };
 
-  chart.on('mouseover', onOver);
+  // Cast: `echarts` vs `echarts/core` ship duplicate ECElementEvent declarations.
+  chart.on('mouseover', onOver as never);
   chart.on('globalout', onGlobalOut);
 
   return () => {
-    chart.off('mouseover', onOver);
+    chart.off('mouseover', onOver as never);
     chart.off('globalout', onGlobalOut);
     if (activeKey) downplay(activeKey);
     activeKey = null;
